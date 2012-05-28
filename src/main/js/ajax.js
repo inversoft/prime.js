@@ -1,26 +1,21 @@
 /*
  * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
  */
-var IS = IS || {};
-IS.Ajax = IS.Ajax || {};
+var Prime = Prime || {};
+Prime.Ajax = Prime.Ajax || {};
 
 /**
  * Makes a new AJAX request.
  *
- * @param {String} url The URL to call.
+ * @param {String} [url] The URL to call. This can be left out for sub-classing but should otherwise be provided.
  * @constructor
  */
-IS.Ajax.Request = function(url) {
-  this.logger = new IS.Utils.Logger();
-  init(url);
+Prime.Ajax.Request = function(url) {
+  this.init(url);
 };
 
-IS.Ajax.Request.prototype = {
+Prime.Ajax.Request.prototype = {
   init: function(url) {
-    if (!url) {
-      throw 'URL is required';
-    }
-
     this.xhr = new XMLHttpRequest();
     this.url = url;
     this.method = 'GET';
@@ -40,7 +35,7 @@ IS.Ajax.Request.prototype = {
    * Changes the URL to call.
    *
    * @param {String} url The new URL to call.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   forURL: function(url) {
     this.url = url;
@@ -51,7 +46,7 @@ IS.Ajax.Request.prototype = {
    * Sets the method used to make the AJAX request.
    *
    * @param {String} method The HTTP method.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   usingMethod: function(method) {
     this.method = method;
@@ -62,7 +57,7 @@ IS.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "unset".
    *
    * @param {Function} func The handler function.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withUnsetHandler: function(func) {
     this.unsetHandler = func;
@@ -73,7 +68,7 @@ IS.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "open".
    *
    * @param {Function} func The handler function.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withOpenHandler: function(func) {
     this.openHandler = func;
@@ -84,7 +79,7 @@ IS.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "send".
    *
    * @param {Function} func The handler function.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withSendHandler: function(func) {
     this.sendHandler = func;
@@ -95,7 +90,7 @@ IS.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "loading".
    *
    * @param {Function} func The handler function.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withLoadingHandler: function(func) {
     this.loadingHandler = func;
@@ -107,7 +102,7 @@ IS.Ajax.Request.prototype = {
    * 2xx.
    *
    * @param {Function} func The handler function.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withSuccessHandler: function(func) {
     this.successHandler = func;
@@ -119,7 +114,7 @@ IS.Ajax.Request.prototype = {
    * not 2xx.
    *
    * @param {Function} func The handler function.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withErrorHandler: function(func) {
     this.errorHandler = func;
@@ -131,7 +126,7 @@ IS.Ajax.Request.prototype = {
    * functions.
    *
    * @param {Object} context The context object.
-   * @return {Ajax.Request} This Ajax.Request.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withContext: function(context) {
     this.context = context;
@@ -140,6 +135,8 @@ IS.Ajax.Request.prototype = {
 
   /**
    * Invokes the AJAX request. If the URL is not set, this throws an exception.
+   * 
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   go: function() {
     if (!this.url) {
@@ -147,11 +144,15 @@ IS.Ajax.Request.prototype = {
     }
 
     if (this.async) {
-      this.xhr.onreadystatechange = Utils.proxy(this, this.handler);
+      this.xhr.onreadystatechange = Prime.Utils.proxy(this, this.handler);
     }
+
+    console.log(this.url);
 
     this.xhr.open(this.method, this.url, this.async, this.username, this.password);
     this.xhr.send();
+
+    return this;
   },
 
   /**
