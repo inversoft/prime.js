@@ -1,0 +1,15 @@
+A few comments for developers on this project. In order to keep things consistent and clean and avoid the mess that so
+many other frameworks have become, here are the rules:
+
+  * Alphabetize all methods inside classes. This will help other people find them quickly when browser via the web
+    or anywhere else without search capabilities (this is rare I know, but it helps).
+
+  * If there is another function that is similar to yours, duplicate the method signature as closely as you possibly
+    can.
+
+  * Use good names that have meaning.
+
+  * Document everything (except tests - unless you want to).
+
+  * Don't define all the variables for a function at the top of the function. This should NOT be a performance concern
+    at this point.
