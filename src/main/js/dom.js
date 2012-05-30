@@ -119,6 +119,29 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Adds the given class (or list of space separated classes) to this Element.
+   *
+   * @param {String} classNames The class name(s).
+   * @return {Prime.Dom.Element} This Element.
+   */
+  addClass: function(classNames) {
+    var currentClassName = this.domElement.className;
+    if (!currentClassName) {
+      currentClassName = classNames;
+    } else {
+      var classNamesList = classNames.split(Prime.Utils.spaceRegex);
+      for (var i = 0; i < classNamesList.length; i++) {
+        if (currentClassName.indexOf(classNamesList[i]) < 0) {
+          currentClassName = currentClassName + ' ' + classNamesList[i];
+        }
+      }
+    }
+
+    this.domElement.className = currentClassName;
+    return this;
+  },
+
+  /**
    * Inserts this Element (which must be a newly created Element) into the DOM after the given element.
    *
    * @param {Element} element The element to insert this Element after.
@@ -130,11 +153,9 @@ Prime.Dom.Element.prototype = {
       throw 'You can only insert new Prime.Dom.Elements for now';
     }
 
-    // In the tree
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
-    var parentElement = domElement.parentNode;
-    if (parentElement) {
-      parentElement.appendChild(domElement);
+    if (domElement.parentNode) {
+      domElement.appendChild(this.domElement);
     } else {
       throw 'The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.';
     }
@@ -165,7 +186,6 @@ Prime.Dom.Element.prototype = {
       throw 'You can only insert new Prime.Dom.Elements for now';
     }
 
-    // In the tree
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     var parentElement = domElement.parentNode;
     if (parentElement) {
@@ -189,7 +209,6 @@ Prime.Dom.Element.prototype = {
       throw 'You can only insert new Prime.Dom.Elements for now';
     }
 
-    // In the tree
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     var parentElement = domElement.parentNode;
     if (parentElement) {
@@ -224,7 +243,7 @@ Prime.Dom.Element.prototype = {
    * @return {Prime.Dom.Element} This Element.
    */
   withEventListener: function(event, handler, context) {
-    var theContext = (arguments.length < 4) ? this.domElement : context;
+    var theContext = (arguments.length < 3) ? this.domElement : context;
     this.domElement.addEventListener(event, Prime.Utils.proxy(theContext, handler));
     return this;
   },

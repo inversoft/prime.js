@@ -1,11 +1,58 @@
+/*
+ * Helper functions
+ */
+function findPreviousElementSibling(element) {
+  var sibling = element.previousSibling;
+  while (sibling && sibling.nodeType != 1) {
+    sibling = sibling.previousSibling;
+  }
+
+  return sibling;
+}
+
+
 var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
 
-buster.testCase("DOM tests", {
+buster.assertions.add('hasNextElementSiblings', {
+  assert: function(element, number) {
+    this.actualCount = 0;
+    var sibling = element.nextSibling;
+    while (sibling) {
+      if (sibling.nodeType === 1) {
+        this.actualCount++;
+      }
+      sibling = sibling.nextSibling;
+    }
+
+    return (this.actualCount === number);
+  },
+  assertMessage: 'Expected ${1} next sibling elements but there were ${actualCount}',
+  refuteMessage: 'Expected there not be ${1} next sibling elements but there were'
+});
+
+buster.assertions.add('hasPreviousElementSiblings', {
+  assert: function(element, number) {
+    this.actualCount = 0;
+    var sibling = element.previousSibling;
+    while (sibling) {
+      if (sibling.nodeType === 1) {
+        this.actualCount++;
+      }
+      sibling = sibling.previousSibling;
+    }
+
+    return (this.actualCount === number);
+  },
+  assertMessage: 'Expected ${1} previous sibling elements but there were ${actualCount}',
+  refuteMessage: 'Expected there not be ${1} previous sibling elements but there were'
+});
+
+buster.testCase('DOM tests', {
   /**
    * Tests selecting element(s).
    */
-  "query": function() {
+  'query': function() {
     var list = Prime.Dom.query('p');
     assert.equals(list.length, 3);
     assert.equals(list[0].id, 'queryOne');
@@ -19,7 +66,7 @@ buster.testCase("DOM tests", {
   /**
    * Tests selecting one element.
    */
-  "queryFirst": function() {
+  'queryFirst': function() {
     var element = Prime.Dom.queryFirst('p');
     refute.isNull(element);
     assert.equals(element.id, 'queryOne');
@@ -42,7 +89,7 @@ buster.testCase("DOM tests", {
   /**
    * Tests selecting by ID.
    */
-  "queryByID": function() {
+  'queryByID': function() {
     var element = Prime.Dom.queryByID('queryOne');
     refute.isNull(element);
     assert.equals(element.id, 'queryOne');
@@ -55,7 +102,7 @@ buster.testCase("DOM tests", {
   /**
    * Tests creating a new element.
    */
-  "newElement": function() {
+  'newElement': function() {
     var element = Prime.Dom.newElement('<a/>');
     assert.equals(element.domElement.tagName, 'A');
 
@@ -63,32 +110,166 @@ buster.testCase("DOM tests", {
     assert.equals(element.domElement.tagName, 'DIV');
   },
 
+  'addClass': {
+    setUp: function() {
+      document.getElementById('addClassEmpty').className = null;
+      document.getElementById('addClassSingleExisting').className = 'existing';
+      document.getElementById('addClassMultipleExisting').className = 'existing1 existing2';
+    },
+
+    'addClassEmptyAddSingle': function() {
+      Prime.Dom.queryFirst('#addClassEmpty').
+        addClass('new-class');
+
+      var elem = document.getElementById('addClassEmpty');
+      assert.equals(elem.className, 'new-class');
+    },
+
+    'addClassEmptyAddMultiple': function() {
+      Prime.Dom.queryFirst('#addClassEmpty').
+        addClass('new-class1 new-class2');
+
+      var elem = document.getElementById('addClassEmpty');
+      assert.equals(elem.className, 'new-class1 new-class2');
+    },
+
+    'addClassSingleExistingAddOne': function() {
+      Prime.Dom.queryFirst('#addClassSingleExisting').
+        addClass('existing');
+
+      var elem = document.getElementById('addClassSingleExisting');
+      assert.equals(elem.className, 'existing');
+    },
+
+    'addClassSingleExistingAddMultiple': function() {
+      Prime.Dom.queryFirst('#addClassSingleExisting').
+        addClass('existing new-class');
+
+      var elem = document.getElementById('addClassSingleExisting');
+      assert.equals(elem.className, 'existing new-class');
+    },
+
+    'addClassSingleExistingAddMultipleNew': function() {
+      Prime.Dom.queryFirst('#addClassSingleExisting').
+        addClass('new-class1 new-class2');
+
+      var elem = document.getElementById('addClassSingleExisting');
+      assert.equals(elem.className, 'existing new-class1 new-class2');
+    },
+
+    'addClassMultipleExistingAddOne': function() {
+      Prime.Dom.queryFirst('#addClassMultipleExisting').
+        addClass('existing1');
+
+      var elem = document.getElementById('addClassMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2');
+    },
+
+    'addClassMultipleExistingAddMultiple': function() {
+      Prime.Dom.queryFirst('#addClassMultipleExisting').
+        addClass('existing1 existing2');
+
+      var elem = document.getElementById('addClassMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2');
+    },
+
+    'addClassMultipleExistingAddOneNew': function() {
+      Prime.Dom.queryFirst('#addClassMultipleExisting').
+        addClass('existing1 new-class1');
+
+      var elem = document.getElementById('addClassMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 new-class1');
+    },
+
+    'addClassMultipleExistingAddMultipleNew': function() {
+      Prime.Dom.queryFirst('#addClassMultipleExisting').
+        addClass('existing1 new-class1 new-class2');
+
+      var elem = document.getElementById('addClassMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 new-class1 new-class2');
+    },
+
+    'addClassMultipleExistingAddOnlyOneNew': function() {
+      Prime.Dom.queryFirst('#addClassMultipleExisting').
+        addClass('new-class1');
+
+      var elem = document.getElementById('addClassMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 new-class1');
+    },
+
+    'addClassMultipleExistingAddOnlyMultipleNew': function() {
+      Prime.Dom.queryFirst('#addClassMultipleExisting').
+        addClass('new-class1 new-class2');
+
+      var elem = document.getElementById('addClassMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 new-class1 new-class2');
+    }
+  },
+
+  'appendTo': {
+    tearDown: function() {
+      Prime.Dom.query('#appendToSingleElementNew').removeAllFromDOM();
+      Prime.Dom.query('#appendToMultipleElementNew').removeAllFromDOM();
+      refute(document.getElementById('appendToSingleElementNew'));
+      refute(document.getElementById('appendToMultipleElementNew'));
+    },
+
+    'appendToSingleDOMElement': function() {
+      Prime.Dom.newElement('<a/>').
+        withID('appendToSingleElementNew').
+        appendTo(document.getElementById('insertSingle'));
+
+      var newElement = document.getElementById('appendToSingleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 1);
+      assert.hasNextElementSiblings(newElement, 0);
+      assert.equals(findPreviousElementSibling(newElement).id, 'insertSingleElement');
+    },
+
+    'appendToSinglePrimeElement': function() {
+      Prime.Dom.newElement('<a/>').
+        withID('appendToSingleElementNew').
+        appendTo(Prime.Dom.queryFirst('#insertSingle'));
+
+      var newElement = document.getElementById('appendToSingleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 1);
+      assert.hasNextElementSiblings(newElement, 0);
+      assert.equals(findPreviousElementSibling(newElement).id, 'insertSingleElement');
+    },
+
+    'appendToMultipleDOMElement': function() {
+      Prime.Dom.newElement('<a/>').
+        withID('appendToMultipleElementNew').
+        appendTo(document.getElementById('insertMultiple'));
+
+      var newElement = document.getElementById('appendToMultipleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 3);
+      assert.hasNextElementSiblings(newElement, 0);
+      assert.equals(findPreviousElementSibling(newElement).id, 'insertMultipleThree');
+    },
+
+    'appendToMultiplePrimeElement': function() {
+      Prime.Dom.newElement('<a/>').
+        withID('appendToMultipleElementNew').
+        appendTo(Prime.Dom.queryFirst('#insertMultiple'));
+
+      var newElement = document.getElementById('appendToMultipleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 3);
+      assert.hasNextElementSiblings(newElement, 0);
+      assert.equals(findPreviousElementSibling(newElement).id, 'insertMultipleThree');
+    }
+  },
+
   /**
    * Tests inserting a new Element into the DOM after other elements.
    */
-  "insertBefore": {
+  'insertBefore': {
     setUp: function() {
-      Prime.Dom.query('#insertSingleElementNew').removeAllFromDOM();
-      Prime.Dom.query('#insertMultipleElementNew').removeAllFromDOM();
-      refute(document.getElementById('insertSingleElementNew'));
-      refute(document.getElementById('insertMultipleElementNew'));
-
       this.verifyInsertBefore = function(newElement, nextSiblingID, tagName, previousSiblingCount) {
         assert(newElement);
         assert(newElement.nextSibling);
         assert.equals(newElement.nextSibling.id, nextSiblingID);
         assert.equals(newElement.tagName, tagName);
-
-        // Ensure there are a specific number of element siblings.
-        var sibling = newElement.previousSibling;
-        var count = 0;
-        while (sibling) {
-          if (sibling.nodeType === 1) {
-            count++;
-          }
-          sibling = sibling.previousSibling;
-        }
-        assert.equals(count, previousSiblingCount, 'Expected ' + previousSiblingCount + ' previous siblings');
+        assert.hasPreviousElementSiblings(newElement, previousSiblingCount);
       };
 
       this.verifyInsertBeforeFirst = function(newElement, nextSiblingID, tagName) {
@@ -96,17 +277,18 @@ buster.testCase("DOM tests", {
         assert(newElement.nextSibling);
         assert.equals(newElement.nextSibling.id, nextSiblingID);
         assert.equals(newElement.tagName, tagName);
-
-        // Ensure that the siblings before the new element are not elements (they might be text nodes though).
-        var sibling = newElement.previousSibling;
-        while (sibling) {
-          refute.equals(sibling.nodeType, 1);
-          sibling = sibling.previousSibling;
-        }
+        assert.hasPreviousElementSiblings(newElement, 0);
       };
     },
 
-    "insertBeforeSingleDOMElement": function() {
+    tearDown: function() {
+      Prime.Dom.query('#insertSingleElementNew').removeAllFromDOM();
+      Prime.Dom.query('#insertMultipleElementNew').removeAllFromDOM();
+      refute(document.getElementById('insertSingleElementNew'));
+      refute(document.getElementById('insertMultipleElementNew'));
+    },
+
+    'insertBeforeSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertSingleElementNew').
         insertBefore(document.getElementById('insertSingleElement'));
@@ -115,7 +297,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertBeforeFirst(newElement, 'insertSingleElement', 'A');
     },
 
-    "insertAfterSinglePrimeElement": function() {
+    'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertSingleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertSingleElement'));
@@ -124,7 +306,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertBeforeFirst(newElement, 'insertSingleElement', 'A');
     },
 
-    "insertBeforeFirstMultipleDOMElement": function() {
+    'insertBeforeFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleOne'));
@@ -133,7 +315,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertBeforeFirst(newElement, 'insertMultipleOne', 'A');
     },
 
-    "insertBeforeFirstMultiplePrimeElement": function() {
+    'insertBeforeFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleOne'));
@@ -142,7 +324,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertBeforeFirst(newElement, 'insertMultipleOne', 'A');
     },
 
-    "insertBeforeMiddleMultipleDOMElement": function() {
+    'insertBeforeMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleTwo'));
@@ -151,7 +333,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertBefore(newElement, 'insertMultipleTwo', 'A', 1);
     },
 
-    "insertBeforeMiddleMultiplePrimeElement": function() {
+    'insertBeforeMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleTwo'));
@@ -160,7 +342,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertBefore(newElement, 'insertMultipleTwo', 'A', 1);
     },
 
-    "insertBeforeLastMultipleDOMElement": function() {
+    'insertBeforeLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleThree'));
@@ -169,7 +351,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertBefore(newElement, 'insertMultipleThree', 'A', 2);
     },
 
-    "insertBeforeLastMultiplePrimeElement": function() {
+    'insertBeforeLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleThree'));
@@ -182,29 +364,14 @@ buster.testCase("DOM tests", {
   /**
    * Tests inserting a new Element into the DOM before other elements.
    */
-  "insertAfter": {
+  'insertAfter': {
     setUp: function() {
-      Prime.Dom.query('#insertSingleElementNew').removeAllFromDOM();
-      Prime.Dom.query('#insertMultipleElementNew').removeAllFromDOM();
-      refute(document.getElementById('insertSingleElementNew'));
-      refute(document.getElementById('insertMultipleElementNew'));
-
       this.verifyInsertAfter = function(newElement, previousSiblingID, tagName, nextSiblingCount) {
         assert(newElement);
         assert(newElement.previousSibling);
         assert.equals(newElement.previousSibling.id, previousSiblingID);
         assert.equals(newElement.tagName, tagName);
-
-        // Ensure there are a specific number of element siblings.
-        var sibling = newElement.nextSibling;
-        var count = 0;
-        while (sibling) {
-          if (sibling.nodeType === 1) {
-            count++;
-          }
-          sibling = sibling.nextSibling;
-        }
-        assert.equals(count, nextSiblingCount, 'Expected ' + nextSiblingCount + ' next siblings');
+        assert.hasNextElementSiblings(newElement, nextSiblingCount);
       };
 
       this.verifyInsertAfterEnd = function(newElement, previousSiblingID, tagName) {
@@ -212,17 +379,18 @@ buster.testCase("DOM tests", {
         assert(newElement.previousSibling);
         assert.equals(newElement.previousSibling.id, previousSiblingID);
         assert.equals(newElement.tagName, tagName);
-
-        // Ensure that the siblings after the new element are not elements (they might be text nodes though).
-        var sibling = newElement.nextSibling;
-        while (sibling) {
-          refute.equals(sibling.nodeType, 1);
-          sibling = sibling.nextSibling;
-        }
+        assert.hasNextElementSiblings(newElement, 0);
       };
     },
 
-    "insertAfterSingleDOMElement": function() {
+    tearDown: function() {
+      Prime.Dom.query('#insertSingleElementNew').removeAllFromDOM();
+      Prime.Dom.query('#insertMultipleElementNew').removeAllFromDOM();
+      refute(document.getElementById('insertSingleElementNew'));
+      refute(document.getElementById('insertMultipleElementNew'));
+    },
+
+    'insertAfterSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertSingleElementNew').
         insertAfter(document.getElementById('insertSingleElement'));
@@ -231,7 +399,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertAfterEnd(newElement, 'insertSingleElement', 'A');
     },
 
-    "insertAfterSinglePrimeElement": function() {
+    'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertSingleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertSingleElement'));
@@ -240,7 +408,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertAfterEnd(newElement, 'insertSingleElement', 'A');
     },
 
-    "insertAfterFirstMultipleDOMElement": function() {
+    'insertAfterFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleOne'));
@@ -249,7 +417,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertAfter(newElement, 'insertMultipleOne', 'A', 2);
     },
 
-    "insertAfterFirstMultiplePrimeElement": function() {
+    'insertAfterFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleOne'));
@@ -258,7 +426,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertAfter(newElement, 'insertMultipleOne', 'A', 2);
     },
 
-    "insertAfterMiddleMultipleDOMElement": function() {
+    'insertAfterMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleTwo'));
@@ -267,7 +435,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertAfter(newElement, 'insertMultipleTwo', 'A', 1);
     },
 
-    "insertAfterMiddleMultiplePrimeElement": function() {
+    'insertAfterMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleTwo'));
@@ -276,7 +444,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertAfter(newElement, 'insertMultipleTwo', 'A', 1);
     },
 
-    "insertAfterLastMultipleDOMElement": function() {
+    'insertAfterLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleThree'));
@@ -285,7 +453,7 @@ buster.testCase("DOM tests", {
       this.verifyInsertAfterEnd(newElement, 'insertMultipleThree', 'A');
     },
 
-    "insertAfterLastMultiplePrimeElement": function() {
+    'insertAfterLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
         withID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleThree'));
@@ -295,13 +463,43 @@ buster.testCase("DOM tests", {
     }
   },
 
-  "html": function() {
+  'html': function() {
     Prime.Dom.queryFirst('#html').html('Changed');
 
     var element = document.getElementById('html');
     assert.equals(element.innerHTML, 'Changed');
   },
 
-  "// withEventListener": function() {
+  'withEventListenerFunction': function() {
+    var called = false;
+    Prime.Dom.queryFirst('#event').
+      withEventListener('click', function() {
+        called = true;
+      });
+
+    var event = document.createEvent('MouseEvents');
+    event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    document.getElementById('event').dispatchEvent(event);
+    assert(called);
+  },
+
+  'withEventListenerObject': function() {
+    var MyEventListener = function() {
+      this.called = false;
+    };
+    MyEventListener.prototype = {
+      handle: function(event) {
+        this.called = true;
+      }
+    };
+
+    var instance = new MyEventListener();
+    Prime.Dom.queryFirst('#event').
+      withEventListener('click', instance.handle, instance);
+
+    var event = document.createEvent('MouseEvents');
+    event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+    document.getElementById('event').dispatchEvent(event);
+    assert(instance.called);
   }
 });
