@@ -463,6 +463,13 @@ buster.testCase('DOM tests', {
     }
   },
 
+  'hide': function() {
+    Prime.Dom.queryFirst('#hide').hide();
+
+    var element = document.getElementById('hide');
+    assert.equals(element.style.display, 'none');
+  },
+
   'html': function() {
     Prime.Dom.queryFirst('#html').html('Changed');
 
@@ -572,6 +579,13 @@ buster.testCase('DOM tests', {
       var elem = document.getElementById('classMultipleExisting');
       refute(elem.className);
     }
+  },
+
+  'show': function() {
+    Prime.Dom.queryFirst('#show').show();
+
+    var element = document.getElementById('show');
+    refute(element.style.display);
   },
 
   'withEventListenerFunction': function() {
