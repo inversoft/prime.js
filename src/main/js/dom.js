@@ -89,6 +89,22 @@ Prime.Dom.ElementList.prototype = {
   },
 
   /**
+   * Iterates over each of the Prime.Dom.Element objects in this ElementList and calls the given function for each one.
+   * The 'this' variable inside the function will be the current Prime.Dom.Element. The function can optionally take a
+   * single parameter that is the current index.
+   *
+   * @param {Function} iterationFunction The function to call.
+   * @return {Prime.Dom.ElementList} This ElementList.
+   */
+  each: function(iterationFunction) {
+    for (var i = 0; i < this.length; i++) {
+      iterationFunction.call(this[i], i);
+    }
+
+    return this;
+  },
+
+  /**
    * Removes all the matched elements in the ElementList from the DOM.
    *
    * @return {Prime.Dom.ElementList} This ElementList.
@@ -161,6 +177,73 @@ Prime.Dom.Element.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Returns the value of the given attribute.
+   *
+   * @param {String} name The attribute name.
+   * @return {String} This attribute value or null.
+   */
+  attribute: function(name) {
+    var attr = this.domElement.attributes.getNamedItem(name);
+    if (attr) {
+      return attr.value;
+    }
+
+    return null;
+  },
+
+  /**
+   * Fades this element out using the opacity style.
+   *
+   * @param {Number} duration The total duration to go from displayed to gone.
+   * @param {Function} [endFunction] A function to call after the fadeOut is complete.
+   * @param {Object} [context] The context for the function call (sets the 'this' parameter).
+   * @return {Prime.Dom.Element} This Element.
+   */
+  fadeOut: function(duration, endFunction, context) {
+    if (duration < 100) {
+      throw 'Duration should be greater than 100 milliseconds or it won\'t really be noticeable';
+    }
+
+    var theContext = (arguments.length < 3) ? this : context;
+    var startingOpacity = (this.domElement.style.opacity) ? parseInt(this.domElement.style.opacity) : 0;
+    var step = (100 - startingOpacity) / 20;
+    var element = this;
+    var stepFunction = function() {
+      console.log('Current value ' + element.domElement.style.opacity);
+      var opacity = 0;
+      if (element.domElement.style.opacity) {
+        opacity = parseInt(element.domElement.style.opacity);
+      }
+      console.log('Current value after null check ' + opacity);
+
+      opacity += step;
+      console.log('Step ' + step);
+      console.log('New value ' + opacity);
+      element.domElement.style.opacity = opacity.toString();
+    };
+    var internalEndFunction = function() {
+      element.hide();
+      if (typeof endFunction !== 'undefined' && endFunction !== null) {
+        console.log('Calling end function');
+        endFunction.call(theContext);
+      }
+    };
+
+    Prime.Utils.callIteratively(duration, 20, stepFunction, internalEndFunction, theContext);
+
+    return this;
+  },
+
+  /**
+   * Retrieves the value of this Element.
+   *
+   * @return {String} The value of this Element.
+   */
+  getValue: function() {
+    return this.domElement.value;
   },
 
   /**
@@ -283,6 +366,17 @@ Prime.Dom.Element.prototype = {
    */
   show: function() {
     this.domElement.style.display = null;
+    return this;
+  },
+
+  /**
+   * Sets the value of this Element.
+   *
+   * @param {String} value The new value.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setValue: function(value) {
+    this.domElement.value = value;
     return this;
   },
 

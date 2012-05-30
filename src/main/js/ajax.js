@@ -17,18 +17,20 @@ Prime.Ajax.Request = function(url) {
 Prime.Ajax.Request.prototype = {
   init: function(url) {
     this.xhr = new XMLHttpRequest();
-    this.url = url;
-    this.method = 'GET';
     this.async = true;
+    this.body = null;
+    this.contentType = null;
     this.context = this;
-    this.username = null;
-    this.password = null;
-    this.unsetHandler = this.onUnset;
-    this.openHandler = this.onOpen;
-    this.sendHandler = this.onSend;
-    this.loadingHandler = this.onLoading;
-    this.successHandler = this.onSuccess;
     this.errorHandler = this.onError;
+    this.loadingHandler = this.onLoading;
+    this.method = 'GET';
+    this.openHandler = this.onOpen;
+    this.password = null;
+    this.sendHandler = this.onSend;
+    this.successHandler = this.onSuccess;
+    this.unsetHandler = this.onUnset;
+    this.url = url;
+    this.username = null;
   },
 
   /**
@@ -43,6 +45,91 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
+   * Invokes the AJAX request. If the URL is not set, this throws an exception.
+   *
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  go: function() {
+    if (!this.url) {
+      throw 'No URL set for AJAX request';
+    }
+
+    if (this.async) {
+      this.xhr.onreadystatechange = Prime.Utils.proxy(this, this.handler);
+    }
+
+    console.log(this.url);
+
+    this.xhr.open(this.method, this.url, this.async, this.username, this.password);
+
+    if (this.contentType) {
+      this.xhr.setRequestHeader('Content-Type', this.contentType);
+    }
+
+    if (this.body) {
+      this.xhr.setRequestHeader('Content-Length', this.body.length);
+    }
+
+    this.xhr.send(this.body);
+
+    return this;
+  },
+
+  /**
+   * Default handler for the "completed" state and an HTTP response status of anything but 2xx. Sub-classes can override
+   * this handler or you can pass in a handler function to the {@link #withUnsetHandler}.
+   *
+   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
+   */
+  onError: function(xhr) {
+  },
+
+  /**
+   * Default handler for the "loading" state. Sub-classes can override this handler or you can pass in a handler function
+   * to the {@link #withLoadingHandler}.
+   *
+   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
+   */
+  onLoading: function(xhr) {
+  },
+
+  /**
+   * Default handler for the "open" state. Sub-classes can override this handler or you can pass in a handler function
+   * to the {@link #withOpenHandler}.
+   *
+   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
+   */
+  onOpen: function(xhr) {
+  },
+
+  /**
+   * Default handler for the "send" state. Sub-classes can override this handler or you can pass in a handler function
+   * to the {@link #withSendHandler}.
+   *
+   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
+   */
+  onSend: function(xhr) {
+  },
+
+  /**
+   * Default handler for the "complete" state and an HTTP response status of 2xx. Sub-classes can override this handler
+   * or you can pass in a handler function to the {@link #withUnsetHandler}.
+   *
+   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
+   */
+  onSuccess: function(xhr) {
+  },
+
+  /**
+   * Default handler for the "unset" state. Sub-classes can override this handler or you can pass in a handler function
+   * to the {@link #withUnsetHandler}.
+   *
+   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
+   */
+  onUnset: function(xhr) {
+  },
+
+  /**
    * Sets the method used to make the AJAX request.
    *
    * @param {String} method The HTTP method.
@@ -54,13 +141,81 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
-   * Sets the handler to invoke when the state of the AJAX request is "unset".
+   * Sets the request body for the request.
+   *
+   * @param {String} body The request body.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withBody: function(body) {
+    this.body = body;
+    return this;
+  },
+
+  /**
+   * Sets the content type for the request.
+   *
+   * @param {String} contentType The contentType.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withContentType: function(contentType) {
+    this.contentType = contentType;
+    return this;
+  },
+
+  /**
+   * Sets the context for the AJAX handler functions. The object set here will be the "this" reference inside the handler
+   * functions.
+   *
+   * @param {Object} context The context object.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withContext: function(context) {
+    this.context = context;
+    return this;
+  },
+
+  /**
+   * Sets the data object for the request. The object is converted to post data and the content-type is set to
+   * x-www-form-urlencoded.
+   *
+   * @param {Object} data The data object.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withData: function(data) {
+    for (var prop in data) {
+      if (data.hasOwnProperty(prop)) {
+        if (this.body) {
+          this.body += '&' + encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+        } else {
+          this.body = encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+        }
+      }
+    }
+
+    this.contentType = 'x-www-form-urlencoded';
+    return this;
+  },
+
+  /**
+   * Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
+   * not 2xx.
    *
    * @param {Function} func The handler function.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
-  withUnsetHandler: function(func) {
-    this.unsetHandler = func;
+  withErrorHandler: function(func) {
+    this.errorHandler = func;
+    return this;
+  },
+
+  /**
+   * Sets the handler to invoke when the state of the AJAX request is "loading".
+   *
+   * @param {Function} func The handler function.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withLoadingHandler: function(func) {
+    this.loadingHandler = func;
     return this;
   },
 
@@ -87,17 +242,6 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
-   * Sets the handler to invoke when the state of the AJAX request is "loading".
-   *
-   * @param {Function} func The handler function.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
-   */
-  withLoadingHandler: function(func) {
-    this.loadingHandler = func;
-    return this;
-  },
-
-  /**
    * Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
    * 2xx.
    *
@@ -110,48 +254,13 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
-   * Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
-   * not 2xx.
+   * Sets the handler to invoke when the state of the AJAX request is "unset".
    *
    * @param {Function} func The handler function.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
-  withErrorHandler: function(func) {
-    this.errorHandler = func;
-    return this;
-  },
-
-  /**
-   * Sets the context for the AJAX handler functions. The object set here will be the "this" reference inside the handler
-   * functions.
-   *
-   * @param {Object} context The context object.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
-   */
-  withContext: function(context) {
-    this.context = context;
-    return this;
-  },
-
-  /**
-   * Invokes the AJAX request. If the URL is not set, this throws an exception.
-   * 
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
-   */
-  go: function() {
-    if (!this.url) {
-      throw 'No URL set for AJAX request';
-    }
-
-    if (this.async) {
-      this.xhr.onreadystatechange = Prime.Utils.proxy(this, this.handler);
-    }
-
-    console.log(this.url);
-
-    this.xhr.open(this.method, this.url, this.async, this.username, this.password);
-    this.xhr.send();
-
+  withUnsetHandler: function(func) {
+    this.unsetHandler = func;
     return this;
   },
 
@@ -174,59 +283,5 @@ Prime.Ajax.Request.prototype = {
         this.errorHandler.call(this.context, this.xhr);
       }
     }
-  },
-
-  /**
-   * Default handler for the "unset" state. Sub-classes can override this handler or you can pass in a handler function
-   * to the {@link #withUnsetHandler}.
-   *
-   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
-   */
-  onUnset: function(xhr) {
-  },
-
-  /**
-   * Default handler for the "open" state. Sub-classes can override this handler or you can pass in a handler function
-   * to the {@link #withOpenHandler}.
-   *
-   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
-   */
-  onOpen: function(xhr) {
-  },
-
-  /**
-   * Default handler for the "send" state. Sub-classes can override this handler or you can pass in a handler function
-   * to the {@link #withSendHandler}.
-   *
-   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
-   */
-  onSend: function(xhr) {
-  },
-
-  /**
-   * Default handler for the "loading" state. Sub-classes can override this handler or you can pass in a handler function
-   * to the {@link #withLoadingHandler}.
-   *
-   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
-   */
-  onLoading: function(xhr) {
-  },
-
-  /**
-   * Default handler for the "complete" state and an HTTP response status of 2xx. Sub-classes can override this handler
-   * or you can pass in a handler function to the {@link #withUnsetHandler}.
-   *
-   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
-   */
-  onSuccess: function(xhr) {
-  },
-
-  /**
-   * Default handler for the "completed" state and an HTTP response status of anything but 2xx. Sub-classes can override
-   * this handler or you can pass in a handler function to the {@link #withUnsetHandler}.
-   *
-   * @param {XMLHttpRequest} xhr The XMLHttpRequest object.
-   */
-  onError: function(xhr) {
   }
 };

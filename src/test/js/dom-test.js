@@ -48,10 +48,8 @@ buster.assertions.add('hasPreviousElementSiblings', {
   refuteMessage: 'Expected there not be ${1} previous sibling elements but there were'
 });
 
-buster.testCase('DOM tests', {
-  /**
-   * Tests selecting element(s).
-   */
+
+buster.testCase('ElementList namespace tests', {
   'query': function() {
     var list = Prime.Dom.query('p');
     assert.equals(list.length, 3);
@@ -61,8 +59,24 @@ buster.testCase('DOM tests', {
     assert.equals(list[1].domElement.id, 'queryTwo');
     assert.equals(list[2].id, 'queryThree');
     assert.equals(list[2].domElement.id, 'queryThree');
-  },
+  }
+});
 
+buster.testCase('ElementList class tests', {
+  'each': function() {
+    var count = 0;
+    Prime.Dom.query('p').each(function() {
+      count++;
+      assert(this instanceof Prime.Dom.Element);
+      assert.equals(this.domElement.tagName, 'P');
+    });
+
+    assert.equals(count, 3);
+  }
+});
+
+
+buster.testCase('Element namespace tests', {
   /**
    * Tests selecting one element.
    */
@@ -108,6 +122,17 @@ buster.testCase('DOM tests', {
 
     element = Prime.Dom.newElement('<div/>');
     assert.equals(element.domElement.tagName, 'DIV');
+  }
+});
+
+buster.testCase('Element class tests', {
+  setUp: function() {
+    this.timeout = 1000;
+  },
+
+  'attribute': function() {
+    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr1'), 'value1');
+    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr2'), 'value2');
   },
 
   'addClass': {
@@ -257,6 +282,23 @@ buster.testCase('DOM tests', {
       assert.hasNextElementSiblings(newElement, 0);
       assert.equals(findPreviousElementSibling(newElement).id, 'insertMultipleThree');
     }
+  },
+
+  'fadeOut': function(done) {
+    var called = false;
+    var endFunction = function() {
+      called = true;
+    };
+
+    var element = Prime.Dom.queryFirst('#hide').
+      fadeOut(500, endFunction);
+
+    setTimeout(function() {
+      assert(called);
+      assert.equals(element.domElement.style.opacity, 100);
+      assert.equals(element.domElement.style.display, 'none');
+      done();
+    }, 510);
   },
 
   /**
