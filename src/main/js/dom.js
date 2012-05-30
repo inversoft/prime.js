@@ -164,6 +164,16 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Hides the Element by setting the display style to none.
+   *
+   * @return {Prime.Dom.Element} This Element.
+   */
+  hide: function() {
+    this.domElement.style.display = 'none';
+    return this;
+  },
+
+  /**
    * Sets the inner HTML content of the Element.
    *
    * @param {String} newHTML The new HTML content for the Element.
@@ -261,6 +271,18 @@ Prime.Dom.Element.prototype = {
     }
 
     this.domElement.parentNode.removeChild(this.domElement);
+    return this;
+  },
+
+  /**
+   * Shows the Element by setting the display style to null, which should revert to using the CSS. This does not support
+   * setting the display property inline to control the rendering. I'm assuming anyone doing modern HTML/CSS will be using
+   * CSS files.
+   *
+   * @return {Prime.Dom.Element} This Element.
+   */
+  show: function() {
+    this.domElement.style.display = null;
     return this;
   },
 
