@@ -112,97 +112,97 @@ buster.testCase('DOM tests', {
 
   'addClass': {
     setUp: function() {
-      document.getElementById('addClassEmpty').className = null;
-      document.getElementById('addClassSingleExisting').className = 'existing';
-      document.getElementById('addClassMultipleExisting').className = 'existing1 existing2';
+      document.getElementById('classEmpty').className = null;
+      document.getElementById('classSingleExisting').className = 'existing';
+      document.getElementById('classMultipleExisting').className = 'existing1 existing2 existing3';
     },
 
     'addClassEmptyAddSingle': function() {
-      Prime.Dom.queryFirst('#addClassEmpty').
+      Prime.Dom.queryFirst('#classEmpty').
         addClass('new-class');
 
-      var elem = document.getElementById('addClassEmpty');
+      var elem = document.getElementById('classEmpty');
       assert.equals(elem.className, 'new-class');
     },
 
     'addClassEmptyAddMultiple': function() {
-      Prime.Dom.queryFirst('#addClassEmpty').
+      Prime.Dom.queryFirst('#classEmpty').
         addClass('new-class1 new-class2');
 
-      var elem = document.getElementById('addClassEmpty');
+      var elem = document.getElementById('classEmpty');
       assert.equals(elem.className, 'new-class1 new-class2');
     },
 
     'addClassSingleExistingAddOne': function() {
-      Prime.Dom.queryFirst('#addClassSingleExisting').
+      Prime.Dom.queryFirst('#classSingleExisting').
         addClass('existing');
 
-      var elem = document.getElementById('addClassSingleExisting');
+      var elem = document.getElementById('classSingleExisting');
       assert.equals(elem.className, 'existing');
     },
 
     'addClassSingleExistingAddMultiple': function() {
-      Prime.Dom.queryFirst('#addClassSingleExisting').
+      Prime.Dom.queryFirst('#classSingleExisting').
         addClass('existing new-class');
 
-      var elem = document.getElementById('addClassSingleExisting');
+      var elem = document.getElementById('classSingleExisting');
       assert.equals(elem.className, 'existing new-class');
     },
 
     'addClassSingleExistingAddMultipleNew': function() {
-      Prime.Dom.queryFirst('#addClassSingleExisting').
+      Prime.Dom.queryFirst('#classSingleExisting').
         addClass('new-class1 new-class2');
 
-      var elem = document.getElementById('addClassSingleExisting');
+      var elem = document.getElementById('classSingleExisting');
       assert.equals(elem.className, 'existing new-class1 new-class2');
     },
 
     'addClassMultipleExistingAddOne': function() {
-      Prime.Dom.queryFirst('#addClassMultipleExisting').
+      Prime.Dom.queryFirst('#classMultipleExisting').
         addClass('existing1');
 
-      var elem = document.getElementById('addClassMultipleExisting');
-      assert.equals(elem.className, 'existing1 existing2');
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 existing3');
     },
 
     'addClassMultipleExistingAddMultiple': function() {
-      Prime.Dom.queryFirst('#addClassMultipleExisting').
+      Prime.Dom.queryFirst('#classMultipleExisting').
         addClass('existing1 existing2');
 
-      var elem = document.getElementById('addClassMultipleExisting');
-      assert.equals(elem.className, 'existing1 existing2');
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 existing3');
     },
 
     'addClassMultipleExistingAddOneNew': function() {
-      Prime.Dom.queryFirst('#addClassMultipleExisting').
+      Prime.Dom.queryFirst('#classMultipleExisting').
         addClass('existing1 new-class1');
 
-      var elem = document.getElementById('addClassMultipleExisting');
-      assert.equals(elem.className, 'existing1 existing2 new-class1');
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 existing3 new-class1');
     },
 
     'addClassMultipleExistingAddMultipleNew': function() {
-      Prime.Dom.queryFirst('#addClassMultipleExisting').
+      Prime.Dom.queryFirst('#classMultipleExisting').
         addClass('existing1 new-class1 new-class2');
 
-      var elem = document.getElementById('addClassMultipleExisting');
-      assert.equals(elem.className, 'existing1 existing2 new-class1 new-class2');
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 existing3 new-class1 new-class2');
     },
 
     'addClassMultipleExistingAddOnlyOneNew': function() {
-      Prime.Dom.queryFirst('#addClassMultipleExisting').
+      Prime.Dom.queryFirst('#classMultipleExisting').
         addClass('new-class1');
 
-      var elem = document.getElementById('addClassMultipleExisting');
-      assert.equals(elem.className, 'existing1 existing2 new-class1');
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 existing3 new-class1');
     },
 
     'addClassMultipleExistingAddOnlyMultipleNew': function() {
-      Prime.Dom.queryFirst('#addClassMultipleExisting').
+      Prime.Dom.queryFirst('#classMultipleExisting').
         addClass('new-class1 new-class2');
 
-      var elem = document.getElementById('addClassMultipleExisting');
-      assert.equals(elem.className, 'existing1 existing2 new-class1 new-class2');
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2 existing3 new-class1 new-class2');
     }
   },
 
@@ -468,6 +468,110 @@ buster.testCase('DOM tests', {
 
     var element = document.getElementById('html');
     assert.equals(element.innerHTML, 'Changed');
+  },
+
+  'removeClass': {
+    setUp: function() {
+      document.getElementById('classEmpty').className = null;
+      document.getElementById('classSingleExisting').className = 'existing';
+      document.getElementById('classMultipleExisting').className = 'existing1 existing2 existing3';
+    },
+
+    'removeClassEmptyRemoveSingle': function() {
+      Prime.Dom.queryFirst('#classEmpty').
+        removeClass('new-class');
+
+      var elem = document.getElementById('classEmpty');
+      refute(elem.className);
+    },
+
+    'removeClassEmptyRemoveMultiple': function() {
+      Prime.Dom.queryFirst('#classEmpty').
+        removeClass('new-class1 new-class2');
+
+      var elem = document.getElementById('classEmpty');
+      refute(elem.className);
+    },
+
+    'removeClassSingleExistingRemoveOne': function() {
+      Prime.Dom.queryFirst('#classSingleExisting').
+        removeClass('existing');
+
+      var elem = document.getElementById('classSingleExisting');
+      refute(elem.className);
+    },
+
+    'removeClassSingleExistingRemoveMultiple': function() {
+      Prime.Dom.queryFirst('#classSingleExisting').
+        removeClass('existing new-class');
+
+      var elem = document.getElementById('classSingleExisting');
+      refute(elem.className);
+    },
+
+    'removeClassMultipleExistingRemoveOneFirst': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing1');
+
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing2 existing3');
+    },
+
+    'removeClassMultipleExistingRemoveOneMiddle': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing2');
+
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing3');
+    },
+
+    'removeClassMultipleExistingRemoveOneLast': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing3');
+
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1 existing2');
+    },
+
+    'removeClassMultipleExistingRemoveMultipleFirstMiddle': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing1 existing2');
+
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing3');
+    },
+
+    'removeClassMultipleExistingRemoveMultipleMiddleLast': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing2 existing3');
+
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing1');
+    },
+
+    'removeClassMultipleExistingRemoveMultipleFirstLast': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing1 existing3');
+
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing2');
+    },
+
+    'removeClassMultipleExistingRemoveMultipleLastFirst': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing3 existing1');
+
+      var elem = document.getElementById('classMultipleExisting');
+      assert.equals(elem.className, 'existing2');
+    },
+
+    'removeClassMultipleExistingRemoveMultipleAll': function() {
+      Prime.Dom.queryFirst('#classMultipleExisting').
+        removeClass('existing2 existing3 existing1');
+
+      var elem = document.getElementById('classMultipleExisting');
+      refute(elem.className);
+    }
   },
 
   'withEventListenerFunction': function() {
