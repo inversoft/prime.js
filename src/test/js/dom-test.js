@@ -295,10 +295,39 @@ buster.testCase('Element class tests', {
 
     setTimeout(function() {
       assert(called);
-      assert.equals(element.domElement.style.opacity, 100);
+      assert.equals(element.domElement.style.opacity, '0');
       assert.equals(element.domElement.style.display, 'none');
       done();
     }, 510);
+  },
+
+  'fadeOutContext': function(done) {
+    var FadeOutClass = function() {
+      this.called = false;
+    };
+    FadeOutClass.prototype = {
+      handle: function() {
+        this.called = true;
+      }
+    };
+
+    var handler = new FadeOutClass();
+    var element = Prime.Dom.queryFirst('#hide').
+      fadeOut(500, handler.handle, handler);
+
+    setTimeout(function() {
+      assert(handler.called);
+      assert.equals(element.domElement.style.opacity, '0');
+      assert.equals(element.domElement.style.display, 'none');
+      done();
+    }, 510);
+  },
+
+  'getHTML': function() {
+    var element = document.getElementById('html');
+    element.innerHTML = 'Get test';
+
+    assert.equals(Prime.Dom.queryFirst('#html').getHTML(), 'Get test');
   },
 
   /**
@@ -512,13 +541,6 @@ buster.testCase('Element class tests', {
     assert.equals(element.style.display, 'none');
   },
 
-  'html': function() {
-    Prime.Dom.queryFirst('#html').html('Changed');
-
-    var element = document.getElementById('html');
-    assert.equals(element.innerHTML, 'Changed');
-  },
-
   'removeClass': {
     setUp: function() {
       document.getElementById('classEmpty').className = null;
@@ -621,6 +643,13 @@ buster.testCase('Element class tests', {
       var elem = document.getElementById('classMultipleExisting');
       refute(elem.className);
     }
+  },
+
+  'setHTML': function() {
+    Prime.Dom.queryFirst('#html').setHTML('Changed');
+
+    var element = document.getElementById('html');
+    assert.equals(element.innerHTML, 'Changed');
   },
 
   'show': function() {

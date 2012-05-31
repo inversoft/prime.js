@@ -38,7 +38,7 @@ buster.testCase('AJAX tests', {
       });
 
     assert.equals(req.body, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
-    assert.equals(req.contentType, 'x-www-form-urlencoded');
+    assert.equals(req.contentType, 'application/x-www-form-urlencoded');
   },
 
   /**

@@ -24,9 +24,10 @@ Prime.Utils = {
     var step = totalDuration / timesToCall;
     var count = 0;
     var id = setInterval(function() {
-      stepFunction.call(theContext);
       count++;
-      if (count >= timesToCall) {
+      var last = (count >= timesToCall);
+      stepFunction.call(theContext, last);
+      if (last) {
         clearInterval(id);
 
         if (typeof endFunction !== 'undefined' && endFunction !== null) {

@@ -70,6 +70,7 @@ Prime.Ajax.Request.prototype = {
       this.xhr.setRequestHeader('Content-Length', this.body.length);
     }
 
+    this.xhr.setRequestHeader('Connection', 'close');
     this.xhr.send(this.body);
 
     return this;
@@ -192,7 +193,7 @@ Prime.Ajax.Request.prototype = {
       }
     }
 
-    this.contentType = 'x-www-form-urlencoded';
+    this.contentType = 'application/x-www-form-urlencoded';
     return this;
   },
 

@@ -27,14 +27,14 @@ Prime.Dom = {
   },
 
   /**
-   * Queries the DOM using the given Sizzle selector starting at the given context and returns all the matched elements.
+   * Queries the DOM using the given Sizzle selector starting at the given element and returns all the matched elements.
    *
    * @param {String} selector The selector.
-   * @param {Element|Document} [context] The context element (defaults to document if not provided).
+   * @param {Element|Document} [element] The starting point for the search (defaults to document if not provided).
    * @return {Prime.Dom.ElementList} An element list.
    */
-  query: function(selector, context) {
-    return new Prime.Dom.ElementList(Sizzle(selector, context));
+  query: function(selector, element) {
+    return new Prime.Dom.ElementList(Sizzle(selector, element));
   },
 
   /**
@@ -53,15 +53,15 @@ Prime.Dom = {
   },
 
   /**
-   * Queries the DOM using the given Sizzle selector starting at the given context and returns the first matched element
+   * Queries the DOM using the given Sizzle selector starting at the given element and returns the first matched element
    * or null if there aren't any matches.
    *
    * @param {String} selector The selector.
-   * @param {Element|Document} [context] The context element (defaults to document if not provided).
+   * @param {Element|Document} [element] The starting point for the search (defaults to document if not provided).
    * @return {Prime.Dom.Element} An element or null.
    */
-  queryFirst: function(selector, context) {
-    var domElements = Sizzle(selector, context);
+  queryFirst: function(selector, element) {
+    var domElements = Sizzle(selector, element);
     if (domElements.length === 0) {
       return null;
     }
@@ -130,6 +130,10 @@ Prime.Dom.Element = function(element) {
 };
 Prime.Dom.Element.prototype = {
   init: function(element) {
+    if (!(element instanceof Node) || element.nodeType !== 1) {
+      throw 'You can only pass in DOM element Node objects to the Prime.Dom.Element constructor';
+    }
+
     this.domElement = element;
     this.id = element.id;
   },
@@ -199,7 +203,7 @@ Prime.Dom.Element.prototype = {
    *
    * @param {Number} duration The total duration to go from displayed to gone.
    * @param {Function} [endFunction] A function to call after the fadeOut is complete.
-   * @param {Object} [context] The context for the function call (sets the 'this' parameter).
+   * @param {Object} [context] The context for the function call (sets the 'this' parameter). Defaults to this Element.
    * @return {Prime.Dom.Element} This Element.
    */
   fadeOut: function(duration, endFunction, context) {
@@ -207,34 +211,33 @@ Prime.Dom.Element.prototype = {
       throw 'Duration should be greater than 100 milliseconds or it won\'t really be noticeable';
     }
 
+    var self = this;
     var theContext = (arguments.length < 3) ? this : context;
-    var startingOpacity = (this.domElement.style.opacity) ? parseInt(this.domElement.style.opacity) : 0;
-    var step = (100 - startingOpacity) / 20;
-    var element = this;
-    var stepFunction = function() {
-      console.log('Current value ' + element.domElement.style.opacity);
-      var opacity = 0;
-      if (element.domElement.style.opacity) {
-        opacity = parseInt(element.domElement.style.opacity);
-      }
-      console.log('Current value after null check ' + opacity);
-
-      opacity += step;
-      console.log('Step ' + step);
-      console.log('New value ' + opacity);
-      element.domElement.style.opacity = opacity.toString();
-    };
     var internalEndFunction = function() {
-      element.hide();
+      self.hide();
       if (typeof endFunction !== 'undefined' && endFunction !== null) {
-        console.log('Calling end function');
         endFunction.call(theContext);
       }
     };
 
-    Prime.Utils.callIteratively(duration, 20, stepFunction, internalEndFunction, theContext);
-
+    this.changeStyleIteratively({
+      name: 'opacity',
+      units: '',
+      defaultStartValue: 1.0,
+      endValue: 0.0,
+      duration: duration,
+      iterations: 20
+    }, internalEndFunction, theContext);
     return this;
+  },
+
+  /**
+   * Gets the inner HTML content of the Element.
+   *
+   * @return {String} The HTML content.
+   */
+  getHTML: function() {
+    return this.domElement.innerHTML;
   },
 
   /**
@@ -253,17 +256,6 @@ Prime.Dom.Element.prototype = {
    */
   hide: function() {
     this.domElement.style.display = 'none';
-    return this;
-  },
-
-  /**
-   * Sets the inner HTML content of the Element.
-   *
-   * @param {String} newHTML The new HTML content for the Element.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  html: function(newHTML) {
-    this.domElement.innerHTML = newHTML;
     return this;
   },
 
@@ -344,16 +336,37 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Removes this Element from the DOM. If the Element isn't in the DOM yet this throws an exception.
+   * Removes this Element from the DOM. If the Element isn't in the DOM this does nothing.
    *
    * @return {Prime.Dom.Element} This Element.
    */
   removeFromDOM: function() {
-    if (!this.domElement.parentNode) {
-      throw 'Can\'t remove elements that aren\'t in the DOM.';
+    if (this.domElement.parentNode) {
+      this.domElement.parentNode.removeChild(this.domElement);
     }
 
-    this.domElement.parentNode.removeChild(this.domElement);
+    return this;
+  },
+
+  /**
+   * Sets the inner HTML content of the Element.
+   *
+   * @param {String} newHTML The new HTML content for the Element.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setHTML: function(newHTML) {
+    this.domElement.innerHTML = newHTML;
+    return this;
+  },
+
+  /**
+   * Sets the value of this Element.
+   *
+   * @param {String} value The new value.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setValue: function(value) {
+    this.domElement.value = value;
     return this;
   },
 
@@ -370,26 +383,16 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Sets the value of this Element.
-   *
-   * @param {String} value The new value.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  setValue: function(value) {
-    this.domElement.value = value;
-    return this;
-  },
-
-  /**
    * Attaches an event listener to this Element.
    *
    * @param {String} event The name of the event.
    * @param {Function} handler The event handler.
-   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the function call).
+   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
+   *        function call). Defaults to this Element.
    * @return {Prime.Dom.Element} This Element.
    */
   withEventListener: function(event, handler, context) {
-    var theContext = (arguments.length < 3) ? this.domElement : context;
+    var theContext = (arguments.length < 3) ? this : context;
     this.domElement.addEventListener(event, Prime.Utils.proxy(theContext, handler));
     return this;
   },
@@ -403,5 +406,50 @@ Prime.Dom.Element.prototype = {
   withID: function(id) {
     this.domElement.id = id;
     return this;
+  },
+
+
+  /*
+   * Private methods
+   */
+
+  /**
+   * Changes a style property iteratively over a given period of time from one value to another value.
+   *
+   * @private
+   * @param {Object} config The configuration object for the iteration. This must contain the name of the style property
+   *        being changed, the units of the property (px, em, etc), the defaultStartValue if the element doesn't have the
+   *        style already, the end value, the duration, and the number of iterations.
+   * @param {Function} [endFunction] Optional end function to call.
+   * @param {Object} [context] Optional context for the function calls.
+   */
+  changeStyleIteratively: function(config, endFunction, context) {
+    var domElement = this.domElement;
+    var currentValue = config.defaultStartValue;
+    if (domElement.style.getPropertyValue(config.name)) {
+      currentValue = domElement.style.getPropertyValue(config.name);
+    }
+
+    var step = currentValue / config.iterations;
+    var stepFunction = function(last) {
+      if (last) {
+        currentValue = config.endValue;
+      } else {
+        if (currentValue < config.endValue) {
+          currentValue += step;
+        } else {
+          currentValue -= step;
+        }
+      }
+
+      domElement.style.setProperty(config.name, currentValue + config.units, null);
+
+      // Handle the special opacity case for IE
+      if (config.name === 'opacity') {
+        domElement.style.filter = 'alpha(opacity=' + currentValue + config.units + ')';
+      }
+    };
+
+    Prime.Utils.callIteratively(config.duration, config.iterations, stepFunction, endFunction, context);
   }
 };
