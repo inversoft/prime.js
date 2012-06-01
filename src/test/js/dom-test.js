@@ -49,6 +49,13 @@ buster.assertions.add('hasPreviousElementSiblings', {
 });
 
 
+buster.testCase('Dom namespace tests', {
+  'documentReady': function() {
+    assert.equals(documentReadyCount, 1);
+    assert.equals(drc.count, 1);
+  }
+});
+
 buster.testCase('ElementList namespace tests', {
   'query': function() {
     var list = Prime.Dom.query('p');
@@ -65,11 +72,12 @@ buster.testCase('ElementList namespace tests', {
 buster.testCase('ElementList class tests', {
   'each': function() {
     var count = 0;
-    Prime.Dom.query('p').each(function() {
-      count++;
-      assert(this instanceof Prime.Dom.Element);
-      assert.equals(this.domElement.tagName, 'P');
-    });
+    Prime.Dom.query('p').each(function(element, index) {
+      assert.equals(index, count++);
+      assert(this instanceof Array);
+      assert(element instanceof Prime.Dom.Element);
+      assert.equals(element.domElement.tagName, 'P');
+    }, new Array());
 
     assert.equals(count, 3);
   }
@@ -298,7 +306,7 @@ buster.testCase('Element class tests', {
       assert.equals(element.domElement.style.opacity, '0');
       assert.equals(element.domElement.style.display, 'none');
       done();
-    }, 510);
+    }, 600);
   },
 
   'fadeOutContext': function(done) {
@@ -320,7 +328,7 @@ buster.testCase('Element class tests', {
       assert.equals(element.domElement.style.opacity, '0');
       assert.equals(element.domElement.style.display, 'none');
       done();
-    }, 510);
+    }, 600);
   },
 
   'getHTML': function() {

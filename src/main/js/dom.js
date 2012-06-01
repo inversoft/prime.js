@@ -9,6 +9,7 @@ var Prime = Prime || {};
  * @type {Object}
  */
 Prime.Dom = {
+  readyFunctions: [],
   tagRegexp: /^<(\w+)\s*\/?>(?:<\/\1>)?$/,
 
   /**
@@ -24,6 +25,34 @@ Prime.Dom = {
     }
 
     return new Prime.Dom.Element(document.createElement(result[1]));
+  },
+
+  /**
+   * Adds the given callback function to the list of functions to invoke when the document is ready. If the document is
+   * already fully loaded, this simply invokes the callback directly.
+   *
+   * @param {Function} callback The callback function.
+   * @param {Object} [context] The context for the function call (sets the this variable).
+   */
+  onDocumentReady: function(callback, context) {
+    var theContext = (arguments.length < 2) ? this : context;
+    if (document.readyState === 'complete') {
+      callback.call(context);
+    } else {
+      // If this is the first call, register the event listener on the document
+      if (this.readyFunctions.length == 0) {
+        if (document.addEventListener) {
+          document.addEventListener('DOMContentLoaded', Prime.Dom.callReadyListeners, false);
+        } else if (document.attachEvent) {
+          document.attachEvent('onreadystatechange', Prime.Dom.callReadyListeners);
+        } else {
+          throw 'No way to attach an event to the document. What browser are you running?';
+        }
+      }
+
+      // Add the callback
+      this.readyFunctions.push(Prime.Utils.proxy(callback, theContext));
+    }
   },
 
   /**
@@ -67,6 +96,27 @@ Prime.Dom = {
     }
 
     return new Prime.Dom.Element(domElements[0]);
+  },
+
+
+  /*
+   * Private methods
+   */
+
+  /**
+   * Calls all the registered document ready listeners.
+   *
+   * @private
+   */
+  callReadyListeners: function() {
+    if (document.addEventListener || document.readyState === 'complete') {
+      var readyFunction;
+      while (readyFunction = Prime.Dom.readyFunctions.shift()) {
+        readyFunction();
+      }
+    }
+
+    document.removeEventListener(Prime.Dom.callReadyListeners);
   }
 };
 
@@ -94,11 +144,13 @@ Prime.Dom.ElementList.prototype = {
    * single parameter that is the current index.
    *
    * @param {Function} iterationFunction The function to call.
+   * @param {Object} [context] The context for the function call (sets the this variable).
    * @return {Prime.Dom.ElementList} This ElementList.
    */
-  each: function(iterationFunction) {
+  each: function(iterationFunction, context) {
     for (var i = 0; i < this.length; i++) {
-      iterationFunction.call(this[i], i);
+      var theContext = (arguments.length < 2) ? this[i] : context;
+      iterationFunction.call(theContext, this[i], i);
     }
 
     return this;
@@ -393,7 +445,7 @@ Prime.Dom.Element.prototype = {
    */
   withEventListener: function(event, handler, context) {
     var theContext = (arguments.length < 3) ? this : context;
-    this.domElement.addEventListener(event, Prime.Utils.proxy(theContext, handler));
+    this.domElement.addEventListener(event, Prime.Utils.proxy(handler, theContext));
     return this;
   },
 

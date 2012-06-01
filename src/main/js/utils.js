@@ -50,13 +50,13 @@ Prime.Utils = {
   /**
    * Proxies calls to a function through an anonymous function and sets the "this" variable to the object given.
    *
-   * @param {Object} object The "this" variable when the function is called.
    * @param {Function} func The function to call.
+   * @param {Object} context The "this" variable when the function is called.
    * @return {Function} An anonymous function.
    */
-  proxy: function(object, func) {
+  proxy: function(func, context) {
     return function() {
-      func.apply(object, arguments);
+      func.apply(context, arguments);
     }
   },
 

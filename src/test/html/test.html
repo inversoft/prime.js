@@ -9,10 +9,27 @@
     <script type="text/javascript" src="../../main/js/ajax.js"></script>
     <script type="text/javascript" src="../../main/js/dom.js"></script>
     <script type="text/javascript" src="../../main/js/utils.js"></script>
+    <script type="text/javascript">
+      var documentReadyCount = 0;
+      Prime.Dom.onDocumentReady(function() {
+        documentReadyCount++;
+      });
+
+      var DocumentReadyClass = function() {
+        this.count = 0;
+      };
+      DocumentReadyClass.prototype = {
+        documentReady: function() {
+          this.count++;
+        }
+      };
+      var drc = new DocumentReadyClass();
+      Prime.Dom.onDocumentReady(drc.documentReady, drc);
+    </script>
     <script type="text/javascript" src="../js/ajax-test.js"></script>
     <script type="text/javascript" src="../js/dom-test.js"></script>
     <script type="text/javascript" src="../js/utils-test.js"></script>
-  </head>
+x  </head>
   <body>
     <!-- This is the only section that uses p tags so we can test selecting by tagname -->
     <div id="query">

@@ -16,7 +16,7 @@ buster.testCase('Utils tests', {
     setTimeout(function() {
       assert.equals(count, 10);
       done();
-    }, 1010);
+    }, 1100);
   },
 
   'callIterativelyWithEndFunction': function(done) {
@@ -36,7 +36,7 @@ buster.testCase('Utils tests', {
       assert.equals(count, 10);
       assert(ended);
       done();
-    }, 1010);
+    }, 1100);
   },
 
   'callIterativelyWithEndFunctionAndContext': function(done) {
@@ -61,6 +61,6 @@ buster.testCase('Utils tests', {
       assert.equals(instance.count, 10);
       assert(instance.ended);
       done();
-    }, 1010);
+    }, 1100);
   }
 });

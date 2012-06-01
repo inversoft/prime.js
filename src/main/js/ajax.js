@@ -55,7 +55,7 @@ Prime.Ajax.Request.prototype = {
     }
 
     if (this.async) {
-      this.xhr.onreadystatechange = Prime.Utils.proxy(this, this.handler);
+      this.xhr.onreadystatechange = Prime.Utils.proxy(this.handler, this);
     }
 
     console.log(this.url);
@@ -70,7 +70,7 @@ Prime.Ajax.Request.prototype = {
       this.xhr.setRequestHeader('Content-Length', this.body.length);
     }
 
-    this.xhr.setRequestHeader('Connection', 'close');
+//    this.xhr.setRequestHeader('Connection', 'close');
     this.xhr.send(this.body);
 
     return this;
