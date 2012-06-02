@@ -2,19 +2,19 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>AJAX</title>
+    <title>Prime Functional Tests</title>
     <link rel="stylesheet" href="buster-test.css"/>
     <script type="text/javascript" src="../../main/js/sizzle/sizzle.js"></script>
     <script type="text/javascript" src="../../main/js/ajax.js"></script>
     <script type="text/javascript" src="../../main/js/dom.js"></script>
     <script type="text/javascript" src="../../main/js/utils.js"></script>
     <script type="text/javascript">
-        window.addEventListener('load', function() {
-          Prime.Dom.queryFirst('#fadeOut').
-            withEventListener('click', function() {
-              this.fadeOut(2000);
-            });
-        }, false);
+      Prime.Dom.onDocumentReady(function() {
+        Prime.Dom.queryFirst('#fadeOut').
+          withEventListener('click', function() {
+            this.fadeOut(2000);
+          });
+      });
     </script>
   </head>
   <body>

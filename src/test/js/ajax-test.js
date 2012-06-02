@@ -26,7 +26,7 @@ buster.testCase('AJAX tests', {
     setTimeout(function() {
       assert(handler.called);
       done();
-    }, 100);
+    }, 200);
   },
 
   'data': function() {
@@ -59,7 +59,7 @@ buster.testCase('AJAX tests', {
     setTimeout(function() {
       assert(called);
       done();
-    }, 100);
+    }, 200);
   },
 
   /**
@@ -80,7 +80,7 @@ buster.testCase('AJAX tests', {
     setTimeout(function() {
       assert(called);
       done();
-    }, 100);
+    }, 200);
   },
 
   /**
@@ -101,7 +101,7 @@ buster.testCase('AJAX tests', {
     setTimeout(function() {
       assert(called);
       done();
-    }, 100);
+    }, 200);
   },
 
   /**
@@ -122,7 +122,7 @@ buster.testCase('AJAX tests', {
     setTimeout(function() {
       assert(called);
       done();
-    }, 100);
+    }, 200);
   },
 
   /**
@@ -149,7 +149,7 @@ buster.testCase('AJAX tests', {
     setTimeout(function() {
       assert(ajax.called);
       done();
-    }, 100);
+    }, 200);
   },
 
   /**
@@ -170,6 +170,6 @@ buster.testCase('AJAX tests', {
     setTimeout(function() {
       assert(called);
       done();
-    }, 100);
+    }, 200);
   }
 });

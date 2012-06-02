@@ -145,9 +145,15 @@ buster.testCase('Element class tests', {
 
   'addClass': {
     setUp: function() {
-      document.getElementById('classEmpty').className = null;
-      document.getElementById('classSingleExisting').className = 'existing';
-      document.getElementById('classMultipleExisting').className = 'existing1 existing2 existing3';
+      this.classEmpty = document.getElementById('classEmpty').className;
+      this.classSingleExisting = document.getElementById('classSingleExisting').className;
+      this.classMultipleExisting = document.getElementById('classMultipleExisting').className;
+    },
+
+    tearDown: function() {
+      document.getElementById('classEmpty').className = this.classEmpty;
+      document.getElementById('classSingleExisting').className = this.classSingleExisting;
+      document.getElementById('classMultipleExisting').className = this.classMultipleExisting;
     },
 
     'addClassEmptyAddSingle': function() {
@@ -306,7 +312,7 @@ buster.testCase('Element class tests', {
       assert.equals(element.domElement.style.opacity, '0');
       assert.equals(element.domElement.style.display, 'none');
       done();
-    }, 600);
+    }, 800);
   },
 
   'fadeOutContext': function(done) {
@@ -328,7 +334,7 @@ buster.testCase('Element class tests', {
       assert.equals(element.domElement.style.opacity, '0');
       assert.equals(element.domElement.style.display, 'none');
       done();
-    }, 600);
+    }, 800);
   },
 
   'getHTML': function() {
@@ -551,9 +557,15 @@ buster.testCase('Element class tests', {
 
   'removeClass': {
     setUp: function() {
-      document.getElementById('classEmpty').className = null;
-      document.getElementById('classSingleExisting').className = 'existing';
-      document.getElementById('classMultipleExisting').className = 'existing1 existing2 existing3';
+      this.classEmpty = document.getElementById('classEmpty').className;
+      this.classSingleExisting = document.getElementById('classSingleExisting').className;
+      this.classMultipleExisting = document.getElementById('classMultipleExisting').className;
+    },
+
+    tearDown: function() {
+      document.getElementById('classEmpty').className = this.classEmpty;
+      document.getElementById('classSingleExisting').className = this.classSingleExisting;
+      document.getElementById('classMultipleExisting').className = this.classMultipleExisting;
     },
 
     'removeClassEmptyRemoveSingle': function() {
@@ -661,10 +673,32 @@ buster.testCase('Element class tests', {
   },
 
   'show': function() {
+    // Test inline styles with show. This should end up empty string
     Prime.Dom.queryFirst('#show').show();
 
     var element = document.getElementById('show');
-    refute(element.style.display);
+    assert.equals(element.style.display, '');
+
+    // Test computed style is block, so this should also end up empty string.
+    Prime.Dom.queryFirst('#hide').hide();
+    Prime.Dom.queryFirst('#hide').show();
+
+    element = document.getElementById('hide');
+    assert.equals(element.style.display, '');
+
+    // Test a stylesheet display: none and guessing it is a block element
+    Prime.Dom.queryFirst('#showCSSBlock').hide();
+    Prime.Dom.queryFirst('#showCSSBlock').show();
+
+    element = document.getElementById('showCSSBlock');
+    assert.equals(element.style.display, 'block');
+
+    // Test a stylesheet display: none and guessing it is a inline element
+    Prime.Dom.queryFirst('#showCSSInline').hide();
+    Prime.Dom.queryFirst('#showCSSInline').show();
+
+    element = document.getElementById('showCSSInline');
+    assert.equals(element.style.display, 'inline');
   },
 
   'withEventListenerFunction': function() {
@@ -674,9 +708,15 @@ buster.testCase('Element class tests', {
         called = true;
       });
 
-    var event = document.createEvent('MouseEvents');
-    event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    document.getElementById('event').dispatchEvent(event);
+    var element = document.getElementById('event');
+    if (document.createEvent) {
+      var event = document.createEvent('MouseEvents');
+      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      element.dispatchEvent(event);
+    } else {
+      element.fireEvent('onclick');
+    }
+
     assert(called);
   },
 
@@ -685,7 +725,7 @@ buster.testCase('Element class tests', {
       this.called = false;
     };
     MyEventListener.prototype = {
-      handle: function(event) {
+      handle: function() {
         this.called = true;
       }
     };
@@ -694,9 +734,15 @@ buster.testCase('Element class tests', {
     Prime.Dom.queryFirst('#event').
       withEventListener('click', instance.handle, instance);
 
-    var event = document.createEvent('MouseEvents');
-    event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-    document.getElementById('event').dispatchEvent(event);
+    var element = document.getElementById('event');
+    if (document.createEvent) {
+      var event = document.createEvent('MouseEvents');
+      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      element.dispatchEvent(event);
+    } else {
+      element.fireEvent('onclick');
+    }
+
     assert(instance.called);
   }
 });

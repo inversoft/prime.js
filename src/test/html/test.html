@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>AJAX</title>
+    <title>Prime Tests</title>
     <link rel="stylesheet" href="buster-test.css"/>
     <script type="text/javascript" src="../js/buster-test.js"></script>
     <script type="text/javascript" src="../../main/js/sizzle/sizzle.js"></script>
@@ -29,6 +29,11 @@
     <script type="text/javascript" src="../js/ajax-test.js"></script>
     <script type="text/javascript" src="../js/dom-test.js"></script>
     <script type="text/javascript" src="../js/utils-test.js"></script>
+    <style>
+      #showCSSBlock, #showCSSInline {
+        display: none;
+      }
+    </style>
 x  </head>
   <body>
     <!-- This is the only section that uses p tags so we can test selecting by tagname -->
@@ -75,6 +80,12 @@ x  </head>
 
     <div id="show" style="display: none">
     </div>
+
+    <div id="showCSSBlock">
+    </div>
+
+    <span id="showCSSInline">
+    </span>
 
     <div id="attributes" attr1="value1" attr2="value2">
     </div>

@@ -116,7 +116,11 @@ Prime.Dom = {
       }
     }
 
-    document.removeEventListener(Prime.Dom.callReadyListeners);
+    if (document.removeEventListener) {
+      document.removeEventListener('DOMContentLoaded', Prime.Dom.callReadyListeners, false);
+    } else {
+      document.detachEvent('onreadystatechange', Prime.Dom.callReadyListeners);
+    }
   }
 };
 
@@ -180,9 +184,17 @@ Prime.Dom.ElementList.prototype = {
 Prime.Dom.Element = function(element) {
   this.init(element);
 };
+
+/**
+ * Regular expression that captures the tagnames of all the block elements in HTML5.
+ *
+ * @type {RegExp}
+ */
+Prime.Dom.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
+
 Prime.Dom.Element.prototype = {
   init: function(element) {
-    if (!(element instanceof Node) || element.nodeType !== 1) {
+    if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
       throw 'You can only pass in DOM element Node objects to the Prime.Dom.Element constructor';
     }
 
@@ -198,7 +210,7 @@ Prime.Dom.Element.prototype = {
    */
   addClass: function(classNames) {
     var currentClassName = this.domElement.className;
-    if (!currentClassName) {
+    if (currentClassName === '') {
       currentClassName = classNames;
     } else {
       var classNamesList = classNames.split(Prime.Utils.spaceRegex);
@@ -281,6 +293,15 @@ Prime.Dom.Element.prototype = {
       iterations: 20
     }, internalEndFunction, theContext);
     return this;
+  },
+
+  /**
+   * Gets the computed style information for this Element.
+   *
+   * @return {IEElementStyle|CSSStyleDeclaration} The style information.
+   */
+  getComputedStyle: function() {
+    return (this.domElement.currentStyle) ? this.domElement.currentStyle : document.defaultView.getComputedStyle(this.domElement, null);
   },
 
   /**
@@ -371,7 +392,7 @@ Prime.Dom.Element.prototype = {
         var aClass = classNamesList[i];
         var index = currentClassName.indexOf(aClass);
         if (index === 0 && currentClassName.length === aClass.length) {
-          currentClassName = null;
+          currentClassName = '';
           break;
         } else if (index === 0) {
           currentClassName = currentClassName.substring(aClass.length + 1);
@@ -423,14 +444,21 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Shows the Element by setting the display style to null, which should revert to using the CSS. This does not support
-   * setting the display property inline to control the rendering. I'm assuming anyone doing modern HTML/CSS will be using
-   * CSS files.
+   * Shows the Element by setting the display style first to empty string. After this, the elements computed style is
+   * checked to see if the element is still not visible. If that is true, the element must have a CSS style defined in
+   * a stylesheet that is setting it to display: none. In this case, we determine if the element is a block level element
+   * and either set the display to 'block' or 'inline'.
    *
    * @return {Prime.Dom.Element} This Element.
    */
   show: function() {
-    this.domElement.style.display = null;
+    this.domElement.style.display = '';
+
+    var computedDisplay = this.getComputedStyle()['display'];
+    if (computedDisplay === 'none') {
+      this.domElement.style.display = (Prime.Dom.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
+    }
+
     return this;
   },
 
@@ -445,7 +473,15 @@ Prime.Dom.Element.prototype = {
    */
   withEventListener: function(event, handler, context) {
     var theContext = (arguments.length < 3) ? this : context;
-    this.domElement.addEventListener(event, Prime.Utils.proxy(handler, theContext));
+    var proxy = Prime.Utils.proxy(handler, theContext);
+    if (this.domElement.addEventListener) {
+      this.domElement.addEventListener(event, proxy, false);
+    } else if (this.domElement.attachEvent) {
+      this.domElement.attachEvent('on' + event, proxy);
+    } else {
+      throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
+    }
+
     return this;
   },
 
@@ -477,11 +513,7 @@ Prime.Dom.Element.prototype = {
    */
   changeStyleIteratively: function(config, endFunction, context) {
     var domElement = this.domElement;
-    var currentValue = config.defaultStartValue;
-    if (domElement.style.getPropertyValue(config.name)) {
-      currentValue = domElement.style.getPropertyValue(config.name);
-    }
-
+    var currentValue = (domElement.style[config.name]) ? (domElement.style[config.name]) : config.defaultStartValue;
     var step = currentValue / config.iterations;
     var stepFunction = function(last) {
       if (last) {
@@ -494,7 +526,7 @@ Prime.Dom.Element.prototype = {
         }
       }
 
-      domElement.style.setProperty(config.name, currentValue + config.units, null);
+      domElement.style[config.name] = currentValue + config.units;
 
       // Handle the special opacity case for IE
       if (config.name === 'opacity') {
