@@ -42,8 +42,6 @@ upload {
   dependsOn uploadJs
 }
 
-jar.enabled = false;
-
 artifacts {
   js(new File("${buildDir}/prime-${version}.js")) {
     type "js"
