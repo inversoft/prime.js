@@ -43,13 +43,13 @@ upload {
 }
 
 artifacts {
-  js(new File("${buildDir}/prime-${version}.js")) {
+  js(new File("${buildDir}/libs/prime-${version}.js")) {
     type "js"
   }
 }
 
-task compile << {
-  ant.concat(destfile: "${buildDir}/prime-${version}.js", eol: "lf") {
+jar.doLast {
+  ant.concat(destfile: "${buildDir}/libs/prime-${version}.js", eol: "lf") {
     fileset(dir: "src/main/js", includes: "*.js")
     fileset(dir: "src/main/js/sizzle", includes: "sizzle.js")
   }
