@@ -1,0 +1,58 @@
+// Project info
+group = "org.primeframework"
+version = "0.1"
+description = "Prime JS Framework"
+
+// Plugins
+apply plugin: "java"
+apply plugin: "idea"
+apply plugin: "init"
+apply plugin: "release"
+
+// Build script config
+buildscript {
+  repositories {
+    ivy {
+      name "inversoftPublic"
+      ivyPattern "http://hawking.inversoft.com/repository/public/[organisation]/[module]/[revision]/ivy.xml"
+      artifactPattern "http://hawking.inversoft.com/repository/public/[organisation]/[module]/[revision]/[type]s/[artifact]-[revision].[ext]"
+    }
+    ivy {
+      url "${project.gradle.gradleUserHomeDir}/integration-cache"
+    }
+  }
+  dependencies {
+    classpath(
+      "org.primeframework.gradle:gradle-init-plugin:0.3",
+      "org.primeframework.gradle:gradle-release-plugin:0.6"
+    )
+  }
+}
+
+
+configurations {
+  js {
+    description "JavaScript files"
+    visible = true
+    transitive = false
+  }
+}
+
+upload {
+  dependsOn uploadJs
+}
+
+jar.enabled = false;
+
+artifacts {
+  js(new File("${buildDir}/prime-${version}.js")) {
+    type "js"
+  }
+}
+
+task compile << {
+  ant.concat(destfile: "${buildDir}/prime-${version}.js", eol: "lf") {
+    fileset(dir: "src/main/js", includes: "*.js")
+    fileset(dir: "src/main/js/sizzle", includes: "sizzle.js")
+  }
+}
