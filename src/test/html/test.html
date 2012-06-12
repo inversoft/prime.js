@@ -26,6 +26,7 @@
       var drc = new DocumentReadyClass();
       Prime.Dom.onDocumentReady(drc.documentReady, drc);
     </script>
+    <script type="text/javascript" src="../js/mock.js"></script>
     <script type="text/javascript" src="../js/ajax-test.js"></script>
     <script type="text/javascript" src="../js/dom-test.js"></script>
     <script type="text/javascript" src="../js/utils-test.js"></script>
@@ -34,15 +35,15 @@
         display: none;
       }
     </style>
-x  </head>
+  </head>
   <body>
     <!-- This is the only section that uses p tags so we can test selecting by tagname -->
     <div id="query">
-      <p id="queryOne">
+      <p id="queryOne" class="test">
       </p>
-      <p id="queryTwo">
+      <p id="queryTwo" class="test">
       </p>
-      <p id="queryThree">
+      <p id="queryThree" class="test">
       </p>
     </div>
 
