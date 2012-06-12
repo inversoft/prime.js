@@ -451,6 +451,30 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Sets an attribute of the Element
+   * @param {String} name The attribute name
+   * @param {String} value The attribute value
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setAttribute: function(name, value) {
+    var attribute = document.createAttribute(name);
+    attribute.nodeValue = value;
+    this.domElement.setAttributeNode(attribute);
+    return this;
+  },
+
+  /**
+   * Removes an attribute from the Element
+   *
+   * @param {String} name The name of the attribute.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  removeAttribute: function(name) {
+    this.domElement.removeAttribute(name);
+    return this;
+  },
+
+  /**
    * Shows the Element by setting the display style first to empty string. After this, the elements computed style is
    * checked to see if the element is still not visible. If that is true, the element must have a CSS style defined in
    * a stylesheet that is setting it to display: none. In this case, we determine if the element is a block level element

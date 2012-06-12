@@ -160,6 +160,16 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr2'), 'value2');
   },
 
+  'set remove attribute':function () {
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
+
+    Prime.Dom.queryFirst('#attributes').setAttribute('foo', 'bar');
+    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('foo'), 'bar');
+
+    Prime.Dom.queryFirst('#attributes').removeAttribute('foo');
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
+  },
+
   'addClass': {
     setUp: function() {
       this.classEmpty = document.getElementById('classEmpty').className;
