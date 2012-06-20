@@ -95,7 +95,10 @@ Prime.Dom = {
    * @return {Prime.Dom.Element} An element or null.
    */
   queryFirst: function(selector, element) {
-    var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    var domElement = null;
+    if (element != null) {
+      domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    }
 
     var domElements = Sizzle(selector, domElement);
     if (domElements.length === 0) {

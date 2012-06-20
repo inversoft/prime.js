@@ -125,6 +125,11 @@ buster.testCase('Element namespace tests', {
     assert.isNull(element);
   },
 
+  'queryFirst with Element': function() {
+    var child = Prime.Dom.queryFirst('.test', Prime.Dom.queryByID('query'));
+    refute.isNull(child);
+  },
+
   /**
    * Tests selecting by ID.
    */
