@@ -694,7 +694,16 @@ buster.testCase('Element class tests', {
 
       var elem = document.getElementById('classMultipleExisting');
       refute(elem.className);
+    },
+
+    'removeClassNonExistingSingle':function () {
+      Prime.Dom.queryFirst('#classSingleExisting').
+          removeClass('non-existing');
+
+      var elem = document.getElementById('classSingleExisting');
+      assert.equals(elem.className, 'existing');
     }
+
   },
 
   'setHTML': function() {

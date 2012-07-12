@@ -401,7 +401,9 @@ Prime.Dom.Element.prototype = {
       for (var i = 0; i < classNamesList.length; i++) {
         var aClass = classNamesList[i];
         var index = currentClassName.indexOf(aClass);
-        if (index === 0 && currentClassName.length === aClass.length) {
+        if(index === -1) {
+          continue;
+        } else if (index === 0 && currentClassName.length === aClass.length) {
           currentClassName = '';
           break;
         } else if (index === 0) {
