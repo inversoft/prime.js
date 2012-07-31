@@ -29,8 +29,8 @@ buster.testCase('AJAX tests', {
     }, 200);
   },
 
-  'data': function() {
-    var req = new Prime.Ajax.Request('invalid.html').
+  'data POST': function() {
+    var req = new Prime.Ajax.Request('invalid.html', 'POST').
       withData({
         'name': 'value',
         'nameWith=': 'value',
@@ -38,7 +38,45 @@ buster.testCase('AJAX tests', {
       });
 
     assert.equals(req.body, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.isTrue(req.queryParams == null);
     assert.equals(req.contentType, 'application/x-www-form-urlencoded');
+  },
+
+  'data GET':function () {
+    var req = new Prime.Ajax.Request('invalid.html').withContentType('application/json').
+        withData({
+          'name':'value',
+          'nameWith=':'value',
+          'valueWith=':'value='
+        });
+
+    assert.equals(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.isTrue(req.body == null);
+    assert.equals(req.contentType, 'application/json');
+
+    req.xhr = new Mock.XHR();
+    req.go();
+
+    assert.equals(req.xhr.url, 'invalid.html?name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.equals(req.xhr.method, 'GET');
+  },
+
+  'reset':function () {
+    var req = new Prime.Ajax.Request('invalid.html').withContentType('application/json').
+        withData({
+          'name':'value',
+          'nameWith=':'value',
+          'valueWith=':'value='
+        });
+
+    assert.equals(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.equals(req.contentType, 'application/json');
+    assert.equals(req.method, 'GET');
+
+    req.reset();
+    assert.isTrue(req.queryParams == null);
+    assert.isTrue(req.contentType == null);
+    assert.equals(req.method, 'GET');
   },
 
   /**

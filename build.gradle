@@ -1,6 +1,6 @@
 // Project info
 group = "org.primeframework"
-version = "0.1"
+version = "0.2"
 description = "Prime JS Framework"
 
 // Plugins
@@ -53,4 +53,23 @@ jar.doLast {
     fileset(dir: "src/main/js", includes: "*.js")
     fileset(dir: "src/main/js/sizzle", includes: "sizzle.js")
   }
+}
+
+task testJS << {
+
+  def apacheHome = System.getenv("APACHE_HOME")
+
+  if (apacheHome == null) {
+    throw new GradleException("You must have an environment variable called APACHE_HOME that points to your apache web document root directory")
+  }
+
+  delete "$apacheHome/prime-tests"
+
+  mkdir "$apacheHome/prime-tests"
+
+  copy {
+    from 'src/'
+    into "$apacheHome/prime-tests"
+  }
+
 }

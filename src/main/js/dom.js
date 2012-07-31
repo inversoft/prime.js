@@ -63,7 +63,12 @@ Prime.Dom = {
    * @return {Prime.Dom.ElementList} An element list.
    */
   query: function(selector, element) {
-    return new Prime.Dom.ElementList(Sizzle(selector, element));
+    var domElement = null;
+    if(element != null) {
+      domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    }
+
+    return new Prime.Dom.ElementList(Sizzle(selector, domElement));
   },
 
   /**
@@ -90,7 +95,12 @@ Prime.Dom = {
    * @return {Prime.Dom.Element} An element or null.
    */
   queryFirst: function(selector, element) {
-    var domElements = Sizzle(selector, element);
+    var domElement = null;
+    if (element != null) {
+      domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    }
+
+    var domElements = Sizzle(selector, domElement);
     if (domElements.length === 0) {
       return null;
     }
@@ -391,7 +401,9 @@ Prime.Dom.Element.prototype = {
       for (var i = 0; i < classNamesList.length; i++) {
         var aClass = classNamesList[i];
         var index = currentClassName.indexOf(aClass);
-        if (index === 0 && currentClassName.length === aClass.length) {
+        if(index === -1) {
+          continue;
+        } else if (index === 0 && currentClassName.length === aClass.length) {
           currentClassName = '';
           break;
         } else if (index === 0) {
@@ -440,6 +452,30 @@ Prime.Dom.Element.prototype = {
    */
   setValue: function(value) {
     this.domElement.value = value;
+    return this;
+  },
+
+  /**
+   * Sets an attribute of the Element
+   * @param {String} name The attribute name
+   * @param {String} value The attribute value
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setAttribute: function(name, value) {
+    var attribute = document.createAttribute(name);
+    attribute.nodeValue = value;
+    this.domElement.setAttributeNode(attribute);
+    return this;
+  },
+
+  /**
+   * Removes an attribute from the Element
+   *
+   * @param {String} name The name of the attribute.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  removeAttribute: function(name) {
+    this.domElement.removeAttribute(name);
     return this;
   },
 

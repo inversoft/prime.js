@@ -10,20 +10,21 @@ Prime.Ajax = Prime.Ajax || {};
  * @param {String} [url] The URL to call. This can be left out for sub-classing but should otherwise be provided.
  * @constructor
  */
-Prime.Ajax.Request = function(url) {
-  this.init(url);
+Prime.Ajax.Request = function(url, method) {
+  this.init(url, method);
 };
 
 Prime.Ajax.Request.prototype = {
-  init: function(url) {
+  init: function(url, method) {
     this.xhr = new XMLHttpRequest();
     this.async = true;
     this.body = null;
+    this.queryParams = null;
     this.contentType = null;
     this.context = this;
     this.errorHandler = this.onError;
     this.loadingHandler = this.onLoading;
-    this.method = 'GET';
+    this.method = method || 'GET';
     this.openHandler = this.onOpen;
     this.password = null;
     this.sendHandler = this.onSend;
@@ -54,11 +55,20 @@ Prime.Ajax.Request.prototype = {
       throw 'No URL set for AJAX request';
     }
 
+    var requestUrl = this.url;
+    if((this.method == 'GET' || this.method == 'DELETE') && this.queryParams != null) {
+      if(requestUrl.indexOf('?') == -1) {
+        requestUrl += '?' + this.queryParams;
+      } else {
+        requestUrl += '&' + this.queryParams;
+      }
+    }
+
     if (this.async) {
       this.xhr.onreadystatechange = Prime.Utils.proxy(this.handler, this);
     }
 
-    this.xhr.open(this.method, this.url, this.async, this.username, this.password);
+    this.xhr.open(this.method, requestUrl, this.async, this.username, this.password);
 
     if (this.contentType) {
       this.xhr.setRequestHeader('Content-Type', this.contentType);
@@ -174,8 +184,8 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
-   * Sets the data object for the request. The object is converted to post data and the content-type is set to
-   * x-www-form-urlencoded.
+   * Sets the data object for the request. Will store the values for query parameters or post data depending on the
+   * method that is set.  If the method is a post or put, will also set content-type to x-www-form-urlencoded.
    *
    * @param {Object} data The data object.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
@@ -183,15 +193,25 @@ Prime.Ajax.Request.prototype = {
   withData: function(data) {
     for (var prop in data) {
       if (data.hasOwnProperty(prop)) {
-        if (this.body) {
-          this.body += '&' + encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+        if (this.method == 'PUT' || this.method == 'POST') {
+          if (this.body) {
+            this.body += '&' + encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+          } else {
+            this.body = encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+          }
         } else {
-          this.body = encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+          if (this.queryParams == null) {
+            this.queryParams = encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+          } else {
+            this.queryParams += '&' + encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
+          }
         }
       }
     }
 
-    this.contentType = 'application/x-www-form-urlencoded';
+    if (this.method == "PUT" || this.method == "POST") {
+      this.contentType = 'application/x-www-form-urlencoded';
+    }
     return this;
   },
 
@@ -260,6 +280,20 @@ Prime.Ajax.Request.prototype = {
    */
   withUnsetHandler: function(func) {
     this.unsetHandler = func;
+    return this;
+  },
+
+  /**
+   * Resets the Request back to a base state (basically just the URL + method).  This can be
+   * useful if a component is going to make many requests to the same endpoint with different parameters.
+   *
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  reset: function() {
+    this.queryParams = null;
+    this.data = null;
+    this.body = null;
+    this.contentType = null;
     return this;
   },
 

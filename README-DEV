@@ -13,3 +13,15 @@ many other frameworks have become, here are the rules:
 
   * Don't define all the variables for a function at the top of the function. This should NOT be a performance concern
     at this point.
+
+Testing --
+
+  Running the tests require some kind of web server to correctly serve some of the test files up.  Typically for Macs,
+  we can use the system Apache server to do this.
+
+  1) Go to System Preference > Sharing > Web Sharing and turn this on.
+  2) This turns on several directories as document roots, the easiest to use is ~/Sites.  Create an APACHE_HOME environment
+     variable and set it to ~/Sites
+  3) Run gb testJS, which will basically copy the src directory into ~/Sites/prime-tests.
+  4) Open http://localhost/~<username>/prime-tests/test/html/test.html
+  5) Reward yourself with some coffee, though the tests don't take that long.

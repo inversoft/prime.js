@@ -58,8 +58,25 @@ buster.testCase('Dom namespace tests', {
 
 buster.testCase('ElementList namespace tests', {
   'query': function() {
-    var list = Prime.Dom.query('p');
+    var list = Prime.Dom.query('p.test');
     assert.equals(list.length, 3);
+    assert.equals(list[0].id, 'queryOne');
+    assert.equals(list[0].domElement.id, 'queryOne');
+    assert.equals(list[1].id, 'queryTwo');
+    assert.equals(list[1].domElement.id, 'queryTwo');
+    assert.equals(list[2].id, 'queryThree');
+    assert.equals(list[2].domElement.id, 'queryThree');
+
+    var parent = Prime.Dom.queryByID('query');
+    list = Prime.Dom.query('p.test', parent);
+    assert.equals(list[0].id, 'queryOne');
+    assert.equals(list[0].domElement.id, 'queryOne');
+    assert.equals(list[1].id, 'queryTwo');
+    assert.equals(list[1].domElement.id, 'queryTwo');
+    assert.equals(list[2].id, 'queryThree');
+    assert.equals(list[2].domElement.id, 'queryThree');
+
+    list = Prime.Dom.query('p.test', parent.domElement);
     assert.equals(list[0].id, 'queryOne');
     assert.equals(list[0].domElement.id, 'queryOne');
     assert.equals(list[1].id, 'queryTwo');
@@ -72,7 +89,7 @@ buster.testCase('ElementList namespace tests', {
 buster.testCase('ElementList class tests', {
   'each': function() {
     var count = 0;
-    Prime.Dom.query('p').each(function(element, index) {
+    Prime.Dom.query('p.test').each(function(element, index) {
       assert.equals(index, count++);
       assert(this instanceof Array);
       assert(element instanceof Prime.Dom.Element);
@@ -108,6 +125,11 @@ buster.testCase('Element namespace tests', {
     assert.isNull(element);
   },
 
+  'queryFirst with Element': function() {
+    var child = Prime.Dom.queryFirst('.test', Prime.Dom.queryByID('query'));
+    refute.isNull(child);
+  },
+
   /**
    * Tests selecting by ID.
    */
@@ -141,6 +163,16 @@ buster.testCase('Element class tests', {
   'attribute': function() {
     assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr1'), 'value1');
     assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr2'), 'value2');
+  },
+
+  'set remove attribute':function () {
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
+
+    Prime.Dom.queryFirst('#attributes').setAttribute('foo', 'bar');
+    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('foo'), 'bar');
+
+    Prime.Dom.queryFirst('#attributes').removeAttribute('foo');
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
   },
 
   'addClass': {
@@ -662,7 +694,16 @@ buster.testCase('Element class tests', {
 
       var elem = document.getElementById('classMultipleExisting');
       refute(elem.className);
+    },
+
+    'removeClassNonExistingSingle':function () {
+      Prime.Dom.queryFirst('#classSingleExisting').
+          removeClass('non-existing');
+
+      var elem = document.getElementById('classSingleExisting');
+      assert.equals(elem.className, 'existing');
     }
+
   },
 
   'setHTML': function() {
