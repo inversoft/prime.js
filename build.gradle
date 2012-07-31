@@ -23,7 +23,7 @@ buildscript {
   }
   dependencies {
     classpath(
-      "org.primeframework.gradle:gradle-init-plugin:0.3",
+      "org.primeframework.gradle:gradle-init-plugin:0.4",
       "org.primeframework.gradle:gradle-release-plugin:0.6"
     )
   }
