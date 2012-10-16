@@ -258,21 +258,6 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Returns the value of the given attribute.
-   *
-   * @param {String} name The attribute name.
-   * @return {String} This attribute value or null.
-   */
-  attribute: function(name) {
-    var attr = this.domElement.attributes.getNamedItem(name);
-    if (attr) {
-      return attr.value;
-    }
-
-    return null;
-  },
-
-  /**
    * Fades this element out using the opacity style.
    *
    * @param {Number} duration The total duration to go from displayed to gone.
@@ -303,6 +288,21 @@ Prime.Dom.Element.prototype = {
       iterations: 20
     }, internalEndFunction, theContext);
     return this;
+  },
+
+  /**
+   * Returns the value of the given attribute.
+   *
+   * @param {String} name The attribute name.
+   * @return {String} This attribute value or null.
+   */
+  getAttribute: function(name) {
+    var attr = this.domElement.attributes.getNamedItem(name);
+    if (attr) {
+      return attr.value;
+    }
+
+    return null;
   },
 
   /**

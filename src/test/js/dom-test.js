@@ -160,19 +160,19 @@ buster.testCase('Element class tests', {
     this.timeout = 1000;
   },
 
-  'attribute': function() {
-    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr1'), 'value1');
-    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr2'), 'value2');
+  "getAttribute": function() {
+    assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('attr1'), 'value1');
+    assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('attr2'), 'value2');
   },
 
   'set remove attribute':function () {
-    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').getAttribute('foo') == null);
 
     Prime.Dom.queryFirst('#attributes').setAttribute('foo', 'bar');
-    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('foo'), 'bar');
+    assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('foo'), 'bar');
 
     Prime.Dom.queryFirst('#attributes').removeAttribute('foo');
-    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').getAttribute('foo') == null);
   },
 
   'addClass': {
