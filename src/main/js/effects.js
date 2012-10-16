@@ -18,122 +18,159 @@ Prime.Effects = Prime.Effects || {};
 
 
 /**
- * Constructs a BaseEffect for the given element.
+ * Constructs a BaseTransition for the given element.
  *
- * @param {Element} element The DOM element the effect will be applied to.
+ * @param {Prime.Dom.Element} element The Prime Element the effect will be applied to.
  * @constructor
  */
-Prime.Effects.BaseEffect = function(element) {
+Prime.Effects.BaseTransition = function(element, endValue) {
+  this.context = null;
+  this.duration = 1000;
   this.element = element;
-//  console.log("Super");
-//  console.log(this);
+  this.endFunction = null;
+  this.endValue = endValue;
+  this.iterations = 20;
 };
-Prime.Effects.BaseEffect.prototype = {
+
+Prime.Effects.BaseTransition.prototype = {
+  /**
+   * Sets the function that is called when the effect has completed.
+   *
+   * @param {Function} endFunction The function that is called when the effect is completed.
+   * @param {Object} [context] The context for the function call (sets the 'this' parameter). Defaults to the Element.
+   * @return {Prime.Effects.BaseTransition} This Effect.
+   */
+  withEndFunction: function(endFunction, context) {
+    this.endFunction = endFunction;
+    this.context = context;
+    return this;
+  },
+
+  /**
+   * Sets the duration of the fade-out effect.
+   *
+   * @param {Number} duration The duration in milliseconds.
+   * @return {Prime.Effects.BaseTransition} This Effect.
+   */
+  withDuration: function(duration) {
+    if (duration < 100) {
+      throw 'Duration should be greater than 100 milliseconds or it won\'t really be noticeable';
+    }
+
+    this.duration = duration;
+    return this;
+  },
+
+
+  /*
+  * Private functions
+  */
+
   /**
    * Changes an integer style property of the Element iteratively over a given period of time from one value to another
    * value.
    *
    * @private
-   * @param {Object} config The configuration object for the iteration. This must contain the name of the style property
-   *        being changed, the units of the property (px, em, etc), the defaultStartValue if the element doesn't have the
-   *        style already, the end value, the duration, and the number of iterations.
-   * @param {Function} [endFunction] Optional end function to call.
-   * @param {Object} [context] Optional context for the function calls.
+   * @param {Function} getFunction The function on the element to call to get the current value for the transition.
+   * @param {Function} setFunction The function on the element to call to set the new value for the transition.
    */
-  changeStyleIteratively: function(config, endFunction, context) {
-//    console.log("Change");
-//    console.log(this);
-    var domElement = this.element.domElement;
-    var currentValue = (domElement.style[config.name]) ? (domElement.style[config.name]) : config.defaultStartValue;
-    var step = currentValue / config.iterations;
+  changeNumberStyleIteratively: function(getFunction, setFunction) {
+    var currentValue = getFunction.call(this.element);
+    var step = Math.abs(this.endValue - currentValue) / this.iterations;
+
+    // Close around ourselves
+    var self = this;
     var stepFunction = function(last) {
       if (last) {
-        currentValue = config.endValue;
+        currentValue = self.endValue;
       } else {
-        if (currentValue < config.endValue) {
+        if (currentValue < self.endValue) {
           currentValue += step;
         } else {
           currentValue -= step;
         }
       }
 
-      domElement.style[config.name] = currentValue + config.units;
-
-      // Handle the special opacity case for IE
-      if (config.name === 'opacity') {
-        domElement.style.filter = 'alpha(opacity=' + currentValue + config.units + ')';
-      }
+      console.log(currentValue);
+      setFunction.call(self.element, currentValue);
     };
 
-    Prime.Utils.callIteratively(config.duration, config.iterations, stepFunction, endFunction, context);
+    Prime.Utils.callIteratively(this.duration, this.iterations, stepFunction, this.internalEndFunction, this);
+  },
+
+  /**
+   * Handles the call back at the end.
+   *
+   * @private
+   */
+  internalEndFunction: function() {
+    this.subclassEndFunction();
+    var context = this.context || this.element;
+    if (this.endFunction !== null) {
+      this.endFunction.call(context);
+    }
   }
 };
 
 /**
- * Constructs a new Fade for the given element. The fade-out effect uses the CSS opacity style and supports the IE
- * alpha style. The duration defaults to 1000 milliseconds (1 second).
+ * Constructs a new Fade for the given element. The fade effect uses the CSS opacity style and supports the IE alpha
+ * style. The duration defaults to 1000 milliseconds (1 second). This changes the opacity over the duration from 1.0 to
+ * 0.0. At the end, this hides the element so that it doesn't take up any space.
  *
- * @param {Element} element The element to fade out.
+ * @param {Prime.Dom.Element} element The Prime Element to fade out.
  * @constructor
  */
 Prime.Effects.Fade = function(element) {
-  Prime.Effects.BaseEffect.apply(this, arguments);
-  this.duration = 1000;
-  this.context = null;
-  this.endFunction = null;
-//  console.log("Constructor");
-//  console.log(this);
+  Prime.Effects.BaseTransition.apply(this, [element, 0.0]);
 };
-Prime.Effects.Fade.prototype = new Prime.Effects.BaseEffect();
+Prime.Effects.Fade.prototype = new Prime.Effects.BaseTransition();
 Prime.Effects.Fade.constructor = Prime.Effects.Fade;
 
 /**
- * Sets the duration of the fade-out effect.
+ * Internal call back at the end of the transition. This hides the element so it doesn't take up space.
  *
- * @param {Number} duration The duration in milliseconds.
- * @return {Prime.Effects.Fade} This Fade Effect.
+ * @private
  */
-Prime.Effects.Fade.prototype.withDuration = function(duration) {
-  if (duration < 100) {
-    throw 'Duration should be greater than 100 milliseconds or it won\'t really be noticeable';
-  }
-
-  this.duration = duration;
-  return this;
+Prime.Effects.Fade.prototype.subclassEndFunction = function() {
+  this.element.hide();
 };
 
 /**
- * Sets the function that is called when the effect has completed.
- *
- * @param {Function} endFunction The function that is called when the effect is completed.
- * @param {Object} [context] The context for the function call (sets the 'this' parameter). Defaults to the Element.
- * @return {Prime.Effects.Fade} This Fade Effect.
- */
-Prime.Effects.Fade.prototype.withEndFunction = function(endFunction, context) {
-  this.endFunction = endFunction;
-  this.context = context;
-  return this;
-};
-
-/**
- * Executes the fade-out effect on the element using the opacity style.
+ * Executes the fade effect on the element using the opacity style.
  */
 Prime.Effects.Fade.prototype.go = function() {
-  var self = this;
-  var theContext = (this.context === null) ? this.element : this.context;
-  var internalEndFunction = function() {
-    self.element.hide();
-    if (self.endFunction !== null) {
-      self.endFunction.call(theContext);
-    }
-  };
+  this.changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
+};
 
-  this.changeStyleIteratively({
-    name: 'opacity',
-    units: '',
-    defaultStartValue: 1.0,
-    endValue: 0.0,
-    duration: this.duration,
-    iterations: 20
-  }, internalEndFunction, theContext);
+
+/**
+ * Constructs a new Appear for the given element. The appear effect uses the CSS opacity style and supports the IE
+ * alpha style. The duration defaults to 1000 milliseconds (1 second). This first sets the opacity to 0, then it shows
+ * the element and finally it raises the opacity.
+ *
+ * @param {Prime.Dom.Element} element The Prime Element to appear.
+ * @constructor
+ */
+Prime.Effects.Appear = function(element) {
+  Prime.Effects.BaseTransition.apply(this, [element, 1.0]);
+};
+Prime.Effects.Appear.prototype = new Prime.Effects.BaseTransition();
+Prime.Effects.Appear.constructor = Prime.Effects.Appear;
+
+/**
+ * Internal call back at the end of the transition. This does nothing since the Appear has no change at the end.
+ *
+ * @private
+ */
+Prime.Effects.Appear.prototype.subclassEndFunction = function() {
+  // Nothing.
+};
+
+/**
+ * Executes the appear effect on the element using the opacity style.
+ */
+Prime.Effects.Appear.prototype.go = function() {
+  this.element.setOpacity(0.0);
+  this.element.show();
+  this.changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
 };

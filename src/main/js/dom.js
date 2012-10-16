@@ -1,5 +1,17 @@
 /*
  * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
 
@@ -203,6 +215,7 @@ Prime.Dom.Element = function(element) {
  * @type {RegExp}
  */
 Prime.Dom.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
+Prime.Dom.Element.ieAlpaRegexp = /alpha\(opacity=(.+)\)/;
 
 Prime.Dom.Element.prototype = {
   /**
@@ -225,6 +238,29 @@ Prime.Dom.Element.prototype = {
     }
 
     this.domElement.className = currentClassName;
+    return this;
+  },
+
+  /**
+   * Attaches an event listener to this Element.
+   *
+   * @param {String} event The name of the event.
+   * @param {Function} listener The event listener function.
+   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
+   *        function call). Defaults to this Element.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  addEventListener: function(event, listener, context) {
+    var theContext = (arguments.length < 3) ? this : context;
+    var proxy = Prime.Utils.proxy(listener, theContext);
+    if (this.domElement.addEventListener) {
+      this.domElement.addEventListener(event, proxy, false);
+    } else if (this.domElement.attachEvent) {
+      this.domElement.attachEvent('on' + event, proxy);
+    } else {
+      throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
+    }
+
     return this;
   },
 
@@ -281,6 +317,29 @@ Prime.Dom.Element.prototype = {
    */
   getHTML: function() {
     return this.domElement.innerHTML;
+  },
+
+  /**
+   * Retrieves the opacity value for the Element. This handles the IE alpha filter.
+   *
+   * @return {Number} The opacity value.
+   */
+  getOpacity: function() {
+    var computedStyle = this.getComputedStyle();
+    var opacity = 1.0;
+    if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
+      var filter = computedStyle['filter'];
+      if (filter !== undefined && filter !== '') {
+        var matches = Prime.Dom.Element.ieAlpaRegexp.match(filter);
+        if (matches.length > 0) {
+          opacity = parseFloat(matches[0]);
+        }
+      }
+    } else {
+      opacity = parseFloat(computedStyle['opacity']);
+    }
+
+    return opacity;
   },
 
   /**
@@ -349,6 +408,17 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Removes an attribute from the Element
+   *
+   * @param {String} name The name of the attribute.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  removeAttribute: function(name) {
+    this.domElement.removeAttribute(name);
+    return this;
+  },
+
+  /**
    * Removes the given class (or list of space separated classes) from this Element.
    *
    * @param {String} classNames The class name(s).
@@ -394,29 +464,8 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Sets the inner HTML content of the Element.
+   * Sets an attribute of the Element.
    *
-   * @param {String} newHTML The new HTML content for the Element.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  setHTML: function(newHTML) {
-    this.domElement.innerHTML = newHTML;
-    return this;
-  },
-
-  /**
-   * Sets the value of this Element.
-   *
-   * @param {String} value The new value.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  setValue: function(value) {
-    this.domElement.value = value;
-    return this;
-  },
-
-  /**
-   * Sets an attribute of the Element
    * @param {String} name The attribute name
    * @param {String} value The attribute value
    * @return {Prime.Dom.Element} This Element.
@@ -429,13 +478,51 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Removes an attribute from the Element
+   * Sets the inner HTML content of the Element.
    *
-   * @param {String} name The name of the attribute.
+   * @param {String} newHTML The new HTML content for the Element.
    * @return {Prime.Dom.Element} This Element.
    */
-  removeAttribute: function(name) {
-    this.domElement.removeAttribute(name);
+  setHTML: function(newHTML) {
+    this.domElement.innerHTML = newHTML;
+    return this;
+  },
+
+  /**
+   * Sets the ID of the Element.
+   *
+   * @param {String} id The ID.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setID: function(id) {
+    this.domElement.id = id;
+    return this;
+  },
+
+  /**
+   * Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.
+   *
+   * @param {Number} opacity The opacity.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setOpacity: function(opacity) {
+    if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
+      this.domElement.style.filter = 'alpha(opacity=' + opacity + ')';
+    } else {
+      this.domElement.style.opacity = opacity;
+    }
+
+    return this;
+  },
+
+  /**
+   * Sets the value of this Element.
+   *
+   * @param {String} value The new value.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setValue: function(value) {
+    this.domElement.value = value;
     return this;
   },
 
@@ -458,40 +545,6 @@ Prime.Dom.Element.prototype = {
     return this;
   },
 
-  /**
-   * Attaches an event listener to this Element.
-   *
-   * @param {String} event The name of the event.
-   * @param {Function} handler The event handler.
-   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
-   *        function call). Defaults to this Element.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  withEventListener: function(event, handler, context) {
-    var theContext = (arguments.length < 3) ? this : context;
-    var proxy = Prime.Utils.proxy(handler, theContext);
-    if (this.domElement.addEventListener) {
-      this.domElement.addEventListener(event, proxy, false);
-    } else if (this.domElement.attachEvent) {
-      this.domElement.attachEvent('on' + event, proxy);
-    } else {
-      throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
-    }
-
-    return this;
-  },
-
-  /**
-   * Sets the ID of the Element.
-   *
-   * @param {String} id The ID.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  withID: function(id) {
-    this.domElement.id = id;
-    return this;
-  },
-
 
   /*
    * Private methods
@@ -507,7 +560,7 @@ Prime.Dom.Element.prototype = {
    * @param {Function} [endFunction] Optional end function to call.
    * @param {Object} [context] Optional context for the function calls.
    */
-  changeStyleIteratively: function(config, endFunction, context) {
+  changeNumberStyleIteratively: function(config, endFunction, context) {
     var domElement = this.domElement;
     var currentValue = (domElement.style[config.name]) ? (domElement.style[config.name]) : config.defaultStartValue;
     var step = currentValue / config.iterations;

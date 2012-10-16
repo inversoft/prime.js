@@ -1,4 +1,20 @@
 /*
+ * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+
+/*
  * Helper functions
  */
 function findPreviousElementSibling(element) {
@@ -287,7 +303,7 @@ buster.testCase('Element class tests', {
 
     'appendToSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToSingleElementNew').
+        setID('appendToSingleElementNew').
         appendTo(document.getElementById('insertSingle'));
 
       var newElement = document.getElementById('appendToSingleElementNew');
@@ -298,7 +314,7 @@ buster.testCase('Element class tests', {
 
     'appendToSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToSingleElementNew').
+        setID('appendToSingleElementNew').
         appendTo(Prime.Dom.queryFirst('#insertSingle'));
 
       var newElement = document.getElementById('appendToSingleElementNew');
@@ -309,7 +325,7 @@ buster.testCase('Element class tests', {
 
     'appendToMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToMultipleElementNew').
+        setID('appendToMultipleElementNew').
         appendTo(document.getElementById('insertMultiple'));
 
       var newElement = document.getElementById('appendToMultipleElementNew');
@@ -320,7 +336,7 @@ buster.testCase('Element class tests', {
 
     'appendToMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToMultipleElementNew').
+        setID('appendToMultipleElementNew').
         appendTo(Prime.Dom.queryFirst('#insertMultiple'));
 
       var newElement = document.getElementById('appendToMultipleElementNew');
@@ -368,7 +384,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertBefore(document.getElementById('insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -377,7 +393,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -386,7 +402,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -395,7 +411,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -404,7 +420,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -413,7 +429,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -422,7 +438,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -431,7 +447,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -470,7 +486,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertAfter(document.getElementById('insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -479,7 +495,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -488,7 +504,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -497,7 +513,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -506,7 +522,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -515,7 +531,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -524,7 +540,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -533,7 +549,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -706,7 +722,7 @@ buster.testCase('Element class tests', {
   'withEventListenerFunction': function() {
     var called = false;
     Prime.Dom.queryFirst('#event').
-      withEventListener('click', function() {
+      addEventListener('click', function() {
         called = true;
       });
 
@@ -734,7 +750,7 @@ buster.testCase('Element class tests', {
 
     var instance = new MyEventListener();
     Prime.Dom.queryFirst('#event').
-      withEventListener('click', instance.handle, instance);
+      addEventListener('click', instance.handle, instance);
 
     var element = document.getElementById('event');
     if (document.createEvent) {
@@ -746,5 +762,15 @@ buster.testCase('Element class tests', {
     }
 
     assert(instance.called);
+  },
+
+  'opacity': function() {
+    var element = Prime.Dom.queryFirst('#html');
+    console.log("Test");
+    console.log(element.getOpacity());
+    assert.equals(element.getOpacity(), 1.0);
+
+    element.setOpacity(0.5);
+    assert.equals(element.getOpacity(), 0.5);
   }
 });

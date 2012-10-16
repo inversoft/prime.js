@@ -1,4 +1,20 @@
 <!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+  ~ either express or implied. See the License for the specific
+  ~ language governing permissions and limitations under the License.
+  -->
+
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -6,24 +22,37 @@
     <link rel="stylesheet" href="buster-test.css"/>
     <script type="text/javascript" src="../../main/js/sizzle/sizzle.js"></script>
     <script type="text/javascript" src="../../main/js/ajax.js"></script>
+    <script type="text/javascript" src="../../main/js/browser.js"></script>
     <script type="text/javascript" src="../../main/js/dom.js"></script>
     <script type="text/javascript" src="../../main/js/utils.js"></script>
     <script type="text/javascript" src="../../main/js/effects.js"></script>
     <script type="text/javascript">
       Prime.Dom.onDocumentReady(function() {
-        Prime.Dom.queryFirst('#fadeOut').
-          withEventListener('click', function() {
-            new Prime.Effects.FadeOut(this).withDuration(500).go();
+        Prime.Dom.queryFirst('#fade').
+          addEventListener('click', function() {
+            new Prime.Effects.Fade(this).withDuration(500).go();
           });
+
+        Prime.Dom.queryFirst('#appearButton').
+          addEventListener('click', function() {
+            var element = Prime.Dom.queryFirst('#appear');
+            new Prime.Effects.Appear(element).withDuration(500).go();
+          })
       });
     </script>
   </head>
   <body>
-    <div id="fadeOut" style="border: 1px solid black;">
+    <div id="fade" style="border: 1px solid black;">
       Some content in the div.
       <p>
       Some more content.
     </div>
     After
+    <div id="appear" style="border: 1px solid green; display: none;">
+      Some content in the div.
+      <p>
+      Some more content.
+    </div>
+    <button id="appearButton">Appear</button>
   </body>
 </html>
