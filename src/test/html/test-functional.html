@@ -8,11 +8,12 @@
     <script type="text/javascript" src="../../main/js/ajax.js"></script>
     <script type="text/javascript" src="../../main/js/dom.js"></script>
     <script type="text/javascript" src="../../main/js/utils.js"></script>
+    <script type="text/javascript" src="../../main/js/effects.js"></script>
     <script type="text/javascript">
       Prime.Dom.onDocumentReady(function() {
         Prime.Dom.queryFirst('#fadeOut').
           withEventListener('click', function() {
-            this.fadeOut(2000);
+            new Prime.Effects.FadeOut(this).withDuration(500).go();
           });
       });
     </script>
@@ -23,5 +24,6 @@
       <p>
       Some more content.
     </div>
+    After
   </body>
 </html>

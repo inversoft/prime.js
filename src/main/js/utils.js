@@ -20,6 +20,7 @@ Prime.Utils = {
    * @param {Object} [context] The context for the function calls (sets the 'this' parameter).
    */
   callIteratively: function(totalDuration, timesToCall, stepFunction, endFunction, context) {
+//    console.log("Iter");
     var theContext = (arguments.length < 5) ? this : context;
     var step = totalDuration / timesToCall;
     var count = 0;

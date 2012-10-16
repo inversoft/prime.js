@@ -330,45 +330,6 @@ buster.testCase('Element class tests', {
     }
   },
 
-  'fadeOut': function(done) {
-    var called = false;
-    var endFunction = function() {
-      called = true;
-    };
-
-    var element = Prime.Dom.queryFirst('#hide').
-      fadeOut(500, endFunction);
-
-    setTimeout(function() {
-      assert(called);
-      assert.equals(element.domElement.style.opacity, '0');
-      assert.equals(element.domElement.style.display, 'none');
-      done();
-    }, 800);
-  },
-
-  'fadeOutContext': function(done) {
-    var FadeOutClass = function() {
-      this.called = false;
-    };
-    FadeOutClass.prototype = {
-      handle: function() {
-        this.called = true;
-      }
-    };
-
-    var handler = new FadeOutClass();
-    var element = Prime.Dom.queryFirst('#hide').
-      fadeOut(500, handler.handle, handler);
-
-    setTimeout(function() {
-      assert(handler.called);
-      assert.equals(element.domElement.style.opacity, '0');
-      assert.equals(element.domElement.style.display, 'none');
-      done();
-    }, 800);
-  },
-
   'getHTML': function() {
     var element = document.getElementById('html');
     element.innerHTML = 'Get test';

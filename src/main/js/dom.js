@@ -142,16 +142,13 @@ Prime.Dom = {
  * @constructor
  */
 Prime.Dom.ElementList = function(elements) {
-  this.init(elements);
+  this.length = elements.length;
+  for (var i = 0; i < elements.length; i++) {
+    this[i] = new Prime.Dom.Element(elements[i]);
+  }
 };
-Prime.Dom.ElementList.prototype = {
-  init: function(elements) {
-    this.length = elements.length;
-    for (var i = 0; i < elements.length; i++) {
-      this[i] = new Prime.Dom.Element(elements[i]);
-    }
-  },
 
+Prime.Dom.ElementList.prototype = {
   /**
    * Iterates over each of the Prime.Dom.Element objects in this ElementList and calls the given function for each one.
    * The 'this' variable inside the function will be the current Prime.Dom.Element. The function can optionally take a
@@ -192,7 +189,12 @@ Prime.Dom.ElementList.prototype = {
 * @constructor
 */
 Prime.Dom.Element = function(element) {
-  this.init(element);
+  if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
+    throw 'You can only pass in DOM element Node objects to the Prime.Dom.Element constructor';
+  }
+
+  this.domElement = element;
+  this.id = element.id;
 };
 
 /**
@@ -203,15 +205,6 @@ Prime.Dom.Element = function(element) {
 Prime.Dom.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
 
 Prime.Dom.Element.prototype = {
-  init: function(element) {
-    if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
-      throw 'You can only pass in DOM element Node objects to the Prime.Dom.Element constructor';
-    }
-
-    this.domElement = element;
-    this.id = element.id;
-  },
-
   /**
    * Adds the given class (or list of space separated classes) to this Element.
    *
@@ -254,39 +247,6 @@ Prime.Dom.Element.prototype = {
       throw 'The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.';
     }
 
-    return this;
-  },
-
-  /**
-   * Fades this element out using the opacity style.
-   *
-   * @param {Number} duration The total duration to go from displayed to gone.
-   * @param {Function} [endFunction] A function to call after the fadeOut is complete.
-   * @param {Object} [context] The context for the function call (sets the 'this' parameter). Defaults to this Element.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  fadeOut: function(duration, endFunction, context) {
-    if (duration < 100) {
-      throw 'Duration should be greater than 100 milliseconds or it won\'t really be noticeable';
-    }
-
-    var self = this;
-    var theContext = (arguments.length < 3) ? this : context;
-    var internalEndFunction = function() {
-      self.hide();
-      if (typeof endFunction !== 'undefined' && endFunction !== null) {
-        endFunction.call(theContext);
-      }
-    };
-
-    this.changeStyleIteratively({
-      name: 'opacity',
-      units: '',
-      defaultStartValue: 1.0,
-      endValue: 0.0,
-      duration: duration,
-      iterations: 20
-    }, internalEndFunction, theContext);
     return this;
   },
 

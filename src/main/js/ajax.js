@@ -8,32 +8,30 @@ Prime.Ajax = Prime.Ajax || {};
  * Makes a new AJAX request.
  *
  * @param {String} [url] The URL to call. This can be left out for sub-classing but should otherwise be provided.
+ * @param {String} [method] The HTTP method to use. You can specify GET, POST, PUT, DELETE, HEAD, SEARCH, etc. This
+ * defaults to GET.
  * @constructor
  */
 Prime.Ajax.Request = function(url, method) {
-  this.init(url, method);
+  this.xhr = new XMLHttpRequest();
+  this.async = true;
+  this.body = null;
+  this.queryParams = null;
+  this.contentType = null;
+  this.context = this;
+  this.errorHandler = this.onError;
+  this.loadingHandler = this.onLoading;
+  this.method = method || 'GET';
+  this.openHandler = this.onOpen;
+  this.password = null;
+  this.sendHandler = this.onSend;
+  this.successHandler = this.onSuccess;
+  this.unsetHandler = this.onUnset;
+  this.url = url;
+  this.username = null;
 };
 
 Prime.Ajax.Request.prototype = {
-  init: function(url, method) {
-    this.xhr = new XMLHttpRequest();
-    this.async = true;
-    this.body = null;
-    this.queryParams = null;
-    this.contentType = null;
-    this.context = this;
-    this.errorHandler = this.onError;
-    this.loadingHandler = this.onLoading;
-    this.method = method || 'GET';
-    this.openHandler = this.onOpen;
-    this.password = null;
-    this.sendHandler = this.onSend;
-    this.successHandler = this.onSuccess;
-    this.unsetHandler = this.onUnset;
-    this.url = url;
-    this.username = null;
-  },
-
   /**
    * Changes the URL to call.
    *
@@ -56,8 +54,8 @@ Prime.Ajax.Request.prototype = {
     }
 
     var requestUrl = this.url;
-    if((this.method == 'GET' || this.method == 'DELETE') && this.queryParams != null) {
-      if(requestUrl.indexOf('?') == -1) {
+    if ((this.method == 'GET' || this.method == 'DELETE') && this.queryParams != null) {
+      if (requestUrl.indexOf('?') == -1) {
         requestUrl += '?' + this.queryParams;
       } else {
         requestUrl += '&' + this.queryParams;

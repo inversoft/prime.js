@@ -170,8 +170,8 @@ buster.testCase('AJAX tests', {
    */
   'subclass': function(done) {
     function MyAjaxRequest(url) {
+      Prime.Ajax.Request.apply(this, arguments);
       this.called = false;
-      this.init(url);
     }
 
     // Extend and override the success handler
