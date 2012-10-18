@@ -1,4 +1,20 @@
 /*
+ * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+
+/*
  * Helper functions
  */
 function findPreviousElementSibling(element) {
@@ -60,28 +76,19 @@ buster.testCase('ElementList namespace tests', {
   'query': function() {
     var list = Prime.Dom.query('p.test');
     assert.equals(list.length, 3);
-    assert.equals(list[0].id, 'queryOne');
     assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].id, 'queryTwo');
     assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].id, 'queryThree');
     assert.equals(list[2].domElement.id, 'queryThree');
 
     var parent = Prime.Dom.queryByID('query');
     list = Prime.Dom.query('p.test', parent);
-    assert.equals(list[0].id, 'queryOne');
     assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].id, 'queryTwo');
     assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].id, 'queryThree');
     assert.equals(list[2].domElement.id, 'queryThree');
 
     list = Prime.Dom.query('p.test', parent.domElement);
-    assert.equals(list[0].id, 'queryOne');
     assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].id, 'queryTwo');
     assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].id, 'queryThree');
     assert.equals(list[2].domElement.id, 'queryThree');
   }
 });
@@ -126,17 +133,14 @@ buster.testCase('Element namespace tests', {
   'queryFirst': function() {
     var element = Prime.Dom.queryFirst('p');
     refute.isNull(element);
-    assert.equals(element.id, 'queryOne');
     assert.equals(element.domElement.id, 'queryOne');
 
     element = Prime.Dom.queryFirst('p#queryOne');
     refute.isNull(element);
-    assert.equals(element.id, 'queryOne');
     assert.equals(element.domElement.id, 'queryOne');
 
     element = Prime.Dom.queryFirst('#queryOne');
     refute.isNull(element);
-    assert.equals(element.id, 'queryOne');
     assert.equals(element.domElement.id, 'queryOne');
 
     element = Prime.Dom.queryFirst('#invalid');
@@ -154,7 +158,6 @@ buster.testCase('Element namespace tests', {
   'queryByID': function() {
     var element = Prime.Dom.queryByID('queryOne');
     refute.isNull(element);
-    assert.equals(element.id, 'queryOne');
     assert.equals(element.domElement.id, 'queryOne');
 
     element = Prime.Dom.queryFirst('invalid');
@@ -179,13 +182,46 @@ buster.testCase('Element namespace tests', {
 
     element = Prime.Dom.newElement('<div/>', {'id':'1'});
     assert.equals(element.domElement.id, '1');
-    assert.equals(element.id, '1');
+    assert.equals(element.getID(), '1');
 
     element = Prime.Dom.newElement('<div/>', {'id':'id', 'style':'width:200px;float:left'});
     assert.equals(element.domElement.id, 'id');
-    assert.equals(element.id, 'id');
+    assert.equals(element.getID(), 'id');
     assert.equals(element.domElement.style['width'], '200px');
     assert.equals(element.domElement.style['float'], 'left');
+  },
+
+  'queryUp': {
+    setUp: function() {
+      this.child = Prime.Dom.queryByID('child');
+      this.parent = Prime.Dom.queryByID('parent');
+      this.ancestor = Prime.Dom.queryFirst('div.ancestor');
+    },
+
+    'find parent by id': function() {
+      assert.equals(Prime.Dom.queryUp('#parent', this.child), this.parent);
+    },
+
+    'find parent by type + id': function() {
+      assert.equals(Prime.Dom.queryUp('div#parent', this.child), this.parent);
+    },
+
+    'find parent by type only': function() {
+      assert.equals(Prime.Dom.queryUp('div', this.child), this.parent);
+    },
+
+    'find ancestor': function() {
+      assert.equals(Prime.Dom.queryUp('.ancestor', this.child), this.ancestor);
+    },
+
+    'throws error on bad selector': function() {
+      try {
+        Prime.Dom.queryUp('div div#parent', this.child);
+        assert(false);
+      } catch(err) {
+        assert(err != null);
+      }
+    }
   }
 });
 
@@ -194,19 +230,19 @@ buster.testCase('Element class tests', {
     this.timeout = 1000;
   },
 
-  'attribute': function() {
-    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr1'), 'value1');
-    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('attr2'), 'value2');
+  "getAttribute": function() {
+    assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('attr1'), 'value1');
+    assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('attr2'), 'value2');
   },
 
   'set remove attribute':function () {
-    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').getAttribute('foo') == null);
 
     Prime.Dom.queryFirst('#attributes').setAttribute('foo', 'bar');
-    assert.equals(Prime.Dom.queryFirst('#attributes').attribute('foo'), 'bar');
+    assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('foo'), 'bar');
 
     Prime.Dom.queryFirst('#attributes').removeAttribute('foo');
-    assert.isTrue(Prime.Dom.queryFirst('#attributes').attribute('foo') == null);
+    assert.isTrue(Prime.Dom.queryFirst('#attributes').getAttribute('foo') == null);
   },
 
   'addClass': {
@@ -348,7 +384,7 @@ buster.testCase('Element class tests', {
 
     'appendToSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToSingleElementNew').
+        setID('appendToSingleElementNew').
         appendTo(document.getElementById('insertSingle'));
 
       var newElement = document.getElementById('appendToSingleElementNew');
@@ -359,7 +395,7 @@ buster.testCase('Element class tests', {
 
     'appendToSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToSingleElementNew').
+        setID('appendToSingleElementNew').
         appendTo(Prime.Dom.queryFirst('#insertSingle'));
 
       var newElement = document.getElementById('appendToSingleElementNew');
@@ -370,7 +406,7 @@ buster.testCase('Element class tests', {
 
     'appendToMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToMultipleElementNew').
+        setID('appendToMultipleElementNew').
         appendTo(document.getElementById('insertMultiple'));
 
       var newElement = document.getElementById('appendToMultipleElementNew');
@@ -381,7 +417,7 @@ buster.testCase('Element class tests', {
 
     'appendToMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('appendToMultipleElementNew').
+        setID('appendToMultipleElementNew').
         appendTo(Prime.Dom.queryFirst('#insertMultiple'));
 
       var newElement = document.getElementById('appendToMultipleElementNew');
@@ -389,45 +425,6 @@ buster.testCase('Element class tests', {
       assert.hasNextElementSiblings(newElement, 0);
       assert.equals(findPreviousElementSibling(newElement).id, 'insertMultipleThree');
     }
-  },
-
-  'fadeOut': function(done) {
-    var called = false;
-    var endFunction = function() {
-      called = true;
-    };
-
-    var element = Prime.Dom.queryFirst('#hide').
-      fadeOut(500, endFunction);
-
-    setTimeout(function() {
-      assert(called);
-      assert.equals(element.domElement.style.opacity, '0');
-      assert.equals(element.domElement.style.display, 'none');
-      done();
-    }, 800);
-  },
-
-  'fadeOutContext': function(done) {
-    var FadeOutClass = function() {
-      this.called = false;
-    };
-    FadeOutClass.prototype = {
-      handle: function() {
-        this.called = true;
-      }
-    };
-
-    var handler = new FadeOutClass();
-    var element = Prime.Dom.queryFirst('#hide').
-      fadeOut(500, handler.handle, handler);
-
-    setTimeout(function() {
-      assert(handler.called);
-      assert.equals(element.domElement.style.opacity, '0');
-      assert.equals(element.domElement.style.display, 'none');
-      done();
-    }, 800);
   },
 
   'getHTML': function() {
@@ -472,7 +469,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertBefore(document.getElementById('insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -481,7 +478,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -490,7 +487,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -499,7 +496,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -508,7 +505,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -517,7 +514,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -526,7 +523,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(document.getElementById('insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -535,7 +532,7 @@ buster.testCase('Element class tests', {
 
     'insertBeforeLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertBefore(Prime.Dom.queryFirst('#insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -584,7 +581,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertAfter(document.getElementById('insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -593,7 +590,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertSingleElementNew').
+        setID('insertSingleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
@@ -602,7 +599,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -611,7 +608,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -620,7 +617,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -629,7 +626,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -638,7 +635,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(document.getElementById('insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -647,7 +644,7 @@ buster.testCase('Element class tests', {
 
     'insertAfterLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        withID('insertMultipleElementNew').
+        setID('insertMultipleElementNew').
         insertAfter(Prime.Dom.queryFirst('#insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
@@ -852,10 +849,10 @@ buster.testCase('Element class tests', {
     assert.equals(element.style.display, 'inline');
   },
 
-  'withEventListenerFunction': function() {
+  'addEventListenerFunction': function() {
     var called = false;
     Prime.Dom.queryFirst('#event').
-      withEventListener('click', function() {
+      addEventListener('click', function() {
         called = true;
       });
 
@@ -871,32 +868,6 @@ buster.testCase('Element class tests', {
     assert(called);
   },
 
-  'withEventListenerObject': function() {
-    var MyEventListener = function() {
-      this.called = false;
-    };
-    MyEventListener.prototype = {
-      handle: function() {
-        this.called = true;
-      }
-    };
-
-    var instance = new MyEventListener();
-    Prime.Dom.queryFirst('#event').
-      withEventListener('click', instance.handle, instance);
-
-    var element = document.getElementById('event');
-    if (document.createEvent) {
-      var event = document.createEvent('MouseEvents');
-      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      element.dispatchEvent(event);
-    } else {
-      element.fireEvent('onclick');
-    }
-
-    assert(instance.called);
-  },
-
   'addEventListenerObject': function() {
     var MyEventListener = function() {
       this.called = false;
@@ -908,10 +879,8 @@ buster.testCase('Element class tests', {
     };
 
     var instance = new MyEventListener();
-    var proxy = Prime.Dom.queryFirst('#event').
+    Prime.Dom.queryFirst('#event').
       addEventListener('click', instance.handle, instance);
-
-    assert(proxy != null);
 
     var element = document.getElementById('event');
     if (document.createEvent) {
@@ -923,34 +892,6 @@ buster.testCase('Element class tests', {
     }
 
     assert(instance.called);
-  },
-
-  'removeEventListeners': function() {
-    var MyRemoveEventListener = function() {
-      this.called = false;
-    };
-    MyRemoveEventListener.prototype = {
-      handle: function() {
-        this.called = true;
-      }
-    };
-
-    var instance = new MyRemoveEventListener();
-    var otherInstance = new MyRemoveEventListener();
-    var element = Prime.Dom.queryFirst('#event')
-      .withEventListener('click', instance.handle, instance)
-      .withEventListener('click', otherInstance.handle, otherInstance);
-
-    element.fireEvent('click');
-    assert(instance.called);
-    instance.called = false;
-    assert(otherInstance.called);
-    otherInstance.called = false;
-
-    element.removeEventListener('click');
-    element.fireEvent('click');
-    refute(instance.called);
-    assert(otherInstance.called);
   },
 
   'fireEvent': function() {
@@ -965,7 +906,7 @@ buster.testCase('Element class tests', {
 
     var instance = new MyEventListener();
     var element = Prime.Dom.queryFirst('#event').
-      withEventListener('click', instance.handle, instance);
+      addEventListener('click', instance.handle, instance);
 
     element.fireEvent('click');
     assert(instance.called);
@@ -985,7 +926,7 @@ buster.testCase('Element class tests', {
 
     var instance = new MyEventListener();
     var element = Prime.Dom.queryFirst('#event').
-      withEventListener('click', instance.handle, instance);
+      addEventListener('click', instance.handle, instance);
 
     element.fireEvent('click', 'foo');
     assert(instance.called);
@@ -1007,7 +948,7 @@ buster.testCase('Element class tests', {
 
     var instance = new MyEventListener();
     var element = Prime.Dom.queryFirst('#event').
-      withEventListener('custom:pop', instance.handle, instance);
+      addEventListener('custom:pop', instance.handle, instance);
 
     element.fireEvent('custom:pop', 'foo');
     assert(instance.called);
@@ -1015,39 +956,15 @@ buster.testCase('Element class tests', {
     assert.equals(instance.memo, 'foo');
   },
 
-  'ancestor': {
-    setUp: function() {
-      this.child = Prime.Dom.queryByID('child');
-      this.parent = Prime.Dom.queryByID('parent');
-      this.ancestor = Prime.Dom.queryFirst('div.ancestor');
-    },
+  'opacity': function() {
+    var element = Prime.Dom.queryFirst('#html');
+    console.log("Test");
+    console.log(element.getOpacity());
+    assert.equals(element.getOpacity(), 1.0);
 
-    'find parent by id': function() {
-      assert.equals(Prime.Dom.ancestor('#parent', this.child), this.parent);
-    },
-
-    'find parent by type + id': function() {
-      assert.equals(Prime.Dom.ancestor('div#parent', this.child), this.parent);
-    },
-
-    'find parent by type only': function() {
-      assert.equals(Prime.Dom.ancestor('div', this.child), this.parent);
-    },
-
-    'find ancestor': function() {
-      assert.equals(Prime.Dom.ancestor('.ancestor', this.child), this.ancestor);
-    },
-
-    'throws error on bad selector': function() {
-      try {
-        Prime.Dom.ancestor('div div#parent', this.child);
-        assert(false);
-      } catch(err) {
-        assert(err != null);
-      }
-    }
+    element.setOpacity(0.5);
+    assert.equals(element.getOpacity(), 0.5);
   }
-
 });
 
 buster.testCase('Prime.Dom.Document', {
@@ -1201,21 +1118,3 @@ buster.testCase('Prime.Dom.Template', {
   }
 
 });
-
-buster.testCase('test area', {
-
-  'tabIndex': function() {
-    var foo = Prime.Dom.queryByID("foo");
-    assert.equals(foo.attribute("tabindex"), 1);
-    var bar = Prime.Dom.queryByID("bar");
-    assert.equals(bar.attribute("tabIndex"), 2);
-  },
-
-  'options': function() {
-    var options = Prime.Dom.query("#baz option");
-    refute(options == null);
-    assert.equals(options.length, 3);
-  }
-
-});
-

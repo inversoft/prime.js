@@ -1,5 +1,17 @@
 /*
  * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
 
@@ -18,7 +30,7 @@ Prime.Dom = {
    * @param {String} elementString The element string.
    * @return {Prime.Dom.Element} A new Prime.DOM.Element.
    */
-  newElement: function(elementString, properties) {
+  newElement: function (elementString, properties) {
     properties = typeof properties !== 'undefined' ? properties : {};
     var result = Prime.Dom.tagRegexp.exec(elementString);
     if (result == null) {
@@ -28,12 +40,17 @@ Prime.Dom = {
     var element = new Prime.Dom.Element(document.createElement(result[1]));
     for (key in properties) {
       if (properties.hasOwnProperty(key)) {
-        element.setAttribute(key, properties[key]);
-        if (key =='id') {
-          element.withID(properties[key]);
+        if (key == 'id') {
+          element.setID(properties[key]);
+        } else {
+          element.setAttribute(key, properties[key]);
         }
       }
     }
+
+//    if (typeof element.id === 'undefined' || element.id == null || element.id == '') {
+//      this.setID("id", "anonymous_element_" + Prime.Dom.Element.anonymousId++);
+//    }
 
     return element;
   },
@@ -45,7 +62,7 @@ Prime.Dom = {
    * @param {Function} callback The callback function.
    * @param {Object} [context] The context for the function call (sets the this variable).
    */
-  onDocumentReady: function(callback, context) {
+  onDocumentReady: function (callback, context) {
     var theContext = (arguments.length < 2) ? this : context;
     if (document.readyState === 'complete') {
       callback.call(context);
@@ -73,9 +90,9 @@ Prime.Dom = {
    * @param {Element|Document} [element] The starting point for the search (defaults to document if not provided).
    * @return {Prime.Dom.ElementList} An element list.
    */
-  query: function(selector, element) {
+  query: function (selector, element) {
     var domElement = null;
-    if(element != null) {
+    if (element != null) {
       domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     }
 
@@ -88,7 +105,7 @@ Prime.Dom = {
    * @param {String} id The ID.
    * @return {Prime.Dom.Element} The element or null.
    */
-  queryByID: function(id) {
+  queryByID: function (id) {
     var element = document.getElementById(id);
     if (!element) {
       return null;
@@ -105,7 +122,7 @@ Prime.Dom = {
    * @param {Element|Document|Prime.Dom.Element} [element] The starting point for the search (defaults to document if not provided).
    * @return {Prime.Dom.Element} An element or null.
    */
-  queryFirst: function(selector, element) {
+  queryFirst: function (selector, element) {
     var domElement = null;
     if (element != null) {
       domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
@@ -127,7 +144,7 @@ Prime.Dom = {
    * @param {Prime.Dom.Element | Element} element The starting point for the upward traversal.
    * @return {Prime.Dom.Element} An element or null.
    */
-  ancestor: function(selector, element) {
+  queryUp: function (selector, element) {
     if (selector.match(Prime.Utils.spaceRegex)) {
       throw "ancestor selector must not contain a space";
     }
@@ -156,7 +173,7 @@ Prime.Dom = {
    *
    * @private
    */
-  callReadyListeners: function() {
+  callReadyListeners: function () {
     if (document.addEventListener || document.readyState === 'complete') {
       var readyFunction;
       while (readyFunction = Prime.Dom.readyFunctions.shift()) {
@@ -179,21 +196,18 @@ Prime.Dom = {
  * @param {Array} elements The array of DOMElement or Prime.Dom.Element objects.
  * @constructor
  */
-Prime.Dom.ElementList = function(elements) {
-  this.init(elements);
-};
-Prime.Dom.ElementList.prototype = {
-  init: function(elements) {
-    this.length = elements.length;
-    for (var i = 0; i < elements.length; i++) {
-      if (elements[i] instanceof Prime.Dom.Element) {
-        this[i] = elements[i];
-      } else {
-        this[i] = new Prime.Dom.Element(elements[i]);
-      }
+Prime.Dom.ElementList = function (elements) {
+  this.length = elements.length;
+  for (var i = 0; i < elements.length; i++) {
+    if (elements[i] instanceof Prime.Dom.Element) {
+      this[i] = elements[i];
+    } else {
+      this[i] = new Prime.Dom.Element(elements[i]);
     }
-  },
+  }
+};
 
+Prime.Dom.ElementList.prototype = {
   /**
    * Iterates over each of the Prime.Dom.Element objects in this ElementList and calls the given function for each one.
    * The 'this' variable inside the function will be the current Prime.Dom.Element. The function can optionally take a
@@ -203,7 +217,7 @@ Prime.Dom.ElementList.prototype = {
    * @param {Object} [context] The context for the function call (sets the this variable).
    * @return {Prime.Dom.ElementList} This ElementList.
    */
-  each: function(iterationFunction, context) {
+  each: function (iterationFunction, context) {
     for (var i = 0; i < this.length; i++) {
       var theContext = (arguments.length < 2) ? this[i] : context;
       iterationFunction.call(theContext, this[i], i);
@@ -217,7 +231,7 @@ Prime.Dom.ElementList.prototype = {
    *
    * @return {Prime.Dom.ElementList} This ElementList.
    */
-  removeAllFromDOM: function() {
+  removeAllFromDOM: function () {
     for (var i = 0; i < this.length; i++) {
       this[i].removeFromDOM();
     }
@@ -226,17 +240,17 @@ Prime.Dom.ElementList.prototype = {
   },
 
   /**
-   * Returns the indexOf the element that matches the parameter, either Prime Element or domElement
+   * Returns the indexOf the element that matches the parameter, either Prime Element or DOMElement.
    *
-   * @param {Prime.Dom.Element|domElement} element The element to look for
-   * @return {integer} The position of the element in the list, or -1 if not present.
+   * @param {Prime.Dom.Element|DOMElement} element The element to look for
+   * @return {Integer} The position of the element in the list, or -1 if not present.
    */
-  indexOf: function(element) {
+  indexOf: function (element) {
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
 
     for (var i = 0; i < this.length; i++) {
       if (this[i].domElement == domElement) {
-       return i;
+        return i;
       }
     }
 
@@ -246,13 +260,20 @@ Prime.Dom.ElementList.prototype = {
 
 
 /**
-* Creates an Element class for the given DOM element.
-*
-* @param {Element} element The element
-* @constructor
-*/
-Prime.Dom.Element = function(element) {
-  this.init(element);
+ * Creates an Element class for the given DOM element.
+ *
+ * @param {Element} element The element
+ * @constructor
+ */
+Prime.Dom.Element = function (element) {
+  if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
+    throw 'You can only pass in DOM element Node objects to the Prime.Dom.Element constructor';
+  }
+
+  this.domElement = element;
+
+  this.domElement.customEvents = {};
+  this.domElement.eventListeners = {};
 };
 
 /**
@@ -262,29 +283,16 @@ Prime.Dom.Element = function(element) {
  */
 Prime.Dom.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
 Prime.Dom.Element.anonymousId = 1;
+Prime.Dom.Element.ieAlpaRegexp = /alpha\(opacity=(.+)\)/;
 
 Prime.Dom.Element.prototype = {
-  init: function(element) {
-    if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
-      throw 'You can only pass in DOM element Node objects to the Prime.Dom.Element constructor';
-    }
-
-    this.domElement = element;
-    if (typeof element.id === 'undefined' || element.id == null || element.id == '') {
-      this.setAttribute("id", "anonymous_element_" + Prime.Dom.Element.anonymousId++);
-    }
-    this.id = element.id;
-    this.domElement.customEvents = {};
-    this.domElement.eventListeners = {};
-  },
-
   /**
    * Adds the given class (or list of space separated classes) to this Element.
    *
    * @param {String} classNames The class name(s).
    * @return {Prime.Dom.Element} This Element.
    */
-  addClass: function(classNames) {
+  addClass: function (classNames) {
     var currentClassName = this.domElement.className;
     if (currentClassName === '') {
       currentClassName = classNames;
@@ -302,19 +310,17 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Attaches an event listener to this Element, returning the handler proxy.  Use this form if you later want to remove
-   * the handler.
+   * Attaches an event listener to this Element.
    *
    * @param {String} event The name of the event.
-   * @param {Function} handler The event handler.
+   * @param {Function} listener The event listener function.
    * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
    *        function call). Defaults to this Element.
-   * @return {function} The proxy handler.
+   * @return {Prime.Dom.Element} This Element.
    */
-  addEventListener: function(event, handler, context) {
+  addEventListener: function (event, listener, context) {
     var theContext = (arguments.length < 3) ? this : context;
-    var proxy = Prime.Utils.proxy(handler, theContext);
-
+    var proxy = Prime.Utils.proxy(listener, theContext);
     if (event.indexOf(':') == -1) {
       //traditional event
       if (this.domElement.addEventListener) {
@@ -330,7 +336,7 @@ Prime.Dom.Element.prototype = {
       this.domElement.customEvents[event].push(proxy);
     }
 
-    return proxy;
+    return this;
   },
 
   /**
@@ -339,7 +345,7 @@ Prime.Dom.Element.prototype = {
    * @param {Element} element The element to insert this Element after.
    * @return {Prime.Dom.Element} This Element.
    */
-  appendTo: function(element) {
+  appendTo: function (element) {
     // Error out for now if this element is in the document so we can punt on cloning for now
     if (this.domElement.parentNode) {
       throw 'You can only insert new Prime.Dom.Elements for now';
@@ -356,54 +362,6 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Returns the value of the given attribute.
-   *
-   * @param {String} name The attribute name.
-   * @return {String} This attribute value or null.
-   */
-  attribute: function(name) {
-    var attr = this.domElement.attributes.getNamedItem(name);
-    if (attr) {
-      return attr.value;
-    }
-
-    return null;
-  },
-
-  /**
-   * Fades this element out using the opacity style.
-   *
-   * @param {Number} duration The total duration to go from displayed to gone.
-   * @param {Function} [endFunction] A function to call after the fadeOut is complete.
-   * @param {Object} [context] The context for the function call (sets the 'this' parameter). Defaults to this Element.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  fadeOut: function(duration, endFunction, context) {
-    if (duration < 100) {
-      throw 'Duration should be greater than 100 milliseconds or it won\'t really be noticeable';
-    }
-
-    var self = this;
-    var theContext = (arguments.length < 3) ? this : context;
-    var internalEndFunction = function() {
-      self.hide();
-      if (typeof endFunction !== 'undefined' && endFunction !== null) {
-        endFunction.call(theContext);
-      }
-    };
-
-    this.changeStyleIteratively({
-      name: 'opacity',
-      units: '',
-      defaultStartValue: 1.0,
-      endValue: 0.0,
-      duration: duration,
-      iterations: 20
-    }, internalEndFunction, theContext);
-    return this;
-  },
-
-  /**
    * Fires an event on the Element
    *
    * @param {String} event The name of the event.
@@ -412,7 +370,7 @@ Prime.Dom.Element.prototype = {
    * @param {boolean} cancellable If the event is cancellable, defaults to true.
    * @return {Prime.Dom.Element} This Element.
    */
-  fireEvent: function(event, memo, bubbling, cancellable) {
+  fireEvent: function (event, memo, bubbling, cancellable) {
     bubbling = typeof bubbling !== 'undefined' ? bubbling : true;
     cancellable = typeof cancellable !== 'undefined' ? cancellable : true;
 
@@ -423,11 +381,11 @@ Prime.Dom.Element.prototype = {
         // dispatch for IE
         evt = document.createEventObject();
         evt.memo = memo || {};
-        this.domElement.fireEvent('on'+event,document.createEventObject())
-      }  else if (document.createEvent) {
+        this.domElement.fireEvent('on' + event, document.createEventObject())
+      } else if (document.createEvent) {
         // dispatch for others
         evt = document.createEvent("HTMLEvents");
-        evt.initEvent(event, bubbling, cancellable ); // event type,bubbling,cancelable
+        evt.initEvent(event, bubbling, cancellable); // event type,bubbling,cancelable
         evt.memo = memo || {};
         this.domElement.dispatchEvent(evt);
       } else {
@@ -436,7 +394,7 @@ Prime.Dom.Element.prototype = {
     } else {
       //custom event
       this.domElement.customEvents[event] = this.domElement.customEvents[event] || [];
-      evt = {'event': event, 'memo' : memo};
+      evt = {'event': event, 'memo': memo};
       for (index in this.domElement.customEvents[event]) {
         if (this.domElement.customEvents[event].hasOwnProperty(index)) {
           this.domElement.customEvents[event][index](evt);
@@ -448,10 +406,18 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Aliasing attribute to getAttribute
+   * Returns the value of the given attribute.
+   *
+   * @param {String} name The attribute name.
+   * @return {String} This attribute value or null.
    */
-  getAttribute: function(name) {
-    return this.attribute(name);
+  getAttribute: function (name) {
+    var attr = this.domElement.attributes.getNamedItem(name);
+    if (attr) {
+      return attr.value;
+    }
+
+    return null;
   },
 
   /**
@@ -459,8 +425,17 @@ Prime.Dom.Element.prototype = {
    *
    * @return {IEElementStyle|CSSStyleDeclaration} The style information.
    */
-  getComputedStyle: function() {
+  getComputedStyle: function () {
     return (this.domElement.currentStyle) ? this.domElement.currentStyle : document.defaultView.getComputedStyle(this.domElement, null);
+  },
+
+  /**
+   * Gets the ID of this element from the domElement.
+   *
+   * @return {String} ID The id of the domElement if it exists.
+   */
+  getID: function () {
+    return this.domElement.id;
   },
 
   /**
@@ -468,8 +443,31 @@ Prime.Dom.Element.prototype = {
    *
    * @return {String} The HTML content.
    */
-  getHTML: function() {
+  getHTML: function () {
     return this.domElement.innerHTML;
+  },
+
+  /**
+   * Retrieves the opacity value for the Element. This handles the IE alpha filter.
+   *
+   * @return {Number} The opacity value.
+   */
+  getOpacity: function () {
+    var computedStyle = this.getComputedStyle();
+    var opacity = 1.0;
+    if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
+      var filter = computedStyle['filter'];
+      if (filter !== undefined && filter !== '') {
+        var matches = Prime.Dom.Element.ieAlpaRegexp.match(filter);
+        if (matches.length > 0) {
+          opacity = parseFloat(matches[0]);
+        }
+      }
+    } else {
+      opacity = parseFloat(computedStyle['opacity']);
+    }
+
+    return opacity;
   },
 
   /**
@@ -477,7 +475,7 @@ Prime.Dom.Element.prototype = {
    *
    * @return {String} The style value.
    */
-  getStyle: function(name) {
+  getStyle: function (name) {
     return this.domElement.style[name];
   },
 
@@ -486,7 +484,7 @@ Prime.Dom.Element.prototype = {
    *
    * @return {String} The value of this Element.
    */
-  getValue: function() {
+  getValue: function () {
     return this.domElement.value;
   },
 
@@ -496,7 +494,7 @@ Prime.Dom.Element.prototype = {
    * @param {String} classNames The class name(s).
    * @return {Boolean} true if all classnames are present.
    */
-  hasClass: function(classNames) {
+  hasClass: function (classNames) {
     var currentClassName = this.domElement.className;
     var classNamesList = classNames.split(Prime.Utils.spaceRegex);
     for (var i = 0; i < classNamesList.length; i++) {
@@ -513,7 +511,7 @@ Prime.Dom.Element.prototype = {
    *
    * @return {Prime.Dom.Element} This Element.
    */
-  hide: function() {
+  hide: function () {
     this.domElement.style.display = 'none';
     return this;
   },
@@ -524,7 +522,7 @@ Prime.Dom.Element.prototype = {
    * @param {Element} element The element to insert this Element after.
    * @return {Prime.Dom.Element} This Element.
    */
-  insertAfter: function(element) {
+  insertAfter: function (element) {
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
     }
@@ -546,7 +544,7 @@ Prime.Dom.Element.prototype = {
    * @param {Element} element The element to insert this Element before.
    * @return {Prime.Dom.Element} This Element.
    */
-  insertBefore: function(element) {
+  insertBefore: function (element) {
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
     }
@@ -563,11 +561,11 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Returns this element's parent element
+   * Returns this element's parent as  Prime.Dom.Element.
    *
    * @return {Prime.Dom.Element} this element's parent or null if there is no parent
    */
-  parent: function() {
+  parent: function () {
     if (this.domElement.parentNode != null) {
       return new Prime.Dom.Element(this.domElement.parentNode);
     } else {
@@ -580,7 +578,7 @@ Prime.Dom.Element.prototype = {
    *
    * @return {Hash} A Hash with top and left set
    */
-  position: function() {
+  position: function () {
     var styles = this.getComputedStyle();
     var positionLeft = -(styles['margin-left']);
     var positionTop = -(styles['margin-top']);
@@ -593,10 +591,10 @@ Prime.Dom.Element.prototype = {
       if (element.domElement.type == 'body' || element.getStyle('position') !== 'static') {
         break;
       }
-    } while(element);
+    } while (element);
 
-    new Prime.Dom.ElementList(elements).each(function() {
-      var elementStyle = this.getComputedStyle();
+    new Prime.Dom.ElementList(elements).each(function (element) {
+      var elementStyle = element.getComputedStyle();
       positionLeft += elementStyle['offsetLeft'] || 0;
       positionTop += elementStyle['offsetTop'] || 0;
     });
@@ -610,7 +608,7 @@ Prime.Dom.Element.prototype = {
    * @param {String} name The name of the attribute.
    * @return {Prime.Dom.Element} This Element.
    */
-  removeAttribute: function(name) {
+  removeAttribute: function (name) {
     this.domElement.removeAttribute(name);
     return this;
   },
@@ -621,7 +619,7 @@ Prime.Dom.Element.prototype = {
    * @param {String} classNames The class name(s).
    * @return {Prime.Dom.Element} This Element.
    */
-  removeClass: function(classNames) {
+  removeClass: function (classNames) {
     var currentClassName = this.domElement.className;
     if (currentClassName) {
       var classNamesList = classNames.split(Prime.Utils.spaceRegex);
@@ -651,10 +649,9 @@ Prime.Dom.Element.prototype = {
    * Removes an event handler for a specific event from this Element, you must have attached using addEventListener
    *
    * @param {String} event The name of the event.
-   * @param {Object} handler The handler.
    * @return {Prime.Dom.Element} This Element.
    */
-  removeEventListener: function(event) {
+  removeEventListener: function (event) {
     this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || {};
     var proxies = this.domElement.eventListeners[event][this];
     delete this.domElement.eventListeners[event][this];
@@ -680,7 +677,7 @@ Prime.Dom.Element.prototype = {
         if (proxies.hasOwnProperty(proxy)) {
           for (var ii = 0; ii < this.domElement.customEvents[event].length; ii++) {
             var handler = this.domElement.customEvents[event][ii];
-            if(handler !== proxy) {
+            if (handler !== proxy) {
               newEvents.push(proxy);
             }
           }
@@ -697,7 +694,7 @@ Prime.Dom.Element.prototype = {
    *
    * @return {Prime.Dom.Element} This Element.
    */
-  removeFromDOM: function() {
+  removeFromDOM: function () {
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
     }
@@ -706,12 +703,13 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Sets an attribute of the Element
+   * Sets an attribute of the Element.
+   *
    * @param {String} name The attribute name
    * @param {String} value The attribute value
    * @return {Prime.Dom.Element} This Element.
    */
-  setAttribute: function(name, value) {
+  setAttribute: function (name, value) {
     var attribute = document.createAttribute(name);
     attribute.nodeValue = value;
     this.domElement.setAttributeNode(attribute);
@@ -720,13 +718,13 @@ Prime.Dom.Element.prototype = {
 
   /**
    * Sets multiple attributes of the Element from the hash
-   * @param {Hash} styles a Hash of key value style pairs
+   * @param {Hash} attributes a Hash of key value style pairs
    * @return {Prime.Dom.Element} This Element.
    */
-  setAttributes: function(styles) {
-    for (key in styles) {
-      if (styles.hasOwnProperty(key)) {
-        this.setAttribute(key, styles[key]);
+  setAttributes: function (attributes) {
+    for (key in attributes) {
+      if (attributes.hasOwnProperty(key)) {
+        this.setAttribute(key, attributes[key]);
       }
     }
     return this;
@@ -738,14 +736,41 @@ Prime.Dom.Element.prototype = {
    * @param {String|Prime.Dom.Element} newHTML The new HTML content for the Element.
    * @return {Prime.Dom.Element} This Element.
    */
-  setHTML: function(newHTML) {
+  setHTML: function (newHTML) {
     if (newHTML != null) {
       if (newHTML instanceof Prime.Dom.Element) {
         this.domElement.innerHTML = newHTML.getHTML();
       } else {
         this.domElement.innerHTML = newHTML;
       }
-  }
+    }
+    return this;
+  },
+
+  /**
+   * Sets the ID of the Element.
+   *
+   * @param {String} id The ID.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setID: function (id) {
+    this.domElement.id = id;
+    return this;
+  },
+
+  /**
+   * Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.
+   *
+   * @param {Number} opacity The opacity.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setOpacity: function (opacity) {
+    if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
+      this.domElement.style.filter = 'alpha(opacity=' + opacity + ')';
+    } else {
+      this.domElement.style.opacity = opacity;
+    }
+
     return this;
   },
 
@@ -756,7 +781,7 @@ Prime.Dom.Element.prototype = {
    * @param {String} value The style value.
    * @return {Prime.Dom.Element} This Element.
    */
-  setStyle: function(name, value) {
+  setStyle: function (name, value) {
     this.domElement.style[name] = value;
     return this;
   },
@@ -767,7 +792,7 @@ Prime.Dom.Element.prototype = {
    * @param {Hash} styles key value has of style names to new values.
    * @return {Prime.Dom.Element} This Element.
    */
-  setStyles: function(styles) {
+  setStyles: function (styles) {
     for (key in styles) {
       if (styles.hasOwnProperty(key)) {
         this.setStyle(key, styles[key]);
@@ -782,7 +807,7 @@ Prime.Dom.Element.prototype = {
    * @param {String} value The new value.
    * @return {Prime.Dom.Element} This Element.
    */
-  setValue: function(value) {
+  setValue: function (value) {
     this.domElement.value = value;
     return this;
   },
@@ -795,7 +820,7 @@ Prime.Dom.Element.prototype = {
    *
    * @return {Prime.Dom.Element} This Element.
    */
-  show: function() {
+  show: function () {
     this.domElement.style.display = '';
 
     var computedDisplay = this.getComputedStyle()['display'];
@@ -805,52 +830,6 @@ Prime.Dom.Element.prototype = {
 
     return this;
   },
-
-  /**
-   * Attaches an event listener to this Element.
-   *
-   * @param {String} event The name of the event.
-   * @param {Function} handler The event handler.
-   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
-   *        function call). Defaults to this Element.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  withEventListener: function(event, handler, context) {
-    var theContext = (arguments.length < 3) ? this : context;
-    var proxy = Prime.Utils.proxy(handler, theContext);
-
-    if (event.indexOf(':') == -1) {
-      //traditional event
-      if (this.domElement.addEventListener) {
-        this.domElement.addEventListener(event, proxy, false);
-      } else if (this.domElement.attachEvent) {
-        this.domElement.attachEvent('on' + event, proxy);
-      } else {
-        throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
-      }
-    } else {
-      //custom event
-      this.domElement.customEvents[event] = this.domElement.customEvents[event] || [];
-      this.domElement.customEvents[event].push(proxy);
-    }
-    this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || {};
-    this.domElement.eventListeners[event][this] = proxy;
-
-    return this;
-  },
-
-  /**
-   * Sets the ID of the Element.
-   *
-   * @param {String} id The ID.
-   * @return {Prime.Dom.Element} This Element.
-   */
-  withID: function(id) {
-    this.domElement.id = id;
-    this.id = id;
-    return this;
-  },
-
 
   /*
    * Private methods
@@ -866,11 +845,11 @@ Prime.Dom.Element.prototype = {
    * @param {Function} [endFunction] Optional end function to call.
    * @param {Object} [context] Optional context for the function calls.
    */
-  changeStyleIteratively: function(config, endFunction, context) {
+  changeNumberStyleIteratively: function (config, endFunction, context) {
     var domElement = this.domElement;
     var currentValue = (domElement.style[config.name]) ? (domElement.style[config.name]) : config.defaultStartValue;
     var step = currentValue / config.iterations;
-    var stepFunction = function(last) {
+    var stepFunction = function (last) {
       if (last) {
         currentValue = config.endValue;
       } else {
@@ -909,7 +888,7 @@ Prime.Dom.Document = {
    *        function call). Defaults to this Element.
    * @return {function} The proxy handler.
    */
-  addEventListener: function(event, handler, context) {
+  addEventListener: function (event, handler, context) {
     var theContext = (arguments.length < 3) ? this : context;
     var proxy = Prime.Utils.proxy(handler, theContext);
 
@@ -930,7 +909,7 @@ Prime.Dom.Document = {
    * @param {String} event The name of the event.
    * @param {Object} handler The handler.
    */
-  removeEventListener: function(event, handler) {
+  removeEventListener: function (event, handler) {
     if (document.removeEventListener) {
       document.removeEventListener(event, handler, false);
     } else if (document.detachEvent) {
@@ -948,12 +927,12 @@ Prime.Dom.Document = {
  * @param template the String that defines the source of the template.
  * @constructor
  */
-Prime.Dom.Template = function(template) {
+Prime.Dom.Template = function (template) {
   this.init(template);
 };
 
 Prime.Dom.Template.prototype = {
-  init: function(template) {
+  init: function (template) {
     this.template = template;
   },
 
@@ -968,7 +947,7 @@ Prime.Dom.Template.prototype = {
    * @param parameterHash
    * @return String
    */
-  generate: function(parameterHash) {
+  generate: function (parameterHash) {
     parameterHash = typeof parameterHash !== 'undefined' ? parameterHash : {};
     var templateCopy = new String(this.template);
     var key;
@@ -985,7 +964,7 @@ Prime.Dom.Template.prototype = {
           templateCopy = templateCopy.replace(new RegExp(key.substring(1, key.length - 1), "g"), expressedValue);
         } else {
           var expressedKey = "#{" + key + "}";
-          while(templateCopy.indexOf(expressedKey) != -1) {
+          while (templateCopy.indexOf(expressedKey) != -1) {
             templateCopy = templateCopy.replace(expressedKey, expressedValue);
           }
         }
@@ -1000,7 +979,7 @@ Prime.Dom.Template.prototype = {
    * @param primeElement
    * @param parameterHash
    */
-  appendTo: function(primeElement, parameterHash) {
+  appendTo: function (primeElement, parameterHash) {
     if (typeof primeElement !== 'undefined' && primeElement != null) {
       primeElement.setHTML(primeElement.getHTML() + this.generate(parameterHash));
     } else {
@@ -1014,7 +993,7 @@ Prime.Dom.Template.prototype = {
    * @param primeElement
    * @param parameterHash
    */
-  insertBefore: function(primeElement, parameterHash) {
+  insertBefore: function (primeElement, parameterHash) {
     if (typeof primeElement !== 'undefined' && primeElement != null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameterHash);
@@ -1030,7 +1009,7 @@ Prime.Dom.Template.prototype = {
    * @param primeElement
    * @param parameterHash
    */
-  insertAfter: function(primeElement, parameterHash) {
+  insertAfter: function (primeElement, parameterHash) {
     if (typeof primeElement !== 'undefined' && primeElement != null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameterHash);

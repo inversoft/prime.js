@@ -1,4 +1,20 @@
 <!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+  ~ either express or implied. See the License for the specific
+  ~ language governing permissions and limitations under the License.
+  -->
+
 <html>
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -6,7 +22,9 @@
     <script type="text/javascript" src="../js/buster-test.js"></script>
     <script type="text/javascript" src="../../main/js/sizzle/sizzle.js"></script>
     <script type="text/javascript" src="../../main/js/ajax.js"></script>
+    <script type="text/javascript" src="../../main/js/browser.js"></script>
     <script type="text/javascript" src="../../main/js/dom.js"></script>
+    <script type="text/javascript" src="../../main/js/effects.js"></script>
     <script type="text/javascript" src="../../main/js/utils.js"></script>
     <script type="text/javascript">
       var documentReadyCount = 0;
@@ -26,11 +44,13 @@
       Prime.Dom.onDocumentReady(drc.documentReady, drc);
     </script>
     <script type="text/javascript" src="../js/mock.js"></script>
-    <!--<script type="text/javascript" src="../js/ajax-test.js"></script>-->
+    <script type="text/javascript" src="../js/ajax-test.js"></script>
+    <script type="text/javascript" src="../js/browser-test.js"></script>
     <script type="text/javascript" src="../js/dom-test.js"></script>
-    <!--<script type="text/javascript" src="../js/utils-test.js"></script>-->
+    <script type="text/javascript" src="../js/effects-test.js"></script>
+    <script type="text/javascript" src="../js/utils-test.js"></script>
     <style>
-      #showCSSBlock, #showCSSInline {
+      #showCSSBlock, #showCSSInline, .hidden {
         display: none;
       }
     </style>
@@ -148,15 +168,22 @@
       <span id="templateInsertBeforeAfter"></span>
     </div>
 
-    <form action="/foo" method="POST">
-      <input type="text" name="foo" id="foo" tabindex="1"/>
-      <input type="text" name="bar" id="bar" tabindex="2"/>
-      <select name="baz" id="baz" tabindex="3">
-        <option>1</option>
-        <option>2</option>
-        <option>3</option>
-      </select>
-    </form>
+    <div id="fade">
+    </div>
 
+    <div id="fadeContext">
+    </div>
+
+    <div id="appear" style="display: none">
+    </div>
+
+    <div id="appearContext" style="display: none">
+    </div>
+
+    <div id="appearCSS" class="hidden">
+    </div>
+
+    <span id="appearContextCSS" class="hidden">
+    </span>
   </body>
 </html>

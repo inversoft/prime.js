@@ -1,5 +1,17 @@
 /*
  * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
 Prime.Ajax = Prime.Ajax || {};
@@ -8,32 +20,30 @@ Prime.Ajax = Prime.Ajax || {};
  * Makes a new AJAX request.
  *
  * @param {String} [url] The URL to call. This can be left out for sub-classing but should otherwise be provided.
+ * @param {String} [method] The HTTP method to use. You can specify GET, POST, PUT, DELETE, HEAD, SEARCH, etc. This
+ * defaults to GET.
  * @constructor
  */
 Prime.Ajax.Request = function(url, method) {
-  this.init(url, method);
+  this.xhr = new XMLHttpRequest();
+  this.async = true;
+  this.body = null;
+  this.queryParams = null;
+  this.contentType = null;
+  this.context = this;
+  this.errorHandler = this.onError;
+  this.loadingHandler = this.onLoading;
+  this.method = method || 'GET';
+  this.openHandler = this.onOpen;
+  this.password = null;
+  this.sendHandler = this.onSend;
+  this.successHandler = this.onSuccess;
+  this.unsetHandler = this.onUnset;
+  this.url = url;
+  this.username = null;
 };
 
 Prime.Ajax.Request.prototype = {
-  init: function(url, method) {
-    this.xhr = new XMLHttpRequest();
-    this.async = true;
-    this.body = null;
-    this.queryParams = null;
-    this.contentType = null;
-    this.context = this;
-    this.errorHandler = this.onError;
-    this.loadingHandler = this.onLoading;
-    this.method = method || 'GET';
-    this.openHandler = this.onOpen;
-    this.password = null;
-    this.sendHandler = this.onSend;
-    this.successHandler = this.onSuccess;
-    this.unsetHandler = this.onUnset;
-    this.url = url;
-    this.username = null;
-  },
-
   /**
    * Changes the URL to call.
    *
@@ -56,8 +66,8 @@ Prime.Ajax.Request.prototype = {
     }
 
     var requestUrl = this.url;
-    if((this.method == 'GET' || this.method == 'DELETE') && this.queryParams != null) {
-      if(requestUrl.indexOf('?') == -1) {
+    if ((this.method == 'GET' || this.method == 'DELETE') && this.queryParams != null) {
+      if (requestUrl.indexOf('?') == -1) {
         requestUrl += '?' + this.queryParams;
       } else {
         requestUrl += '&' + this.queryParams;

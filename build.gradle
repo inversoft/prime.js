@@ -56,20 +56,12 @@ jar.doLast {
 }
 
 task testJS << {
-
   def apacheHome = System.getenv("APACHE_HOME")
-
   if (apacheHome == null) {
     throw new GradleException("You must have an environment variable called APACHE_HOME that points to your apache web document root directory")
   }
 
   delete "$apacheHome/prime-tests"
-
-  mkdir "$apacheHome/prime-tests"
-
-  copy {
-    from 'src/'
-    into "$apacheHome/prime-tests"
-  }
-
+  ant.symlink(link: "${apacheHome}/prime-tests", action: "delete")
+  ant.symlink(link: "${apacheHome}/prime-tests", resource: "${projectDir}/src")
 }
