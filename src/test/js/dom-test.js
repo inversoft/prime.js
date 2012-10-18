@@ -100,6 +100,24 @@ buster.testCase('ElementList class tests', {
   }
 });
 
+buster.testCase('ElementList indexOf tests', {
+  'indexOf Prime Element': function() {
+    var container = Prime.Dom.queryByID("query");
+    var list = Prime.Dom.query("p", container);
+
+    var one = Prime.Dom.queryByID("queryOne");
+    var two = Prime.Dom.queryByID("queryTwo");
+    var outside = Prime.Dom.queryByID("insertSingle");
+
+    assert.equals(list.indexOf(one), 0);
+    assert.equals(list.indexOf(one.domElement), 0);
+    assert.equals(list.indexOf(two), 1);
+    assert.equals(list.indexOf(two.domElement), 1);
+    assert.equals(list.indexOf(outside), -1);
+    assert.equals(list.indexOf(outside.domElement), -1);
+  }
+});
+
 
 buster.testCase('Element namespace tests', {
   /**
@@ -152,6 +170,22 @@ buster.testCase('Element namespace tests', {
 
     element = Prime.Dom.newElement('<div/>');
     assert.equals(element.domElement.tagName, 'DIV');
+
+    element = Prime.Dom.newElement('<span></span>');
+    assert.equals(element.domElement.tagName, 'SPAN');
+
+    element = Prime.Dom.newElement('<span>foo</span>');
+    assert.equals(element.domElement.tagName, 'SPAN');
+
+    element = Prime.Dom.newElement('<div/>', {'id':'1'});
+    assert.equals(element.domElement.id, '1');
+    assert.equals(element.id, '1');
+
+    element = Prime.Dom.newElement('<div/>', {'id':'id', 'style':'width:200px;float:left'});
+    assert.equals(element.domElement.id, 'id');
+    assert.equals(element.id, 'id');
+    assert.equals(element.domElement.style['width'], '200px');
+    assert.equals(element.domElement.style['float'], 'left');
   }
 });
 
@@ -277,6 +311,33 @@ buster.testCase('Element class tests', {
     }
   },
 
+  'hasClass': {
+    'hasClassEmpty': function() {
+      assert(!Prime.Dom.queryFirst('#hasClassEmpty').
+        hasClass('new-class'));
+    },
+
+    'hasClassSingle': function() {
+      assert(Prime.Dom.queryFirst('#hasClassSingleExisting').
+        hasClass('existing'));
+    },
+
+    'hasClassSingleMissing': function() {
+      assert(!Prime.Dom.queryFirst('#hasClassSingleExisting').
+        hasClass('not-existing'));
+    },
+
+    'hasClassMultiple': function() {
+      assert(Prime.Dom.queryFirst('#hasClassMultipleExisting').
+        hasClass('existing1 existing2 existing3'));
+    },
+
+    'hasClassMultipleMissingOne': function() {
+      assert(!Prime.Dom.queryFirst('#hasClassMultipleExisting').
+        hasClass('existing1 fake-class'));
+    }
+  },
+
   'appendTo': {
     tearDown: function() {
       Prime.Dom.query('#appendToSingleElementNew').removeAllFromDOM();
@@ -374,6 +435,10 @@ buster.testCase('Element class tests', {
     element.innerHTML = 'Get test';
 
     assert.equals(Prime.Dom.queryFirst('#html').getHTML(), 'Get test');
+  },
+
+  'getStyle': function() {
+    assert.equals(Prime.Dom.queryFirst('#style').getStyle('text-align'), 'center');
   },
 
   /**
@@ -475,6 +540,16 @@ buster.testCase('Element class tests', {
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertBefore(newElement, 'insertMultipleThree', 'A', 2);
+    },
+
+    'insertBeforeExisting': function() {
+      var target = Prime.Dom.queryByID("insertBefore");
+      var mover = Prime.Dom.queryByID("insertBeforeMove");
+
+      mover.insertBefore(target);
+      var parent = document.getElementById("insertBeforeExisting");
+      assert.equals(parent.children[0].id, "insertBeforeMove");
+      assert.equals(parent.children[1].id, "insertBefore");
     }
   },
 
@@ -577,6 +652,16 @@ buster.testCase('Element class tests', {
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertAfterEnd(newElement, 'insertMultipleThree', 'A');
+    },
+
+    'insertAfterExisting': function() {
+      var target = Prime.Dom.queryByID("insertAfter");
+      var mover = Prime.Dom.queryByID("insertAfterMove");
+
+      mover.insertAfter(target);
+      var parent = document.getElementById("insertAfterExisting");
+      assert.equals(parent.children[0].id, "insertAfter");
+      assert.equals(parent.children[1].id, "insertAfterMove");
     }
   },
 
@@ -713,6 +798,31 @@ buster.testCase('Element class tests', {
     assert.equals(element.innerHTML, 'Changed');
   },
 
+  'setHTMLByElement': function() {
+    Prime.Dom.queryFirst('#htmlByElement').setHTML(Prime.Dom.queryByID("htmlByElementTarget"));
+
+    var element = document.getElementById('htmlByElement');
+    assert.equals(element.innerHTML, 'By Element Target');
+  },
+
+  'setAttributes': function() {
+    Prime.Dom.queryByID('set-attributes').setAttributes({'rel':'foo','width':'10%'});
+
+    var element = document.getElementById('set-attributes');
+    assert(element != null);
+    assert.equals(element.attributes.getNamedItem('rel').value, 'foo');
+    assert.equals(element.attributes.getNamedItem('width').value, '10%');
+  },
+
+  'setStyles': function() {
+    Prime.Dom.queryByID('set-styles').setStyles({'text-align':'right','width':'10%'});
+
+    var element = document.getElementById('set-styles');
+    assert(element != null);
+    assert.equals(element.style['text-align'], 'right');
+    assert.equals(element.style['width'], '10%');
+  },
+
   'show': function() {
     // Test inline styles with show. This should end up empty string
     Prime.Dom.queryFirst('#show').show();
@@ -785,5 +895,327 @@ buster.testCase('Element class tests', {
     }
 
     assert(instance.called);
+  },
+
+  'addEventListenerObject': function() {
+    var MyEventListener = function() {
+      this.called = false;
+    };
+    MyEventListener.prototype = {
+      handle: function() {
+        this.called = true;
+      }
+    };
+
+    var instance = new MyEventListener();
+    var proxy = Prime.Dom.queryFirst('#event').
+      addEventListener('click', instance.handle, instance);
+
+    assert(proxy != null);
+
+    var element = document.getElementById('event');
+    if (document.createEvent) {
+      var event = document.createEvent('MouseEvents');
+      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+      element.dispatchEvent(event);
+    } else {
+      element.fireEvent('onclick');
+    }
+
+    assert(instance.called);
+  },
+
+  'removeEventListeners': function() {
+    var MyRemoveEventListener = function() {
+      this.called = false;
+    };
+    MyRemoveEventListener.prototype = {
+      handle: function() {
+        this.called = true;
+      }
+    };
+
+    var instance = new MyRemoveEventListener();
+    var otherInstance = new MyRemoveEventListener();
+    var element = Prime.Dom.queryFirst('#event')
+      .withEventListener('click', instance.handle, instance)
+      .withEventListener('click', otherInstance.handle, otherInstance);
+
+    element.fireEvent('click');
+    assert(instance.called);
+    instance.called = false;
+    assert(otherInstance.called);
+    otherInstance.called = false;
+
+    element.removeEventListener('click');
+    element.fireEvent('click');
+    refute(instance.called);
+    assert(otherInstance.called);
+  },
+
+  'fireEvent': function() {
+    var MyEventListener = function() {
+      this.called = false;
+    };
+    MyEventListener.prototype = {
+      handle: function() {
+        this.called = true;
+      }
+    };
+
+    var instance = new MyEventListener();
+    var element = Prime.Dom.queryFirst('#event').
+      withEventListener('click', instance.handle, instance);
+
+    element.fireEvent('click');
+    assert(instance.called);
+  },
+
+  'fireEventWithMemo': function() {
+    var MyEventListener = function() {
+      this.called = false;
+      this.memo = null;
+    };
+    MyEventListener.prototype = {
+      handle: function(evt) {
+        this.called = true;
+        this.memo = evt.memo;
+      }
+    };
+
+    var instance = new MyEventListener();
+    var element = Prime.Dom.queryFirst('#event').
+      withEventListener('click', instance.handle, instance);
+
+    element.fireEvent('click', 'foo');
+    assert(instance.called);
+    assert.equals(instance.memo, 'foo');
+  },
+
+  'fireCustomEvent': function() {
+    var MyEventListener = function() {
+      this.called = false;
+      this.memo = null;
+    };
+    MyEventListener.prototype = {
+      handle: function(evt) {
+        this.called = true;
+        this.memo = evt.memo;
+        this.event = evt.event;
+      }
+    };
+
+    var instance = new MyEventListener();
+    var element = Prime.Dom.queryFirst('#event').
+      withEventListener('custom:pop', instance.handle, instance);
+
+    element.fireEvent('custom:pop', 'foo');
+    assert(instance.called);
+    assert.equals(instance.event, 'custom:pop');
+    assert.equals(instance.memo, 'foo');
+  },
+
+  'ancestor': {
+    setUp: function() {
+      this.child = Prime.Dom.queryByID('child');
+      this.parent = Prime.Dom.queryByID('parent');
+      this.ancestor = Prime.Dom.queryFirst('div.ancestor');
+    },
+
+    'find parent by id': function() {
+      assert.equals(Prime.Dom.ancestor('#parent', this.child), this.parent);
+    },
+
+    'find parent by type + id': function() {
+      assert.equals(Prime.Dom.ancestor('div#parent', this.child), this.parent);
+    },
+
+    'find parent by type only': function() {
+      assert.equals(Prime.Dom.ancestor('div', this.child), this.parent);
+    },
+
+    'find ancestor': function() {
+      assert.equals(Prime.Dom.ancestor('.ancestor', this.child), this.ancestor);
+    },
+
+    'throws error on bad selector': function() {
+      try {
+        Prime.Dom.ancestor('div div#parent', this.child);
+        assert(false);
+      } catch(err) {
+        assert(err != null);
+      }
+    }
+  }
+
+});
+
+buster.testCase('Prime.Dom.Document', {
+  'addEventListener' : function() {
+    var MyEventListener = function() {
+      this.called = false;
+      this.memo = null;
+    };
+    MyEventListener.prototype = {
+      handle: function(evt) {
+        this.called = true;
+        this.memo = evt.memo;
+        this.event = evt.type;
+      }
+    };
+
+    var instance = new MyEventListener();
+    Prime.Dom.Document.addEventListener('click', instance.handle, instance);
+
+    Prime.Dom.queryFirst('#html').fireEvent('click', 'foo');
+    assert(instance.called);
+    assert.equals(instance.event, 'click');
+    assert.equals(instance.memo, 'foo');
+  },
+
+  'removeEventListener' : function() {
+    var MyEventListener = function() {
+      this.called = false;
+      this.memo = null;
+      this.event = null;
+    };
+    MyEventListener.prototype = {
+      handle: function(evt) {
+        this.called = true;
+        this.memo = evt.memo;
+        this.event = evt.type;
+      }
+    };
+
+    var instance = new MyEventListener();
+    var proxy = Prime.Dom.Document.addEventListener('click', instance.handle, instance);
+
+    Prime.Dom.queryFirst('#html').fireEvent('click', 'foo');
+    assert(instance.called);
+    assert.equals(instance.event, 'click');
+    assert.equals(instance.memo, 'foo');
+
+    instance.called = false;
+    instance.memo = null;
+    instance.event = null;
+
+    Prime.Dom.Document.removeEventListener('click', proxy);
+    Prime.Dom.queryFirst('#html').fireEvent('click', 'foo');
+    assert(!instance.called);
+    assert.equals(instance.event, null);
+    assert.equals(instance.memo, null);
   }
 });
+
+
+buster.testCase('Prime.Dom.Template', {
+  'generate with no replaces': function() {
+    var template = new Prime.Dom.Template("<span>foo</span>");
+    var string = template.generate();
+    assert.equals(string, '<span>foo</span>');
+  },
+
+  'generate with simple key replacement': function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var string = template.generate({'foo':'bar'});
+    assert.equals(string, '<span>bar</span>');
+  },
+
+  'generate with simple function replacement': function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var string = template.generate({'foo': function() { return 'baz' }});
+    assert.equals(string, '<span>baz</span>');
+  },
+
+  'generate with multiple times replacement': function() {
+    var template = new Prime.Dom.Template("<span>#{foo}#{foo}</span>");
+    var string = template.generate({'foo': 'waldo'});
+    assert.equals(string, '<span>waldowaldo</span>');
+  },
+
+  'generate with multiple key replacement': function() {
+    var template = new Prime.Dom.Template("<span>#{foo} #{bar}</span>");
+    var string = template.generate({'foo': 'where\'s', 'bar': 'waldo?' });
+    assert.equals(string, '<span>where\'s waldo?</span>');
+  },
+
+  'generate with regex key' : function() {
+    var template = new Prime.Dom.Template("<span>69!</span>");
+    var string = template.generate({"/\\d+/": "number blocked"});
+    assert.equals(string, '<span>number blocked!</span>');
+  },
+
+  'append' : function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var container = Prime.Dom.newElement("<div/>");
+    template.appendTo(container, {'foo': 'bar'});
+    assert.equals(container.getHTML(), '<span>bar</span>');
+  },
+
+  'appendMultiple' : function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var container = Prime.Dom.newElement("<div/>");
+    template.appendTo(container, {'foo': 'bar'});
+    template.appendTo(container, {'foo': 'baz'});
+    assert.equals(container.getHTML(), '<span>bar</span><span>baz</span>');
+  },
+
+  'insertBefore' : function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var target = Prime.Dom.queryByID("templateInsertBefore");
+
+    template.insertBefore(target, {'foo': 'bar'});
+    assert.equals(target.domElement.parentNode.children[0].innerText, 'bar');
+    assert.equals(target.domElement.parentNode.children[1].innerText, '');
+  },
+
+  'insertBeforeMultiple' : function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var target = Prime.Dom.queryByID("templateInsertBeforeMultiple");
+
+    template.insertBefore(target, {'foo': 'bar'});
+    template.insertBefore(target, {'foo': 'baz'});
+    assert.equals(target.domElement.parentNode.children[0].innerText, 'bar');
+    assert.equals(target.domElement.parentNode.children[1].innerText, 'baz');
+    assert.equals(target.domElement.parentNode.children[2].innerText, '');
+  },
+
+  'insertAfter' : function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var target = Prime.Dom.queryByID("templateInsertAfter");
+
+    template.insertAfter(target, {'foo': 'bar'});
+    assert.equals(target.domElement.parentNode.children[0].innerText, '');
+    assert.equals(target.domElement.parentNode.children[1].innerText, 'bar');
+  },
+
+  'insertAfterMultiple' : function() {
+    var template = new Prime.Dom.Template("<span>#{foo}</span>");
+    var target = Prime.Dom.queryByID("templateInsertBeforeAfter");
+
+    template.insertAfter(target, {'foo': 'bar'});
+    template.insertAfter(target, {'foo': 'baz'});
+    assert.equals(target.domElement.parentNode.children[2].innerText, 'bar');
+    assert.equals(target.domElement.parentNode.children[1].innerText, 'baz');
+    assert.equals(target.domElement.parentNode.children[0].innerText, '');
+  }
+
+});
+
+buster.testCase('test area', {
+
+  'tabIndex': function() {
+    var foo = Prime.Dom.queryByID("foo");
+    assert.equals(foo.attribute("tabindex"), 1);
+    var bar = Prime.Dom.queryByID("bar");
+    assert.equals(bar.attribute("tabIndex"), 2);
+  },
+
+  'options': function() {
+    var options = Prime.Dom.query("#baz option");
+    refute(options == null);
+    assert.equals(options.length, 3);
+  }
+
+});
+
