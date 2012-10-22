@@ -61,7 +61,6 @@ task testJS << {
     throw new GradleException("You must have an environment variable called APACHE_HOME that points to your apache web document root directory")
   }
 
-  delete "$apacheHome/prime-tests"
   ant.symlink(link: "${apacheHome}/prime-tests", action: "delete")
   ant.symlink(link: "${apacheHome}/prime-tests", resource: "${projectDir}/src")
 }
