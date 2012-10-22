@@ -25,3 +25,10 @@ Testing --
   3) Run gb testJS, which will basically copy the src directory into ~/Sites/prime-tests.
   4) Open http://localhost/~<username>/prime-tests/test/html/test.html
   5) Reward yourself with some coffee, though the tests don't take that long.
+
+Testing Mountain Lion --
+
+  Apple removed the handy Web Sharing preference pane option in Mountain Lion, so you'll need an alternate route.  The
+  following blog posts help sort that out:
+  http://reviews.cnet.com/8301-13727_7-57481978-263/how-to-enable-web-sharing-in-os-x-mountain-lion/
+  http://tlrobinson.net/blog/2008/06/mac-os-x-web-sharing-apache-and-symlinks/
