@@ -53,6 +53,10 @@
       #showCSSBlock, #showCSSInline, .hidden {
         display: none;
       }
+
+      .testHide {
+        display: none;
+      }
     </style>
   </head>
   <body>
@@ -97,9 +101,9 @@
     <div id="html">
     </div>
 
-    <div id="htmlByElement"></div>
+    <div id="htmlByElement" class="testHide"></div>
 
-    <span id="htmlByElementTarget" style="display:none">By Element Target</span>
+    <span id="htmlByElementTarget" class="testHide">By Element Target</span>
 
     <div id="event">
     </div>
@@ -146,26 +150,28 @@
     <div id="attributes" attr1="value1" attr2="value2">
     </div>
 
-    <div class="ancestor">
+    <div class="ancestor testHide">
       <div id="parent">
         <p id="child">foo</p>
       </div>
     </div>
 
-    <div>
-      <span id="templateInsertBefore"></span>
-    </div>
+    <div class="testHide">
+      <div>
+        <span id="templateInsertBefore"></span>
+      </div>
 
-    <div>
-      <span id="templateInsertBeforeMultiple"></span>
-    </div>
+      <div>
+        <span id="templateInsertBeforeMultiple"></span>
+      </div>
 
-    <div>
-      <span id="templateInsertAfter"></span>
-    </div>
+      <div>
+        <span id="templateInsertAfter"></span>
+      </div>
 
-    <div>
-      <span id="templateInsertBeforeAfter"></span>
+      <div>
+        <span id="templateInsertBeforeAfter"></span>
+      </div>
     </div>
 
     <div id="fade">
