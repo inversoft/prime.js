@@ -91,7 +91,6 @@ Prime.Effects.BaseTransition.prototype = {
         }
       }
 
-      console.log(currentValue);
       setFunction.call(self.element, currentValue);
     };
 
