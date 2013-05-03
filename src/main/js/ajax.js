@@ -84,11 +84,6 @@ Prime.Ajax.Request.prototype = {
       this.xhr.setRequestHeader('Content-Type', this.contentType);
     }
 
-    if (this.body) {
-      this.xhr.setRequestHeader('Content-Length', this.body.length);
-    }
-
-//    this.xhr.setRequestHeader('Connection', 'close');
     this.xhr.send(this.body);
 
     return this;
@@ -204,17 +199,9 @@ Prime.Ajax.Request.prototype = {
     for (var prop in data) {
       if (data.hasOwnProperty(prop)) {
         if (this.method == 'PUT' || this.method == 'POST') {
-          if (this.body) {
-            this.body += '&' + encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
-          } else {
-            this.body = encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
-          }
+          this.body = this.addDataValue(this.body, prop, data[prop]);
         } else {
-          if (this.queryParams == null) {
-            this.queryParams = encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
-          } else {
-            this.queryParams += '&' + encodeURIComponent(prop) + '=' + encodeURIComponent(data[prop]);
-          }
+          this.queryParams = this.addDataValue(this.queryParams, prop, data[prop]);
         }
       }
     }
@@ -245,6 +232,17 @@ Prime.Ajax.Request.prototype = {
    */
   withLoadingHandler: function(func) {
     this.loadingHandler = func;
+    return this;
+  },
+
+  /**
+   * Sets the XMLHTTPRequest's response type field, which will control how the response is parsed.
+   *
+   * @param {String} responseType The response type.
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withResponseType: function(responseType) {
+    this.xhr.responseType = responseType;
     return this;
   },
 
@@ -326,5 +324,37 @@ Prime.Ajax.Request.prototype = {
         this.errorHandler.call(this.context, this.xhr);
       }
     }
+  },
+
+  /**
+   * Adds the given name-value pair to the given data String. If the value is an array, it adds multiple values for each
+   * piece. Otherwise, it assumes value is a String or can be converted to a String.
+   *
+   * @private
+   * @param dataString The data String used to determine if an ampersand is necessary.
+   * @param name The name of the name-value pair.
+   * @param value The value of the name-value pair.
+   * @return {String} The new data string.
+   */
+  addDataValue: function(dataString, name, value) {
+    var result = '';
+    if (value instanceof Array) {
+      for (var i = 0; i < value.length; i++) {
+        result += encodeURIComponent(name) + '=' + encodeURIComponent(value[i]);
+        if (i + 1 < value.length) {
+          result += '&';
+        }
+      }
+    } else {
+      result = encodeURIComponent(name) + '=' + encodeURIComponent(value);
+    }
+
+    if (dataString != null && result != '') {
+      result = dataString + '&' + result;
+    } else if (dataString != null && result == '') {
+      result = dataString;
+    }
+
+    return result;
   }
 };

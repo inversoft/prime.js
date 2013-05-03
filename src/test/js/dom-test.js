@@ -26,6 +26,15 @@ function findPreviousElementSibling(element) {
   return sibling;
 }
 
+function findNextElementSibling(element) {
+  var sibling = element.nextSibling;
+  while (sibling && sibling.nodeType != 1) {
+    sibling = sibling.nextSibling;
+  }
+
+  return sibling;
+}
+
 
 var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
@@ -434,8 +443,24 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Dom.queryFirst('#html').getHTML(), 'Get test');
   },
 
+  'getSelectedValues': function() {
+    assert.equals(Prime.Dom.queryFirst('#one-checkbox').getSelectedValues(), ['one', 'three']);
+    assert.equals(Prime.Dom.queryFirst('#one-radio').getSelectedValues(), ['one']);
+    assert.equals(Prime.Dom.queryFirst('#select').getSelectedValues(), ['one', 'three']);
+    assert.equals(Prime.Dom.queryFirst('#text').getSelectedValues(), null);
+    assert.equals(Prime.Dom.queryFirst('#textarea').getSelectedValues(), null);
+  },
+
   'getStyle': function() {
     assert.equals(Prime.Dom.queryFirst('#style').getStyle('text-align'), 'center');
+  },
+
+  'getValue': function() {
+    assert.equals(Prime.Dom.queryFirst('#one-checkbox').getValue(), 'one');
+    assert.equals(Prime.Dom.queryFirst('#two-radio').getValue(), 'two');
+    assert.equals(Prime.Dom.queryFirst('#select option[value=one]').getValue(), 'one');
+    assert.equals(Prime.Dom.queryFirst('#text').getValue(), 'Text value');
+    assert.equals(Prime.Dom.queryFirst('#textarea').getValue(), 'Textarea value');
   },
 
   /**
@@ -667,6 +692,59 @@ buster.testCase('Element class tests', {
 
     var element = document.getElementById('hide');
     assert.equals(element.style.display, 'none');
+  },
+
+  'prependTo': {
+    tearDown: function() {
+      Prime.Dom.query('#prependToSingleElementNew').removeAllFromDOM();
+      Prime.Dom.query('#prependToMultipleElementNew').removeAllFromDOM();
+      refute(document.getElementById('prependToSingleElementNew'));
+      refute(document.getElementById('prependToMultipleElementNew'));
+    },
+
+    'prependToSingleDOMElement': function() {
+      Prime.Dom.newElement('<a/>').
+          setID('prependToSingleElementNew').
+          prependTo(document.getElementById('insertSingle'));
+
+      var newElement = document.getElementById('prependToSingleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 0);
+      assert.hasNextElementSiblings(newElement, 1);
+      assert.equals(findNextElementSibling(newElement).id, 'insertSingleElement');
+    },
+
+    'prependToSinglePrimeElement': function() {
+      Prime.Dom.newElement('<a/>').
+          setID('prependToSingleElementNew').
+          prependTo(Prime.Dom.queryFirst('#insertSingle'));
+
+      var newElement = document.getElementById('prependToSingleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 0);
+      assert.hasNextElementSiblings(newElement, 1);
+      assert.equals(findNextElementSibling(newElement).id, 'insertSingleElement');
+    },
+
+    'prependToMultipleDOMElement': function() {
+      Prime.Dom.newElement('<a/>').
+          setID('prependToMultipleElementNew').
+          prependTo(document.getElementById('insertMultiple'));
+
+      var newElement = document.getElementById('prependToMultipleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 0);
+      assert.hasNextElementSiblings(newElement, 3);
+      assert.equals(findNextElementSibling(newElement).id, 'insertMultipleOne');
+    },
+
+    'prependToMultiplePrimeElement': function() {
+      Prime.Dom.newElement('<a/>').
+          setID('prependToMultipleElementNew').
+          prependTo(Prime.Dom.queryFirst('#insertMultiple'));
+
+      var newElement = document.getElementById('prependToMultipleElementNew');
+      assert.hasPreviousElementSiblings(newElement, 0);
+      assert.hasNextElementSiblings(newElement, 3);
+      assert.equals(findNextElementSibling(newElement).id, 'insertMultipleOne');
+    }
   },
 
   'removeClass': {

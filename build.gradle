@@ -1,6 +1,6 @@
 // Project info
 group = "org.primeframework"
-version = "0.4"
+version = "0.5"
 description = "Prime JS Framework"
 
 // Plugins
@@ -43,13 +43,13 @@ upload {
 }
 
 artifacts {
-  js(new File("${buildDir}/libs/prime-${version}.js")) {
+  js(new File("${buildDir}/libs/prime.js")) {
     type "js"
   }
 }
 
 jar.doLast {
-  ant.concat(destfile: "${buildDir}/libs/prime-${version}.js", eol: "lf") {
+  ant.concat(destfile: "${buildDir}/libs/prime.js", eol: "lf") {
     fileset(dir: "src/main/js", includes: "*.js")
     fileset(dir: "src/main/js/sizzle", includes: "sizzle.js")
   }

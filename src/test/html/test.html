@@ -98,6 +98,10 @@
 
     <div id="appendExisting"></div>
 
+    <div id="prependExistingTarget"></div>
+
+    <div id="prependExisting"></div>
+
     <div id="html">
     </div>
 
@@ -191,5 +195,28 @@
 
     <span id="appearContextCSS" class="hidden">
     </span>
+
+    <form action="#" method="POST">
+      <input type="checkbox" id="one-checkbox" name="checkboxes" value="one" checked/><label for="one-checkbox">One</label>
+      <input type="checkbox" id="two-checkbox" name="checkboxes" value="two"/><label for="two-checkbox">Two</label>
+      <input type="checkbox" id="three-checkbox" name="checkboxes" value="three" checked/><label for="three-checkbox">Three</label>
+
+      <input type="radio" id="one-radio" name="radio" value="one" checked/><label for="one-radio">One</label>
+      <input type="radio" id="two-radio" name="radio" value="two"/><label for="two-radio">Two</label>
+      <input type="radio" id="three-radio" name="radio" value="three"/><label for="three-radio">Three</label>
+
+      <label for="select">Select</label>
+      <select id="select" multiple="multiple">
+        <option value="one" selected>One</option>
+        <option value="two">Two</option>
+        <option value="three" selected>Three</option>
+      </select>
+
+      <label for="text">Text</label>
+      <input type="text" id="text" name="text" value="Text value"/>
+
+      <label for="textarea">Textarea</label>
+      <textarea id="textarea" name="textarea">Textarea value</textarea>
+    </form>
   </body>
 </html>

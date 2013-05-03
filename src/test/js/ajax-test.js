@@ -45,6 +45,31 @@ buster.testCase('AJAX tests', {
     }, 200);
   },
 
+  'data array': function() {
+    var req = new Prime.Ajax.Request('invalid.html', 'POST').
+      withData({
+        'array': ['value1', 'value2'],
+        'name': 'value'
+      });
+
+    assert.equals(req.body, 'array=value1&array=value2&name=value');
+    assert.isTrue(req.queryParams == null);
+    assert.equals(req.contentType, 'application/x-www-form-urlencoded');
+  },
+
+  'data array empty': function() {
+    var req = new Prime.Ajax.Request('invalid.html', 'POST').
+      withData({
+        'name1': 'value1',
+        'array': [],
+        'name2': 'value2'
+      });
+
+    assert.equals(req.body, 'name1=value1&name2=value2');
+    assert.isTrue(req.queryParams == null);
+    assert.equals(req.contentType, 'application/x-www-form-urlencoded');
+  },
+
   'data POST': function() {
     var req = new Prime.Ajax.Request('invalid.html', 'POST').
       withData({
@@ -59,7 +84,8 @@ buster.testCase('AJAX tests', {
   },
 
   'data GET':function () {
-    var req = new Prime.Ajax.Request('invalid.html').withContentType('application/json').
+    var req = new Prime.Ajax.Request('invalid.html').
+        withContentType('application/json').
         withData({
           'name':'value',
           'nameWith=':'value',
@@ -78,7 +104,8 @@ buster.testCase('AJAX tests', {
   },
 
   'reset':function () {
-    var req = new Prime.Ajax.Request('invalid.html').withContentType('application/json').
+    var req = new Prime.Ajax.Request('invalid.html').
+        withContentType('application/json').
         withData({
           'name':'value',
           'nameWith=':'value',
@@ -223,6 +250,27 @@ buster.testCase('AJAX tests', {
 
     setTimeout(function() {
       assert(called);
+      done();
+    }, 200);
+  },
+
+  /**
+   * Async test for JSON response handling.
+   *
+   * @param done The done callback for async testing.
+   */
+  'responseType': function(done) {
+    var json = null;
+    var handler = function(xhr) {
+      json = JSON.parse(xhr.responseText);
+    };
+
+    var request = new Prime.Ajax.Request('ajax-response.json').withSuccessHandler(handler);
+    request.xhr.overrideMimeType("application/json");
+    request.go();
+
+    setTimeout(function() {
+      assert.isTrue(json.success);
       done();
     }, 200);
   }
