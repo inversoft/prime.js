@@ -278,11 +278,34 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     return this;
   },
-  
+
 
   /*
    * Private methods
    */
+
+  selectableOptionsForPrefix: function(prefix) {
+    var options = this.element.domElement.options;
+    var selectableOptions = [];
+    for (var i = 0; i < options.length; i++) {
+      var option = new Prime.Dom.Element(options[i]);
+      if (option.isSelected()) {
+        continue;
+      }
+
+      var html = option.getHTML();
+      if (html.startsWith(prefix)) {
+        selectableOptions.push(html);
+      }
+    }
+
+    // Alphabetize the options
+    if (selectableOptions.length > 0) {
+      selectableOptions.sort();
+    }
+
+    return selectableOptions;
+  },
 
   /**
    * Makes an ID for the option.

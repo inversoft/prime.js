@@ -21,7 +21,7 @@ Prime.Effects = Prime.Effects || {};
  * Constructs a BaseTransition for the given element.
  *
  * @param {Prime.Dom.Element} element The Prime Element the effect will be applied to.
- * @param {int} endValue The end value for the transition.
+ * @param {number} endValue The end value for the transition.
  * @constructor
  */
 Prime.Effects.BaseTransition = function(element, endValue) {
@@ -50,7 +50,7 @@ Prime.Effects.BaseTransition.prototype = {
   /**
    * Sets the duration of the fade-out effect.
    *
-   * @param {Number} duration The duration in milliseconds.
+   * @param {number} duration The duration in milliseconds.
    * @return {Prime.Effects.BaseTransition} This Effect.
    */
   withDuration: function(duration) {
@@ -122,8 +122,8 @@ Prime.Effects.BaseTransition.prototype = {
  * style. The duration defaults to 1000 milliseconds (1 second). This changes the opacity over the duration from 1.0 to
  * 0.0. At the end, this hides the element so that it doesn't take up any space.
  *
- * @param {Prime.Dom.Element} element The Prime Element to fade out.
  * @constructor
+ * @param {Prime.Dom.Element} element The Prime Element to fade out.
  */
 Prime.Effects.Fade = function(element) {
   Prime.Effects.BaseTransition.apply(this, [element, 0.0]);
@@ -153,8 +153,8 @@ Prime.Effects.Fade.prototype.go = function() {
  * alpha style. The duration defaults to 1000 milliseconds (1 second). This first sets the opacity to 0, then it shows
  * the element and finally it raises the opacity.
  *
- * @param {Prime.Dom.Element} element The Prime Element to appear.
  * @constructor
+ * @param {Prime.Dom.Element} element The Prime Element to appear.
  */
 Prime.Effects.Appear = function(element) {
   Prime.Effects.BaseTransition.apply(this, [element, 1.0]);

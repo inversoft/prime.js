@@ -25,8 +25,8 @@ Prime.Utils = {
    * This might not complete in the specified duration. The functions passed in should be short functions that return as
    * quickly as possible. If you are using long functions, use the recursive setTimeout trick by-hand instance.
    *
-   * @param {Number} totalDuration The duration in milliseconds.
-   * @param {Number} timesToCall The number of times to call the function.
+   * @param {number} totalDuration The duration in milliseconds.
+   * @param {number} timesToCall The number of times to call the function.
    * @param {Function} stepFunction The step function to call each iteration.
    * @param {Function} [endFunction] The function to invoke at the end.
    * @param {Object} [context] The context for the function calls (sets the 'this' parameter).
@@ -52,7 +52,7 @@ Prime.Utils = {
   /**
    * Parses JSON.
    *
-   * @param {String} json The JSON.
+   * @param {string} json The JSON.
    * @return {Object} The JSON data as an object.
    */
   parseJSON: function(json) {

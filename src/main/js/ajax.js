@@ -19,9 +19,8 @@ Prime.Ajax = Prime.Ajax || {};
 /**
  * Makes a new AJAX request.
  *
- * @param {String} [url] The URL to call. This can be left out for sub-classing but should otherwise be provided.
- * @param {String} [method] The HTTP method to use. You can specify GET, POST, PUT, DELETE, HEAD, SEARCH, etc. This
- * defaults to GET.
+ * @param {string} [url] The URL to call. This can be left out for sub-classing but should otherwise be provided.
+ * @param {string} [method=GET] The HTTP method to use. You can specify GET, POST, PUT, DELETE, HEAD, SEARCH, etc.
  * @constructor
  */
 Prime.Ajax.Request = function(url, method) {
@@ -47,7 +46,7 @@ Prime.Ajax.Request.prototype = {
   /**
    * Changes the URL to call.
    *
-   * @param {String} url The new URL to call.
+   * @param {string} url The new URL to call.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   forURL: function(url) {
@@ -146,7 +145,7 @@ Prime.Ajax.Request.prototype = {
   /**
    * Sets the method used to make the AJAX request.
    *
-   * @param {String} method The HTTP method.
+   * @param {string} method The HTTP method.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   usingMethod: function(method) {
@@ -157,7 +156,7 @@ Prime.Ajax.Request.prototype = {
   /**
    * Sets the request body for the request.
    *
-   * @param {String} body The request body.
+   * @param {string} body The request body.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withBody: function(body) {
@@ -168,7 +167,7 @@ Prime.Ajax.Request.prototype = {
   /**
    * Sets the content type for the request.
    *
-   * @param {String} contentType The contentType.
+   * @param {string} contentType The contentType.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withContentType: function(contentType) {
@@ -238,7 +237,7 @@ Prime.Ajax.Request.prototype = {
   /**
    * Sets the XMLHTTPRequest's response type field, which will control how the response is parsed.
    *
-   * @param {String} responseType The response type.
+   * @param {string} responseType The response type.
    * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withResponseType: function(responseType) {
@@ -331,10 +330,10 @@ Prime.Ajax.Request.prototype = {
    * piece. Otherwise, it assumes value is a String or can be converted to a String.
    *
    * @private
-   * @param dataString The data String used to determine if an ampersand is necessary.
-   * @param name The name of the name-value pair.
-   * @param value The value of the name-value pair.
-   * @return {String} The new data string.
+   * @param {string} dataString The data String used to determine if an ampersand is necessary.
+   * @param {string} name The name of the name-value pair.
+   * @param {string|Array} value The value of the name-value pair.
+   * @return {string} The new data string.
    */
   addDataValue: function(dataString, name, value) {
     var result = '';

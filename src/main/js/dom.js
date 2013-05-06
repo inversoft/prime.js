@@ -27,8 +27,8 @@ Prime.Dom = {
   /**
    * Builds a new element using the given HTML snippet (currently this only supports the tag).
    *
-   * @param {String} elementString The element string.
-   * @param {*} properties The properties for the new element.
+   * @param {string} elementString The element string.
+   * @param {Object} [properties={}] The properties for the new element.
    * @return {Prime.Dom.Element} A new Prime.DOM.Element.
    */
   newElement: function(elementString, properties) {
@@ -83,8 +83,8 @@ Prime.Dom = {
   /**
    * Queries the DOM using the given Sizzle selector starting at the given element and returns all the matched elements.
    *
-   * @param {String} selector The selector.
-   * @param {Element|Document} [element] The starting point for the search (defaults to document if not provided).
+   * @param {string} selector The selector.
+   * @param {Element|Document} [element=document] The starting point for the search (defaults to document if not provided).
    * @return {Prime.Dom.ElementList} An element list.
    */
   query: function(selector, element) {
@@ -99,7 +99,7 @@ Prime.Dom = {
   /**
    * Queries the DOM for an element that has the given ID.
    *
-   * @param {String} id The ID.
+   * @param {string} id The ID.
    * @return {Prime.Dom.Element} The element or null.
    */
   queryByID: function(id) {
@@ -115,8 +115,8 @@ Prime.Dom = {
    * Queries the DOM using the given Sizzle selector starting at the given element and returns the first matched element
    * or null if there aren't any matches.
    *
-   * @param {String} selector The selector.
-   * @param {Element|Document|Prime.Dom.Element} [element] The starting point for the search (defaults to document if not provided).
+   * @param {string} selector The selector.
+   * @param {Element|Document|Prime.Dom.Element} [element=document] The starting point for the search (defaults to document if not provided).
    * @return {Prime.Dom.Element} An element or null.
    */
   queryFirst: function(selector, element) {
@@ -137,8 +137,8 @@ Prime.Dom = {
    * Traverses up the DOM from the starting element and looks for a Sizzle match to the selector.  Only supports single
    * element selectors right now, ie 'div.even' or '#id', etc, will throw an exception if the selector has a space in it.
    *
-   * @param {String} selector The selector.
-   * @param {Prime.Dom.Element | Element} element The starting point for the upward traversal.
+   * @param {string} selector The selector.
+   * @param {Prime.Dom.Element|Element} element The starting point for the upward traversal.
    * @return {Prime.Dom.Element} An element or null.
    */
   queryUp: function(selector, element) {
@@ -190,8 +190,8 @@ Prime.Dom = {
 /**
  * Constructs an ElementList object using the given array of DOMElements or Prime.Dom.Elements.
  *
- * @param {Array} elements The array of DOMElement or Prime.Dom.Element objects.
  * @constructor
+ * @param {Array} elements The array of DOMElement or Prime.Dom.Element objects.
  */
 Prime.Dom.ElementList = function(elements) {
   this.length = elements.length;
@@ -211,7 +211,7 @@ Prime.Dom.ElementList.prototype = {
    * single parameter that is the current index.
    *
    * @param {Function} iterationFunction The function to call.
-   * @param {Object} [context] The context for the function call (sets the this variable).
+   * @param {Object} [context=the-current-element] The context for the function call (sets the this variable).
    * @return {Prime.Dom.ElementList} This ElementList.
    */
   each: function(iterationFunction, context) {
@@ -227,7 +227,7 @@ Prime.Dom.ElementList.prototype = {
    * Returns the indexOf the element that matches the parameter, either Prime Element or DOMElement.
    *
    * @param {Prime.Dom.Element|Element} element The element to look for
-   * @return {int} The position of the element in the list, or -1 if not present.
+   * @return {number} The position of the element in the list, or -1 if not present.
    */
   indexOf: function(element) {
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
@@ -259,8 +259,8 @@ Prime.Dom.ElementList.prototype = {
 /**
  * Creates an Element class for the given DOM element.
  *
- * @param {Element} element The element
  * @constructor
+ * @param {Element} element The element
  */
 Prime.Dom.Element = function(element) {
   if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
@@ -286,7 +286,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Adds the given class (or list of space separated classes) to this Element.
    *
-   * @param {String} classNames The class name(s).
+   * @param {string} classNames The class name(s).
    * @return {Prime.Dom.Element} This Element.
    */
   addClass: function(classNames) {
@@ -309,9 +309,9 @@ Prime.Dom.Element.prototype = {
   /**
    * Attaches an event listener to this Element.
    *
-   * @param {String} event The name of the event.
+   * @param {string} event The name of the event.
    * @param {Function} listener The event listener function.
-   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
+   * @param {Object} [context=this] The context to use when invoking the handler (this sets the 'this' variable for the
    *        function call). Defaults to this Element.
    * @return {Prime.Dom.Element} This Element.
    */
@@ -362,7 +362,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Fires an event on the Element
    *
-   * @param {String} event The name of the event.
+   * @param {string} event The name of the event.
    * @param {Object} [memo] Assigned to the memo field of the event.
    * @param {boolean} [bubbling] If the event is bubbling, defaults to true.
    * @param {boolean} [cancellable] If the event is cancellable, defaults to true.
@@ -406,8 +406,8 @@ Prime.Dom.Element.prototype = {
   /**
    * Returns the value of the given attribute.
    *
-   * @param {String} name The attribute name.
-   * @return {String} This attribute value or null.
+   * @param {string} name The attribute name.
+   * @return {string} This attribute value or null.
    */
   getAttribute: function(name) {
     var attr = this.domElement.attributes.getNamedItem(name);
@@ -439,7 +439,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Gets the inner HTML content of the Element.
    *
-   * @return {String} The HTML content.
+   * @return {string} The HTML content.
    */
   getHTML: function() {
     return this.domElement.innerHTML;
@@ -448,7 +448,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Gets the ID of this element from the domElement.
    *
-   * @return {String} ID The id of the domElement if it exists.
+   * @return {string} ID The id of the domElement if it exists.
    */
   getID: function() {
     return this.domElement.id;
@@ -457,7 +457,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Retrieves the opacity value for the Element. This handles the IE alpha filter.
    *
-   * @return {Number} The opacity value.
+   * @return {number} The opacity value.
    */
   getOpacity: function() {
     var computedStyle = this.getComputedStyle();
@@ -480,7 +480,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Gets value of a style attribute
    *
-   * @return {String} The style value.
+   * @return {string} The style value.
    */
   getStyle: function(name) {
     return this.domElement.style[name];
@@ -518,7 +518,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Retrieves the value of this Element.
    *
-   * @return {String} The value of this Element.
+   * @return {string} The value of this Element.
    */
   getValue: function() {
     return this.domElement.value;
@@ -527,8 +527,8 @@ Prime.Dom.Element.prototype = {
   /**
    * Returns true if the element has one or all class names
    *
-   * @param {String} classNames The class name(s).
-   * @return {Boolean} true if all classnames are present.
+   * @param {string} classNames The class name(s).
+   * @return {boolean} true if all classnames are present.
    */
   hasClass: function(classNames) {
     var currentClassName = this.domElement.className;
@@ -630,7 +630,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Returns the computed top and left coordinates of this Element.
    *
-   * @return {Hash} A Hash with top and left set
+   * @return {{top: number, left: number}} An object with top and left set
    */
   position: function() {
     var styles = this.getComputedStyle();
@@ -682,7 +682,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Removes an attribute from the Element
    *
-   * @param {String} name The name of the attribute.
+   * @param {string} name The name of the attribute.
    * @return {Prime.Dom.Element} This Element.
    */
   removeAttribute: function(name) {
@@ -693,7 +693,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Removes the given class (or list of space separated classes) from this Element.
    *
-   * @param {String} classNames The class name(s).
+   * @param {string} classNames The class name(s).
    * @return {Prime.Dom.Element} This Element.
    */
   removeClass: function(classNames) {
@@ -725,7 +725,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Removes an event handler for a specific event from this Element, you must have attached using addEventListener
    *
-   * @param {String} event The name of the event.
+   * @param {string} event The name of the event.
    * @return {Prime.Dom.Element} This Element.
    */
   removeEventListener: function(event) {
@@ -782,8 +782,8 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets an attribute of the Element.
    *
-   * @param {String} name The attribute name
-   * @param {String} value The attribute value
+   * @param {string} name The attribute name
+   * @param {string} value The attribute value
    * @return {Prime.Dom.Element} This Element.
    */
   setAttribute: function(name, value) {
@@ -795,7 +795,8 @@ Prime.Dom.Element.prototype = {
 
   /**
    * Sets multiple attributes of the Element from the hash
-   * @param {Hash} attributes a Hash of key value style pairs
+   *
+   * @param {Object} attributes An object of key value style pairs.
    * @return {Prime.Dom.Element} This Element.
    */
   setAttributes: function(attributes) {
@@ -810,7 +811,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets the inner HTML content of the Element.
    *
-   * @param {String|Prime.Dom.Element} newHTML The new HTML content for the Element.
+   * @param {string|Prime.Dom.Element} newHTML The new HTML content for the Element.
    * @return {Prime.Dom.Element} This Element.
    */
   setHTML: function(newHTML) {
@@ -827,7 +828,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets the ID of the Element.
    *
-   * @param {String} id The ID.
+   * @param {string} id The ID.
    * @return {Prime.Dom.Element} This Element.
    */
   setID: function(id) {
@@ -838,7 +839,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.
    *
-   * @param {Number} opacity The opacity.
+   * @param {number} opacity The opacity.
    * @return {Prime.Dom.Element} This Element.
    */
   setOpacity: function(opacity) {
@@ -854,8 +855,8 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets the style for the name of this Element.
    *
-   * @param {String} name The style name.
-   * @param {String} value The style value.
+   * @param {string} name The style name.
+   * @param {string} value The style value.
    * @return {Prime.Dom.Element} This Element.
    */
   setStyle: function(name, value) {
@@ -866,7 +867,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets multiple styles of this Element.
    *
-   * @param {Hash} styles key value has of style names to new values.
+   * @param {Object} styles An object with key value pairs for the new style names and values.
    * @return {Prime.Dom.Element} This Element.
    */
   setStyles: function(styles) {
@@ -881,7 +882,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets the value of this Element.
    *
-   * @param {String} value The new value.
+   * @param {string} value The new value.
    * @return {Prime.Dom.Element} This Element.
    */
   setValue: function(value) {
@@ -959,11 +960,11 @@ Prime.Dom.Document = {
   /**
    * Attaches an event listener to the document, returning the handler proxy.
    *
-   * @param {String} event The name of the event.
+   * @param {string} event The name of the event.
    * @param {Function} handler The event handler.
    * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
    *        function call). Defaults to this Element.
-   * @return {function} The proxy handler.
+   * @return {Function} The proxy handler.
    */
   addEventListener: function(event, handler, context) {
     var theContext = (arguments.length < 3) ? this : context;
@@ -983,7 +984,7 @@ Prime.Dom.Document = {
   /**
    * Removes an event handler for a specific event from the document that you attached using addEventListener
    *
-   * @param {String} event The name of the event.
+   * @param {string} event The name of the event.
    * @param {Object} handler The handler.
    */
   removeEventListener: function(event, handler) {
@@ -998,11 +999,10 @@ Prime.Dom.Document = {
 };
 
 /**
- * A Javascript Object that can serve to generate Prime.Dom.Element from a source string
- * and optional parameters.
+ * A Javascript Object that can serve to generate Prime.Dom.Element from a source string and optional parameters.
  *
- * @param template the String that defines the source of the template.
  * @constructor
+ * @param {string} template The String that defines the source of the template.
  */
 Prime.Dom.Template = function(template) {
   this.init(template);
@@ -1021,16 +1021,16 @@ Prime.Dom.Template.prototype = {
    * For the value you can provide a straight up String, int, etc, or you can provide a function which will be called
    * to provide the value
    *
-   * @param parameterHash
-   * @return String
+   * @param {Object} parameters An object that contains the parameters for the template to replace.
+   * @return {string} The result of executing the template.
    */
-  generate: function(parameterHash) {
-    parameterHash = typeof parameterHash !== 'undefined' ? parameterHash : {};
+  generate: function(parameters) {
+    parameters = typeof parameters !== 'undefined' ? parameters : {};
     var templateCopy = new String(this.template);
     var key;
-    for (key in parameterHash) {
-      if (parameterHash.hasOwnProperty(key)) {
-        var value = parameterHash[key];
+    for (key in parameters) {
+      if (parameters.hasOwnProperty(key)) {
+        var value = parameters[key];
         var expressedValue;
         if (typeof value === 'function') {
           expressedValue = value();
@@ -1053,12 +1053,12 @@ Prime.Dom.Template.prototype = {
   /**
    * Calls to generate and then appends the resulting value to the inner HTML of the provided primeElement.
    *
-   * @param primeElement
-   * @param parameterHash
+   * @param {Prime.Dom.Element} primeElement The prime Element instance to append the result of executing the template to.
+   * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
-  appendTo: function(primeElement, parameterHash) {
+  appendTo: function(primeElement, parameters) {
     if (typeof primeElement !== 'undefined' && primeElement !== null) {
-      primeElement.setHTML(primeElement.getHTML() + this.generate(parameterHash));
+      primeElement.setHTML(primeElement.getHTML() + this.generate(parameters));
     } else {
       throw "Please supply an element to append to"
     }
@@ -1067,13 +1067,13 @@ Prime.Dom.Template.prototype = {
   /**
    * Calls to generate and then inserts the resulting elements into the dom before the primeElement
    *
-   * @param primeElement
-   * @param parameterHash
+   * @param {Prime.Dom.Element} primeElement The prime Element instance to insert the result of executing the template before.
+   * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
-  insertBefore: function(primeElement, parameterHash) {
+  insertBefore: function(primeElement, parameters) {
     if (typeof primeElement !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
-      holder.innerHTML = this.generate(parameterHash);
+      holder.innerHTML = this.generate(parameters);
       new Prime.Dom.Element(holder.children[0]).insertBefore(primeElement);
     } else {
       throw "Please supply an element to append to"
@@ -1083,13 +1083,13 @@ Prime.Dom.Template.prototype = {
   /**
    * Calls to generate and then inserts the resulting elements into the dom after the primeElement
    *
-   * @param primeElement
-   * @param parameterHash
+   * @param {Prime.Dom.Element} primeElement The prime Element instance to insert the result of executing the template after.
+   * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
-  insertAfter: function(primeElement, parameterHash) {
+  insertAfter: function(primeElement, parameters) {
     if (typeof primeElement !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
-      holder.innerHTML = this.generate(parameterHash);
+      holder.innerHTML = this.generate(parameters);
       new Prime.Dom.Element(holder.children[0]).insertAfter(primeElement);
     } else {
       throw "Please supply an element to append to"
