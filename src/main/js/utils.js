@@ -72,7 +72,7 @@ Prime.Utils = {
       // here by checking if the handler returns false and then preventing the default even behavior. This is only used
       // when the arguments are an event
       var result = func.apply(context, arguments);
-      if (result == false && arguments[0] instanceof Event) {
+      if (result === false && arguments[0] instanceof Event) {
         arguments[0].preventDefault();
       }
 

@@ -34,24 +34,20 @@ Prime.Dom = {
   newElement: function(elementString, properties) {
     properties = typeof properties !== 'undefined' ? properties : {};
     var result = Prime.Dom.tagRegexp.exec(elementString);
-    if (result == null) {
+    if (result === null) {
       throw 'Invalid string to create a new element [' + elementString + ']. It should look like <a/>';
     }
 
     var element = new Prime.Dom.Element(document.createElement(result[1]));
     for (key in properties) {
       if (properties.hasOwnProperty(key)) {
-        if (key == 'id') {
+        if (key === 'id') {
           element.setID(properties[key]);
         } else {
           element.setAttribute(key, properties[key]);
         }
       }
     }
-
-//    if (typeof element.id === 'undefined' || element.id == null || element.id == '') {
-//      this.setID("id", "anonymous_element_" + Prime.Dom.Element.anonymousId++);
-//    }
 
     return element;
   },
@@ -69,7 +65,7 @@ Prime.Dom = {
       callback.call(context);
     } else {
       // If this is the first call, register the event listener on the document
-      if (this.readyFunctions.length == 0) {
+      if (this.readyFunctions.length === 0) {
         if (document.addEventListener) {
           document.addEventListener('DOMContentLoaded', Prime.Dom.callReadyListeners, false);
         } else if (document.attachEvent) {
@@ -93,7 +89,7 @@ Prime.Dom = {
    */
   query: function(selector, element) {
     var domElement = null;
-    if (element != null) {
+    if (element !== null) {
       domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     }
 
@@ -125,7 +121,7 @@ Prime.Dom = {
    */
   queryFirst: function(selector, element) {
     var domElement = null;
-    if (element != null) {
+    if (element !== null) {
       domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     }
 
@@ -151,15 +147,15 @@ Prime.Dom = {
     }
 
     var domElement = null;
-    if (element != null) {
+    if (element !== null) {
       domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     }
 
     domElement = domElement.parentNode;
-    while (domElement != null && !Sizzle.matchesSelector(domElement, selector)) {
+    while (domElement !== null && !Sizzle.matchesSelector(domElement, selector)) {
       domElement = domElement.parentNode;
     }
-    if (domElement != null) {
+    if (domElement !== null) {
       return new Prime.Dom.Element(domElement);
     }
     return null;
@@ -230,8 +226,8 @@ Prime.Dom.ElementList.prototype = {
   /**
    * Returns the indexOf the element that matches the parameter, either Prime Element or DOMElement.
    *
-   * @param {Prime.Dom.Element|DOMElement} element The element to look for
-   * @return {Integer} The position of the element in the list, or -1 if not present.
+   * @param {Prime.Dom.Element|Element} element The element to look for
+   * @return {int} The position of the element in the list, or -1 if not present.
    */
   indexOf: function(element) {
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
@@ -322,7 +318,7 @@ Prime.Dom.Element.prototype = {
   addEventListener: function(event, listener, context) {
     var theContext = (arguments.length < 3) ? this : context;
     var proxy = Prime.Utils.proxy(listener, theContext);
-    if (event.indexOf(':') == -1) {
+    if (event.indexOf(':') === -1) {
       //traditional event
       if (this.domElement.addEventListener) {
         this.domElement.addEventListener(event, proxy, false);
@@ -367,9 +363,9 @@ Prime.Dom.Element.prototype = {
    * Fires an event on the Element
    *
    * @param {String} event The name of the event.
-   * @param {Object} memo Assigned to the memo field of the event, optional.
-   * @param {boolean} bubbling If the event is bubbling, defaults to true.
-   * @param {boolean} cancellable If the event is cancellable, defaults to true.
+   * @param {Object} [memo] Assigned to the memo field of the event.
+   * @param {boolean} [bubbling] If the event is bubbling, defaults to true.
+   * @param {boolean} [cancellable] If the event is cancellable, defaults to true.
    * @return {Prime.Dom.Element} This Element.
    */
   fireEvent: function(event, memo, bubbling, cancellable) {
@@ -377,7 +373,7 @@ Prime.Dom.Element.prototype = {
     cancellable = typeof cancellable !== 'undefined' ? cancellable : true;
 
     var evt;
-    if (event.indexOf(':') == -1) {
+    if (event.indexOf(':') === -1) {
       // Traditional event
       if (document.createEventObject) {
         // Dispatch for IE
@@ -423,6 +419,15 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Gets the children elements of this Element.
+   *
+   * @return {Prime.Dom.ElementList} The children.
+   */
+  getChildren: function() {
+    return new Prime.Dom.ElementList(this.domElement.children);
+  },
+
+  /**
    * Gets the computed style information for this Element.
    *
    * @return {IEElementStyle|CSSStyleDeclaration} The style information.
@@ -432,21 +437,21 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Gets the ID of this element from the domElement.
-   *
-   * @return {String} ID The id of the domElement if it exists.
-   */
-  getID: function() {
-    return this.domElement.id;
-  },
-
-  /**
    * Gets the inner HTML content of the Element.
    *
    * @return {String} The HTML content.
    */
   getHTML: function() {
     return this.domElement.innerHTML;
+  },
+
+  /**
+   * Gets the ID of this element from the domElement.
+   *
+   * @return {String} ID The id of the domElement if it exists.
+   */
+  getID: function() {
+    return this.domElement.id;
   },
 
   /**
@@ -489,7 +494,7 @@ Prime.Dom.Element.prototype = {
    */
   getSelectedValues: function() {
     var values = [];
-    if (this.domElement.tagName == 'INPUT' && (this.domElement.type == 'checkbox' || this.domElement.type == 'radio')) {
+    if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
       var name = this.domElement.name;
       var form = Prime.Dom.queryUp('form', this.domElement);
       Prime.Dom.query('input[name=' + name + ']', form).each(function(element) {
@@ -497,7 +502,7 @@ Prime.Dom.Element.prototype = {
           values.push(element.getValue());
         }
       });
-    } else if (this.domElement.tagName == 'SELECT') {
+    } else if (this.domElement.tagName === 'SELECT') {
       for (var i = 0; i < this.domElement.length; i++) {
         if (this.domElement.options[i].selected) {
           values.push(this.domElement.options[i].value);
@@ -597,7 +602,7 @@ Prime.Dom.Element.prototype = {
    * @return {boolean} True if the element is selected, false if it isn't or is not a checkbox or a radio.
    */
   isChecked: function() {
-    return this.domElement.tagName == 'INPUT' && (this.domElement.type == 'checkbox' || this.domElement.type == 'radio') && this.domElement.checked;
+    return this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio') && this.domElement.checked;
   },
 
   /**
@@ -606,7 +611,7 @@ Prime.Dom.Element.prototype = {
    * @return {boolean} True if the element is selected, false if it isn't or is not an option.
    */
   isSelected: function() {
-    return this.domElement.tagName == 'OPTION' && this.domElement.selected;
+    return this.domElement.tagName === 'OPTION' && this.domElement.selected;
   },
 
   /**
@@ -615,7 +620,7 @@ Prime.Dom.Element.prototype = {
    * @return {Prime.Dom.Element} this element's parent or null if there is no parent
    */
   parent: function() {
-    if (this.domElement.parentNode != null) {
+    if (this.domElement.parentNode !== null) {
       return new Prime.Dom.Element(this.domElement.parentNode);
     } else {
       return null;
@@ -637,7 +642,7 @@ Prime.Dom.Element.prototype = {
     do {
       elements.push(element);
       element = element.parent();
-      if (element.domElement.type == 'body' || element.getStyle('position') !== 'static') {
+      if (element.domElement.type === 'body' || element.getStyle('position') !== 'static') {
         break;
       }
     } while (element);
@@ -728,7 +733,7 @@ Prime.Dom.Element.prototype = {
     var proxies = this.domElement.eventListeners[event][this];
     delete this.domElement.eventListeners[event][this];
 
-    if (event.indexOf(':') == -1) {
+    if (event.indexOf(':') === -1) {
       //traditional event
       for (proxy in proxies) {
         if (proxies.hasOwnProperty(proxy)) {
@@ -809,7 +814,7 @@ Prime.Dom.Element.prototype = {
    * @return {Prime.Dom.Element} This Element.
    */
   setHTML: function(newHTML) {
-    if (newHTML != null) {
+    if (newHTML !== null) {
       if (newHTML instanceof Prime.Dom.Element) {
         this.domElement.innerHTML = newHTML.getHTML();
       } else {
@@ -1032,11 +1037,11 @@ Prime.Dom.Template.prototype = {
         } else {
           expressedValue = value;
         }
-        if (key.indexOf('/') == 0 && key.lastIndexOf('/') == key.length - 1) {
+        if (key.indexOf('/') === 0 && key.lastIndexOf('/') === key.length - 1) {
           templateCopy = templateCopy.replace(new RegExp(key.substring(1, key.length - 1), "g"), expressedValue);
         } else {
           var expressedKey = "#{" + key + "}";
-          while (templateCopy.indexOf(expressedKey) != -1) {
+          while (templateCopy.indexOf(expressedKey) !== -1) {
             templateCopy = templateCopy.replace(expressedKey, expressedValue);
           }
         }
@@ -1052,7 +1057,7 @@ Prime.Dom.Template.prototype = {
    * @param parameterHash
    */
   appendTo: function(primeElement, parameterHash) {
-    if (typeof primeElement !== 'undefined' && primeElement != null) {
+    if (typeof primeElement !== 'undefined' && primeElement !== null) {
       primeElement.setHTML(primeElement.getHTML() + this.generate(parameterHash));
     } else {
       throw "Please supply an element to append to"
@@ -1066,7 +1071,7 @@ Prime.Dom.Template.prototype = {
    * @param parameterHash
    */
   insertBefore: function(primeElement, parameterHash) {
-    if (typeof primeElement !== 'undefined' && primeElement != null) {
+    if (typeof primeElement !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameterHash);
       new Prime.Dom.Element(holder.children[0]).insertBefore(primeElement);
@@ -1082,7 +1087,7 @@ Prime.Dom.Template.prototype = {
    * @param parameterHash
    */
   insertAfter: function(primeElement, parameterHash) {
-    if (typeof primeElement !== 'undefined' && primeElement != null) {
+    if (typeof primeElement !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameterHash);
       new Prime.Dom.Element(holder.children[0]).insertAfter(primeElement);

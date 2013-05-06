@@ -26,6 +26,7 @@
     <script type="text/javascript" src="../../main/js/dom.js"></script>
     <script type="text/javascript" src="../../main/js/effects.js"></script>
     <script type="text/javascript" src="../../main/js/utils.js"></script>
+    <script type="text/javascript" src="../../main/js/widgets.js"></script>
     <script type="text/javascript">
       var documentReadyCount = 0;
       Prime.Dom.onDocumentReady(function() {
@@ -49,6 +50,7 @@
     <script type="text/javascript" src="../js/dom-test.js"></script>
     <script type="text/javascript" src="../js/effects-test.js"></script>
     <script type="text/javascript" src="../js/utils-test.js"></script>
+    <script type="text/javascript" src="../js/widgets-test.js"></script>
     <style>
       #showCSSBlock, #showCSSInline, .hidden {
         display: none;
@@ -178,6 +180,17 @@
       </div>
     </div>
 
+    <div id="children">
+      <div>
+      </div>
+      <div>
+      </div>
+      <div>
+      </div>
+      <div>
+      </div>
+    </div>
+
     <div id="fade">
     </div>
 
@@ -207,6 +220,13 @@
 
       <label for="select">Select</label>
       <select id="select" multiple="multiple">
+        <option value="one" selected>One</option>
+        <option value="two">Two</option>
+        <option value="three" selected>Three</option>
+      </select>
+
+      <label for="multiple-select">Multiple Select Widget</label>
+      <select id="multiple-select" multiple="multiple">
         <option value="one" selected>One</option>
         <option value="two">Two</option>
         <option value="three" selected>Three</option>

@@ -41,7 +41,7 @@ Prime.Browser = {
       var dataString = data[i].string;
       var dataProp = data[i].prop;
       this.versionSearchString = data[i].versionSearch || data[i].identity;
-      if (dataString && dataString.indexOf(data[i].subString) != -1) {
+      if (dataString && dataString.indexOf(data[i].subString) !== -1) {
         return data[i].identity;
       } else if (dataProp) {
         return data[i].identity;
@@ -58,7 +58,7 @@ Prime.Browser = {
    */
   searchVersion: function(dataString) {
     var index = dataString.indexOf(this.versionSearchString);
-    if (index == -1) {
+    if (index === -1) {
       return null;
     }
 

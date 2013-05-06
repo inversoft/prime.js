@@ -21,6 +21,7 @@ Prime.Effects = Prime.Effects || {};
  * Constructs a BaseTransition for the given element.
  *
  * @param {Prime.Dom.Element} element The Prime Element the effect will be applied to.
+ * @param {int} endValue The end value for the transition.
  * @constructor
  */
 Prime.Effects.BaseTransition = function(element, endValue) {
@@ -63,14 +64,14 @@ Prime.Effects.BaseTransition.prototype = {
 
 
   /*
-  * Private functions
-  */
+   * Protected functions
+   */
 
   /**
    * Changes an integer style property of the Element iteratively over a given period of time from one value to another
    * value.
    *
-   * @private
+   * @protected
    * @param {Function} getFunction The function on the element to call to get the current value for the transition.
    * @param {Function} setFunction The function on the element to call to set the new value for the transition.
    */
@@ -96,6 +97,11 @@ Prime.Effects.BaseTransition.prototype = {
 
     Prime.Utils.callIteratively(this.duration, this.iterations, stepFunction, this.internalEndFunction, this);
   },
+
+
+  /*
+   * Private functions
+   */
 
   /**
    * Handles the call back at the end.

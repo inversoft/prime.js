@@ -66,8 +66,8 @@ Prime.Ajax.Request.prototype = {
     }
 
     var requestUrl = this.url;
-    if ((this.method == 'GET' || this.method == 'DELETE') && this.queryParams != null) {
-      if (requestUrl.indexOf('?') == -1) {
+    if ((this.method === 'GET' || this.method === 'DELETE') && this.queryParams !== null) {
+      if (requestUrl.indexOf('?') === -1) {
         requestUrl += '?' + this.queryParams;
       } else {
         requestUrl += '&' + this.queryParams;
@@ -198,7 +198,7 @@ Prime.Ajax.Request.prototype = {
   withData: function(data) {
     for (var prop in data) {
       if (data.hasOwnProperty(prop)) {
-        if (this.method == 'PUT' || this.method == 'POST') {
+        if (this.method === 'PUT' || this.method === 'POST') {
           this.body = this.addDataValue(this.body, prop, data[prop]);
         } else {
           this.queryParams = this.addDataValue(this.queryParams, prop, data[prop]);
@@ -206,7 +206,7 @@ Prime.Ajax.Request.prototype = {
       }
     }
 
-    if (this.method == "PUT" || this.method == "POST") {
+    if (this.method === "PUT" || this.method === "POST") {
       this.contentType = 'application/x-www-form-urlencoded';
     }
     return this;
@@ -349,9 +349,9 @@ Prime.Ajax.Request.prototype = {
       result = encodeURIComponent(name) + '=' + encodeURIComponent(value);
     }
 
-    if (dataString != null && result != '') {
+    if (dataString !== null && result !== '') {
       result = dataString + '&' + result;
-    } else if (dataString != null && result == '') {
+    } else if (dataString !== null && result === '') {
       result = dataString;
     }
 

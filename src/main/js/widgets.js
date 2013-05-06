@@ -16,8 +16,6 @@
 var Prime = Prime || {};
 Prime.Widgets = Prime.Widgets || {};
 
-Prime.Widgets.MultipleSelect.count = 1;
-
 /**
  * Constructs a MultipleSelect object for the given element.
  *
@@ -26,7 +24,7 @@ Prime.Widgets.MultipleSelect.count = 1;
  */
 Prime.Widgets.MultipleSelect = function(element) {
   this.element = (element instanceof Prime.Dom.Element) ? element : new Prime.Dom.Element(element);
-  if (this.element.domElement.tagName != 'SELECT') {
+  if (this.element.domElement.tagName !== 'SELECT') {
     throw 'You can only use Prime.Widgets.MultipleSelect with select elements';
   }
 
@@ -34,34 +32,41 @@ Prime.Widgets.MultipleSelect = function(element) {
   this.element.hide();
 
   var id = this.element.getID();
-  if (id == null) {
+  if (id === null) {
     id = 'prime-multiple-select' + Prime.Widget.MultipleSelect.count++;
     this.element.setID(id);
   }
 
-  this.displayContainer = Prime.Dom.newElement('<div/>').
-      setID(id + '-display').
-      addClass('prime-multiple-select-display').
-      insertAfter(this.element);
+  this.displayContainer = Prime.Dom.queryByID(id + '-display');
+  if (this.displayContainer === null) {
+    this.displayContainer = Prime.Dom.newElement('<div/>').
+        setID(id + '-display').
+        addClass('prime-multiple-select-display').
+        insertAfter(this.element);
 
-  this.input = Prime.Dom.newElement('<input/>').
-      setAttribute('type', 'text').
-      setID(id + '-input').
-      addClass('prime-multiple-select-input').
-      appendTo(this.displayContainer);
+    this.input = Prime.Dom.newElement('<input/>').
+        setAttribute('type', 'text').
+        setID(id + '-input').
+        addClass('prime-multiple-select-input').
+        appendTo(this.displayContainer);
 
-  this.displayContainerSelectedOptionList = Prime.Dom.newElement('<ul/>').
-      setID(id + '-option-list').
-      addClass('prime-multiple-select-option-list').
-      appendTo(this.displayContainer);
-
-  for (var i = 0; i < this.elemet.domElement.length; i++) {
-    var option = this.elemet.domElement.options[i];
-    if (option.selected) {
-      this.selectOption(new Prime.Dom.Element(option));
-    }
+    this.displayContainerSelectedOptionList = Prime.Dom.newElement('<ul/>').
+        setID(id + '-option-list').
+        addClass('prime-multiple-select-option-list').
+        appendTo(this.displayContainer);
+  } else {
+    this.input = Prime.Dom.queryByID(id + '-input');
+    this.displayContainerSelectedOptionList = Prime.Dom.queryByID(id + '-option-list');
   }
+
+  // Rebuild the display
+  this.rebuildDisplay();
 };
+
+/*
+ * Statics
+ */
+Prime.Widgets.MultipleSelect.count = 1;
 
 Prime.Widgets.MultipleSelect.prototype = {
   /**
@@ -90,7 +95,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @param {String} value The value to look for.
    */
   containsOptionWithValue: function(value) {
-    return findOptionsWithValue(value).length > 0;
+    return this.findOptionWithValue(value) !== null;
   },
 
   /**
@@ -105,7 +110,7 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     var id = this.makeOptionID(option);
     var displayOption = Prime.Dom.queryFirst('#' + id);
-    if (displayOption != null) {
+    if (displayOption !== null) {
       displayOption.removeFromDOM();
     }
 
@@ -121,8 +126,8 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   deselectOptionWithValue: function(value) {
-    var option = this.findOptionsWithValue(value);
-    if (options == null) {
+    var option = this.findOptionWithValue(value);
+    if (option === null) {
       throw 'MultipleSelect doesn\'t contain an option with the value [' + value + ']';
     }
 
@@ -141,11 +146,34 @@ Prime.Widgets.MultipleSelect.prototype = {
     for (var i = 0; i < this.element.domElement.length; i++) {
       var cur = this.element.domElement.options[i];
       if (cur.value === value) {
-        return Prime.Dom.Element(cur);
+        return new Prime.Dom.Element(cur);
       }
     }
 
     return null;
+  },
+
+  /**
+   * Rebuilds the display from the underlying select element. All of the current display options (li elements) are
+   * removed. New display options are added for each selected option in the select box.
+   *
+   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  rebuildDisplay: function() {
+    // Remove the currently displayed options
+    this.displayContainerSelectedOptionList.getChildren().each(function(option) {
+      option.removeFromDOM();
+    });
+
+    // Add the selected options
+    for (var i = 0; i < this.element.domElement.length; i++) {
+      var option = this.element.domElement.options[i];
+      if (option.selected) {
+        this.selectOption(new Prime.Dom.Element(option));
+      }
+    }
+
+    return this;
   },
 
   /**
@@ -166,7 +194,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     var displayOption = Prime.Dom.queryFirst('#' + id);
 
     // Check if the option has already been selected
-    if (displayOption != null) {
+    if (displayOption !== null) {
       displayOption.removeFromDOM();
     }
 
@@ -183,7 +211,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    */
   removeOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
-    if (options == null) {
+    if (option === null) {
       throw 'MultipleSelect doesn\'t contain an option with the value [' + value + ']';
     }
 
@@ -197,7 +225,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * the option from the select box wrapped in a Prime.Dom.Element) and adding it to the display container. If the
    * option is already in the display container, that step is skipped.
    *
-   * @param {Prime.Dom.Element} option The option to select.
+   * @param {Prime.Dom.Element} option The option object from the select box wrapped in a Prime.Dom.Element instance.
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   selectOption: function(option) {
@@ -208,12 +236,23 @@ Prime.Widgets.MultipleSelect.prototype = {
     var id = this.makeOptionID(option);
 
     // Check if the option has already been selected
-    if (Prime.Dom.queryFirst('#' + id) == null) {
+    if (Prime.Dom.queryFirst('#' + id) === null) {
       option.setAttribute('selected', 'selected');
-      Prime.Dom.newElement('<li/>').
+
+      var li = Prime.Dom.newElement('<li/>').
           setID(id).
-          setHTML('<span>' + option.innerHTML + '</span><a href="#">X</a>').
           appendTo(this.displayContainerSelectedOptionList);
+      Prime.Dom.newElement('<span/>').
+          setHTML(option.getHTML()).
+          appendTo(li);
+      Prime.Dom.newElement('<a/>').
+          setAttribute('href', '#').
+          setAttribute('value', option.getValue()).
+          setHTML('X').
+          addEventListener('click', function(event) {
+            this.deselectOptionWithValue(new Prime.Dom.Element(event.target).getAttribute('value'));
+          }, this).
+          appendTo(li);
     }
 
     return this;
@@ -231,7 +270,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    */
   selectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
-    if (options == null) {
+    if (option === null) {
       throw 'MultipleSelect doesn\'t contain an option with the value [' + value + ']';
     }
 
@@ -239,6 +278,7 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     return this;
   },
+  
 
   /*
    * Private methods
@@ -253,4 +293,4 @@ Prime.Widgets.MultipleSelect.prototype = {
   makeOptionID: function(option) {
     return 'prime-multiple-select-option-' + option.getValue().replace(' ', '-');
   }
-}
+};

@@ -110,7 +110,7 @@ buster.testCase('ElementList class tests', {
       assert(this instanceof Array);
       assert(element instanceof Prime.Dom.Element);
       assert.equals(element.domElement.tagName, 'P');
-    }, new Array());
+    }, []);
 
     assert.equals(count, 3);
   }
@@ -381,6 +381,11 @@ buster.testCase('Element class tests', {
       assert(!Prime.Dom.queryFirst('#hasClassMultipleExisting').
         hasClass('existing1 fake-class'));
     }
+  },
+
+  "getChildren": function() {
+    var element = Prime.Dom.queryFirst('#children');
+    assert.equals(element.getChildren().length, 4);
   },
 
   'appendTo': {
