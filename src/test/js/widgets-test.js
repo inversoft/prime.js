@@ -25,6 +25,12 @@ buster.testCase('MultipleSelect class tests', {
   setUp: function() {
     this.timeout = 2000;
     this.multipleSelect = new Prime.Widgets.MultipleSelect(Prime.Dom.queryFirst('#multiple-select'));
+    this.multipleSelect.removeAllOptions();
+    this.multipleSelect.addOption('one', 'One');
+    this.multipleSelect.addOption('two', 'Two');
+    this.multipleSelect.addOption('three', 'Three');
+    this.multipleSelect.selectOptionWithValue('one');
+    this.multipleSelect.selectOptionWithValue('three');
   },
 
   'setup': function() {
@@ -46,7 +52,7 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(children[1].getChildren()[1].getChildren()[1].getHTML(), 'X');
   },
 
-  'addOption, selectOption and removeOption': function() {
+  'addOption': function() {
     // Add the option
     this.multipleSelect.addOption('four', 'Four');
 
@@ -66,40 +72,6 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(displayOptions.length, 2);
     assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-one');
     assert.equals(displayOptions[1].getID(), 'prime-multiple-select-option-three');
-
-    // Select the option
-    this.multipleSelect.selectOptionWithValue('four');
-
-    assert.equals(select.length, 4);
-    assert.equals(select.options[0].value, 'one');
-    assert.isTrue(select.options[0].selected);
-    assert.equals(select.options[1].value, 'two');
-    assert.isFalse(select.options[1].selected);
-    assert.equals(select.options[2].value, 'three');
-    assert.isTrue(select.options[2].selected);
-    assert.equals(select.options[3].value, 'four');
-    assert.isTrue(select.options[3].selected);
-
-    // Ensure that the option is added to the display
-    displayOptions = Prime.Dom.query('#multiple-select-display ul li');
-    assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-one');
-    assert.equals(displayOptions[1].getID(), 'prime-multiple-select-option-three');
-    assert.equals(displayOptions[2].getID(), 'prime-multiple-select-option-four');
-
-    // Remove the option and retest
-    this.multipleSelect.removeOptionWithValue('four');
-
-    assert.equals(select.length, 3);
-    assert.equals(select.options[0].value, 'one');
-    assert.equals(select.options[1].value, 'two');
-    assert.equals(select.options[2].value, 'three');
-
-    // Ensure that the option gets removed from the display
-    displayOptions = Prime.Dom.query('#multiple-select-display ul li');
-    assert.equals(displayOptions.length, 2);
-    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-one');
-    assert.equals(displayOptions[1].getID(), 'prime-multiple-select-option-three');
   },
 
   'containsOptionWithValue': function() {
@@ -109,7 +81,7 @@ buster.testCase('MultipleSelect class tests', {
     assert.isFalse(this.multipleSelect.containsOptionWithValue('four'));
   },
 
-  'deselectOptionWithValue and selectOptionWithValue': function() {
+  'deselectOptionWithValue': function() {
     // Deselect the option
     this.multipleSelect.deselectOptionWithValue('one');
 
@@ -125,21 +97,61 @@ buster.testCase('MultipleSelect class tests', {
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
     assert.equals(displayOptions.length, 1);
     assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-three');
+  },
 
-    // Re-select the option
-    this.multipleSelect.selectOptionWithValue('one');
+  'removeOptionWithValue': function() {
+    // Remove the option and retest
+    this.multipleSelect.removeOptionWithValue('one');
 
+    var select = this.multipleSelect.element.domElement;
+    assert.equals(select.length, 2);
+    assert.equals(select.options[0].value, 'two');
+    assert.equals(select.options[1].value, 'three');
+
+    // Ensure that the option gets removed from the display
+    var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
+    assert.equals(displayOptions.length, 1);
+    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-three');
+  },
+
+  'selectOptionWithValue': function() {
+    // Select the option
+    this.multipleSelect.selectOptionWithValue('two');
+
+    var select = this.multipleSelect.element.domElement;
     assert.equals(select.length, 3);
     assert.equals(select.options[0].value, 'one');
     assert.isTrue(select.options[0].selected);
     assert.equals(select.options[1].value, 'two');
-    assert.isFalse(select.options[1].selected);
+    assert.isTrue(select.options[1].selected);
     assert.equals(select.options[2].value, 'three');
     assert.isTrue(select.options[2].selected);
 
-    displayOptions = Prime.Dom.query('#multiple-select-display ul li');
-    assert.equals(displayOptions.length, 2);
-    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-three');
-    assert.equals(displayOptions[1].getID(), 'prime-multiple-select-option-one');
+    // Ensure that the option is added to the display
+    var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
+    assert.equals(displayOptions.length, 3);
+    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-one');
+    assert.equals(displayOptions[1].getID(), 'prime-multiple-select-option-three');
+    assert.equals(displayOptions[2].getID(), 'prime-multiple-select-option-two');
+  },
+
+  'selectableOptionsForPrefix': function() {
+    // Deselect the options and add some extras
+    this.multipleSelect.deselectOptionWithValue('one');
+    this.multipleSelect.deselectOptionWithValue('three');
+    this.multipleSelect.addOption('one1', 'One1');
+    this.multipleSelect.addOption('one2', 'One2');
+    this.multipleSelect.addOption('two1', 'Two1');
+    this.multipleSelect.addOption('two2', 'Two2');
+
+    var options = this.multipleSelect.selectableOptionsForPrefix();
+    assert.equals(options.length, 7);
+    assert.equals(options[0], 'One');
+    assert.equals(options[1], 'One1');
+    assert.equals(options[2], 'One2');
+    assert.equals(options[3], 'Three');
+    assert.equals(options[4], 'Two');
+    assert.equals(options[5], 'Two1');
+    assert.equals(options[6], 'Two2');
   }
 });

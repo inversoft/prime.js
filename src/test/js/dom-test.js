@@ -460,6 +460,10 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Dom.queryFirst('#style').getStyle('text-align'), 'center');
   },
 
+  'getTextContent': function() {
+    assert.equals(Prime.Dom.queryFirst('#textContent').getTextContent().trim(), 'Some text with elements.');
+  },
+
   'getValue': function() {
     assert.equals(Prime.Dom.queryFirst('#one-checkbox').getValue(), 'one');
     assert.equals(Prime.Dom.queryFirst('#two-radio').getValue(), 'two');
@@ -690,6 +694,20 @@ buster.testCase('Element class tests', {
       assert.equals(parent.children[0].id, "insertAfter");
       assert.equals(parent.children[1].id, "insertAfterMove");
     }
+  },
+
+  'insertTextAfter': function() {
+    var div = Prime.Dom.queryFirst('#insertTextAfter');
+    var a = Prime.Dom.queryFirst('#insertTextAfter a');
+    a.insertTextAfter(' foo');
+    assert.equals(div.getTextContent().trim(), 'To insert after foo');
+  },
+
+  'insertTextBefore': function() {
+    var div = Prime.Dom.queryFirst('#insertTextBefore');
+    var a = Prime.Dom.queryFirst('#insertTextBefore a');
+    a.insertTextBefore('foo ');
+    assert.equals(div.getTextContent().trim(), 'foo To insert before');
   },
 
   'hide': function() {

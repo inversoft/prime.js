@@ -109,7 +109,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     option.removeAttribute('selected');
 
     var id = this.makeOptionID(option);
-    var displayOption = Prime.Dom.queryFirst('#' + id);
+    var displayOption = Prime.Dom.queryByID(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
     }
@@ -177,6 +177,21 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
   /**
+   * Removes all of the options from the MultipleSelect.
+   *
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  removeAllOptions: function() {
+    // Remove in reverse order because the options array is dynamically updated when elements are deleted from the DOM
+    var options = this.element.domElement.options;
+    for (var i = options.length - 1; i >= 0; i--) {
+      this.removeOption(new Prime.Dom.Element(options[i]));
+    }
+
+    return this;
+  },
+
+  /**
    * Removes the given option from the MultipleSelect by removing the option in the select box and the option in the
    * display container.
    *
@@ -191,7 +206,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     option.removeFromDOM();
 
     var id = this.makeOptionID(option);
-    var displayOption = Prime.Dom.queryFirst('#' + id);
+    var displayOption = Prime.Dom.queryByID(id);
 
     // Check if the option has already been selected
     if (displayOption !== null) {
@@ -236,7 +251,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     var id = this.makeOptionID(option);
 
     // Check if the option has already been selected
-    if (Prime.Dom.queryFirst('#' + id) === null) {
+    if (Prime.Dom.queryByID(id) === null) {
       option.setAttribute('selected', 'selected');
 
       var li = Prime.Dom.newElement('<li/>').
@@ -284,7 +299,16 @@ Prime.Widgets.MultipleSelect.prototype = {
    * Private methods
    */
 
+  /**
+   * Returns the set of selectable options for the given prefix.
+   *
+   * @private
+   * @param {string} [prefix] The prefix to look for options for.
+   * @returns {Array} The options as strings.
+   */
   selectableOptionsForPrefix: function(prefix) {
+    prefix = typeof prefix !== 'undefined' ? prefix : null;
+
     var options = this.element.domElement.options;
     var selectableOptions = [];
     for (var i = 0; i < options.length; i++) {
@@ -294,7 +318,7 @@ Prime.Widgets.MultipleSelect.prototype = {
       }
 
       var html = option.getHTML();
-      if (html.startsWith(prefix)) {
+      if (prefix === null || html.startsWith(prefix)) {
         selectableOptions.push(html);
       }
     }

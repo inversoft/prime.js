@@ -207,8 +207,11 @@ Prime.Dom.ElementList = function(elements) {
 Prime.Dom.ElementList.prototype = {
   /**
    * Iterates over each of the Prime.Dom.Element objects in this ElementList and calls the given function for each one.
-   * The 'this' variable inside the function will be the current Prime.Dom.Element. The function can optionally take a
-   * single parameter that is the current index.
+   * The 'this' variable inside the function will be the current Prime.Dom.Element unless a context value is provided
+   * when calling this function.
+   *
+   * The function can optionally take two parameters. The first parameter is the current element. The second parameter
+   * is the current index.
    *
    * @param {Function} iterationFunction The function to call.
    * @param {Object} [context=the-current-element] The context for the function call (sets the this variable).
@@ -516,6 +519,15 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Retrieves the text content of this Element.
+   *
+   * @return {string} The text contents of this Element.
+   */
+  getTextContent: function() {
+    return this.domElement.textContent;
+  },
+
+  /**
    * Retrieves the value of this Element.
    *
    * @return {string} The value of this Element.
@@ -592,6 +604,40 @@ Prime.Dom.Element.prototype = {
     } else {
       throw 'The element you passed into insertBefore is not in the DOM. You can\'t insert a Prime.Dom.Element before an element that isn\'t in the DOM yet.';
     }
+
+    return this;
+  },
+
+  /**
+   * Inserts the given text after this Element.
+   *
+   * @param {string} text The text to insert.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  insertTextAfter: function(text) {
+    if (!this.domElement.parentNode) {
+      throw 'This Element is not currently in the DOM';
+    }
+
+    var textNode = document.createTextNode(text);
+    this.domElement.parentNode.insertBefore(textNode, this.domElement.nextSibling);
+
+    return this;
+  },
+
+  /**
+   * Inserts the given text before this Element.
+   *
+   * @param {string} text The text to insert.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  insertTextBefore: function(text) {
+    if (!this.domElement.parentNode) {
+      throw 'This Element is not currently in the DOM';
+    }
+
+    var textNode = document.createTextNode(text);
+    this.domElement.parentNode.insertBefore(textNode, this.domElement);
 
     return this;
   },
