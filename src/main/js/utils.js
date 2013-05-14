@@ -80,6 +80,21 @@ Prime.Utils = {
     }
   },
 
+  /**
+   * Removes the given object from the given array.
+   *
+   * @param {Array} array The array to remove from.
+   * @param {*} obj The object to remove.
+   */
+  removeFromArray: function(array, obj) {
+    var index = array.indexOf(obj);
+    if (index !== -1) {
+      var shift = array.splice(index + 1, array.length);
+      array.length = index;
+      array.push.apply(array, shift);
+    }
+  },
+
   type: function(object) {
     return Object.prototype.toString(object).match(Prime.Utils.typeRegex)[1];
   }

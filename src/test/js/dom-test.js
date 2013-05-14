@@ -74,6 +74,20 @@ buster.assertions.add('hasPreviousElementSiblings', {
 });
 
 
+buster.testCase('Window tests', {
+  'getInnerHeight': function() {
+    assert.isTrue(Prime.Window.getInnerHeight() > 400);
+  },
+
+  'getInnerWidth': function() {
+    assert.isTrue(Prime.Window.getInnerWidth() > 400);
+  },
+
+  'getScrollTop': function() {
+    assert.isTrue(Prime.Window.getScrollTop() >= 0);
+  }
+});
+
 buster.testCase('Dom namespace tests', {
   'documentReady': function() {
     assert.equals(documentReadyCount, 1);
@@ -189,11 +203,11 @@ buster.testCase('Element namespace tests', {
     element = Prime.Dom.newElement('<span>foo</span>');
     assert.equals(element.domElement.tagName, 'SPAN');
 
-    element = Prime.Dom.newElement('<div/>', {'id':'1'});
+    element = Prime.Dom.newElement('<div/>', {'id': '1'});
     assert.equals(element.domElement.id, '1');
     assert.equals(element.getID(), '1');
 
-    element = Prime.Dom.newElement('<div/>', {'id':'id', 'style':'width:200px;float:left'});
+    element = Prime.Dom.newElement('<div/>', {'id': 'id', 'style': 'width:200px;float:left'});
     assert.equals(element.domElement.id, 'id');
     assert.equals(element.getID(), 'id');
     assert.equals(element.domElement.style['width'], '200px');
@@ -227,7 +241,7 @@ buster.testCase('Element namespace tests', {
       try {
         Prime.Dom.queryUp('div div#parent', this.child);
         assert(false);
-      } catch(err) {
+      } catch (err) {
         assert(err != null);
       }
     }
@@ -244,7 +258,7 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('attr2'), 'value2');
   },
 
-  'set remove attribute':function () {
+  'set remove attribute': function() {
     assert.isTrue(Prime.Dom.queryFirst('#attributes').getAttribute('foo') == null);
 
     Prime.Dom.queryFirst('#attributes').setAttribute('foo', 'bar');
@@ -269,7 +283,7 @@ buster.testCase('Element class tests', {
 
     'addClassEmptyAddSingle': function() {
       Prime.Dom.queryFirst('#classEmpty').
-        addClass('new-class');
+          addClass('new-class');
 
       var elem = document.getElementById('classEmpty');
       assert.equals(elem.className, 'new-class');
@@ -277,7 +291,7 @@ buster.testCase('Element class tests', {
 
     'addClassEmptyAddMultiple': function() {
       Prime.Dom.queryFirst('#classEmpty').
-        addClass('new-class1 new-class2');
+          addClass('new-class1 new-class2');
 
       var elem = document.getElementById('classEmpty');
       assert.equals(elem.className, 'new-class1 new-class2');
@@ -285,7 +299,7 @@ buster.testCase('Element class tests', {
 
     'addClassSingleExistingAddOne': function() {
       Prime.Dom.queryFirst('#classSingleExisting').
-        addClass('existing');
+          addClass('existing');
 
       var elem = document.getElementById('classSingleExisting');
       assert.equals(elem.className, 'existing');
@@ -293,7 +307,7 @@ buster.testCase('Element class tests', {
 
     'addClassSingleExistingAddMultiple': function() {
       Prime.Dom.queryFirst('#classSingleExisting').
-        addClass('existing new-class');
+          addClass('existing new-class');
 
       var elem = document.getElementById('classSingleExisting');
       assert.equals(elem.className, 'existing new-class');
@@ -301,7 +315,7 @@ buster.testCase('Element class tests', {
 
     'addClassSingleExistingAddMultipleNew': function() {
       Prime.Dom.queryFirst('#classSingleExisting').
-        addClass('new-class1 new-class2');
+          addClass('new-class1 new-class2');
 
       var elem = document.getElementById('classSingleExisting');
       assert.equals(elem.className, 'existing new-class1 new-class2');
@@ -309,7 +323,7 @@ buster.testCase('Element class tests', {
 
     'addClassMultipleExistingAddOne': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        addClass('existing1');
+          addClass('existing1');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing2 existing3');
@@ -317,7 +331,7 @@ buster.testCase('Element class tests', {
 
     'addClassMultipleExistingAddMultiple': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        addClass('existing1 existing2');
+          addClass('existing1 existing2');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing2 existing3');
@@ -325,7 +339,7 @@ buster.testCase('Element class tests', {
 
     'addClassMultipleExistingAddOneNew': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        addClass('existing1 new-class1');
+          addClass('existing1 new-class1');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing2 existing3 new-class1');
@@ -333,7 +347,7 @@ buster.testCase('Element class tests', {
 
     'addClassMultipleExistingAddMultipleNew': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        addClass('existing1 new-class1 new-class2');
+          addClass('existing1 new-class1 new-class2');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing2 existing3 new-class1 new-class2');
@@ -341,7 +355,7 @@ buster.testCase('Element class tests', {
 
     'addClassMultipleExistingAddOnlyOneNew': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        addClass('new-class1');
+          addClass('new-class1');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing2 existing3 new-class1');
@@ -349,7 +363,7 @@ buster.testCase('Element class tests', {
 
     'addClassMultipleExistingAddOnlyMultipleNew': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        addClass('new-class1 new-class2');
+          addClass('new-class1 new-class2');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing2 existing3 new-class1 new-class2');
@@ -359,27 +373,27 @@ buster.testCase('Element class tests', {
   'hasClass': {
     'hasClassEmpty': function() {
       assert(!Prime.Dom.queryFirst('#hasClassEmpty').
-        hasClass('new-class'));
+          hasClass('new-class'));
     },
 
     'hasClassSingle': function() {
       assert(Prime.Dom.queryFirst('#hasClassSingleExisting').
-        hasClass('existing'));
+          hasClass('existing'));
     },
 
     'hasClassSingleMissing': function() {
       assert(!Prime.Dom.queryFirst('#hasClassSingleExisting').
-        hasClass('not-existing'));
+          hasClass('not-existing'));
     },
 
     'hasClassMultiple': function() {
       assert(Prime.Dom.queryFirst('#hasClassMultipleExisting').
-        hasClass('existing1 existing2 existing3'));
+          hasClass('existing1 existing2 existing3'));
     },
 
     'hasClassMultipleMissingOne': function() {
       assert(!Prime.Dom.queryFirst('#hasClassMultipleExisting').
-        hasClass('existing1 fake-class'));
+          hasClass('existing1 fake-class'));
     }
   },
 
@@ -398,8 +412,8 @@ buster.testCase('Element class tests', {
 
     'appendToSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('appendToSingleElementNew').
-        appendTo(document.getElementById('insertSingle'));
+          setID('appendToSingleElementNew').
+          appendTo(document.getElementById('insertSingle'));
 
       var newElement = document.getElementById('appendToSingleElementNew');
       assert.hasPreviousElementSiblings(newElement, 1);
@@ -409,8 +423,8 @@ buster.testCase('Element class tests', {
 
     'appendToSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('appendToSingleElementNew').
-        appendTo(Prime.Dom.queryFirst('#insertSingle'));
+          setID('appendToSingleElementNew').
+          appendTo(Prime.Dom.queryFirst('#insertSingle'));
 
       var newElement = document.getElementById('appendToSingleElementNew');
       assert.hasPreviousElementSiblings(newElement, 1);
@@ -420,8 +434,8 @@ buster.testCase('Element class tests', {
 
     'appendToMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('appendToMultipleElementNew').
-        appendTo(document.getElementById('insertMultiple'));
+          setID('appendToMultipleElementNew').
+          appendTo(document.getElementById('insertMultiple'));
 
       var newElement = document.getElementById('appendToMultipleElementNew');
       assert.hasPreviousElementSiblings(newElement, 3);
@@ -431,8 +445,8 @@ buster.testCase('Element class tests', {
 
     'appendToMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('appendToMultipleElementNew').
-        appendTo(Prime.Dom.queryFirst('#insertMultiple'));
+          setID('appendToMultipleElementNew').
+          appendTo(Prime.Dom.queryFirst('#insertMultiple'));
 
       var newElement = document.getElementById('appendToMultipleElementNew');
       assert.hasPreviousElementSiblings(newElement, 3);
@@ -503,8 +517,8 @@ buster.testCase('Element class tests', {
 
     'insertBeforeSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertSingleElementNew').
-        insertBefore(document.getElementById('insertSingleElement'));
+          setID('insertSingleElementNew').
+          insertBefore(document.getElementById('insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
       this.verifyInsertBeforeFirst(newElement, 'insertSingleElement', 'A');
@@ -512,8 +526,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertSingleElementNew').
-        insertBefore(Prime.Dom.queryFirst('#insertSingleElement'));
+          setID('insertSingleElementNew').
+          insertBefore(Prime.Dom.queryFirst('#insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
       this.verifyInsertBeforeFirst(newElement, 'insertSingleElement', 'A');
@@ -521,8 +535,8 @@ buster.testCase('Element class tests', {
 
     'insertBeforeFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertBefore(document.getElementById('insertMultipleOne'));
+          setID('insertMultipleElementNew').
+          insertBefore(document.getElementById('insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertBeforeFirst(newElement, 'insertMultipleOne', 'A');
@@ -530,8 +544,8 @@ buster.testCase('Element class tests', {
 
     'insertBeforeFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertBefore(Prime.Dom.queryFirst('#insertMultipleOne'));
+          setID('insertMultipleElementNew').
+          insertBefore(Prime.Dom.queryFirst('#insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertBeforeFirst(newElement, 'insertMultipleOne', 'A');
@@ -539,8 +553,8 @@ buster.testCase('Element class tests', {
 
     'insertBeforeMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertBefore(document.getElementById('insertMultipleTwo'));
+          setID('insertMultipleElementNew').
+          insertBefore(document.getElementById('insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertBefore(newElement, 'insertMultipleTwo', 'A', 1);
@@ -548,8 +562,8 @@ buster.testCase('Element class tests', {
 
     'insertBeforeMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertBefore(Prime.Dom.queryFirst('#insertMultipleTwo'));
+          setID('insertMultipleElementNew').
+          insertBefore(Prime.Dom.queryFirst('#insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertBefore(newElement, 'insertMultipleTwo', 'A', 1);
@@ -557,8 +571,8 @@ buster.testCase('Element class tests', {
 
     'insertBeforeLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertBefore(document.getElementById('insertMultipleThree'));
+          setID('insertMultipleElementNew').
+          insertBefore(document.getElementById('insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertBefore(newElement, 'insertMultipleThree', 'A', 2);
@@ -566,8 +580,8 @@ buster.testCase('Element class tests', {
 
     'insertBeforeLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertBefore(Prime.Dom.queryFirst('#insertMultipleThree'));
+          setID('insertMultipleElementNew').
+          insertBefore(Prime.Dom.queryFirst('#insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertBefore(newElement, 'insertMultipleThree', 'A', 2);
@@ -615,8 +629,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterSingleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertSingleElementNew').
-        insertAfter(document.getElementById('insertSingleElement'));
+          setID('insertSingleElementNew').
+          insertAfter(document.getElementById('insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
       this.verifyInsertAfterEnd(newElement, 'insertSingleElement', 'A');
@@ -624,8 +638,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterSinglePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertSingleElementNew').
-        insertAfter(Prime.Dom.queryFirst('#insertSingleElement'));
+          setID('insertSingleElementNew').
+          insertAfter(Prime.Dom.queryFirst('#insertSingleElement'));
 
       var newElement = document.getElementById('insertSingleElementNew');
       this.verifyInsertAfterEnd(newElement, 'insertSingleElement', 'A');
@@ -633,8 +647,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterFirstMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertAfter(document.getElementById('insertMultipleOne'));
+          setID('insertMultipleElementNew').
+          insertAfter(document.getElementById('insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertAfter(newElement, 'insertMultipleOne', 'A', 2);
@@ -642,8 +656,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterFirstMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertAfter(Prime.Dom.queryFirst('#insertMultipleOne'));
+          setID('insertMultipleElementNew').
+          insertAfter(Prime.Dom.queryFirst('#insertMultipleOne'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertAfter(newElement, 'insertMultipleOne', 'A', 2);
@@ -651,8 +665,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterMiddleMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertAfter(document.getElementById('insertMultipleTwo'));
+          setID('insertMultipleElementNew').
+          insertAfter(document.getElementById('insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertAfter(newElement, 'insertMultipleTwo', 'A', 1);
@@ -660,8 +674,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterMiddleMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertAfter(Prime.Dom.queryFirst('#insertMultipleTwo'));
+          setID('insertMultipleElementNew').
+          insertAfter(Prime.Dom.queryFirst('#insertMultipleTwo'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertAfter(newElement, 'insertMultipleTwo', 'A', 1);
@@ -669,8 +683,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterLastMultipleDOMElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertAfter(document.getElementById('insertMultipleThree'));
+          setID('insertMultipleElementNew').
+          insertAfter(document.getElementById('insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertAfterEnd(newElement, 'insertMultipleThree', 'A');
@@ -678,8 +692,8 @@ buster.testCase('Element class tests', {
 
     'insertAfterLastMultiplePrimeElement': function() {
       Prime.Dom.newElement('<a/>').
-        setID('insertMultipleElementNew').
-        insertAfter(Prime.Dom.queryFirst('#insertMultipleThree'));
+          setID('insertMultipleElementNew').
+          insertAfter(Prime.Dom.queryFirst('#insertMultipleThree'));
 
       var newElement = document.getElementById('insertMultipleElementNew');
       this.verifyInsertAfterEnd(newElement, 'insertMultipleThree', 'A');
@@ -785,7 +799,7 @@ buster.testCase('Element class tests', {
 
     'removeClassEmptyRemoveSingle': function() {
       Prime.Dom.queryFirst('#classEmpty').
-        removeClass('new-class');
+          removeClass('new-class');
 
       var elem = document.getElementById('classEmpty');
       refute(elem.className);
@@ -793,7 +807,7 @@ buster.testCase('Element class tests', {
 
     'removeClassEmptyRemoveMultiple': function() {
       Prime.Dom.queryFirst('#classEmpty').
-        removeClass('new-class1 new-class2');
+          removeClass('new-class1 new-class2');
 
       var elem = document.getElementById('classEmpty');
       refute(elem.className);
@@ -801,7 +815,7 @@ buster.testCase('Element class tests', {
 
     'removeClassSingleExistingRemoveOne': function() {
       Prime.Dom.queryFirst('#classSingleExisting').
-        removeClass('existing');
+          removeClass('existing');
 
       var elem = document.getElementById('classSingleExisting');
       refute(elem.className);
@@ -809,7 +823,7 @@ buster.testCase('Element class tests', {
 
     'removeClassSingleExistingRemoveMultiple': function() {
       Prime.Dom.queryFirst('#classSingleExisting').
-        removeClass('existing new-class');
+          removeClass('existing new-class');
 
       var elem = document.getElementById('classSingleExisting');
       refute(elem.className);
@@ -817,7 +831,7 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveOneFirst': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing1');
+          removeClass('existing1');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing2 existing3');
@@ -825,7 +839,7 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveOneMiddle': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing2');
+          removeClass('existing2');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing3');
@@ -833,7 +847,7 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveOneLast': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing3');
+          removeClass('existing3');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1 existing2');
@@ -841,7 +855,7 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveMultipleFirstMiddle': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing1 existing2');
+          removeClass('existing1 existing2');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing3');
@@ -849,7 +863,7 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveMultipleMiddleLast': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing2 existing3');
+          removeClass('existing2 existing3');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing1');
@@ -857,7 +871,7 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveMultipleFirstLast': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing1 existing3');
+          removeClass('existing1 existing3');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing2');
@@ -865,7 +879,7 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveMultipleLastFirst': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing3 existing1');
+          removeClass('existing3 existing1');
 
       var elem = document.getElementById('classMultipleExisting');
       assert.equals(elem.className, 'existing2');
@@ -873,13 +887,13 @@ buster.testCase('Element class tests', {
 
     'removeClassMultipleExistingRemoveMultipleAll': function() {
       Prime.Dom.queryFirst('#classMultipleExisting').
-        removeClass('existing2 existing3 existing1');
+          removeClass('existing2 existing3 existing1');
 
       var elem = document.getElementById('classMultipleExisting');
       refute(elem.className);
     },
 
-    'removeClassNonExistingSingle':function () {
+    'removeClassNonExistingSingle': function() {
       Prime.Dom.queryFirst('#classSingleExisting').
           removeClass('non-existing');
 
@@ -904,7 +918,7 @@ buster.testCase('Element class tests', {
   },
 
   'setAttributes': function() {
-    Prime.Dom.queryByID('set-attributes').setAttributes({'rel':'foo','width':'10%'});
+    Prime.Dom.queryByID('set-attributes').setAttributes({'rel': 'foo', 'width': '10%'});
 
     var element = document.getElementById('set-attributes');
     assert(element != null);
@@ -912,13 +926,29 @@ buster.testCase('Element class tests', {
     assert.equals(element.attributes.getNamedItem('width').value, '10%');
   },
 
+  'setLeft': function() {
+    var element = Prime.Dom.queryByID('set-styles').setLeft(10);
+    assert.equals(element.getStyle('left'), '10px');
+
+    element = element.setLeft('10em');
+    assert.equals(element.getStyle('left'), '10em');
+  },
+
   'setStyles': function() {
-    Prime.Dom.queryByID('set-styles').setStyles({'text-align':'right','width':'10%'});
+    Prime.Dom.queryByID('set-styles').setStyles({'text-align': 'right', 'width': '10%'});
 
     var element = document.getElementById('set-styles');
     assert(element != null);
     assert.equals(element.style['text-align'], 'right');
     assert.equals(element.style['width'], '10%');
+  },
+
+  'setTop': function() {
+    var element = Prime.Dom.queryByID('set-styles').setTop(10);
+    assert.equals(element.getStyle('top'), '10px');
+
+    element = element.setTop('10em');
+    assert.equals(element.getStyle('top'), '10em');
   },
 
   'show': function() {
@@ -950,94 +980,66 @@ buster.testCase('Element class tests', {
     assert.equals(element.style.display, 'inline');
   },
 
-  'addEventListenerFunction': function() {
+  'eventsUsingFunction': function() {
     var called = false;
-    Prime.Dom.queryFirst('#event').
-      addEventListener('click', function() {
-        called = true;
-      });
-
-    var element = document.getElementById('event');
-    if (document.createEvent) {
-      var event = document.createEvent('MouseEvents');
-      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      element.dispatchEvent(event);
-    } else {
-      element.fireEvent('onclick');
-    }
-
-    assert(called);
-  },
-
-  'addEventListenerObject': function() {
-    var MyEventListener = function() {
-      this.called = false;
-    };
-    MyEventListener.prototype = {
-      handle: function() {
-        this.called = true;
-      }
+    var memo = null;
+    var handler = function(event) {
+      called = true;
+      memo = event.memo;
     };
 
-    var instance = new MyEventListener();
-    Prime.Dom.queryFirst('#event').
-      addEventListener('click', instance.handle, instance);
-
-    var element = document.getElementById('event');
-    if (document.createEvent) {
-      var event = document.createEvent('MouseEvents');
-      event.initMouseEvent('click', true, true, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-      element.dispatchEvent(event);
-    } else {
-      element.fireEvent('onclick');
-    }
-
-    assert(instance.called);
-  },
-
-  'fireEvent': function() {
-    var MyEventListener = function() {
-      this.called = false;
-    };
-    MyEventListener.prototype = {
-      handle: function() {
-        this.called = true;
-      }
-    };
-
-    var instance = new MyEventListener();
     var element = Prime.Dom.queryFirst('#event').
-      addEventListener('click', instance.handle, instance);
+        addEventListener('click', handler).
+        fireEvent('click', 'memo');
 
-    element.fireEvent('click');
-    assert(instance.called);
+    assert.isTrue(called);
+    assert.equals(memo, 'memo');
+
+    called = false;
+    memo = null;
+    element.removeEventListener('click', handler).
+        fireEvent('click', 'memo');
+
+    assert.isFalse(called);
+    assert.equals(memo, null);
+
+    
   },
 
-  'fireEventWithMemo': function() {
+  'eventsUsingObject': function() {
     var MyEventListener = function() {
       this.called = false;
       this.memo = null;
     };
     MyEventListener.prototype = {
-      handle: function(evt) {
+      handle: function(event) {
         this.called = true;
-        this.memo = evt.memo;
+        this.memo = event.memo;
       }
     };
 
     var instance = new MyEventListener();
     var element = Prime.Dom.queryFirst('#event').
-      addEventListener('click', instance.handle, instance);
+        addEventListener('click', instance.handle, instance).
+        fireEvent('click', 'memo');
 
-    element.fireEvent('click', 'foo');
-    assert(instance.called);
-    assert.equals(instance.memo, 'foo');
+    assert.isTrue(instance.called);
+    assert.equals(instance.memo, 'memo');
+
+    instance.called = false;
+    instance.memo = null;
+    element.removeEventListener('click', instance.handle).
+        fireEvent('click', 'memo');
+
+    assert.isFalse(instance.called);
+    assert.equals(instance.memo, null);
   },
 
-  'fireCustomEvent': function() {
+  'customEvents': function() {
     var MyEventListener = function() {
       this.called = false;
       this.memo = null;
+      this.event = null;
     };
     MyEventListener.prototype = {
       handle: function(evt) {
@@ -1049,12 +1051,22 @@ buster.testCase('Element class tests', {
 
     var instance = new MyEventListener();
     var element = Prime.Dom.queryFirst('#event').
-      addEventListener('custom:pop', instance.handle, instance);
+        addEventListener('custom:pop', instance.handle, instance).
+        fireEvent('custom:pop', 'foo');
 
-    element.fireEvent('custom:pop', 'foo');
-    assert(instance.called);
+    assert.isTrue(instance.called);
     assert.equals(instance.event, 'custom:pop');
     assert.equals(instance.memo, 'foo');
+
+    instance.called = false;
+    instance.memo = null;
+    instance.event = null;
+    element.removeEventListener('custom:pop', instance.handle).
+         fireEvent('custom:pop', 'foo');
+
+    assert.isFalse(instance.called);
+    assert.equals(instance.event, null);
+    assert.equals(instance.memo, null);
   },
 
   'opacity': function() {
@@ -1069,7 +1081,7 @@ buster.testCase('Element class tests', {
 });
 
 buster.testCase('Prime.Dom.Document', {
-  'addEventListener' : function() {
+  'addEventListener': function() {
     var MyEventListener = function() {
       this.called = false;
       this.memo = null;
@@ -1091,7 +1103,20 @@ buster.testCase('Prime.Dom.Document', {
     assert.equals(instance.memo, 'foo');
   },
 
-  'removeEventListener' : function() {
+  'getHeight': function() {
+    var height = Prime.Dom.Document.getHeight();
+    assert.isTrue(height > 400);
+    assert.isTrue(height > Prime.Window.getInnerHeight());
+  },
+
+  'getWidth': function() {
+    var width = Prime.Dom.Document.getWidth();
+    assert.isTrue(width > 400);
+//    console.log('Document width is ' + width + ' and window inner width is ' + Prime.Window.getInnerWidth());
+//    assert.isTrue(width >= Prime.Window.getInnerWidth());
+  },
+
+  'removeEventListener': function() {
     var MyEventListener = function() {
       this.called = false;
       this.memo = null;
@@ -1135,13 +1160,15 @@ buster.testCase('Prime.Dom.Template', {
 
   'generate with simple key replacement': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
-    var string = template.generate({'foo':'bar'});
+    var string = template.generate({'foo': 'bar'});
     assert.equals(string, '<span>bar</span>');
   },
 
   'generate with simple function replacement': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
-    var string = template.generate({'foo': function() { return 'baz' }});
+    var string = template.generate({'foo': function() {
+      return 'baz'
+    }});
     assert.equals(string, '<span>baz</span>');
   },
 
@@ -1157,20 +1184,20 @@ buster.testCase('Prime.Dom.Template', {
     assert.equals(string, '<span>where\'s waldo?</span>');
   },
 
-  'generate with regex key' : function() {
+  'generate with regex key': function() {
     var template = new Prime.Dom.Template("<span>69!</span>");
     var string = template.generate({"/\\d+/": "number blocked"});
     assert.equals(string, '<span>number blocked!</span>');
   },
 
-  'append' : function() {
+  'append': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
     var container = Prime.Dom.newElement("<div/>");
     template.appendTo(container, {'foo': 'bar'});
     assert.equals(container.getHTML(), '<span>bar</span>');
   },
 
-  'appendMultiple' : function() {
+  'appendMultiple': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
     var container = Prime.Dom.newElement("<div/>");
     template.appendTo(container, {'foo': 'bar'});
@@ -1178,7 +1205,7 @@ buster.testCase('Prime.Dom.Template', {
     assert.equals(container.getHTML(), '<span>bar</span><span>baz</span>');
   },
 
-  'insertBefore' : function() {
+  'insertBefore': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
     var target = Prime.Dom.queryByID("templateInsertBefore");
 
@@ -1187,7 +1214,7 @@ buster.testCase('Prime.Dom.Template', {
     assert.equals(target.domElement.parentNode.children[1].innerText, '');
   },
 
-  'insertBeforeMultiple' : function() {
+  'insertBeforeMultiple': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
     var target = Prime.Dom.queryByID("templateInsertBeforeMultiple");
 
@@ -1198,7 +1225,7 @@ buster.testCase('Prime.Dom.Template', {
     assert.equals(target.domElement.parentNode.children[2].innerText, '');
   },
 
-  'insertAfter' : function() {
+  'insertAfter': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
     var target = Prime.Dom.queryByID("templateInsertAfter");
 
@@ -1207,7 +1234,7 @@ buster.testCase('Prime.Dom.Template', {
     assert.equals(target.domElement.parentNode.children[1].innerText, 'bar');
   },
 
-  'insertAfterMultiple' : function() {
+  'insertAfterMultiple': function() {
     var template = new Prime.Dom.Template("<span>#{foo}</span>");
     var target = Prime.Dom.queryByID("templateInsertBeforeAfter");
 

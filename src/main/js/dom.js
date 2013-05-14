@@ -15,6 +15,67 @@
  */
 var Prime = Prime || {};
 
+Prime.Window = {
+  /**
+   * Returns the inner height of the window. This includes only the rendering area and not the window chrome (toolbars,
+   * status bars, etc). If this method can't figure out the inner height, it throws an exception.
+   *
+   * @returns {number} The inner height of the window.
+   */
+  getInnerHeight: function() {
+    if (typeof(window.innerHeight) === 'number') {
+      // Most browsers
+      return window.innerHeight;
+    } else if (document.documentElement && document.documentElement.clientHeight) {
+      // IE 6+ in 'standards compliant mode'
+      return document.documentElement.clientHeight;
+    } else if (document.body && document.body.clientHeight) {
+      // IE 4 compatible
+      return document.body.clientHeight;
+    }
+
+    throw 'Unable to determine inner height of the window';
+  },
+
+  /**
+   * Returns the inner width of the window. This includes only the rendering area and not the window chrome (toolbars,
+   * status bars, etc). If this method can't figure out the inner width, it throws an exception.
+   *
+   * @returns {number} The inner width of the window.
+   */
+  getInnerWidth: function() {
+    if (typeof(window.innerWidth) === 'number') {
+      // Most browsers
+      return window.innerWidth;
+    } else if (document.documentElement && document.documentElement.clientWidth) {
+      // IE 6+ in 'standards compliant mode'
+      return document.documentElement.clientWidth;
+    } else if (document.body && document.body.clientWidth) {
+      // IE 4 compatible
+      return document.body.clientWidth;
+    }
+
+    throw 'Unable to determine inner width of the window';
+  },
+
+  /**
+   * Returns the number of pixels the Window is scrolled by.
+   *
+   * @returns {number} The number of pixels.
+   */
+  getScrollTop: function() {
+    if (typeof(window.pageYOffset) === 'number') {
+      return window.pageYOffset;
+    } else if (document.body && document.body.scrollTop) {
+      return document.body.scrollTop;
+    } else if (document.documentElement && document.documentElement.scrollTop) {
+      return document.documentElement.scrollTop;
+    }
+
+    throw 'Unable to determine scrollTop of the window';
+  }
+};
+
 /**
  * The DOM namespace.
  *
@@ -271,8 +332,7 @@ Prime.Dom.Element = function(element) {
   }
 
   this.domElement = element;
-
-  this.domElement.customEvents = {};
+  this.domElement.customEventListeners = [];
   this.domElement.eventListeners = {};
 };
 
@@ -282,6 +342,8 @@ Prime.Dom.Element = function(element) {
  * @type {RegExp}
  */
 Prime.Dom.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
+Prime.Dom.Element.mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup|mouseover|mousemove|mouseout)$/;
+Prime.Dom.Element.htmlEventsRegexp = /^(?:abort|blur|change|error|focus|load|reset|resize|scroll|select|submit|unload)$/;
 Prime.Dom.Element.anonymousId = 1;
 Prime.Dom.Element.ieAlpaRegexp = /alpha\(opacity=(.+)\)/;
 
@@ -320,20 +382,23 @@ Prime.Dom.Element.prototype = {
    */
   addEventListener: function(event, listener, context) {
     var theContext = (arguments.length < 3) ? this : context;
-    var proxy = Prime.Utils.proxy(listener, theContext);
+    listener.primeProxy = Prime.Utils.proxy(listener, theContext);
+    this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || [];
+    this.domElement.eventListeners[event].push(listener.proxy);
+
     if (event.indexOf(':') === -1) {
-      //traditional event
+      // Traditional event
       if (this.domElement.addEventListener) {
-        this.domElement.addEventListener(event, proxy, false);
+        this.domElement.addEventListener(event, listener.primeProxy, false);
       } else if (this.domElement.attachEvent) {
-        this.domElement.attachEvent('on' + event, proxy);
+        this.domElement.attachEvent('on' + event, listener.primeProxy);
       } else {
         throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
       }
     } else {
-      //custom event
-      this.domElement.customEvents[event] = this.domElement.customEvents[event] || [];
-      this.domElement.customEvents[event].push(proxy);
+      // Custom event
+      this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
+      this.domElement.customEventListeners[event].push(listener.primeProxy);
     }
 
     return this;
@@ -363,17 +428,17 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Fires an event on the Element
+   * Fires an event on the Element.
    *
    * @param {string} event The name of the event.
    * @param {Object} [memo] Assigned to the memo field of the event.
    * @param {boolean} [bubbling] If the event is bubbling, defaults to true.
-   * @param {boolean} [cancellable] If the event is cancellable, defaults to true.
+   * @param {boolean} [cancelable] If the event is cancellable, defaults to true.
    * @return {Prime.Dom.Element} This Element.
    */
-  fireEvent: function(event, memo, bubbling, cancellable) {
+  fireEvent: function(event, memo, bubbling, cancelable) {
     bubbling = typeof bubbling !== 'undefined' ? bubbling : true;
-    cancellable = typeof cancellable !== 'undefined' ? cancellable : true;
+    cancelable = typeof cancelable !== 'undefined' ? cancelable : true;
 
     var evt;
     if (event.indexOf(':') === -1) {
@@ -382,11 +447,20 @@ Prime.Dom.Element.prototype = {
         // Dispatch for IE
         evt = document.createEventObject();
         evt.memo = memo || {};
-        this.domElement.fireEvent('on' + event, document.createEventObject())
+        evt.cancelBubble = !bubbling;
+        this.domElement.fireEvent('on' + event, evt);
       } else if (document.createEvent) {
         // Dispatch for others
-        evt = document.createEvent("HTMLEvents");
-        evt.initEvent(event, bubbling, cancellable); // event type,bubbling,cancelable
+        if (Prime.Dom.Element.mouseEventsRegexp.exec(event)) {
+          evt = document.createEvent("MouseEvents");
+          evt.initMouseEvent(event, bubbling, cancelable, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
+        } else if (Prime.Dom.Element.htmlEventsRegexp.exec(event)) {
+          evt = document.createEvent("HTMLEvents");
+          evt.initEvent(event, bubbling, cancelable);
+        } else {
+          throw 'Invalid event [' + event + ']';
+        }
+
         evt.memo = memo || {};
         this.domElement.dispatchEvent(evt);
       } else {
@@ -394,11 +468,11 @@ Prime.Dom.Element.prototype = {
       }
     } else {
       // Custom event
-      this.domElement.customEvents[event] = this.domElement.customEvents[event] || [];
+      this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
       evt = {'event': event, 'memo': memo};
-      for (index in this.domElement.customEvents[event]) {
-        if (this.domElement.customEvents[event].hasOwnProperty(index)) {
-          this.domElement.customEvents[event][index](evt);
+      for (index in this.domElement.customEventListeners[event]) {
+        if (this.domElement.customEventListeners[event].hasOwnProperty(index)) {
+          this.domElement.customEventListeners[event][index](evt);
         }
       }
     }
@@ -726,6 +800,21 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Removes all of the event listeners for the given element.
+   *
+   * @return {Prime.Dom.Element} This Element.
+   */
+  removeAllEventListeners: function() {
+    for (event in this.domElement.eventListeners) {
+      if (this.domElement.eventListeners.hasOwnProperty(event)) {
+        this.removeEventListeners(event);
+      }
+    }
+
+    return this;
+  },
+
+  /**
    * Removes an attribute from the Element
    *
    * @param {string} name The name of the attribute.
@@ -769,43 +858,47 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Removes an event handler for a specific event from this Element, you must have attached using addEventListener
+   * Removes an event listener for a specific event from this Element, you must have attached using addEventListener
    *
    * @param {string} event The name of the event.
+   * @param {*} listener The event listener that was bound.
    * @return {Prime.Dom.Element} This Element.
    */
-  removeEventListener: function(event) {
-    this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || {};
-    var proxies = this.domElement.eventListeners[event][this];
-    delete this.domElement.eventListeners[event][this];
+  removeEventListener: function(event, listener) {
+    var proxy = listener.primeProxy ? listener.primeProxy : listener;
+    var listeners = this.domElement.eventListeners[event];
+    if (listeners) {
+      Prime.Utils.removeFromArray(listeners, proxy);
+    }
 
     if (event.indexOf(':') === -1) {
-      //traditional event
-      for (proxy in proxies) {
-        if (proxies.hasOwnProperty(proxy)) {
-          if (this.domElement.removeEventListener) {
-            this.domElement.removeEventListener(event, proxy, false);
-          } else if (this.domElement.detachEvent) {
-            this.domElement.detachEvent('on' + event, proxy);
-          } else {
-            throw 'Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available';
-          }
-        }
+      // Traditional event
+      if (this.domElement.removeEventListener) {
+        this.domElement.removeEventListener(event, proxy, false);
+      } else if (this.domElement.detachEvent) {
+        this.domElement.detachEvent('on' + event, proxy);
+      } else {
+        throw 'Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available';
       }
-    } else {
-      //custom event
-      this.domElement.customEvents[event] = this.domElement.customEvents[event] || [];
-      var newEvents = [];
-      for (proxy in proxies) {
-        if (proxies.hasOwnProperty(proxy)) {
-          for (var ii = 0; ii < this.domElement.customEvents[event].length; ii++) {
-            var handler = this.domElement.customEvents[event][ii];
-            if (handler !== proxy) {
-              newEvents.push(proxy);
-            }
-          }
-        }
-        this.domElement.customEvents[event] = newEvents;
+    } else if (this.domElement.customEventListeners[event]) {
+      // Custom event
+      var customListeners = this.domElement.customEventListeners[event];
+      Prime.Utils.removeFromArray(customListeners, proxy);
+    }
+
+    return this;
+  },
+
+  /**
+   * Removes all of the event listeners for the given event from this element.
+   *
+   * @param {string} event The name of the event to remove the listeners for.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  removeEventListeners: function(event) {
+    if (this.domElement.eventListeners[event]) {
+      for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
+        this.removeEventListener(event, this.domElement.eventListeners[event][i]);
       }
     }
 
@@ -883,6 +976,22 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Sets left position of the element.
+   *
+   * @param {number|string} left The left position of the element in pixels or as a string.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setLeft: function(left) {
+    var leftString = left;
+    if (typeof(left) === 'number') {
+      leftString = left + 'px';
+    }
+
+    this.setStyle('left', leftString);
+    return this;
+  },
+
+  /**
    * Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.
    *
    * @param {number} opacity The opacity.
@@ -922,6 +1031,22 @@ Prime.Dom.Element.prototype = {
         this.setStyle(key, styles[key]);
       }
     }
+    return this;
+  },
+
+  /**
+   * Sets top position of the element.
+   *
+   * @param {number|string} top The top position of the element in pixels or as a string.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setTop: function(top) {
+    var topString = top;
+    if (typeof(top) === 'number') {
+      topString = top + 'px';
+    }
+
+    this.setStyle('top', topString);
     return this;
   },
 
@@ -1014,17 +1139,41 @@ Prime.Dom.Document = {
    */
   addEventListener: function(event, handler, context) {
     var theContext = (arguments.length < 3) ? this : context;
-    var proxy = Prime.Utils.proxy(handler, theContext);
+    handler.primeProxy = Prime.Utils.proxy(handler, theContext);
 
     if (document.addEventListener) {
-      document.addEventListener(event, proxy, false);
+      document.addEventListener(event, handler.primeProxy, false);
     } else if (document.attachEvent) {
-      document.attachEvent('on' + event, proxy);
+      document.attachEvent('on' + event, handler.primeProxy);
     } else {
       throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
     }
 
-    return proxy;
+    return handler.primeProxy;
+  },
+
+  /**
+   * Returns the height of the document.
+   *
+   * @returns {number} The height of the document in pixels.
+   */
+  getHeight: function() {
+    var body = document.body;
+    var html = document.documentElement;
+
+    return Math.max(body.scrollHeight, body.offsetHeight, html.clientHeight, html.scrollHeight, html.offsetHeight);
+  },
+
+  /**
+   * Returns the height of the document.
+   *
+   * @returns {number} The height of the document in pixels.
+   */
+  getWidth: function() {
+    var body = document.body;
+    var html = document.documentElement;
+
+    return Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
   },
 
   /**
@@ -1034,10 +1183,11 @@ Prime.Dom.Document = {
    * @param {Object} handler The handler.
    */
   removeEventListener: function(event, handler) {
+    var proxy = handler.primeProxy ? handler.primeProxy : handler;
     if (document.removeEventListener) {
-      document.removeEventListener(event, handler, false);
+      document.removeEventListener(event, proxy, false);
     } else if (document.detachEvent) {
-      document.detachEvent('on' + event, handler);
+      document.detachEvent('on' + event, proxy);
     } else {
       throw 'Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available';
     }

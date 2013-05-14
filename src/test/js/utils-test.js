@@ -78,5 +78,19 @@ buster.testCase('Utils tests', {
       assert(instance.ended);
       done();
     }, 1100);
+  },
+
+  'removeFromArray': function() {
+    var array = ['a', 'b', 'c', 'd', 'e'];
+    Prime.Utils.removeFromArray(array, 'c');
+    assert.equals(array, ['a', 'b', 'd', 'e']);
+
+    array = ['a', 'b', 'c', 'd', 'e'];
+    Prime.Utils.removeFromArray(array, 'a');
+    assert.equals(array, ['b', 'c', 'd', 'e']);
+
+    array = ['a', 'b', 'c', 'd', 'e'];
+    Prime.Utils.removeFromArray(array, 'e');
+    assert.equals(array, ['a', 'b', 'c', 'd']);
   }
 });
