@@ -143,6 +143,16 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
+   * Sets the async flag to false.
+   *
+   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  synchronously: function() {
+    this.async = false;
+    return this;
+  },
+
+  /**
    * Sets the method used to make the AJAX request.
    *
    * @param {string} method The HTTP method.
