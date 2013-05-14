@@ -384,7 +384,7 @@ Prime.Dom.Element.prototype = {
     var theContext = (arguments.length < 3) ? this : context;
     listener.primeProxy = Prime.Utils.proxy(listener, theContext);
     this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || [];
-    this.domElement.eventListeners[event].push(listener.proxy);
+    this.domElement.eventListeners[event].push(listener.primeProxy);
 
     if (event.indexOf(':') === -1) {
       // Traditional event
@@ -807,9 +807,18 @@ Prime.Dom.Element.prototype = {
   removeAllEventListeners: function() {
     for (event in this.domElement.eventListeners) {
       if (this.domElement.eventListeners.hasOwnProperty(event)) {
-        this.removeEventListeners(event);
+        console.log('Removing event');
+        console.log(event);
+        for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
+          var listener = this.domElement.eventListeners[event][i];
+          console.log(listener);
+          var proxy = listener.primeProxy ? listener.primeProxy : listener;
+          this.internalRemoveEventListener(event, proxy);
+        }
       }
     }
+
+    this.domElement.eventListeners = {};
 
     return this;
   },
@@ -871,20 +880,7 @@ Prime.Dom.Element.prototype = {
       Prime.Utils.removeFromArray(listeners, proxy);
     }
 
-    if (event.indexOf(':') === -1) {
-      // Traditional event
-      if (this.domElement.removeEventListener) {
-        this.domElement.removeEventListener(event, proxy, false);
-      } else if (this.domElement.detachEvent) {
-        this.domElement.detachEvent('on' + event, proxy);
-      } else {
-        throw 'Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available';
-      }
-    } else if (this.domElement.customEventListeners[event]) {
-      // Custom event
-      var customListeners = this.domElement.customEventListeners[event];
-      Prime.Utils.removeFromArray(customListeners, proxy);
-    }
+    this.internalRemoveEventListener(event, proxy);
 
     return this;
   },
@@ -898,8 +894,12 @@ Prime.Dom.Element.prototype = {
   removeEventListeners: function(event) {
     if (this.domElement.eventListeners[event]) {
       for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
-        this.removeEventListener(event, this.domElement.eventListeners[event][i]);
+        var listener = this.domElement.eventListeners[event][i];
+        var proxy = listener.primeProxy ? listener.primeProxy : listener;
+        this.internalRemoveEventListener(event, proxy);
       }
+
+      delete this.domElement.eventListeners[event];
     }
 
     return this;
@@ -1118,6 +1118,30 @@ Prime.Dom.Element.prototype = {
     };
 
     Prime.Utils.callIteratively(config.duration, config.iterations, stepFunction, endFunction, context);
+  },
+
+  /**
+   * Removes the event listener proxy from this element.
+   *
+   * @private
+   * @param {string} event The event name.
+   * @param {Function} proxy The proxy function.
+   */
+  internalRemoveEventListener: function(event, proxy) {
+    if (event.indexOf(':') === -1) {
+      // Traditional event
+      if (this.domElement.removeEventListener) {
+        this.domElement.removeEventListener(event, proxy, false);
+      } else if (this.domElement.detachEvent) {
+        this.domElement.detachEvent('on' + event, proxy);
+      } else {
+        throw 'Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available';
+      }
+    } else if (this.domElement.customEventListeners[event]) {
+      // Custom event
+      var customListeners = this.domElement.customEventListeners[event];
+      Prime.Utils.removeFromArray(customListeners, proxy);
+    }
   }
 };
 

@@ -982,28 +982,63 @@ buster.testCase('Element class tests', {
 
   'eventsUsingFunction': function() {
     var called = false;
+    var called2 = false;
     var memo = null;
+    var memo2 = null;
     var handler = function(event) {
       called = true;
       memo = event.memo;
     };
+    var handler2 = function(event) {
+      called2 = true;
+      memo2 = event.memo;
+    };
 
+    // Single handlers
     var element = Prime.Dom.queryFirst('#event').
         addEventListener('click', handler).
         fireEvent('click', 'memo');
 
     assert.isTrue(called);
+    assert.isFalse(called2);
     assert.equals(memo, 'memo');
+    assert.equals(memo2, null);
 
     called = false;
     memo = null;
-    element.removeEventListener('click', handler).
+    element.
+        removeEventListener('click', handler).
         fireEvent('click', 'memo');
 
     assert.isFalse(called);
+    assert.isFalse(called2);
     assert.equals(memo, null);
+    assert.equals(memo2, null);
 
-    
+    // Multiple handlers
+    element.
+        addEventListener('click', handler).
+        addEventListener('click', handler2).
+        fireEvent('click', 'memo');
+
+    assert.isTrue(called);
+    assert.isTrue(called2);
+    assert.equals(memo, 'memo');
+    assert.equals(memo2, 'memo');
+
+    // Remove all
+    called = false;
+    called2 = false;
+    memo = null;
+    memo2 = null;
+    element.
+        removeAllEventListeners().
+        fireEvent('click', 'memo');
+
+    assert.isFalse(called);
+    assert.isFalse(called2);
+    assert.equals(memo, null);
+    assert.equals(memo2, null);
   },
 
   'eventsUsingObject': function() {
@@ -1019,7 +1054,7 @@ buster.testCase('Element class tests', {
     };
 
     var instance = new MyEventListener();
-    var element = Prime.Dom.queryFirst('#event').
+    Prime.Dom.queryFirst('#event').
         addEventListener('click', instance.handle, instance).
         fireEvent('click', 'memo');
 
@@ -1028,7 +1063,8 @@ buster.testCase('Element class tests', {
 
     instance.called = false;
     instance.memo = null;
-    element.removeEventListener('click', instance.handle).
+    Prime.Dom.queryFirst('#event').
+        removeEventListener('click', instance.handle).
         fireEvent('click', 'memo');
 
     assert.isFalse(instance.called);
@@ -1050,7 +1086,7 @@ buster.testCase('Element class tests', {
     };
 
     var instance = new MyEventListener();
-    var element = Prime.Dom.queryFirst('#event').
+    Prime.Dom.queryFirst('#event').
         addEventListener('custom:pop', instance.handle, instance).
         fireEvent('custom:pop', 'foo');
 
@@ -1061,8 +1097,9 @@ buster.testCase('Element class tests', {
     instance.called = false;
     instance.memo = null;
     instance.event = null;
-    element.removeEventListener('custom:pop', instance.handle).
-         fireEvent('custom:pop', 'foo');
+    Prime.Dom.queryFirst('#event').
+        removeEventListener('custom:pop', instance.handle).
+        fireEvent('custom:pop', 'foo');
 
     assert.isFalse(instance.called);
     assert.equals(instance.event, null);
