@@ -25,7 +25,9 @@
     <script type="text/javascript" src="../../main/js/browser.js"></script>
     <script type="text/javascript" src="../../main/js/dom.js"></script>
     <script type="text/javascript" src="../../main/js/utils.js"></script>
+    <script type="text/javascript" src="../../main/js/event.js"></script>
     <script type="text/javascript" src="../../main/js/effects.js"></script>
+    <script type="text/javascript" src="../../main/js/widget.js"></script>
     <script type="text/javascript">
       Prime.Dom.onDocumentReady(function() {
         Prime.Dom.queryFirst('#fade').
@@ -37,9 +39,55 @@
           addEventListener('click', function() {
             var element = Prime.Dom.queryFirst('#appear');
             new Prime.Effects.Appear(element).withDuration(500).go();
-          })
+          });
+
+        new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-test'));
       });
     </script>
+    <style>
+      .prime-multiple-select-display {
+        border: 2px inset lightgray;
+        margin: 0;
+        padding: 3px;
+      }
+
+      .prime-multiple-select-display ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .prime-multiple-select-display ul li {
+        display: inline-block;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        margin-right: 4px;
+        padding: 4px;
+      }
+
+      .prime-multiple-select-display ul li.prime-multiple-select-option {
+        background: lightblue;
+      }
+
+      .prime-multiple-select-display ul li.prime-multiple-select-option span {
+        display: inline-block;
+        margin-right: 2px;
+      }
+
+      .prime-multiple-select-display ul li.prime-multiple-select-option a {
+        color: black;
+        font-size: 11px;
+        text-decoration: none;
+      }
+
+      .prime-multiple-select-input {
+        border: none;
+        margin: 0;
+        outline: none;
+        padding: 0;
+      }
+
+    </style>
   </head>
   <body>
     <div id="fade" style="border: 1px solid black;">
@@ -54,5 +102,13 @@
       Some more content.
     </div>
     <button id="appearButton">Appear</button>
+    <div>
+      <label for="multiple-select-test">Multiple Select Test</label><br/>
+      <select id="multiple-select-test" multiple="multiple">
+        <option value="one" selected="selected">One</option>
+        <option value="two">Two</option>
+        <option value="three" selected="selected">Three</option>
+      </select>
+    </div>
   </body>
 </html>

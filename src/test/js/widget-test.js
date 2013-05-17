@@ -24,7 +24,7 @@ var refute = buster.assertions.refute;
 buster.testCase('MultipleSelect class tests', {
   setUp: function() {
     this.timeout = 2000;
-    this.multipleSelect = new Prime.Widgets.MultipleSelect(Prime.Dom.queryFirst('#multiple-select'));
+    this.multipleSelect = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select'));
     this.multipleSelect.removeAllOptions();
     this.multipleSelect.addOption('one', 'One');
     this.multipleSelect.addOption('two', 'Two');
@@ -35,21 +35,23 @@ buster.testCase('MultipleSelect class tests', {
 
   'setup': function() {
     var display = Prime.Dom.queryFirst('#multiple-select-display');
-    assert.isTrue(display != null);
+    assert.isTrue(display !== null);
 
     var children = display.getChildren();
-    assert.equals(children.length, 2);
-    assert.equals(children[0].domElement.tagName, 'INPUT');
-    assert.equals(children[1].domElement.tagName, 'UL');
-    assert.equals(children[1].getChildren().length, 2);
-    assert.equals(children[1].getChildren()[0].getID(), 'prime-multiple-select-option-one');
-    assert.equals(children[1].getChildren()[0].getChildren()[0].getHTML(), 'One');
-    assert.equals(children[1].getChildren()[0].getChildren()[1].getAttribute('value'), 'one');
-    assert.equals(children[1].getChildren()[0].getChildren()[1].getHTML(), 'X');
-    assert.equals(children[1].getChildren()[1].getID(), 'prime-multiple-select-option-three');
-    assert.equals(children[1].getChildren()[1].getChildren()[0].getHTML(), 'Three');
-    assert.equals(children[1].getChildren()[1].getChildren()[1].getAttribute('value'), 'three');
-    assert.equals(children[1].getChildren()[1].getChildren()[1].getHTML(), 'X');
+    assert.equals(children.length, 1);
+    assert.equals(children[0].domElement.tagName, 'UL');
+    assert.equals(children[0].getChildren().length, 3);
+    assert.equals(children[0].getChildren()[0].getID(), 'multiple-select-option-one');
+    assert.equals(children[0].getChildren()[0].getChildren()[0].getHTML(), 'One');
+    assert.equals(children[0].getChildren()[0].getChildren()[1].getAttribute('value'), 'one');
+    assert.equals(children[0].getChildren()[0].getChildren()[1].getHTML(), 'X');
+    assert.equals(children[0].getChildren()[1].getID(), 'multiple-select-option-three');
+    assert.equals(children[0].getChildren()[1].getChildren()[0].getHTML(), 'Three');
+    assert.equals(children[0].getChildren()[1].getChildren()[1].getAttribute('value'), 'three');
+    assert.equals(children[0].getChildren()[1].getChildren()[1].getHTML(), 'X');
+    assert.equals(children[0].getChildren()[2].getID(), 'multiple-select-input-option');
+    assert.equals(children[0].getChildren()[2].getChildren()[0].domElement.tagName, 'INPUT');
+    assert.equals(children[0].getChildren()[2].getChildren()[0].getID(), 'multiple-select-input');
   },
 
   'addOption': function() {
@@ -70,8 +72,8 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option didn't get added to the display
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
     assert.equals(displayOptions.length, 2);
-    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-one');
-    assert.equals(displayOptions[1].getID(), 'prime-multiple-select-option-three');
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
   },
 
   'containsOptionWithValue': function() {
@@ -96,7 +98,21 @@ buster.testCase('MultipleSelect class tests', {
 
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
     assert.equals(displayOptions.length, 1);
-    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-three');
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
+  },
+
+  'open and close search': function() {
+    this.multipleSelect.openSearch();
+
+    // Ensure the select uses the browser default for inputs. This will ensure that it also uses the CSS style in
+    // production. The default in most browsers for input is inline-block
+    var display = Prime.Dom.queryByID('multiple-select-input-option');
+    assert.equals(display.getComputedStyle()['display'], 'block');
+
+    this.multipleSelect.closeSearch();
+
+    display = Prime.Dom.queryByID('multiple-select-input-option');
+    assert.equals(display.getStyle('display'), 'none');
   },
 
   'removeOptionWithValue': function() {
@@ -111,7 +127,7 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option gets removed from the display
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
     assert.equals(displayOptions.length, 1);
-    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-three');
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
   },
 
   'selectOptionWithValue': function() {
@@ -130,9 +146,9 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option is added to the display
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
     assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'prime-multiple-select-option-one');
-    assert.equals(displayOptions[1].getID(), 'prime-multiple-select-option-three');
-    assert.equals(displayOptions[2].getID(), 'prime-multiple-select-option-two');
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[2].getID(), 'multiple-select-option-two');
   },
 
   'selectableOptionsForPrefix': function() {

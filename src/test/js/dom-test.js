@@ -978,6 +978,13 @@ buster.testCase('Element class tests', {
 
     element = document.getElementById('showCSSInline');
     assert.equals(element.style.display, 'inline');
+
+    // Test a stylesheet display: none and then forcing it to be inline-block via the parameter
+    Prime.Dom.queryFirst('#showCSSInline').hide();
+    Prime.Dom.queryFirst('#showCSSInline').show('table-cell');
+
+    element = document.getElementById('showCSSInline');
+    assert.equals(element.style.display, 'table-cell');
   },
 
   'eventsUsingFunction': function() {

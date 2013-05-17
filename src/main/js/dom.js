@@ -481,6 +481,16 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Puts the focus on this element.
+   *
+   * @return {Prime.Dom.Element} This Element.
+   */
+  focus: function() {
+    this.domElement.focus();
+    return this;
+  },
+
+  /**
    * Returns the value of the given attribute.
    *
    * @param {string} name The attribute name.
@@ -807,11 +817,8 @@ Prime.Dom.Element.prototype = {
   removeAllEventListeners: function() {
     for (event in this.domElement.eventListeners) {
       if (this.domElement.eventListeners.hasOwnProperty(event)) {
-        console.log('Removing event');
-        console.log(event);
         for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
           var listener = this.domElement.eventListeners[event][i];
-          console.log(listener);
           var proxy = listener.primeProxy ? listener.primeProxy : listener;
           this.internalRemoveEventListener(event, proxy);
         }
@@ -915,6 +922,26 @@ Prime.Dom.Element.prototype = {
       this.domElement.parentNode.removeChild(this.domElement);
     }
 
+    return this;
+  },
+
+  /**
+   * Scrolls this element to the bottom.
+   *
+   * @return {Prime.Dom.Element} This Element.
+   */
+  scrollToBottom: function() {
+    this.domElement.scrollTop = this.domElement.scrollHeight;
+    return this;
+  },
+
+  /**
+   * Scrolls this element to the top.
+   *
+   * @return {Prime.Dom.Element} This Element.
+   */
+  scrollToTop: function() {
+    this.domElement.scrollTop = 0;
     return this;
   },
 
@@ -1067,14 +1094,25 @@ Prime.Dom.Element.prototype = {
    * a stylesheet that is setting it to display: none. In this case, we determine if the element is a block level element
    * and either set the display to 'block' or 'inline'.
    *
+   * @param {string} [displayValue] The display value to use for the show. This defaults to the W3C standard display
+   * setting depending on the type of element you are showing. For example, INPUT is inline and DIV is block.
    * @return {Prime.Dom.Element} This Element.
    */
-  show: function() {
+  show: function(displayValue) {
+    if (typeof(displayValue) !== 'undefined') {
+      this.domElement.style.display = displayValue;
+      return this;
+    }
+
     this.domElement.style.display = '';
 
     var computedDisplay = this.getComputedStyle()['display'];
     if (computedDisplay === 'none') {
-      this.domElement.style.display = (Prime.Dom.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
+      if (typeof(displayValue) === 'undefined') {
+        displayValue = (Prime.Dom.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
+      }
+
+      this.domElement.style.display = displayValue;
     }
 
     return this;

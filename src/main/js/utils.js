@@ -73,6 +73,7 @@ Prime.Utils = {
       // when the arguments are an event
       var result = func.apply(context, arguments);
       if (result === false && arguments[0] instanceof Event) {
+        arguments[0].stopPropagation();
         arguments[0].preventDefault();
       }
 

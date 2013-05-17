@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
-Prime.Widgets = Prime.Widgets || {};
+Prime.Widget = Prime.Widget || {};
 
 /**
  * Constructs a MultipleSelect object for the given element.
@@ -22,14 +22,18 @@ Prime.Widgets = Prime.Widgets || {};
  * @param {Prime.Dom.Element} element The Prime Element for the MultipleSelect.
  * @constructor
  */
-Prime.Widgets.MultipleSelect = function(element) {
+Prime.Widget.MultipleSelect = function(element) {
   this.element = (element instanceof Prime.Dom.Element) ? element : new Prime.Dom.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
-    throw 'You can only use Prime.Widgets.MultipleSelect with select elements';
+    throw 'You can only use Prime.Widget.MultipleSelect with select elements';
   }
 
-  this.element.setAttribute('multiple', 'multiple');
+  if (this.element.getAttribute('multiple') !== 'multiple') {
+    throw 'The select box you are attempting to convert to a Prime.Widget.MultipleSelect must have the multiple="multiple" attribute set';
+  }
+
   this.element.hide();
+  this.searchDisplayed = false;
 
   var id = this.element.getID();
   if (id === null) {
@@ -42,20 +46,15 @@ Prime.Widgets.MultipleSelect = function(element) {
     this.displayContainer = Prime.Dom.newElement('<div/>').
         setID(id + '-display').
         addClass('prime-multiple-select-display').
+        addEventListener('click', this.openSearch, this).
+        addEventListener('keydown', this.handleKeyEvent, this).
         insertAfter(this.element);
-
-    this.input = Prime.Dom.newElement('<input/>').
-        setAttribute('type', 'text').
-        setID(id + '-input').
-        addClass('prime-multiple-select-input').
-        appendTo(this.displayContainer);
 
     this.displayContainerSelectedOptionList = Prime.Dom.newElement('<ul/>').
         setID(id + '-option-list').
         addClass('prime-multiple-select-option-list').
         appendTo(this.displayContainer);
   } else {
-    this.input = Prime.Dom.queryByID(id + '-input');
     this.displayContainerSelectedOptionList = Prime.Dom.queryByID(id + '-option-list');
   }
 
@@ -66,15 +65,15 @@ Prime.Widgets.MultipleSelect = function(element) {
 /*
  * Statics
  */
-Prime.Widgets.MultipleSelect.count = 1;
+Prime.Widget.MultipleSelect.count = 1;
 
-Prime.Widgets.MultipleSelect.prototype = {
+Prime.Widget.MultipleSelect.prototype = {
   /**
    * Adds the given option to this select. The option will not be selected.
    *
    * @param {String} value The value for the option.
    * @param {String} display The display text for the option.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   addOption: function(value, display) {
     if (this.containsOptionWithValue(value)) {
@@ -87,6 +86,16 @@ Prime.Widgets.MultipleSelect.prototype = {
         appendTo(this.element);
 
     return this;
+  },
+
+  /**
+   * Displays the search input box and search results div.
+   */
+  closeSearch: function() {
+    if (this.searchDisplayed) {
+      this.searchDisplayed = false;
+      this.inputOption.hide();
+    }
   },
 
   /**
@@ -103,7 +112,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * removing the option from the display container.
    *
    * @param {Prime.Dom.Element} option The option to deselect.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   deselectOption: function(option) {
     option.removeAttribute('selected');
@@ -123,7 +132,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * this method throws an exception.
    *
    * @param {String} value The value to look for.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   deselectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -154,16 +163,44 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
   /**
+   * Displays the search input box and search results div.
+   */
+  openSearch: function() {
+    if (!this.searchDisplayed) {
+      this.searchDisplayed = true;
+      this.displayContainer.scrollToBottom();
+      this.input.setValue('');
+      this.inputOption.show();
+      this.input.focus();
+    }
+
+    return false;
+  },
+
+  /**
    * Rebuilds the display from the underlying select element. All of the current display options (li elements) are
    * removed. New display options are added for each selected option in the select box.
    *
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   rebuildDisplay: function() {
     // Remove the currently displayed options
     this.displayContainerSelectedOptionList.getChildren().each(function(option) {
       option.removeFromDOM();
     });
+
+    // Add the input option since the select options are inserted before it
+    var id = this.element.getID();
+    this.inputOption = Prime.Dom.newElement('<li/>').
+        addClass('prime-multiple-select-input-option').
+        setID(id + '-input-option').
+        hide(). // Start hidden
+        appendTo(this.displayContainerSelectedOptionList);
+    this.input = Prime.Dom.newElement('<input/>').
+        setAttribute('type', 'text').
+        setID(id + '-input').
+        addClass('prime-multiple-select-input').
+        appendTo(this.inputOption);
 
     // Add the selected options
     for (var i = 0; i < this.element.domElement.length; i++) {
@@ -179,7 +216,7 @@ Prime.Widgets.MultipleSelect.prototype = {
   /**
    * Removes all of the options from the MultipleSelect.
    *
-   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   removeAllOptions: function() {
     // Remove in reverse order because the options array is dynamically updated when elements are deleted from the DOM
@@ -196,7 +233,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * display container.
    *
    * @param {Prime.Dom.Element} option The option to select.
-   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   removeOption: function(option) {
     if (!(option instanceof Prime.Dom.Element)) {
@@ -222,7 +259,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * an exception.
    *
    * @param {Prime.Dom.Element} value The value of the option to remove.
-   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   removeOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -241,7 +278,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * option is already in the display container, that step is skipped.
    *
    * @param {Prime.Dom.Element} option The option object from the select box wrapped in a Prime.Dom.Element instance.
-   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   selectOption: function(option) {
     if (!(option instanceof Prime.Dom.Element)) {
@@ -255,8 +292,9 @@ Prime.Widgets.MultipleSelect.prototype = {
       option.setAttribute('selected', 'selected');
 
       var li = Prime.Dom.newElement('<li/>').
+          addClass('prime-multiple-select-option').
           setID(id).
-          appendTo(this.displayContainerSelectedOptionList);
+          insertBefore(this.inputOption);
       Prime.Dom.newElement('<span/>').
           setHTML(option.getHTML()).
           appendTo(li);
@@ -266,6 +304,7 @@ Prime.Widgets.MultipleSelect.prototype = {
           setHTML('X').
           addEventListener('click', function(event) {
             this.deselectOptionWithValue(new Prime.Dom.Element(event.target).getAttribute('value'));
+            return false;
           }, this).
           appendTo(li);
     }
@@ -281,7 +320,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * If there isn't an option with the given value, this throws an exception.
    *
    * @param {String} value The value of the option to select.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   selectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -298,6 +337,36 @@ Prime.Widgets.MultipleSelect.prototype = {
   /*
    * Private methods
    */
+
+  /**
+   * Handles all key events sent to the display container.
+   *
+   * @private
+   * @param {Event} event The browser event object.
+   * @returns {boolean} True if the search display is not open, false otherwise. This will prevent the event from continuing.
+   */
+  handleKeyEvent: function(event) {
+    if (!this.searchDisplayed) {
+      return true;
+    }
+
+    var key = event.keyCode;
+    if (key === Prime.Event.Keys.ESCAPE) {
+      this.closeSearch();
+    }
+
+    return true;
+  },
+
+  /**
+   * Makes an ID for the option.
+   *
+   * @private
+   * @param {Prime.Dom.Element} option The option to make the ID for.
+   */
+  makeOptionID: function(option) {
+    return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
+  },
 
   /**
    * Returns the set of selectable options for the given prefix.
@@ -329,15 +398,5 @@ Prime.Widgets.MultipleSelect.prototype = {
     }
 
     return selectableOptions;
-  },
-
-  /**
-   * Makes an ID for the option.
-   *
-   * @private
-   * @param {Prime.Dom.Element} option The option to make the ID for.
-   */
-  makeOptionID: function(option) {
-    return 'prime-multiple-select-option-' + option.getValue().replace(' ', '-');
   }
 };
