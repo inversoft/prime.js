@@ -71,9 +71,10 @@ buster.testCase('MultipleSelect class tests', {
 
     // Ensure that the option didn't get added to the display
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
-    assert.equals(displayOptions.length, 2);
+    assert.equals(displayOptions.length, 3);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
     assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[2].getID(), 'multiple-select-input-option');
   },
 
   'containsOptionWithValue': function() {
@@ -97,8 +98,9 @@ buster.testCase('MultipleSelect class tests', {
     assert.isTrue(select.options[2].selected);
 
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
-    assert.equals(displayOptions.length, 1);
+    assert.equals(displayOptions.length, 2);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getID(), 'multiple-select-input-option');
   },
 
   'open and close search': function() {
@@ -107,7 +109,7 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure the select uses the browser default for inputs. This will ensure that it also uses the CSS style in
     // production. The default in most browsers for input is inline-block
     var display = Prime.Dom.queryByID('multiple-select-input-option');
-    assert.equals(display.getComputedStyle()['display'], 'block');
+    assert.equals(display.getComputedStyle()['display'], 'list-item');
 
     this.multipleSelect.closeSearch();
 
@@ -126,8 +128,9 @@ buster.testCase('MultipleSelect class tests', {
 
     // Ensure that the option gets removed from the display
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
-    assert.equals(displayOptions.length, 1);
+    assert.equals(displayOptions.length, 2);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getID(), 'multiple-select-input-option');
   },
 
   'selectOptionWithValue': function() {
@@ -145,10 +148,11 @@ buster.testCase('MultipleSelect class tests', {
 
     // Ensure that the option is added to the display
     var displayOptions = Prime.Dom.query('#multiple-select-display ul li');
-    assert.equals(displayOptions.length, 3);
+    assert.equals(displayOptions.length, 4);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
     assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
     assert.equals(displayOptions[2].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[3].getID(), 'multiple-select-input-option');
   },
 
   'selectableOptionsForPrefix': function() {
