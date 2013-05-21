@@ -25,11 +25,11 @@ Prime.Widget = Prime.Widget || {};
 Prime.Widget.MultipleSelect = function(element) {
   this.element = (element instanceof Prime.Dom.Element) ? element : new Prime.Dom.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
-    throw 'You can only use Prime.Widget.MultipleSelect with select elements';
+    throw new TypeError('You can only use Prime.Widget.MultipleSelect with select elements');
   }
 
   if (this.element.getAttribute('multiple') !== 'multiple') {
-    throw 'The select box you are attempting to convert to a Prime.Widget.MultipleSelect must have the multiple="multiple" attribute set';
+    throw new TypeError('The select box you are attempting to convert to a Prime.Widget.MultipleSelect must have the multiple="multiple" attribute set');
   }
 
   this.element.hide();
@@ -137,7 +137,7 @@ Prime.Widget.MultipleSelect.prototype = {
   deselectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
     if (option === null) {
-      throw 'MultipleSelect doesn\'t contain an option with the value [' + value + ']';
+      throw new Error('MultipleSelect doesn\'t contain an option with the value [' + value + ']');
     }
 
     this.deselectOption(option);
@@ -237,7 +237,7 @@ Prime.Widget.MultipleSelect.prototype = {
    */
   removeOption: function(option) {
     if (!(option instanceof Prime.Dom.Element)) {
-      throw 'MultipleSelect#removeOption only takes Prime.Dom.Element instances';
+      throw new TypeError('MultipleSelect#removeOption only takes Prime.Dom.Element instances');
     }
 
     option.removeFromDOM();
@@ -264,7 +264,7 @@ Prime.Widget.MultipleSelect.prototype = {
   removeOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
     if (option === null) {
-      throw 'MultipleSelect doesn\'t contain an option with the value [' + value + ']';
+      throw new Error('MultipleSelect doesn\'t contain an option with the value [' + value + ']');
     }
 
     this.removeOption(option);
@@ -282,7 +282,7 @@ Prime.Widget.MultipleSelect.prototype = {
    */
   selectOption: function(option) {
     if (!(option instanceof Prime.Dom.Element)) {
-      throw 'MultipleSelect#selectOption only takes Prime.Dom.Element instances';
+      throw new TypeError('MultipleSelect#selectOption only takes Prime.Dom.Element instances');
     }
 
     var id = this.makeOptionID(option);
@@ -325,7 +325,7 @@ Prime.Widget.MultipleSelect.prototype = {
   selectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
     if (option === null) {
-      throw 'MultipleSelect doesn\'t contain an option with the value [' + value + ']';
+      throw new Error('MultipleSelect doesn\'t contain an option with the value [' + value + ']');
     }
 
     this.selectOption(option);

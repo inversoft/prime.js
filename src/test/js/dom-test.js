@@ -926,11 +926,21 @@ buster.testCase('Element class tests', {
     assert.equals(element.attributes.getNamedItem('width').value, '10%');
   },
 
+  'setHeight': function() {
+    var element = Prime.Dom.queryByID('set-styles').setHeight(10);
+    assert.equals(element.getStyle('height'), '10px');
+    assert.equals(element.getHeight(), 10);
+
+    element.setHeight('10em');
+    assert.equals(element.getStyle('height'), '10em');
+    assert.isTrue(element.getHeight() > 0); // Just make sure it doesn't throw since the computed style is always in pixels
+  },
+
   'setLeft': function() {
     var element = Prime.Dom.queryByID('set-styles').setLeft(10);
     assert.equals(element.getStyle('left'), '10px');
 
-    element = element.setLeft('10em');
+    element.setLeft('10em');
     assert.equals(element.getStyle('left'), '10em');
   },
 
@@ -949,6 +959,16 @@ buster.testCase('Element class tests', {
 
     element = element.setTop('10em');
     assert.equals(element.getStyle('top'), '10em');
+  },
+
+  'setWidth': function() {
+    var element = Prime.Dom.queryByID('set-styles').setWidth(10);
+    assert.equals(element.getStyle('width'), '10px');
+    assert.equals(element.getWidth(), 10);
+
+    element.setWidth('10em');
+    assert.equals(element.getStyle('width'), '10em');
+    assert.isTrue(element.getWidth() > 0); // Just make sure it doesn't throw since the computed style is always in pixels
   },
 
   'show': function() {

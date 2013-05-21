@@ -34,7 +34,7 @@ Prime.Window = {
       return document.body.clientHeight;
     }
 
-    throw 'Unable to determine inner height of the window';
+    throw new Error('Unable to determine inner height of the window');
   },
 
   /**
@@ -55,7 +55,7 @@ Prime.Window = {
       return document.body.clientWidth;
     }
 
-    throw 'Unable to determine inner width of the window';
+    throw new Error('Unable to determine inner width of the window');
   },
 
   /**
@@ -72,7 +72,7 @@ Prime.Window = {
       return document.documentElement.scrollTop;
     }
 
-    throw 'Unable to determine scrollTop of the window';
+    throw new Error('Unable to determine scrollTop of the window');
   }
 };
 
@@ -96,7 +96,7 @@ Prime.Dom = {
     properties = typeof properties !== 'undefined' ? properties : {};
     var result = Prime.Dom.tagRegexp.exec(elementString);
     if (result === null) {
-      throw 'Invalid string to create a new element [' + elementString + ']. It should look like <a/>';
+      throw new TypeError('Invalid string to create a new element [' + elementString + ']. It should look like <a/>');
     }
 
     var element = new Prime.Dom.Element(document.createElement(result[1]));
@@ -132,7 +132,7 @@ Prime.Dom = {
         } else if (document.attachEvent) {
           document.attachEvent('onreadystatechange', Prime.Dom.callReadyListeners);
         } else {
-          throw 'No way to attach an event to the document. What browser are you running?';
+          throw new TypeError('No way to attach an event to the document. What browser are you running?');
         }
       }
 
@@ -204,7 +204,7 @@ Prime.Dom = {
    */
   queryUp: function(selector, element) {
     if (selector.match(Prime.Utils.spaceRegex)) {
-      throw "ancestor selector must not contain a space";
+      throw new TypeError('Ancestor selector must not contain a space');
     }
 
     var domElement = null;
@@ -328,7 +328,7 @@ Prime.Dom.ElementList.prototype = {
  */
 Prime.Dom.Element = function(element) {
   if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
-    throw 'You can only pass in DOM element Node objects to the Prime.Dom.Element constructor';
+    throw new TypeError('You can only pass in DOM element Node objects to the Prime.Dom.Element constructor');
   }
 
   this.domElement = element;
@@ -393,7 +393,7 @@ Prime.Dom.Element.prototype = {
       } else if (this.domElement.attachEvent) {
         this.domElement.attachEvent('on' + event, listener.primeProxy);
       } else {
-        throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
+        throw new TypeError('Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available');
       }
     } else {
       // Custom event
@@ -414,14 +414,14 @@ Prime.Dom.Element.prototype = {
   appendTo: function(element) {
     // Error out for now if this element is in the document so we can punt on cloning for now
     if (this.domElement.parentNode) {
-      throw 'You can only insert new Prime.Dom.Elements for now';
+      throw new TypeError('You can only insert new Prime.Dom.Elements for now');
     }
 
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     if (domElement.parentNode) {
       domElement.appendChild(this.domElement);
     } else {
-      throw 'The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.';
+      throw new TypeError('The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -458,13 +458,13 @@ Prime.Dom.Element.prototype = {
           evt = document.createEvent("HTMLEvents");
           evt.initEvent(event, bubbling, cancelable);
         } else {
-          throw 'Invalid event [' + event + ']';
+          throw new TypeError('Invalid event [' + event + ']');
         }
 
         evt.memo = memo || {};
         this.domElement.dispatchEvent(evt);
       } else {
-        throw 'Unable to fire event.  Neither createEventObject nor createEvent methods are available';
+        throw new TypeError('Unable to fire event. Neither createEventObject nor createEvent methods are available');
       }
     } else {
       // Custom event
@@ -521,6 +521,22 @@ Prime.Dom.Element.prototype = {
    */
   getComputedStyle: function() {
     return (this.domElement.currentStyle) ? this.domElement.currentStyle : document.defaultView.getComputedStyle(this.domElement, null);
+  },
+
+  /**
+   * Gets the height of the Element as a number or a string value depending on if the height is in pixels or not. When
+   * the height is in pixels, this returns a number.
+   *
+   * @return {number|string} The height as pixels (number) or a string.
+   */
+  getHeight: function() {
+    var height = this.getComputedStyle()['height'];
+    var index = height.indexOf('px');
+    if (index === -1) {
+      throw new TypeError('height is specified in a unit other than pixels');
+    }
+
+    return height.substring(0, index);
   },
 
   /**
@@ -612,6 +628,22 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Gets the width of the Element as a number of pixels. If the height is currently not specified by pixels, this will
+   * throw an exception.
+   *
+   * @return {number} The height in pixels.
+   */
+  getWidth: function() {
+    var width = this.getComputedStyle()['width'];
+    var index = width.indexOf('px');
+    if (index === -1) {
+      throw new TypeError('width is specified in a unit other than pixels');
+    }
+
+    return width.substring(0, index);
+  },
+
+  /**
    * Retrieves the value of this Element.
    *
    * @return {string} The value of this Element.
@@ -664,7 +696,7 @@ Prime.Dom.Element.prototype = {
     if (parentElement) {
       parentElement.insertBefore(this.domElement, domElement.nextSibling);
     } else {
-      throw 'The element you passed into insertAfter is not in the DOM. You can\'t insert a Prime.Dom.Element after an element that isn\'t in the DOM yet.';
+      throw new TypeError('The element you passed into insertAfter is not in the DOM. You can\'t insert a Prime.Dom.Element after an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -686,7 +718,7 @@ Prime.Dom.Element.prototype = {
     if (parentElement) {
       parentElement.insertBefore(this.domElement, domElement);
     } else {
-      throw 'The element you passed into insertBefore is not in the DOM. You can\'t insert a Prime.Dom.Element before an element that isn\'t in the DOM yet.';
+      throw new TypeError('The element you passed into insertBefore is not in the DOM. You can\'t insert a Prime.Dom.Element before an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -700,7 +732,7 @@ Prime.Dom.Element.prototype = {
    */
   insertTextAfter: function(text) {
     if (!this.domElement.parentNode) {
-      throw 'This Element is not currently in the DOM';
+      throw new TypeError('This Element is not currently in the DOM');
     }
 
     var textNode = document.createTextNode(text);
@@ -717,7 +749,7 @@ Prime.Dom.Element.prototype = {
    */
   insertTextBefore: function(text) {
     if (!this.domElement.parentNode) {
-      throw 'This Element is not currently in the DOM';
+      throw new TypeError('This Element is not currently in the DOM');
     }
 
     var textNode = document.createTextNode(text);
@@ -796,14 +828,14 @@ Prime.Dom.Element.prototype = {
   prependTo: function(element) {
     // Error out for now if this element is in the document so we can punt on cloning for now
     if (this.domElement.parentNode) {
-      throw 'You can only insert new Prime.Dom.Elements for now';
+      throw new TypeError('You can only insert new Prime.Dom.Elements for now');
     }
 
     var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
     if (domElement.parentNode) {
       domElement.insertBefore(this.domElement, domElement.firstChild);
     } else {
-      throw 'The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.';
+      throw new TypeError('The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -975,6 +1007,21 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Sets the height of this element using the height style.
+   *
+   * @param {number|string} height The new height as a number (for pixels) or string.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setHeight: function(height) {
+    if (typeof(height) == 'number') {
+      height = height + 'px';
+    }
+
+    this.setStyle('height', height);
+    return this;
+  },
+
+  /**
    * Sets the inner HTML content of the Element.
    *
    * @param {string|Prime.Dom.Element} newHTML The new HTML content for the Element.
@@ -1089,6 +1136,21 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Sets the width of this element using the height style.
+   *
+   * @param {number|string} width The new width as a number (for pixels) or string.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  setWidth: function(width) {
+    if (typeof(width) == 'number') {
+      width = width + 'px';
+    }
+
+    this.setStyle('width', width);
+    return this;
+  },
+
+  /**
    * Shows the Element by setting the display style first to empty string. After this, the elements computed style is
    * checked to see if the element is still not visible. If that is true, the element must have a CSS style defined in
    * a stylesheet that is setting it to display: none. In this case, we determine if the element is a block level element
@@ -1173,7 +1235,7 @@ Prime.Dom.Element.prototype = {
       } else if (this.domElement.detachEvent) {
         this.domElement.detachEvent('on' + event, proxy);
       } else {
-        throw 'Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available';
+        throw new TypeError('Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available');
       }
     } else if (this.domElement.customEventListeners[event]) {
       // Custom event
@@ -1208,7 +1270,7 @@ Prime.Dom.Document = {
     } else if (document.attachEvent) {
       document.attachEvent('on' + event, handler.primeProxy);
     } else {
-      throw 'Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available';
+      throw new TypeError('Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available');
     }
 
     return handler.primeProxy;
@@ -1251,7 +1313,7 @@ Prime.Dom.Document = {
     } else if (document.detachEvent) {
       document.detachEvent('on' + event, proxy);
     } else {
-      throw 'Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available';
+      throw new TypeError('Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available');
     }
   }
 };
@@ -1315,10 +1377,10 @@ Prime.Dom.Template.prototype = {
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   appendTo: function(primeElement, parameters) {
-    if (typeof primeElement !== 'undefined' && primeElement !== null) {
+    if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
       primeElement.setHTML(primeElement.getHTML() + this.generate(parameters));
     } else {
-      throw "Please supply an element to append to"
+      throw new TypeError('Please supply an element to append to');
     }
   },
 
@@ -1329,12 +1391,12 @@ Prime.Dom.Template.prototype = {
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   insertBefore: function(primeElement, parameters) {
-    if (typeof primeElement !== 'undefined' && primeElement !== null) {
+    if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameters);
       new Prime.Dom.Element(holder.children[0]).insertBefore(primeElement);
     } else {
-      throw "Please supply an element to append to"
+      throw new TypeError('Please supply an element to append to');
     }
   },
 
@@ -1345,12 +1407,12 @@ Prime.Dom.Template.prototype = {
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   insertAfter: function(primeElement, parameters) {
-    if (typeof primeElement !== 'undefined' && primeElement !== null) {
+    if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameters);
       new Prime.Dom.Element(holder.children[0]).insertAfter(primeElement);
     } else {
-      throw "Please supply an element to append to"
+      throw new TypeError('Please supply an element to append to');
     }
   }
 };

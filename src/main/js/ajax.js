@@ -61,7 +61,7 @@ Prime.Ajax.Request.prototype = {
    */
   go: function() {
     if (!this.url) {
-      throw 'No URL set for AJAX request';
+      throw new TypeError('No URL set for AJAX request');
     }
 
     var requestUrl = this.url;

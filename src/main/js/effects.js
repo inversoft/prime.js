@@ -55,7 +55,7 @@ Prime.Effects.BaseTransition.prototype = {
    */
   withDuration: function(duration) {
     if (duration < 100) {
-      throw 'Duration should be greater than 100 milliseconds or it won\'t really be noticeable';
+      throw new TypeError('Duration should be greater than 100 milliseconds or it won\'t really be noticeable');
     }
 
     this.duration = duration;
@@ -126,9 +126,9 @@ Prime.Effects.BaseTransition.prototype = {
  * @param {Prime.Dom.Element} element The Prime Element to fade out.
  */
 Prime.Effects.Fade = function(element) {
-  Prime.Effects.BaseTransition.apply(this, [element, 0.0]);
+  Prime.Effects.BaseTransition.call(this, element, 0.0);
 };
-Prime.Effects.Fade.prototype = new Prime.Effects.BaseTransition();
+Prime.Effects.Fade.prototype = Object.create(Prime.Effects.BaseTransition.prototype);
 Prime.Effects.Fade.constructor = Prime.Effects.Fade;
 
 /**
@@ -157,9 +157,9 @@ Prime.Effects.Fade.prototype.go = function() {
  * @param {Prime.Dom.Element} element The Prime Element to appear.
  */
 Prime.Effects.Appear = function(element) {
-  Prime.Effects.BaseTransition.apply(this, [element, 1.0]);
+  Prime.Effects.BaseTransition.call(this, element, 1.0);
 };
-Prime.Effects.Appear.prototype = new Prime.Effects.BaseTransition();
+Prime.Effects.Appear.prototype = Object.create(Prime.Effects.BaseTransition.prototype);
 Prime.Effects.Appear.constructor = Prime.Effects.Appear;
 
 /**
