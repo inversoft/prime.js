@@ -19,6 +19,31 @@ Prime.Widget = Prime.Widget || {};
 /**
  * Constructs a MultipleSelect object for the given element.
  *
+ * The MultipleSelect generates a number of different HTML elements directly after the SELECT element you pass to the
+ * constructor. A fully rendered MultipleSelect might look something like this:
+ *
+ * <pre>
+ * &lt;select id="foo">
+ *   &lt;option value="one">One&lt;/option>
+ *   &lt;option value="two">Two&lt;/option>
+ *   &lt;option value="three">Three&lt;/option>
+ * &lt;/select>
+ * &lt;div id="foo-display" class="prime-multiple-select-display">
+ *   &lt;ul id="foo-option-list" class="prime-multiple-select-option-list">
+ *     &lt;li id="foo-option-one" class="prime-multiple-select-option">&lt;span>One&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+ *     &lt;li id="foo-option-two" class="prime-multiple-select-option">&lt;span>Two&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+ *     &lt;li id="foo-option-three" class="prime-multiple-select-option">&lt;span>Three&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+ *     &lt;li class="prime-multiple-select-input-option">&lt;input type="text" class="prime-multiple-select-input" value="aaa"/>&lt;/li>
+ *   &lt;/ul>
+ *   &lt;ul class="prime-multiple-search-results">
+ *     &lt;li class="prime-multiple-select-search-results-option">One&lt;/li>
+ *     &lt;li class="prime-multiple-select-search-results-option">Two&lt;/li>
+ *     &lt;li class="prime-multiple-select-search-results-option">Three&lt;/li>
+ *     &lt;li class="prime-multiple-select-search-results-add-custom">Add Custom Entry: aaa/li>
+ *   &lt;/ul>
+ * &lt;/div>
+ * </pore>
+ *
  * @param {Prime.Dom.Element} element The Prime Element for the MultipleSelect.
  * @constructor
  */
@@ -47,15 +72,27 @@ Prime.Widget.MultipleSelect = function(element) {
         setID(id + '-display').
         addClass('prime-multiple-select-display').
         addEventListener('click', this.openSearch, this).
-        addEventListener('keydown', this.handleKeyEvent, this).
+        addEventListener('keyup', this.handleKeyEvent, this).
         insertAfter(this.element);
 
     this.displayContainerSelectedOptionList = Prime.Dom.newElement('<ul/>').
-        setID(id + '-option-list').
         addClass('prime-multiple-select-option-list').
         appendTo(this.displayContainer);
+
+    this.searchResultsContainer = Prime.Dom.newElement('<ul/>').
+        addClass('prime-multiple-select-search-results').
+        hide().
+        appendTo(this.displayContainer);
+
+    this.searchResultsAddCustomOption = Prime.Dom.newElement('<li/>').
+        addClass('prime-multiple-select-search-results-add-custom').
+        setHTML('Add Custom: ').
+        hide().
+        appendTo(this.searchResultsContainer);
   } else {
-    this.displayContainerSelectedOptionList = Prime.Dom.queryByID(id + '-option-list');
+    this.displayContainerSelectedOptionList = Prime.Dom.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
+    this.searchResultsContainer = Prime.Dom.queryFirst('.prime-multiple-select-search-results', this.displayContainer);
+    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-search-results-add-customer', this.displayContainer);
   }
 
   // Rebuild the display
@@ -95,6 +132,7 @@ Prime.Widget.MultipleSelect.prototype = {
     if (this.searchDisplayed) {
       this.searchDisplayed = false;
       this.inputOption.hide();
+      this.searchResultsContainer.hide();
     }
   },
 
@@ -146,6 +184,23 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Finds the HTMLSelectOption with the given text and returns it wrapped in a Prime.Dom.Element.
+   *
+   * @param {String} text The text to look for.
+   * @return {Prime.Dom.Element} The option element or null.
+   */
+  findOptionWithText: function(text) {
+    for (var i = 0; i < this.element.domElement.length; i++) {
+      var cur = this.element.domElement.options[i];
+      if (cur.innerText === text) {
+        return new Prime.Dom.Element(cur);
+      }
+    }
+
+    return null;
+  },
+
+  /**
    * Finds the HTMLSelectOption with the given value and returns it wrapped in a Prime.Dom.Element.
    *
    * @param {String} value The value to look for.
@@ -184,21 +239,21 @@ Prime.Widget.MultipleSelect.prototype = {
    * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   rebuildDisplay: function() {
+    // Close the search
+    this.closeSearch();
+
     // Remove the currently displayed options
     this.displayContainerSelectedOptionList.getChildren().each(function(option) {
       option.removeFromDOM();
     });
 
     // Add the input option since the select options are inserted before it
-    var id = this.element.getID();
     this.inputOption = Prime.Dom.newElement('<li/>').
         addClass('prime-multiple-select-input-option').
-        setID(id + '-input-option').
         hide(). // Start hidden
         appendTo(this.displayContainerSelectedOptionList);
     this.input = Prime.Dom.newElement('<input/>').
         setAttribute('type', 'text').
-        setID(id + '-input').
         addClass('prime-multiple-select-input').
         appendTo(this.inputOption);
 
@@ -273,6 +328,43 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Executes a search using the value from the input field and the selectable options.
+   *
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  search: function() {
+    // Clear the search options (if there are any)
+    Prime.Dom.query('.prime-multiple-select-search-results-option', this.searchResultsContainer).removeAllFromDOM();
+
+    // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
+    // the add custom option.
+    var searchText = this.input.getValue().toLowerCase();
+    var selectableOptions = this.selectableOptionsForPrefix(searchText);
+    if (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText)) {
+      this.searchResultsAddCustomOption.setHTML('Add Custom Value: ' + searchText);
+      this.searchResultsAddCustomOption.show();
+    } else {
+      this.searchResultsAddCustomOption.hide();
+    }
+
+    for (var i = 0; i < selectableOptions.length; i++) {
+      var optionText = selectableOptions[i];
+      Prime.Dom.newElement('<li/>').
+          addClass('prime-multiple-select-search-results-option').
+          setHTML(optionText).
+          addEventListener('click', function() {
+            var option = this.findOptionWithText(optionText);
+            this.selectOption(option);
+          }, this).
+          prependTo(this.searchResultsContainer);
+    }
+
+    this.searchResultsContainer.show();
+
+    return this;
+  },
+
+  /**
    * Selects the given option by setting the selected attribute on the option in the select box (the object passed in is
    * the option from the select box wrapped in a Prime.Dom.Element) and adding it to the display container. If the
    * option is already in the display container, that step is skipped.
@@ -339,6 +431,23 @@ Prime.Widget.MultipleSelect.prototype = {
    */
 
   /**
+   * Determines if the given array contains the given string value ignoring case on both sides.
+   *
+   * @param {Array} array The array to search.
+   * @param {string} value The string value ot look for.
+   * @returns {boolean} True if the array contains the value, false otherwise.
+   */
+  arrayContainsValueIgnoreCase: function(array, value) {
+    for (var i = 0; i < array.length; i++) {
+      if (value.toLowerCase() === array[i].toLowerCase()) {
+        return true;
+      }
+    }
+
+    return false;
+  },
+
+  /**
    * Handles all key events sent to the display container.
    *
    * @private
@@ -353,6 +462,8 @@ Prime.Widget.MultipleSelect.prototype = {
     var key = event.keyCode;
     if (key === Prime.Event.Keys.ESCAPE) {
       this.closeSearch();
+    } else {
+      this.search();
     }
 
     return true;
@@ -373,7 +484,7 @@ Prime.Widget.MultipleSelect.prototype = {
    *
    * @private
    * @param {string} [prefix] The prefix to look for options for.
-   * @returns {Array} The options as strings.
+   * @returns {Array} The selectable options in an array of strings.
    */
   selectableOptionsForPrefix: function(prefix) {
     prefix = typeof prefix !== 'undefined' ? prefix : null;
@@ -387,7 +498,7 @@ Prime.Widget.MultipleSelect.prototype = {
       }
 
       var html = option.getHTML();
-      if (prefix === null || html.startsWith(prefix)) {
+      if (prefix === null || prefix === '' || html.toLowerCase().indexOf(prefix) === 0) {
         selectableOptions.push(html);
       }
     }
