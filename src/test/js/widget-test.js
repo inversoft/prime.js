@@ -39,7 +39,7 @@ buster.testCase('MultipleSelect class tests', {
 
     var children = display.getChildren();
     assert.equals(children.length, 2);
-    assert.equals(children[0].domElement.tagName, 'UL');
+    assert.equals(children[0].getTagName(), 'UL');
     assert.equals(children[0].getChildren().length, 3);
     assert.equals(children[0].getChildren()[0].getID(), 'multiple-select-option-one');
     assert.equals(children[0].getChildren()[0].getChildren()[0].getHTML(), 'One');
@@ -50,9 +50,9 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(children[0].getChildren()[1].getChildren()[1].getAttribute('value'), 'three');
     assert.equals(children[0].getChildren()[1].getChildren()[1].getHTML(), 'X');
     assert.isTrue(children[0].getChildren()[2].hasClass('prime-multiple-select-input-option'));
-    assert.equals(children[0].getChildren()[2].getChildren()[0].domElement.tagName, 'INPUT');
+    assert.equals(children[0].getChildren()[2].getChildren()[0].getTagName(), 'INPUT');
     assert.isTrue(children[0].getChildren()[2].getChildren()[0].hasClass('prime-multiple-select-input'));
-    assert.equals(children[1].domElement.tagName, 'UL');
+    assert.equals(children[1].getTagName(), 'UL');
     assert.isTrue(children[1].hasClass('prime-multiple-select-search-results'));
     assert.equals(children[1].getChildren().length, 1);
     assert.isTrue(children[1].getChildren()[0].hasClass('prime-multiple-select-search-results-add-custom'));
@@ -151,6 +151,65 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(displayOptions.length, 2);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
+  },
+
+  'search': function() {
+    // Execute a search
+    this.multipleSelect.search('t');
+
+    var input = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-input');
+    assert.equals(input.getValue(), 't');
+
+    var searchDisplay = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results');
+    assert.isTrue(searchDisplay.isVisible());
+    assert.equals(searchDisplay.getChildren().length, 2); // The option for Two and the add custom option
+    assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-option');
+    assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Two');
+    assert.equals(searchDisplay.getChildren()[1].getClass(), 'prime-multiple-select-search-results-add-custom');
+    assert.equals(searchDisplay.getChildren()[1].getHTML(), 'Add Custom Value: t');
+
+    var customOption = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results-add-custom');
+    assert.isTrue(customOption.isVisible());
+
+    // Add a letter
+    this.multipleSelect.search('tw');
+    assert.equals(input.getValue(), 'tw');
+    assert.isTrue(searchDisplay.isVisible());
+    assert.equals(searchDisplay.getChildren().length, 2); // The option for Two and the add custom option
+    assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-option');
+    assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Two');
+    assert.equals(searchDisplay.getChildren()[1].getClass(), 'prime-multiple-select-search-results-add-custom');
+    assert.equals(searchDisplay.getChildren()[1].getHTML(), 'Add Custom Value: tw');
+    assert.isTrue(customOption.isVisible());
+
+    // Add a letter
+    this.multipleSelect.search('two');
+    assert.equals(input.getValue(), 'two');
+    assert.isTrue(searchDisplay.isVisible());
+    assert.equals(searchDisplay.getChildren().length, 2); // The option for Two and the add custom option
+    assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-option');
+    assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Two');
+    assert.equals(searchDisplay.getChildren()[1].getClass(), 'prime-multiple-select-search-results-add-custom');
+    assert.isFalse(customOption.isVisible());
+
+    // Add a letter
+    this.multipleSelect.search('twos');
+    assert.equals(input.getValue(), 'twos');
+    assert.isTrue(searchDisplay.isVisible());
+    assert.equals(searchDisplay.getChildren().length, 1); // The option for Two and the add custom option
+    assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-add-custom');
+    assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Add Custom Value: twos');
+    assert.isTrue(customOption.isVisible());
+
+    // Empty search
+    this.multipleSelect.search('');
+    assert.equals(input.getValue(), '');
+    assert.isTrue(searchDisplay.isVisible());
+    assert.equals(searchDisplay.getChildren().length, 2); // The option for Two and the add custom option
+    assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-option');
+    assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Two');
+    assert.equals(searchDisplay.getChildren()[1].getClass(), 'prime-multiple-select-search-results-add-custom');
+    assert.isFalse(customOption.isVisible());
   },
 
   'selectOptionWithValue': function() {

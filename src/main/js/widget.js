@@ -92,7 +92,7 @@ Prime.Widget.MultipleSelect = function(element) {
   } else {
     this.displayContainerSelectedOptionList = Prime.Dom.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Dom.queryFirst('.prime-multiple-select-search-results', this.displayContainer);
-    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-search-results-add-customer', this.displayContainer);
+    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-search-results-add-custom', this.displayContainer);
   }
 
   // Rebuild the display
@@ -330,17 +330,21 @@ Prime.Widget.MultipleSelect.prototype = {
   /**
    * Executes a search using the value from the input field and the selectable options.
    *
+   * @param {string} searchText The text to search for (this value is also set into the input box).
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
-  search: function() {
+  search: function(searchText) {
+    // Set the search text into the input box (even though it might be the value of the input box) and then lowercase it
+    this.input.setValue(searchText);
+    searchText = searchText.toLowerCase();
+
     // Clear the search options (if there are any)
     Prime.Dom.query('.prime-multiple-select-search-results-option', this.searchResultsContainer).removeAllFromDOM();
 
     // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
     // the add custom option.
-    var searchText = this.input.getValue().toLowerCase();
     var selectableOptions = this.selectableOptionsForPrefix(searchText);
-    if (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText)) {
+    if (searchText !== '' && (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText))) {
       this.searchResultsAddCustomOption.setHTML('Add Custom Value: ' + searchText);
       this.searchResultsAddCustomOption.show();
     } else {
@@ -463,7 +467,7 @@ Prime.Widget.MultipleSelect.prototype = {
     if (key === Prime.Event.Keys.ESCAPE) {
       this.closeSearch();
     } else {
-      this.search();
+      this.search(this.input.getValue());
     }
 
     return true;

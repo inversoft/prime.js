@@ -515,6 +515,15 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Gets the class value of the current element. This might be a single class or multiple class names.
+   *
+   * @return {string} The class.
+   */
+  getClass: function() {
+    return this.domElement.className;
+  },
+
+  /**
    * Gets the computed style information for this Element.
    *
    * @return {IEElementStyle|CSSStyleDeclaration} The style information.
@@ -619,6 +628,13 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * @returns {string} The tag name of this element as a string. This is always uppercase.
+   */
+  getTagName: function() {
+    return this.domElement.tagName;
+  },
+
+  /**
    * Retrieves the text content of this Element.
    *
    * @return {string} The text contents of this Element.
@@ -655,14 +671,31 @@ Prime.Dom.Element.prototype = {
   /**
    * Returns true if the element has one or all class names
    *
-   * @param {string} classNames The class name(s).
+   * @param {string} classNamesString The class name(s) in a string.
    * @return {boolean} true if all classnames are present.
    */
-  hasClass: function(classNames) {
-    var currentClassName = this.domElement.className;
-    var classNamesList = classNames.split(Prime.Utils.spaceRegex);
-    for (var i = 0; i < classNamesList.length; i++) {
-      if (currentClassName.indexOf(classNamesList[i]) < 0) {
+  hasClass: function(classNamesString) {
+    var currentClassNameString = this.domElement.className;
+    if (currentClassNameString === '') {
+      return classNamesString === '';
+    }
+
+    var currentClassNames = currentClassNameString.split(Prime.Utils.spaceRegex);
+    if (currentClassNames.length === 0) {
+      return false;
+    }
+
+    var classNames = classNamesString.split(Prime.Utils.spaceRegex);
+    for (var i = 0; i < currentClassNames.length; i++) {
+      var foundOne = false;
+      for (var j = 0; j < classNames.length; j++) {
+        if (currentClassNames[i] === classNames[j]) {
+          foundOne = true;
+          break;
+        }
+      }
+
+      if (!foundOne) {
         return false;
       }
     }
@@ -774,6 +807,17 @@ Prime.Dom.Element.prototype = {
    */
   isSelected: function() {
     return this.domElement.tagName === 'OPTION' && this.domElement.selected;
+  },
+
+  /**
+   * Determines if the element is visible using its display and visibility styles.
+   *
+   * @returns {boolean} True if the element is visible, false otherwise. This might return an invalid value if the element
+   * is absolutely positioned and off the screen, but is still technically visible.
+   */
+  isVisible: function() {
+    var computedStyle = this.getComputedStyle();
+    return computedStyle['display'] !== 'none' && computedStyle['visibility'] !== 'hidden';
   },
 
   /**
