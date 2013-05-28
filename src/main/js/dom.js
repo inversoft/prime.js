@@ -359,12 +359,15 @@ Prime.Dom.Element.prototype = {
     if (currentClassName === '') {
       currentClassName = classNames;
     } else {
-      var classNamesList = classNames.split(Prime.Utils.spaceRegex);
-      for (var i = 0; i < classNamesList.length; i++) {
-        if (currentClassName.indexOf(classNamesList[i]) < 0) {
-          currentClassName = currentClassName + ' ' + classNamesList[i];
+      var currentClassNameList = this.domElement.className.split(Prime.Utils.spaceRegex);
+      var newClassNameList = classNames.split(Prime.Utils.spaceRegex);
+      for (var i = 0; i < newClassNameList.length; i++) {
+        if (currentClassNameList.indexOf(newClassNameList[i]) === -1) {
+          currentClassNameList.push(newClassNameList[i]);
         }
       }
+
+      currentClassName = currentClassNameList.join(' ');
     }
 
     this.domElement.className = currentClassName;
@@ -671,31 +674,19 @@ Prime.Dom.Element.prototype = {
   /**
    * Returns true if the element has one or all class names
    *
-   * @param {string} classNamesString The class name(s) in a string.
-   * @return {boolean} true if all classnames are present.
+   * @param {string} classNames The class name(s) in a string.
+   * @return {boolean} True if all class names are present.
    */
-  hasClass: function(classNamesString) {
-    var currentClassNameString = this.domElement.className;
-    if (currentClassNameString === '') {
-      return classNamesString === '';
+  hasClass: function(classNames) {
+    var currentClassNames = this.domElement.className;
+    if (currentClassNames === '') {
+      return classNames === '';
     }
 
-    var currentClassNames = currentClassNameString.split(Prime.Utils.spaceRegex);
-    if (currentClassNames.length === 0) {
-      return false;
-    }
-
-    var classNames = classNamesString.split(Prime.Utils.spaceRegex);
-    for (var i = 0; i < currentClassNames.length; i++) {
-      var foundOne = false;
-      for (var j = 0; j < classNames.length; j++) {
-        if (currentClassNames[i] === classNames[j]) {
-          foundOne = true;
-          break;
-        }
-      }
-
-      if (!foundOne) {
+    var currentClassNameList = currentClassNames.split(Prime.Utils.spaceRegex);
+    var findClassNameList = classNames.split(Prime.Utils.spaceRegex);
+    for (var i = 0; i < findClassNameList.length; i++) {
+      if (currentClassNameList.indexOf(findClassNameList[i]) === -1) {
         return false;
       }
     }
@@ -925,27 +916,17 @@ Prime.Dom.Element.prototype = {
    */
   removeClass: function(classNames) {
     var currentClassName = this.domElement.className;
-    if (currentClassName) {
-      var classNamesList = classNames.split(Prime.Utils.spaceRegex);
-      for (var i = 0; i < classNamesList.length; i++) {
-        var aClass = classNamesList[i];
-        var index = currentClassName.indexOf(aClass);
-        if (index !== -1) {
-          if (index === 0 && currentClassName.length === aClass.length) {
-            currentClassName = '';
-            break;
-          } else if (index === 0) {
-            currentClassName = currentClassName.substring(aClass.length + 1);
-          } else if (index + aClass.length === currentClassName.length) {
-            currentClassName = currentClassName.substring(0, index - 1);
-          } else {
-            currentClassName = currentClassName.substring(0, index - 1) + ' ' + currentClassName.substring(index + aClass.length + 1);
-          }
-        }
-      }
+    if (currentClassName === '') {
+      return this;
     }
 
-    this.domElement.className = currentClassName;
+    var currentClassNameList = currentClassName.split(Prime.Utils.spaceRegex);
+    var removeClassNameList = classNames.split(Prime.Utils.spaceRegex);
+    for (var i = 0; i < removeClassNameList.length; i++) {
+      Prime.Utils.removeFromArray(currentClassNameList, removeClassNameList[i]);
+    }
+
+    this.domElement.className = currentClassNameList.join(' ');
     return this;
   },
 

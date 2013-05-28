@@ -35,7 +35,7 @@ Prime.Widget = Prime.Widget || {};
  *     &lt;li id="foo-option-three" class="prime-multiple-select-option">&lt;span>Three&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
  *     &lt;li class="prime-multiple-select-input-option">&lt;input type="text" class="prime-multiple-select-input" value="aaa"/>&lt;/li>
  *   &lt;/ul>
- *   &lt;ul class="prime-multiple-search-results">
+ *   &lt;ul class="prime-multiple-select-search-results">
  *     &lt;li class="prime-multiple-select-search-results-option">One&lt;/li>
  *     &lt;li class="prime-multiple-select-search-results-option">Two&lt;/li>
  *     &lt;li class="prime-multiple-select-search-results-option">Three&lt;/li>
@@ -72,7 +72,8 @@ Prime.Widget.MultipleSelect = function(element) {
         setID(id + '-display').
         addClass('prime-multiple-select-display').
         addEventListener('click', this.openSearch, this).
-        addEventListener('keyup', this.handleKeyEvent, this).
+        addEventListener('keydown', this.handleKeyDownEvent, this).
+        addEventListener('keyup', this.handleKeyUpEvent, this).
         insertAfter(this.element);
 
     this.displayContainerSelectedOptionList = Prime.Dom.newElement('<ul/>').
@@ -86,6 +87,7 @@ Prime.Widget.MultipleSelect = function(element) {
 
     this.searchResultsAddCustomOption = Prime.Dom.newElement('<li/>').
         addClass('prime-multiple-select-search-results-add-custom').
+        addEventListener('click', this.addCustomOption, this).
         setHTML('Add Custom: ').
         hide().
         appendTo(this.searchResultsContainer);
@@ -218,6 +220,107 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Determines if the MultipleSelect contains an option with the given value.
+   *
+   * @param {string} value The value.
+   * @returns {boolean} True if the MultipleSelect contains an option with the given value, false otherwise.
+   */
+  hasOptionWithValue: function(value) {
+    return this.findOptionWithValue(value) !== null;
+  },
+
+  /**
+   * Selects the previous option in the search results if one is selected. If there isn't any option selected, this
+   * selects the last one. This method handles wrapping.
+   *
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  highlightNextOptionInSearchResults: function() {
+    var searchResults = this.searchResultsContainer.getChildren();
+    var length = this.isCustomAddVisible() ? searchResults.length : searchResults.length - 1;
+    var index = this.indexOfHighlightedOptionInSearchResults();
+    if (index === -1 || index === length - 1) {
+      this.highlightOptionInSearchResults(0);
+    } else {
+      this.highlightOptionInSearchResults(index + 1);
+    }
+
+    return this;
+  },
+
+  /**
+   * Highlights the option in the search results at the given index.
+   *
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  highlightOptionInSearchResults: function(index) {
+    var searchResults = this.searchResultsContainer.getChildren();
+    searchResults.each(function(element) {
+      element.removeClass('prime-multiple-select-selected-search-result');
+    });
+
+    searchResults[index].addClass('prime-multiple-select-selected-search-result');
+
+    return this;
+  },
+
+  /**
+   * Highlights the previous option in the search results if one is highlighted. If there isn't any option highligheted,
+   * this selects the last one. This method handles wrapping.
+   *
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  highlightPreviousOptionInSearchResults: function() {
+    var searchResults = this.searchResultsContainer.getChildren();
+    var length = this.isCustomAddVisible() ? searchResults.length : searchResults.length - 1;
+    var index = this.indexOfHighlightedOptionInSearchResults();
+    if (index <= 0) {
+      this.highlightOptionInSearchResults(length - 1);
+    } else {
+      this.highlightOptionInSearchResults(index - 1);
+    }
+
+    return this;
+  },
+
+  /**
+   * @returns {number} The index in the search results of the option that is currently highlighted.
+   */
+  indexOfHighlightedOptionInSearchResults: function() {
+    var searchResults = this.searchResultsContainer.getChildren();
+    var index = -1;
+    for (var i = 0; i < searchResults.length; i++) {
+      if (searchResults[i].hasClass('prime-multiple-select-selected-search-result')) {
+        index = i;
+        break;
+      }
+    }
+
+    return index;
+  },
+
+  /**
+   * @returns {boolean} True if the search results add custom option is being displayed currently.
+   */
+  isCustomAddVisible: function() {
+    return this.searchResultsAddCustomOption.isVisible();
+  },
+
+  /**
+   * @returns {boolean} True if the search input field is being displayed currently.
+   */
+  isSearchInputVisible: function() {
+    return this.searchDisplayed;
+  },
+
+  /**
+   * @returns {boolean} True if any search results are being displayed currently.
+   */
+  isSearchResultsVisible: function() {
+    return this.searchResultsContainer.isVisible();
+  },
+
+  /**
    * Displays the search input box and search results div.
    */
   openSearch: function() {
@@ -344,11 +447,14 @@ Prime.Widget.MultipleSelect.prototype = {
     // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
     // the add custom option.
     var selectableOptions = this.selectableOptionsForPrefix(searchText);
+    var show = false;
     if (searchText !== '' && (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText))) {
       this.searchResultsAddCustomOption.setHTML('Add Custom Value: ' + searchText);
       this.searchResultsAddCustomOption.show();
+      show = true;
     } else {
       this.searchResultsAddCustomOption.hide();
+      show = false;
     }
 
     for (var i = 0; i < selectableOptions.length; i++) {
@@ -359,11 +465,40 @@ Prime.Widget.MultipleSelect.prototype = {
           addEventListener('click', function() {
             var option = this.findOptionWithText(optionText);
             this.selectOption(option);
+            this.closeSearch();
           }, this).
           prependTo(this.searchResultsContainer);
+      show = true;
     }
 
-    this.searchResultsContainer.show();
+    // Only show the display if we have any options to display
+    if (show) {
+      this.searchResultsContainer.show();
+    } else {
+      this.searchResultsContainer.hide();
+    }
+
+    return this;
+  },
+
+  /**
+   * Selects the highlighted search result unless there isn't one highlighted, in which case, this does nothing.
+   *
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  selectHighlightedSearchResult: function() {
+    var index = this.indexOfHighlightedOptionInSearchResults();
+    if (index === -1) {
+      return this;
+    }
+
+    var highlightedSearchResult = this.searchResultsContainer.getChildren()[index];
+    if (highlightedSearchResult.hasClass('prime-multiple-select-search-results-add-custom')) {
+      this.addCustomOption();
+    } else {
+      var option = this.findOptionWithText(highlightedSearchResult.getHTML());
+      this.selectOption(option);
+    }
 
     return this;
   },
@@ -435,8 +570,21 @@ Prime.Widget.MultipleSelect.prototype = {
    */
 
   /**
+   * Handles when a user clicks on the add custom value option. This creates a new option, selects it and then closes
+   * the search.
+   *
+   * @private
+   */
+  addCustomOption: function() {
+    var customValue = this.input.getValue();
+    this.addOption(customValue, customValue);
+    this.selectOptionWithValue(customValue);
+  },
+
+  /**
    * Determines if the given array contains the given string value ignoring case on both sides.
    *
+   * @private
    * @param {Array} array The array to search.
    * @param {string} value The string value ot look for.
    * @returns {boolean} True if the array contains the value, false otherwise.
@@ -452,22 +600,75 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
-   * Handles all key events sent to the display container.
+   * Handles the key down events that should not be propagated.
+   *
+   * @private
+   * @param {Event} event The browser event object.
+   * @returns {boolean} True if the event is not an arrow key.
+   */
+  handleKeyDownEvent: function(event) {
+    if (!this.isSearchInputVisible()) {
+      return true;
+    }
+
+    var value = this.input.getValue();
+    var key = event.keyCode;
+    if (key === Prime.Event.Keys.UP_ARROW) {
+      if (this.isSearchResultsVisible()) {
+        this.highlightPreviousOptionInSearchResults();
+      } else {
+        this.search(value);
+      }
+
+      return false;
+    } else if (key === Prime.Event.Keys.DOWN_ARROW) {
+      if (this.isSearchResultsVisible()) {
+        this.highlightNextOptionInSearchResults();
+      } else {
+        this.search(value);
+      }
+
+      return false;
+    }
+
+    return true;
+  },
+
+  /**
+   * Handles all key up events sent to the display container.
    *
    * @private
    * @param {Event} event The browser event object.
    * @returns {boolean} True if the search display is not open, false otherwise. This will prevent the event from continuing.
    */
-  handleKeyEvent: function(event) {
-    if (!this.searchDisplayed) {
+  handleKeyUpEvent: function(event) {
+    if (!this.isSearchInputVisible()) {
       return true;
     }
 
+    var value = this.input.getValue();
     var key = event.keyCode;
-    if (key === Prime.Event.Keys.ESCAPE) {
+    if (key === Prime.Event.Keys.ENTER) {
+      // If a search result is highlighted, add it
+      if (this.indexOfHighlightedOptionInSearchResults() !== -1) {
+        this.selectHighlightedSearchResult();
+      } else if (this.isCustomAddVisible()) {
+        // If the custom option is visible, add a custom option. Otherwise, if there is an option for the current value, select it
+        this.addCustomOption();
+      } else if (this.hasOptionWithValue(value)) {
+        this.selectOptionWithValue(value);
+      }
+
       this.closeSearch();
-    } else {
-      this.search(this.input.getValue());
+      this.openSearch();
+
+      return false;
+    } else if (key === Prime.Event.Keys.ESCAPE) {
+      // Close the search
+      this.closeSearch();
+      return false;
+    } else if (key !== Prime.Event.Keys.UP_ARROW && key !== Prime.Event.Keys.DOWN_ARROW) {
+      this.search(value);
     }
 
     return true;
