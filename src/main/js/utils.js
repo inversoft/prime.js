@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
-Prime.Utils = Prime.Utils || {};
+
 
 Prime.Utils = {
   spaceRegex: /\s+/,

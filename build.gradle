@@ -1,6 +1,6 @@
 // Project info
 group = "org.primeframework"
-version = "0.7"
+version = "0.8"
 description = "Prime JS Framework"
 
 // Plugins

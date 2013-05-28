@@ -16,6 +16,7 @@
 var Prime = Prime || {};
 Prime.Widget = Prime.Widget || {};
 
+
 /**
  * Constructs a MultipleSelect object for the given element.
  *
