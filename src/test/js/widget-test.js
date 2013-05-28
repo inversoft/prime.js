@@ -23,8 +23,7 @@ var refute = buster.assertions.refute;
 
 buster.testCase('MultipleSelect class tests', {
   setUp: function() {
-    this.timeout = 2000;
-    this.multipleSelect = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select'));
+    this.multipleSelect = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select'), true, 'Add New Value: ');
     this.multipleSelect.removeAllOptions();
     this.multipleSelect.addOption('one', 'One');
     this.multipleSelect.addOption('two', 'Two');
@@ -32,6 +31,15 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelect.selectOptionWithValue('one');
     this.multipleSelect.selectOptionWithValue('three');
     this.multipleSelect.closeSearch();
+
+    this.multipleSelectCustomAddDisabled = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select-custom-add-disabled'), false);
+    this.multipleSelectCustomAddDisabled.removeAllOptions();
+    this.multipleSelectCustomAddDisabled.addOption('one', 'One');
+    this.multipleSelectCustomAddDisabled.addOption('two', 'Two');
+    this.multipleSelectCustomAddDisabled.addOption('three', 'Three');
+    this.multipleSelectCustomAddDisabled.selectOptionWithValue('one');
+    this.multipleSelectCustomAddDisabled.selectOptionWithValue('three');
+    this.multipleSelectCustomAddDisabled.closeSearch();
   },
 
   'setup': function() {
@@ -169,6 +177,23 @@ buster.testCase('MultipleSelect class tests', {
     assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
   },
 
+  'highlightNextOptionInSearchResults custom add disabled': function() {
+    this.multipleSelectCustomAddDisabled.search('t'); // This will result in the search results having Two and the custom option shown
+    this.multipleSelectCustomAddDisabled.highlightNextOptionInSearchResults();
+
+    // Highlight Two
+    var searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-results').getChildren();
+    assert.equals(searchResultsOptions.length, 2);
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
+
+    // Ensure that the custom add does not get highlighted
+    this.multipleSelectCustomAddDisabled.highlightNextOptionInSearchResults();
+    searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-results').getChildren();
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
+  },
+
   'highlightOptionForUnselect': function() {
     this.multipleSelect.highlightOptionForUnselect(); // Highlight Three
     assert.isTrue(this.multipleSelect.isLastOptionHighlightedForUnselect());
@@ -215,6 +240,17 @@ buster.testCase('MultipleSelect class tests', {
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
     assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
     assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
+  },
+
+  'highlightPreviousOptionInSearchResults custom add disabled': function() {
+    this.multipleSelectCustomAddDisabled.search('t'); // This will result in the search results having Two and the custom option shown
+    this.multipleSelectCustomAddDisabled.highlightPreviousOptionInSearchResults();
+
+    // Ensure that the custom add doesn't get highlighted
+    var searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-results').getChildren();
+    assert.equals(searchResultsOptions.length, 2);
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result')); // Two
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result')); // Custom add
   },
 
   'open and close search': function() {
@@ -286,7 +322,7 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-option');
     assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Two');
     assert.equals(searchDisplay.getChildren()[1].getClass(), 'prime-multiple-select-search-results-add-custom');
-    assert.equals(searchDisplay.getChildren()[1].getHTML(), 'Add Custom Value: t');
+    assert.equals(searchDisplay.getChildren()[1].getHTML(), 'Add New Value: t');
 
     var customOption = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results-add-custom');
     assert.isTrue(customOption.isVisible());
@@ -301,7 +337,7 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-option');
     assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Two');
     assert.equals(searchDisplay.getChildren()[1].getClass(), 'prime-multiple-select-search-results-add-custom');
-    assert.equals(searchDisplay.getChildren()[1].getHTML(), 'Add Custom Value: tw');
+    assert.equals(searchDisplay.getChildren()[1].getHTML(), 'Add New Value: tw');
     assert.isTrue(customOption.isVisible());
 
     // Add a letter
@@ -324,7 +360,7 @@ buster.testCase('MultipleSelect class tests', {
     assert.isTrue(searchDisplay.isVisible());
     assert.equals(searchDisplay.getChildren().length, 1); // The option for Two and the add custom option
     assert.equals(searchDisplay.getChildren()[0].getClass(), 'prime-multiple-select-search-results-add-custom');
-    assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Add Custom Value: twos');
+    assert.equals(searchDisplay.getChildren()[0].getHTML(), 'Add New Value: twos');
     assert.isTrue(customOption.isVisible());
 
     // Empty search

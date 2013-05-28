@@ -42,6 +42,7 @@
           });
 
         new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-test'));
+        new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-custom-add-disabled-test'), false);
       });
     </script>
     <style>
@@ -123,6 +124,12 @@
     <div>
       <label for="multiple-select-test">Multiple Select Test</label><br/>
       <select id="multiple-select-test" multiple="multiple">
+        <option value="one" selected="selected">One</option>
+        <option value="two">Two</option>
+        <option value="three" selected="selected">Three</option>
+      </select>
+      <label for="multiple-select-custom-add-disabled-test">Multiple Select Test (custom add disabled)</label><br/>
+      <select id="multiple-select-custom-add-disabled-test" multiple="multiple">
         <option value="one" selected="selected">One</option>
         <option value="two">Two</option>
         <option value="three" selected="selected">Three</option>

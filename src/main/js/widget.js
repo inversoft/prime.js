@@ -45,9 +45,11 @@ Prime.Widget = Prime.Widget || {};
  * </pore>
  *
  * @param {Prime.Dom.Element} element The Prime Element for the MultipleSelect.
+ * @param {boolean} [customAddEnabled=true] Determines if users can add custom options to the MultipleSelect.
+ * @param {string} [customAddLabel="Add Custom Value:"] The label for the custom add option in the search results.
  * @constructor
  */
-Prime.Widget.MultipleSelect = function(element) {
+Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel) {
   this.element = (element instanceof Prime.Dom.Element) ? element : new Prime.Dom.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widget.MultipleSelect with select elements');
@@ -59,6 +61,8 @@ Prime.Widget.MultipleSelect = function(element) {
 
   this.element.hide();
   this.searchDisplayed = false;
+  this.customAddEnabled = typeof(customAddEnabled) !== 'undefined' ? customAddEnabled : true;
+  this.customAddLabel = typeof(customAddLabel) !== 'undefined' ? customAddLabel : 'Add Custom Value: ';
 
   var id = this.element.getID();
   if (id === null) {
@@ -88,13 +92,19 @@ Prime.Widget.MultipleSelect = function(element) {
     this.searchResultsAddCustomOption = Prime.Dom.newElement('<li/>').
         addClass('prime-multiple-select-search-results-add-custom').
         addEventListener('click', this.addCustomOption, this).
-        setHTML('Add Custom: ').
         hide().
         appendTo(this.searchResultsContainer);
   } else {
+    this.displayContainer.
+        removeAllEventListeners().
+        addEventListener('click', this.openSearch, this).
+        addEventListener('keydown', this.handleKeyDownEvent, this).
+        addEventListener('keyup', this.handleKeyUpEvent, this);
     this.displayContainerSelectedOptionList = Prime.Dom.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Dom.queryFirst('.prime-multiple-select-search-results', this.displayContainer);
-    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-search-results-add-custom', this.displayContainer);
+    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-search-results-add-custom', this.displayContainer).
+        removeAllEventListeners().
+        addEventListener('click', this.addCustomOption, this);
   }
 
   // Rebuild the display
@@ -135,6 +145,7 @@ Prime.Widget.MultipleSelect.prototype = {
       this.searchDisplayed = false;
       this.inputOption.hide();
       this.searchResultsContainer.hide();
+      this.removeAllSearchResults();
     }
   },
 
@@ -421,7 +432,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * Removes the given option from the MultipleSelect by removing the option in the select box and the option in the
    * display container.
    *
-   * @param {Prime.Dom.Element} option The option to select.
+   * @param {Prime.Dom.Element} option The option to remove.
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   removeOption: function(option) {
@@ -475,15 +486,16 @@ Prime.Widget.MultipleSelect.prototype = {
 
     searchText = searchText.toLowerCase();
 
-    // Clear the search options (if there are any)
-    Prime.Dom.query('.prime-multiple-select-search-results-option', this.searchResultsContainer).removeAllFromDOM();
+    // Clear the search results (if there are any)
+    this.removeAllSearchResults();
 
     // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
     // the add custom option.
     var selectableOptions = this.selectableOptionsForPrefix(searchText);
     var show = false;
-    if (searchText !== '' && (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText))) {
-      this.searchResultsAddCustomOption.setHTML('Add Custom Value: ' + searchText);
+    if (this.customAddEnabled && searchText !== '' &&
+        (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText))) {
+      this.searchResultsAddCustomOption.setHTML(this.customAddLabel + searchText);
       this.searchResultsAddCustomOption.show();
       show = true;
     } else {
@@ -748,6 +760,15 @@ Prime.Widget.MultipleSelect.prototype = {
    */
   makeOptionID: function(option) {
     return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
+  },
+
+  /**
+   * Removes all of the search results.
+   *
+   * @private
+   */
+  removeAllSearchResults: function() {
+    Prime.Dom.query('.prime-multiple-select-search-results-option', this.searchResultsContainer).removeAllFromDOM();
   },
 
   /**
