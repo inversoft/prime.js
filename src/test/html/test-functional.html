@@ -20,6 +20,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Prime Functional Tests</title>
     <link rel="stylesheet" href="../js/buster-test.css"/>
+    <link rel="stylesheet" href="../../main/css/Widget.MultipleSelect.css"/>
     <script type="text/javascript" src="../../main/js/sizzle/sizzle.js"></script>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
     <script type="text/javascript" src="../../main/js/Browser.js"></script>
@@ -50,68 +51,6 @@
         new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-custom-add-disabled-test'), false);
       });
     </script>
-    <style>
-      .prime-multiple-select-display {
-        /*border: 2px inset lightgray;*/
-        /*margin: 0;*/
-        /*padding: 3px;*/
-        font-family: Arial, sans-serif;
-        font-size: 12px;
-      }
-
-      .prime-multiple-select-display ul.prime-multiple-select-option-list {
-        border: 2px inset lightgray;
-        margin: 0;
-        padding: 3px;
-        list-style: none;
-        /*margin: 0;*/
-        /*padding: 0;*/
-      }
-
-      .prime-multiple-select-display ul.prime-multiple-select-option-list li {
-        display: inline-block;
-        margin-right: 4px;
-        padding: 4px;
-      }
-
-      .prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option {
-        background: lightblue;
-      }
-
-      .prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option-highlighted {
-        background: cyan;
-      }
-
-      .prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option span {
-        display: inline-block;
-        margin-right: 2px;
-      }
-
-      .prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option a {
-        color: black;
-        font-size: 11px;
-        text-decoration: none;
-      }
-
-      .prime-multiple-select-input {
-        border: none;
-        margin: 0;
-        outline: none;
-        padding: 0;
-      }
-
-      .prime-multiple-select-display .prime-multiple-select-search-results {
-        border: 1px solid black;
-        /*font-size: 11px;*/
-        list-style: none;
-        margin: 0;
-        padding: 5px;
-      }
-
-      .prime-multiple-select-display .prime-multiple-select-search-results .prime-multiple-select-highlighted-search-result {
-        background: lightblue;
-      }
-    </style>
   </head>
   <body>
     <div id="fade" style="border: 1px solid black;">

@@ -1,0 +1,109 @@
+/* Prime MultipleSelect */
+.prime-multiple-select-display {
+  position: relative;
+}
+.prime-multiple-select-display ul.prime-multiple-select-option-list {
+  border: 1px solid #000000;
+  margin: 0;
+  padding: 3px;
+  list-style: none;
+  max-height: 100px;
+  min-height: 25px;
+  overflow-y: scroll;
+}
+
+.prime-multiple-select-display ul.prime-multiple-select-option-list li {
+  color: #000000;
+  display: inline-block;
+}
+
+.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  border-radius: 3px;
+  -moz-background-clip: padding;
+  -webkit-background-clip: padding-box;
+  background-clip: padding-box;
+  background-color: #e4e4e4;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f4f4f4', endColorstr='#eeeeee', GradientType=0);
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #f4f4f4), color-stop(50%, #f0f0f0), color-stop(52%, #e8e8e8), color-stop(100%, #eeeeee));
+  background-image: -webkit-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: -moz-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: -o-linear-gradient(top, #f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  background-image: linear-gradient(#f4f4f4 20%, #f0f0f0 50%, #e8e8e8 52%, #eeeeee 100%);
+  border: 1px solid #aaaaaa;
+  -webkit-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  -moz-box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  box-shadow: 0 0 2px #ffffff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  cursor: default;
+  margin: 1px 4px;
+  padding: 4px;
+}
+
+.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option-highlighted {
+  background-color: #3875d7;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3875d7', endColorstr='#2a62bc', GradientType=0 );
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
+  background-image: -webkit-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+  background-image: -moz-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+  background-image: -o-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+  background-image: linear-gradient(#3875d7 20%, #2a62bc 90%);
+  color: #fff;
+}
+
+.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option span {
+  display: inline-block;
+  margin-right: 2px;
+}
+
+.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option a {
+  color: #000000;
+  font-size: 11px;
+  text-decoration: none;
+}
+
+.prime-multiple-select-input {
+  border: none;
+  height: 25px;
+  margin: 0;
+  outline: none;
+  padding: 0;
+}
+
+.prime-multiple-select-display .prime-multiple-select-search-result-list {
+  background: #ffffff;
+  border: 1px solid #aaaaaa;
+  border-top: 0;
+  -webkit-box-shadow: 0 4px 5px rgba(0,0,0,.15);
+  -moz-box-shadow   : 0 4px 5px rgba(0,0,0,.15);
+  box-shadow        : 0 4px 5px rgba(0,0,0,.15);
+  -moz-box-sizing   : border-box;
+  -ms-box-sizing    : border-box;
+  -webkit-box-sizing: border-box;
+  -khtml-box-sizing : border-box;
+  box-sizing        : border-box;
+  height: 175px;
+  left: 0;
+  list-style: none;
+  margin: 0;
+  position: absolute;
+  overflow-y: scroll;
+  top: 100%;
+  width: 100%;
+  z-index: 1010;
+}
+
+.prime-multiple-select-display .prime-multiple-select-search-result-list li {
+  padding: 5px;
+}
+
+.prime-multiple-select-display .prime-multiple-select-search-result-list .prime-multiple-select-highlighted-search-result {
+  background-color: #3875d7;
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3875d7', endColorstr='#2a62bc', GradientType=0 );
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
+  background-image: -webkit-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+  background-image: -moz-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+  background-image: -o-linear-gradient(top, #3875d7 20%, #2a62bc 90%);
+  background-image: linear-gradient(#3875d7 20%, #2a62bc 90%);
+  color: #fff;
+}

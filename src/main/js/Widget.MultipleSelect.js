@@ -36,11 +36,11 @@ Prime.Widget = Prime.Widget || {};
  *     &lt;li id="foo-option-three" class="prime-multiple-select-option">&lt;span>Three&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
  *     &lt;li class="prime-multiple-select-input-option">&lt;input type="text" class="prime-multiple-select-input" value="aaa"/>&lt;/li>
  *   &lt;/ul>
- *   &lt;ul class="prime-multiple-select-search-results">
- *     &lt;li class="prime-multiple-select-search-results-option">One&lt;/li>
- *     &lt;li class="prime-multiple-select-search-results-option">Two&lt;/li>
- *     &lt;li class="prime-multiple-select-search-results-option">Three&lt;/li>
- *     &lt;li class="prime-multiple-select-search-results-add-custom">Add Custom Entry: aaa/li>
+ *   &lt;ul class="prime-multiple-select-search-result-list">
+ *     &lt;li class="prime-multiple-select-search-result">One&lt;/li>
+ *     &lt;li class="prime-multiple-select-search-result">Two&lt;/li>
+ *     &lt;li class="prime-multiple-select-search-result">Three&lt;/li>
+ *     &lt;li class="prime-multiple-select-add-custom">Add Custom Entry: aaa/li>
  *   &lt;/ul>
  * &lt;/div>
  * </pore>
@@ -86,12 +86,12 @@ Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel
         appendTo(this.displayContainer);
 
     this.searchResultsContainer = Prime.Dom.newElement('<ul/>').
-        addClass('prime-multiple-select-search-results').
+        addClass('prime-multiple-select-search-result-list').
         hide().
         appendTo(this.displayContainer);
 
     this.searchResultsAddCustomOption = Prime.Dom.newElement('<li/>').
-        addClass('prime-multiple-select-search-results-add-custom').
+        addClass('prime-multiple-select-add-custom').
         addEventListener('click', this.addCustomOption, this).
         hide().
         appendTo(this.searchResultsContainer);
@@ -102,8 +102,8 @@ Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel
         addEventListener('keydown', this.handleKeyDownEvent, this).
         addEventListener('keyup', this.handleKeyUpEvent, this);
     this.displayContainerSelectedOptionList = Prime.Dom.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
-    this.searchResultsContainer = Prime.Dom.queryFirst('.prime-multiple-select-search-results', this.displayContainer);
-    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-search-results-add-custom', this.displayContainer).
+    this.searchResultsContainer = Prime.Dom.queryFirst('.prime-multiple-select-search-result-list', this.displayContainer);
+    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-add-custom', this.displayContainer).
         removeAllEventListeners().
         addEventListener('click', this.addCustomOption, this);
   }
@@ -507,7 +507,7 @@ Prime.Widget.MultipleSelect.prototype = {
     for (var i = 0; i < selectableOptions.length; i++) {
       var optionText = selectableOptions[i];
       Prime.Dom.newElement('<li/>').
-          addClass('prime-multiple-select-search-results-option').
+          addClass('prime-multiple-select-search-result').
           setHTML(optionText).
           addEventListener('click', function() {
             var option = this.findOptionWithText(optionText);
@@ -540,7 +540,7 @@ Prime.Widget.MultipleSelect.prototype = {
     }
 
     var highlightedSearchResult = this.searchResultsContainer.getChildren()[index];
-    if (highlightedSearchResult.hasClass('prime-multiple-select-search-results-add-custom')) {
+    if (highlightedSearchResult.hasClass('prime-multiple-select-add-custom')) {
       this.addCustomOption();
     } else {
       var option = this.findOptionWithText(highlightedSearchResult.getHTML());
@@ -769,7 +769,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * @private
    */
   removeAllSearchResults: function() {
-    Prime.Dom.query('.prime-multiple-select-search-results-option', this.searchResultsContainer).removeAllFromDOM();
+    Prime.Dom.query('.prime-multiple-select-search-result', this.searchResultsContainer).removeAllFromDOM();
   },
 
   /**
