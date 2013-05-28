@@ -31,6 +31,7 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelect.addOption('three', 'Three');
     this.multipleSelect.selectOptionWithValue('one');
     this.multipleSelect.selectOptionWithValue('three');
+    this.multipleSelect.closeSearch();
   },
 
   'setup': function() {
@@ -77,7 +78,9 @@ buster.testCase('MultipleSelect class tests', {
     var displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 3);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getAttribute('value'), 'one');
     assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getAttribute('value'), 'three');
     assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   },
 
@@ -104,6 +107,7 @@ buster.testCase('MultipleSelect class tests', {
     var displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 2);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[0].getAttribute('value'), 'three');
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
   },
 
@@ -136,33 +140,46 @@ buster.testCase('MultipleSelect class tests', {
 
     // Highlight Two
     var searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // Highlight the custom add option
     this.multipleSelect.highlightNextOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isFalse(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isTrue(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isFalse(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isTrue(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // Wrap
     this.multipleSelect.highlightNextOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // Get rid of the custom add option and highlight Two
     this.multipleSelect.search('two');
     this.multipleSelect.highlightNextOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // This should keep Two highlighted
     this.multipleSelect.highlightNextOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
+  },
+
+  'highlightOptionForUnselect': function() {
+    this.multipleSelect.highlightOptionForUnselect(); // Highlight Three
+    assert.isTrue(this.multipleSelect.isLastOptionHighlightedForUnselect());
+
+    var displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
+    assert.equals(displayOptions.length, 3);
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.isFalse(displayOptions[0].hasClass('prime-multiple-select-option-highlighted'));
+    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-option-highlighted'));
+    assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   },
 
   'highlightPreviousOptionInSearchResults': function() {
@@ -171,33 +188,33 @@ buster.testCase('MultipleSelect class tests', {
 
     // Highlight the custom add option
     var searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isFalse(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isTrue(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isFalse(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isTrue(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // Highlight Two
     this.multipleSelect.highlightPreviousOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // Wrap
     this.multipleSelect.highlightPreviousOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isFalse(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isTrue(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isFalse(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isTrue(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // Get rid of the custom add option and highlight Two
     this.multipleSelect.search('two');
     this.multipleSelect.highlightPreviousOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
 
     // This should keep Two highlighted
     this.multipleSelect.highlightPreviousOptionInSearchResults();
     searchResultsOptions = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-search-results').getChildren();
-    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-selected-search-result'));
-    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-selected-search-result'));
+    assert.isTrue(searchResultsOptions[0].hasClass('prime-multiple-select-highlighted-search-result'));
+    assert.isFalse(searchResultsOptions[1].hasClass('prime-multiple-select-highlighted-search-result'));
   },
 
   'open and close search': function() {
@@ -214,6 +231,28 @@ buster.testCase('MultipleSelect class tests', {
     display = Prime.Dom.queryFirst('#multiple-select-display .prime-multiple-select-input-option');
     assert.equals(display.getStyle('display'), 'none');
     assert.isFalse(this.multipleSelect.isSearchInputVisible());
+  },
+
+  'removeHighlightedOption': function() {
+    this.multipleSelect.highlightOptionForUnselect(); // Highlight Three
+    assert.isTrue(this.multipleSelect.isLastOptionHighlightedForUnselect());
+    this.multipleSelect.removeHighlightedOption();
+
+    // Verify the backing select is updated
+    var select = this.multipleSelect.element.domElement;
+    assert.equals(select.length, 3);
+    assert.equals(select.options[0].value, 'one');
+    assert.isTrue(select.options[0].selected);
+    assert.equals(select.options[1].value, 'two');
+    assert.isFalse(select.options[1].selected);
+    assert.equals(select.options[2].value, 'three');
+    assert.isFalse(select.options[2].selected);
+
+    var displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
+    assert.equals(displayOptions.length, 2);
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.isFalse(displayOptions[0].hasClass('prime-multiple-select-option-highlighted'));
+    assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
   },
 
   'removeOptionWithValue': function() {
@@ -336,8 +375,11 @@ buster.testCase('MultipleSelect class tests', {
     var displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 4);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getAttribute('value'), 'one');
     assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getAttribute('value'), 'three');
     assert.equals(displayOptions[2].getID(), 'multiple-select-option-t');
+    assert.equals(displayOptions[2].getAttribute('value'), 't');
     assert.isTrue(displayOptions[3].hasClass('prime-multiple-select-input-option'));
 
     // Add a non-custom option
@@ -360,9 +402,13 @@ buster.testCase('MultipleSelect class tests', {
     displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 5);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getAttribute('value'), 'one');
     assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getAttribute('value'), 'three');
     assert.equals(displayOptions[2].getID(), 'multiple-select-option-t');
+    assert.equals(displayOptions[2].getAttribute('value'), 't');
     assert.equals(displayOptions[3].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[3].getAttribute('value'), 'two');
     assert.isTrue(displayOptions[4].hasClass('prime-multiple-select-input-option'));
   },
 
@@ -383,8 +429,11 @@ buster.testCase('MultipleSelect class tests', {
     var displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 4);
     assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getAttribute('value'), 'one');
     assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getAttribute('value'), 'three');
     assert.equals(displayOptions[2].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[2].getAttribute('value'), 'two');
     assert.isTrue(displayOptions[3].hasClass('prime-multiple-select-input-option'));
   },
 
@@ -413,5 +462,30 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(options[1], 'Two');
     assert.equals(options[2], 'Two1');
     assert.equals(options[3], 'Two2');
+  },
+
+  'unhighlightOptionForUnselect': function() {
+    this.multipleSelect.highlightOptionForUnselect(); // Highlight Three
+    assert.isTrue(this.multipleSelect.isLastOptionHighlightedForUnselect());
+    this.multipleSelect.unhighlightOptionForUnselect();
+    assert.isFalse(this.multipleSelect.isLastOptionHighlightedForUnselect());
+
+    // Verify the backing select is correct
+    var select = this.multipleSelect.element.domElement;
+    assert.equals(select.length, 3);
+    assert.equals(select.options[0].value, 'one');
+    assert.isTrue(select.options[0].selected);
+    assert.equals(select.options[1].value, 'two');
+    assert.isFalse(select.options[1].selected);
+    assert.equals(select.options[2].value, 'three');
+    assert.isTrue(select.options[2].selected);
+
+    var displayOptions = Prime.Dom.query('#multiple-select-display ul.prime-multiple-select-option-list li');
+    assert.equals(displayOptions.length, 3);
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.isFalse(displayOptions[0].hasClass('prime-multiple-select-option-highlighted'));
+    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.isFalse(displayOptions[1].hasClass('prime-multiple-select-option-highlighted'));
+    assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   }
 });

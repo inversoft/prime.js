@@ -17,6 +17,7 @@ var Prime = Prime || {};
 Prime.Event = Prime.Event || {};
 Prime.Event.Keys = Prime.Event.Keys || {};
 
+Prime.Event.Keys.BACKSPACE = 8;
 Prime.Event.Keys.ENTER = 13;
 Prime.Event.Keys.ESCAPE = 27;
 Prime.Event.Keys.UP_ARROW = 38;

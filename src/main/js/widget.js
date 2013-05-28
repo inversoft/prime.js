@@ -230,8 +230,8 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
-   * Selects the previous option in the search results if one is selected. If there isn't any option selected, this
-   * selects the last one. This method handles wrapping.
+   * Highlights the previous option in the search results if one is highlighted. If there isn't any option highlighted,
+   * this highlights the last one. This method handles wrapping.
    *
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
@@ -249,6 +249,21 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Highlights the final selected option (if there is one) to indicate that it will be unselected if the user clicks
+   * the delete key again.
+   *
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  highlightOptionForUnselect: function() {
+    var options = this.displayContainerSelectedOptionList.getChildren();
+    if (options.length > 1) {
+      options[options.length - 2].addClass('prime-multiple-select-option-highlighted');
+    }
+
+    return this;
+  },
+
+  /**
    * Highlights the option in the search results at the given index.
    *
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
@@ -256,16 +271,16 @@ Prime.Widget.MultipleSelect.prototype = {
   highlightOptionInSearchResults: function(index) {
     var searchResults = this.searchResultsContainer.getChildren();
     searchResults.each(function(element) {
-      element.removeClass('prime-multiple-select-selected-search-result');
+      element.removeClass('prime-multiple-select-highlighted-search-result');
     });
 
-    searchResults[index].addClass('prime-multiple-select-selected-search-result');
+    searchResults[index].addClass('prime-multiple-select-highlighted-search-result');
 
     return this;
   },
 
   /**
-   * Highlights the previous option in the search results if one is highlighted. If there isn't any option highligheted,
+   * Highlights the previous option in the search results if one is highlighted. If there isn't any option highlighted,
    * this selects the last one. This method handles wrapping.
    *
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
@@ -290,7 +305,7 @@ Prime.Widget.MultipleSelect.prototype = {
     var searchResults = this.searchResultsContainer.getChildren();
     var index = -1;
     for (var i = 0; i < searchResults.length; i++) {
-      if (searchResults[i].hasClass('prime-multiple-select-selected-search-result')) {
+      if (searchResults[i].hasClass('prime-multiple-select-highlighted-search-result')) {
         index = i;
         break;
       }
@@ -304,6 +319,14 @@ Prime.Widget.MultipleSelect.prototype = {
    */
   isCustomAddVisible: function() {
     return this.searchResultsAddCustomOption.isVisible();
+  },
+
+  /**
+   * @returns {boolean} True if the last option is highlighted for unselect.
+   */
+  isLastOptionHighlightedForUnselect: function() {
+    var options = this.displayContainerSelectedOptionList.getChildren();
+    return options.length > 1 && options[options.length - 2].hasClass('prime-multiple-select-option-highlighted');
   },
 
   /**
@@ -387,6 +410,14 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Removes the highlighted option.
+   */
+  removeHighlightedOption: function() {
+    var options = this.displayContainerSelectedOptionList.getChildren();
+    this.deselectOptionWithValue(options[options.length - 2].getAttribute('value'));
+  },
+
+  /**
    * Removes the given option from the MultipleSelect by removing the option in the select box and the option in the
    * display container.
    *
@@ -437,8 +468,11 @@ Prime.Widget.MultipleSelect.prototype = {
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   search: function(searchText) {
-    // Set the search text into the input box (even though it might be the value of the input box) and then lowercase it
-    this.input.setValue(searchText);
+    // Set the search text into the input box if it is different and then lowercase it
+    if (this.input.getValue() !== searchText) {
+      this.input.setValue(searchText);
+    }
+
     searchText = searchText.toLowerCase();
 
     // Clear the search options (if there are any)
@@ -524,10 +558,12 @@ Prime.Widget.MultipleSelect.prototype = {
 
       var li = Prime.Dom.newElement('<li/>').
           addClass('prime-multiple-select-option').
+          setAttribute('value', option.getValue()).
           setID(id).
           insertBefore(this.inputOption);
       Prime.Dom.newElement('<span/>').
           setHTML(option.getHTML()).
+          setAttribute('value', option.getValue()).
           appendTo(li);
       Prime.Dom.newElement('<a/>').
           setAttribute('href', '#').
@@ -560,6 +596,20 @@ Prime.Widget.MultipleSelect.prototype = {
     }
 
     this.selectOption(option);
+
+    return this;
+  },
+
+  /**
+   * Unhighlights the last option if it is highlighted.
+   *
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  unhighlightOptionForUnselect: function() {
+    var options = this.displayContainerSelectedOptionList.getChildren();
+    if (options.length > 1) {
+      options[options.length - 2].removeClass('prime-multiple-select-option-highlighted');
+    }
 
     return this;
   },
@@ -607,12 +657,32 @@ Prime.Widget.MultipleSelect.prototype = {
    * @returns {boolean} True if the event is not an arrow key.
    */
   handleKeyDownEvent: function(event) {
+    // Handle backspace and escape specially since it can occur when the search is closed
+    var key = event.keyCode;
+    if (key == Prime.Event.Keys.BACKSPACE) {
+      if (this.isLastOptionHighlightedForUnselect()) {
+        this.removeHighlightedOption();
+        this.highlightOptionForUnselect();
+        return false;
+      } else if (this.input.getValue() === '') {
+        this.highlightOptionForUnselect();
+        this.closeSearch();
+        return false;
+      } else {
+        return true;
+      }
+    } else if (key === Prime.Event.Keys.ESCAPE) {
+      // Close the search
+      this.closeSearch();
+      this.unhighlightOptionForUnselect();
+      return false;
+    }
+
     if (!this.isSearchInputVisible()) {
       return true;
     }
 
     var value = this.input.getValue();
-    var key = event.keyCode;
     if (key === Prime.Event.Keys.UP_ARROW) {
       if (this.isSearchResultsVisible()) {
         this.highlightPreviousOptionInSearchResults();
@@ -646,8 +716,8 @@ Prime.Widget.MultipleSelect.prototype = {
       return true;
     }
 
-    var value = this.input.getValue();
     var key = event.keyCode;
+    var value = this.input.getValue();
     if (key === Prime.Event.Keys.ENTER) {
       // If a search result is highlighted, add it
       if (this.indexOfHighlightedOptionInSearchResults() !== -1) {
@@ -662,10 +732,6 @@ Prime.Widget.MultipleSelect.prototype = {
       this.closeSearch();
       this.openSearch();
 
-      return false;
-    } else if (key === Prime.Event.Keys.ESCAPE) {
-      // Close the search
-      this.closeSearch();
       return false;
     } else if (key !== Prime.Event.Keys.UP_ARROW && key !== Prime.Event.Keys.DOWN_ARROW) {
       this.search(value);
