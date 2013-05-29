@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Prime JS : Prime JavaScript Framework" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Prime JS</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/prime-framework/prime-js">View on GitHub</a>
+
+          <h1 id="project_title">Prime JS</h1>
+          <h2 id="project_tagline">Prime JavaScript Framework</h2>
+
+            <section id="downloads">
+              <a class="zip_download_link" href="https://github.com/prime-framework/prime-js/zipball/master">Download this project as a .zip file</a>
+              <a class="tar_download_link" href="https://github.com/prime-framework/prime-js/tarball/master">Download this project as a tar.gz file</a>
+            </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h1>
+<a name="prime-javascript" class="anchor" href="#prime-javascript"><span class="octicon octicon-link"></span></a>Prime JavaScript</h1>
+
+<p>Prime JavaScript is a different kind of framework. Prime is written in 100% standard, explicit, and namespaced OO JavaScript. </p>
+
+<ul>
+<li>No fancy Class utilities. </li>
+<li>No fancy dynamic code injection.</li>
+<li><strong>Just plain JavaScript.</strong></li>
+</ul><p>If you are looking for something like this:</p>
+
+<pre><code>$('.box .header').slideUp();
+</code></pre>
+
+<p>Prime is NOT for you. Prime is not terse and not flat. Prime is not about injecting code into a large hash and hoping it works.</p>
+
+<p>On the other hand, if you love any of these things:</p>
+
+<ul>
+<li>Objects that you can actually extend</li>
+<li>Full JSDoc</li>
+<li>Explicit methods you can debug</li>
+<li>100% API consistency</li>
+<li>Builder pattern interfaces</li>
+<li>Minimal use of eventing</li>
+</ul><p>You will love Prime!</p>
+
+<h2>
+<a name="getting-started" class="anchor" href="#getting-started"><span class="octicon octicon-link"></span></a>Getting Started</h2>
+
+<p>To get started with Prime, you best bet will be to clone the git repository. This contains all of the JavaScript files in the src/main/js directory. If you have Gradle installed and want to generate a single JS file, run:</p>
+
+<pre><code>$ gradle jar
+</code></pre>
+
+<p>Yeah, we know this doesn't actually JAR anything, but Gradle relies on the java plugin and we just went with it.</p>
+
+<p>Once you have either the Prime JavaScript file(s) copied into your project, insert the standard script tag in your header and you are SET!</p>
+
+<pre><code>&lt;script type="text/javascript" src="/js/prime-0.10.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<h2>
+<a name="selecting" class="anchor" href="#selecting"><span class="octicon octicon-link"></span></a>Selecting</h2>
+
+<p>Selecting in Prime uses a static function in the Prime.Dom namespace. Under the hoods this uses Sizzle, so if you are used to JQuery or other frameworks, it works the same. Here's an example:</p>
+
+<pre><code>var element = Prime.Dom.queryFirst('.box .header');
+</code></pre>
+
+<p>The return value of this function is a new instance of the <em>Prime.Dom.Element</em> class. You can also select multiple elements like this:</p>
+
+<pre><code>var elementList = Prime.Dom.query('p');
+</code></pre>
+
+<p>The return value of this function is a new instance of the <em>Prime.Dom.ElementList</em> class. </p>
+
+<p>There are a few other selector methods in the <em>Prime.Dom</em> namespace:</p>
+
+<ul>
+<li>queryUp - queries upwards for elements</li>
+<li>queryLast - queries the last matching element</li>
+<li>queryByID - takes an ID and returns a Prime.Dom.Element</li>
+</ul><p>Like all of Prime, these functions are well documented and you should use our JSDoc to learn how to use them. If you ever see a method that isn't well documented, file an issue and we'll fix it.</p>
+
+<h2>
+<a name="elementlists" class="anchor" href="#elementlists"><span class="octicon octicon-link"></span></a>ElementLists</h2>
+
+<p>The simplest usage of a <em>Prime.Dom.ElementList</em> is to iterate over all of the elements. The <em>each</em> method makes this simple:</p>
+
+<pre><code>elementList.each(function(element) {
+  // Do something interesting with the element
+});
+</code></pre>
+
+<h2>
+<a name="element" class="anchor" href="#element"><span class="octicon octicon-link"></span></a>Element</h2>
+
+<p>Element objects are the basis of Prime. You use them to manipulate and traverse the DOM. Refer to the JSDoc for the Element class to learn about the functions we have already implemented. If you need a new one, suggest it on the mailing list or in the issue tracker.</p>
+
+<h2>
+<a name="document-ready" class="anchor" href="#document-ready"><span class="octicon octicon-link"></span></a>Document Ready</h2>
+
+<p>Another common task is to register an event listener that is called when the document is ready. Here is how you do that with Prime:</p>
+
+<pre><code>function ready() {
+  // Do something
+}
+
+Prime.Dom.onDocumentReady(ready);
+</code></pre>
+
+<p>Or the inline method like this:</p>
+
+<pre><code>Prime.Dom.onDocumentReady(function() {
+  // Do something
+});
+</code></pre>
+
+<h2>
+<a name="ajax" class="anchor" href="#ajax"><span class="octicon octicon-link"></span></a>AJAX</h2>
+
+<p>Prime has a class named <em>Prime.Ajax.Request</em> that supports all your AJAXy needs. You can even subclass the <em>Request</em> class to add your own event handlers and more. Here's a quick example of using the <em>Request</em> to make an AJAX request:</p>
+
+<pre><code>function success() {
+  // Do something
+}
+
+new Prime.Ajax.Request('/some/uri', 'POST').
+    withSuccessHandler(success).
+    go();
+</code></pre>
+
+<p>Refer to the JSDoc to explore Prime's AJAX handling.</p>
+
+<h2>
+<a name="context-and-this" class="anchor" href="#context-and-this"><span class="octicon octicon-link"></span></a>Context and this</h2>
+
+<p>We got tired of <em>this</em> being different things with every framework (or even in two different places in the same framework). We decided it was time to make <em>this</em> consistent (or at least as much as we could). Since Prime is based on Objects/Classes, you can make Prime ensure that <em>this</em> refers to the current object.</p>
+
+<p>Here is an example of using <em>Prime.Dom.Element</em> inside a class to handle click events:</p>
+
+<pre><code>var MyClass = function() {
+  this.element = Prime.Dom.queryFirst('.some-class').
+      addEventListener('click', this.handleClickEvents, this);
+};
+
+MyClass.prototype = {
+  handleClickEvents: function(event) {
+    // The this variable will refer to this object
+  }
+}
+</code></pre>
+
+<p>Notice that when we added the event listener to the element, we passed in the event name, the handler function and then <em>this</em>. What this tells Prime to do is ensure that when the event handler function is called that the <em>this</em> variable is correct.</p>
+
+<p>Everywhere we could make this work in Prime, we did. Nearly all event methods take this third parameter.</p>
+
+<h2>
+<a name="learn-more" class="anchor" href="#learn-more"><span class="octicon octicon-link"></span></a>Learn More</h2>
+
+<p>Dive into the JSDoc for Prime and see what you can find. Or if you need additional assistance, send a message to the Prime User mailing list here:</p>
+
+<p><a href="https://groups.google.com/forum/?fromgroups#!forum/prime-framework-users">https://groups.google.com/forum/?fromgroups#!forum/prime-framework-users</a></p>
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Prime JS maintained by <a href="https://github.com/prime-framework">prime-framework</a></p>
+        <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+
+  </body>
+</html>
