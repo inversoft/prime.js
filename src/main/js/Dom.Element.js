@@ -351,12 +351,10 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Gets value of a style attribute
-   *
-   * @return {string} The style value.
+   * @returns {number} The scroll top position of this element.
    */
-  getStyle: function(name) {
-    return this.domElement.style[name];
+  getScrollTop: function() {
+    return this.domElement.scrollTop;
   },
 
   /**
@@ -386,6 +384,15 @@ Prime.Dom.Element.prototype = {
     }
 
     return values;
+  },
+
+  /**
+   * Gets value of a style attribute
+   *
+   * @return {string} The style value.
+   */
+  getStyle: function(name) {
+    return this.domElement.style[name];
   },
 
   /**

@@ -321,21 +321,24 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
-   * Highlights the given option in the search results at the given index.
+   * Highlights the given search result.
    *
-   * @param {Prime.Dom.Element} option The option to highlight.
+   * @param {Prime.Dom.Element} searchResult The search result to highlight.
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
-  highlightSearchResult: function(option) {
+  highlightSearchResult: function(searchResult) {
     this.searchResultsContainer.getChildren().each(function(element) {
       element.removeClass('prime-multiple-select-highlighted-search-result');
     });
 
-    option.addClass('prime-multiple-select-highlighted-search-result');
-    if (option.getOffsetTop() + 2 > this.searchResultsContainer.getHeight()) {
-      this.searchResultsContainer.scrollTo(option.getOffsetTop() - this.searchResultsContainer.getHeight() + option.getOuterHeight());
-    } else {
-      this.searchResultsContainer.scrollTo(0);
+    searchResult.addClass('prime-multiple-select-highlighted-search-result');
+    var scrollTop = this.searchResultsContainer.getScrollTop();
+    var height = this.searchResultsContainer.getHeight();
+    var searchResultOffset = searchResult.getOffsetTop();
+    if (searchResultOffset + 1 >= scrollTop + height) {
+      this.searchResultsContainer.scrollTo(searchResult.getOffsetTop() - this.searchResultsContainer.getHeight() + searchResult.getOuterHeight());
+    } else if (searchResultOffset < scrollTop) {
+      this.searchResultsContainer.scrollTo(searchResultOffset);
     }
 
     return this;
@@ -525,6 +528,7 @@ Prime.Widget.MultipleSelect.prototype = {
           setAttribute('value', optionText).
           setHTML(optionText).
           addEventListener('click', this.handleClickEvent, this).
+          addEventListener('mouseover', this.handleMouseOverEvent, this).
           appendTo(this.searchResultsContainer);
       count++;
     }
@@ -535,6 +539,7 @@ Prime.Widget.MultipleSelect.prototype = {
       Prime.Dom.newElement('<li/>').
           addClass('prime-multiple-select-search-result prime-multiple-select-add-custom').
           addEventListener('click', this.handleClickEvent, this).
+          addEventListener('mouseover', this.handleMouseOverEvent, this).
           setHTML(this.customAddLabel + searchText).
           appendTo(this.searchResultsContainer);
       count++;
@@ -723,10 +728,9 @@ Prime.Widget.MultipleSelect.prototype = {
   /**
    * Handles mouse clicks outside of this MultipleSelect.
    *
-   * @param {Event} event The mouse event.
    * @returns {boolean} Always true so the event is bubbled.
    */
-  handleGlobalClickEvent: function(event) {
+  handleGlobalClickEvent: function() {
     this.closeSearchResults();
     return true;
   },
@@ -798,6 +802,16 @@ Prime.Widget.MultipleSelect.prototype = {
     }
 
     return true;
+  },
+
+  /**
+   * Handles mouseover events for the search results (only) by highlighting the event target.
+   *
+   * @param {Event} event The mouseover event.
+   */
+  handleMouseOverEvent: function(event) {
+    var target = new Prime.Dom.Element(event.currentTarget);
+    this.highlightSearchResult(target);
   },
 
   /**
