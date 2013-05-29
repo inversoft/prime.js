@@ -45,12 +45,13 @@ Prime.Widget = Prime.Widget || {};
  * &lt;/div>
  * </pore>
  *
+ * @constructor
  * @param {Prime.Dom.Element} element The Prime Element for the MultipleSelect.
  * @param {boolean} [customAddEnabled=true] Determines if users can add custom options to the MultipleSelect.
  * @param {string} [customAddLabel="Add Custom Value:"] The label for the custom add option in the search results.
- * @constructor
+ * @param {boolean} [noSearchResultsLabel="No Matches For:] The label used when there are no search results.
  */
-Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel) {
+Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel, noSearchResultsLabel) {
   this.element = (element instanceof Prime.Dom.Element) ? element : new Prime.Dom.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widget.MultipleSelect with select elements');
@@ -61,7 +62,7 @@ Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel
   }
 
   this.element.hide();
-  this.searchDisplayed = false;
+  this.noSearchResultsLabel = typeof(noSearchResultsLabel) !== 'undefined' ? noSearchResultsLabel : 'No Matches For: ';
   this.customAddEnabled = typeof(customAddEnabled) !== 'undefined' ? customAddEnabled : true;
   this.customAddLabel = typeof(customAddLabel) !== 'undefined' ? customAddLabel : 'Add Custom Value: ';
 
@@ -72,11 +73,12 @@ Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel
   }
 
   this.displayContainer = Prime.Dom.queryByID(id + '-display');
+  this.input = null;
   if (this.displayContainer === null) {
     this.displayContainer = Prime.Dom.newElement('<div/>').
         setID(id + '-display').
         addClass('prime-multiple-select-display').
-        addEventListener('click', this.openSearch, this).
+        addEventListener('click', this.handleClickEvent, this).
         addEventListener('keydown', this.handleKeyDownEvent, this).
         addEventListener('keyup', this.handleKeyUpEvent, this).
         insertAfter(this.element);
@@ -89,24 +91,17 @@ Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel
         addClass('prime-multiple-select-search-result-list').
         hide().
         appendTo(this.displayContainer);
-
-    this.searchResultsAddCustomOption = Prime.Dom.newElement('<li/>').
-        addClass('prime-multiple-select-add-custom').
-        addEventListener('click', this.addCustomOption, this).
-        hide().
-        appendTo(this.searchResultsContainer);
   } else {
     this.displayContainer.
         removeAllEventListeners().
-        addEventListener('click', this.openSearch, this).
+        addEventListener('click', this.handleClickEvent, this).
         addEventListener('keydown', this.handleKeyDownEvent, this).
         addEventListener('keyup', this.handleKeyUpEvent, this);
     this.displayContainerSelectedOptionList = Prime.Dom.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Dom.queryFirst('.prime-multiple-select-search-result-list', this.displayContainer);
-    this.searchResultsAddCustomOption = Prime.Dom.queryFirst('.prime-multiple-select-add-custom', this.displayContainer).
-        removeAllEventListeners().
-        addEventListener('click', this.addCustomOption, this);
   }
+
+  Prime.Dom.queryFirst('body').addEventListener('click', this.handleGlobalClickEvent, this);
 
   // Rebuild the display
   this.rebuildDisplay();
@@ -135,19 +130,21 @@ Prime.Widget.MultipleSelect.prototype = {
         setHTML(display).
         appendTo(this.element);
 
+    if (this.isSearchResultsVisible()) {
+      this.search();
+    }
+
     return this;
   },
 
   /**
-   * Displays the search input box and search results div.
+   * Closes the search results display, unhighlights any options that are highlighted and resets the input's value to
+   * empty string.
    */
-  closeSearch: function() {
-    if (this.searchDisplayed) {
-      this.searchDisplayed = false;
-      this.inputOption.hide();
-      this.searchResultsContainer.hide();
-      this.removeAllSearchResults();
-    }
+  closeSearchResults: function() {
+    this.unhighlightOptionForUnselect();
+    this.searchResultsContainer.hide();
+    this.input.setValue('');
   },
 
   /**
@@ -173,6 +170,10 @@ Prime.Widget.MultipleSelect.prototype = {
     var displayOption = Prime.Dom.queryByID(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
+    }
+
+    if (this.isSearchResultsVisible()) {
+      this.search();
     }
 
     return this;
@@ -232,6 +233,13 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * @returns {Prime.Dom.Element} The highlighted search result or null.
+   */
+  getHighlightedSearchResult: function() {
+    return Prime.Dom.queryFirst('.prime-multiple-select-highlighted-search-result', this.searchResultsContainer);
+  },
+
+  /**
    * Determines if the MultipleSelect contains an option with the given value.
    *
    * @param {string} value The value.
@@ -242,19 +250,24 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
-   * Highlights the previous option in the search results if one is highlighted. If there isn't any option highlighted,
-   * this highlights the last one. This method handles wrapping.
+   * Highlights the next search result if one is highlighted. If there isn't a highlighted search result, this
+   * highlights the first one. This method handles wrapping.
    *
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
-  highlightNextOptionInSearchResults: function() {
-    var searchResults = this.searchResultsContainer.getChildren();
-    var length = this.isCustomAddVisible() ? searchResults.length : searchResults.length - 1;
-    var index = this.indexOfHighlightedOptionInSearchResults();
-    if (index === -1 || index === length - 1) {
-      this.highlightOptionInSearchResults(0);
-    } else {
-      this.highlightOptionInSearchResults(index + 1);
+  highlightNextSearchResult: function() {
+    var searchResult = this.getHighlightedSearchResult();
+    if (searchResult !== null) {
+      searchResult = searchResult.getNextSibling();
+    }
+
+    // Grab the first search result in the list if there isn't a next sibling
+    if (searchResult === null) {
+      searchResult = Prime.Dom.queryFirst('.prime-multiple-select-search-result', this.searchResultsContainer);
+    }
+
+    if (searchResult !== null) {
+      this.highlightSearchResult(searchResult);
     }
 
     return this;
@@ -276,61 +289,49 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
-   * Highlights the option in the search results at the given index.
+   * Highlights the previous search result if one is highlighted. If there isn't a highlighted search result, this
+   * selects the last one. This method handles wrapping.
    *
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
-  highlightOptionInSearchResults: function(index) {
-    var searchResults = this.searchResultsContainer.getChildren();
-    searchResults.each(function(element) {
+  highlightPreviousSearchResult: function() {
+    var searchResult = this.getHighlightedSearchResult();
+    if (searchResult !== null) {
+      searchResult = searchResult.getPreviousSibling();
+    }
+
+    if (searchResult === null) {
+      searchResult = Prime.Dom.queryLast('.prime-multiple-select-search-result', this.searchResultsContainer);
+    }
+
+    if (searchResult !== null) {
+      this.highlightSearchResult(searchResult);
+    }
+
+    return this;
+  },
+
+  /**
+   * Highlights the given option in the search results at the given index.
+   *
+   * @param {Prime.Dom.Element} option The option to highlight.
+   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   */
+  highlightSearchResult: function(option) {
+    this.searchResultsContainer.getChildren().each(function(element) {
       element.removeClass('prime-multiple-select-highlighted-search-result');
     });
 
-    searchResults[index].addClass('prime-multiple-select-highlighted-search-result');
+    option.addClass('prime-multiple-select-highlighted-search-result');
 
     return this;
-  },
-
-  /**
-   * Highlights the previous option in the search results if one is highlighted. If there isn't any option highlighted,
-   * this selects the last one. This method handles wrapping.
-   *
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
-   */
-  highlightPreviousOptionInSearchResults: function() {
-    var searchResults = this.searchResultsContainer.getChildren();
-    var length = this.isCustomAddVisible() ? searchResults.length : searchResults.length - 1;
-    var index = this.indexOfHighlightedOptionInSearchResults();
-    if (index <= 0) {
-      this.highlightOptionInSearchResults(length - 1);
-    } else {
-      this.highlightOptionInSearchResults(index - 1);
-    }
-
-    return this;
-  },
-
-  /**
-   * @returns {number} The index in the search results of the option that is currently highlighted.
-   */
-  indexOfHighlightedOptionInSearchResults: function() {
-    var searchResults = this.searchResultsContainer.getChildren();
-    var index = -1;
-    for (var i = 0; i < searchResults.length; i++) {
-      if (searchResults[i].hasClass('prime-multiple-select-highlighted-search-result')) {
-        index = i;
-        break;
-      }
-    }
-
-    return index;
   },
 
   /**
    * @returns {boolean} True if the search results add custom option is being displayed currently.
    */
   isCustomAddVisible: function() {
-    return this.searchResultsAddCustomOption.isVisible();
+    return Prime.Dom.queryFirst('.prime-multiple-select-add-custom', this.displayContainer) !== null;
   },
 
   /**
@@ -342,32 +343,10 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
-   * @returns {boolean} True if the search input field is being displayed currently.
-   */
-  isSearchInputVisible: function() {
-    return this.searchDisplayed;
-  },
-
-  /**
    * @returns {boolean} True if any search results are being displayed currently.
    */
   isSearchResultsVisible: function() {
     return this.searchResultsContainer.isVisible();
-  },
-
-  /**
-   * Displays the search input box and search results div.
-   */
-  openSearch: function() {
-    if (!this.searchDisplayed) {
-      this.searchDisplayed = true;
-      this.displayContainer.scrollToBottom();
-      this.input.setValue('');
-      this.inputOption.show();
-      this.input.focus();
-    }
-
-    return false;
   },
 
   /**
@@ -377,8 +356,10 @@ Prime.Widget.MultipleSelect.prototype = {
    * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   rebuildDisplay: function() {
+    console.log('Rebuilding display');
+
     // Close the search
-    this.closeSearch();
+    this.searchResultsContainer.hide();
 
     // Remove the currently displayed options
     this.displayContainerSelectedOptionList.getChildren().each(function(option) {
@@ -388,11 +369,10 @@ Prime.Widget.MultipleSelect.prototype = {
     // Add the input option since the select options are inserted before it
     this.inputOption = Prime.Dom.newElement('<li/>').
         addClass('prime-multiple-select-input-option').
-        hide(). // Start hidden
         appendTo(this.displayContainerSelectedOptionList);
     this.input = Prime.Dom.newElement('<input/>').
-        setAttribute('type', 'text').
         addClass('prime-multiple-select-input').
+        setAttribute('type', 'text').
         appendTo(this.inputOption);
 
     // Add the selected options
@@ -427,6 +407,7 @@ Prime.Widget.MultipleSelect.prototype = {
   removeHighlightedOption: function() {
     var options = this.displayContainerSelectedOptionList.getChildren();
     this.deselectOptionWithValue(options[options.length - 2].getAttribute('value'));
+    this.search();
   },
 
   /**
@@ -449,6 +430,10 @@ Prime.Widget.MultipleSelect.prototype = {
     // Check if the option has already been selected
     if (displayOption !== null) {
       displayOption.removeFromDOM();
+    }
+
+    if (this.isSearchResultsVisible()) {
+      this.search();
     }
 
     return this;
@@ -474,18 +459,22 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
-   * Executes a search using the value from the input field and the selectable options.
+   * Executes a search by optionally updating the input to the given value (if specified) and then rebuilding the search
+   * results using the input's value. This method also puts focus on the input and shows the search results (in case
+   * they are hidden for any reason).
    *
-   * @param {string} searchText The text to search for (this value is also set into the input box).
+   * @param {string} [searchText] The text to search for (this value is also set into the input box). If this is not
+   * specified then the search is run using the input's value.
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   search: function(searchText) {
     // Set the search text into the input box if it is different and then lowercase it
-    if (this.input.getValue() !== searchText) {
+    if (typeof(searchText) !== 'undefined' && this.input.getValue() !== searchText) {
       this.input.setValue(searchText);
     }
 
-    searchText = searchText.toLowerCase();
+    searchText = typeof(searchText) !== 'undefined' ? searchText.toLowerCase() : this.input.getValue();
+    this.input.focus();
 
     // Clear the search results (if there are any)
     this.removeAllSearchResults();
@@ -493,37 +482,39 @@ Prime.Widget.MultipleSelect.prototype = {
     // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
     // the add custom option.
     var selectableOptions = this.selectableOptionsForPrefix(searchText);
-    var show = false;
-    if (this.customAddEnabled && searchText !== '' &&
-        (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText))) {
-      this.searchResultsAddCustomOption.setHTML(this.customAddLabel + searchText);
-      this.searchResultsAddCustomOption.show();
-      show = true;
-    } else {
-      this.searchResultsAddCustomOption.hide();
-      show = false;
-    }
-
+    var foundOne = false;
     for (var i = 0; i < selectableOptions.length; i++) {
       var optionText = selectableOptions[i];
       Prime.Dom.newElement('<li/>').
           addClass('prime-multiple-select-search-result').
+          setAttribute('value', optionText).
           setHTML(optionText).
-          addEventListener('click', function() {
-            var option = this.findOptionWithText(optionText);
-            this.selectOption(option);
-            this.closeSearch();
-          }, this).
-          prependTo(this.searchResultsContainer);
-      show = true;
+          addEventListener('click', this.handleClickEvent, this).
+          appendTo(this.searchResultsContainer);
+      foundOne = true;
     }
 
-    // Only show the display if we have any options to display
-    if (show) {
-      this.searchResultsContainer.show();
-    } else {
-      this.searchResultsContainer.hide();
+    // Show the custom add option if necessary
+    if (this.customAddEnabled && searchText !== '' &&
+        (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText))) {
+      Prime.Dom.newElement('<li/>').
+          addClass('prime-multiple-select-search-result prime-multiple-select-add-custom').
+          addEventListener('click', this.handleClickEvent, this).
+          setHTML(this.customAddLabel + searchText).
+          appendTo(this.searchResultsContainer);
+      foundOne = true;
     }
+
+    // Show the no matches if necessary
+    if (!foundOne && searchText !== '') {
+      Prime.Dom.newElement('<li/>').
+          addClass('prime-multiple-select-no-search-results').
+          setHTML(this.noSearchResultsLabel + searchText).
+          appendTo(this.searchResultsContainer);
+    }
+
+    // Show the results
+    this.searchResultsContainer.show();
 
     return this;
   },
@@ -534,16 +525,15 @@ Prime.Widget.MultipleSelect.prototype = {
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   selectHighlightedSearchResult: function() {
-    var index = this.indexOfHighlightedOptionInSearchResults();
-    if (index === -1) {
+    var searchResult = this.getHighlightedSearchResult();
+    if (searchResult === null) {
       return this;
     }
 
-    var highlightedSearchResult = this.searchResultsContainer.getChildren()[index];
-    if (highlightedSearchResult.hasClass('prime-multiple-select-add-custom')) {
+    if (searchResult.hasClass('prime-multiple-select-add-custom')) {
       this.addCustomOption();
     } else {
-      var option = this.findOptionWithText(highlightedSearchResult.getHTML());
+      var option = this.findOptionWithText(searchResult.getHTML());
       this.selectOption(option);
     }
 
@@ -581,13 +571,14 @@ Prime.Widget.MultipleSelect.prototype = {
       Prime.Dom.newElement('<a/>').
           setAttribute('href', '#').
           setAttribute('value', option.getValue()).
+          addClass('prime-multiple-select-remove-option').
           setHTML('X').
-          addEventListener('click', function(event) {
-            this.deselectOptionWithValue(new Prime.Dom.Element(event.target).getAttribute('value'));
-            return false;
-          }, this).
+          addEventListener('click', this.handleClickEvent, this).
           appendTo(li);
     }
+
+    // Close the search results
+    this.closeSearchResults();
 
     return this;
   },
@@ -619,11 +610,9 @@ Prime.Widget.MultipleSelect.prototype = {
    * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   unhighlightOptionForUnselect: function() {
-    var options = this.displayContainerSelectedOptionList.getChildren();
-    if (options.length > 1) {
-      options[options.length - 2].removeClass('prime-multiple-select-option-highlighted');
-    }
-
+    this.displayContainerSelectedOptionList.getChildren().each(function(element) {
+      element.removeClass('prime-multiple-select-option-highlighted');
+    });
     return this;
   },
 
@@ -663,6 +652,40 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Handles all click events sent to the MultipleSelect.
+   *
+   * @param {Event} event The mouse event.
+   */
+  handleClickEvent: function(event) {
+    var target = new Prime.Dom.Element(event.currentTarget);
+    if (this.displayContainer.domElement === target.domElement) {
+      this.search();
+    } else if (target.hasClass('prime-multiple-select-add-custom')) {
+      this.addCustomOption();
+    } else if (target.hasClass('prime-multiple-select-search-result')) {
+      var option = this.findOptionWithText(target.getAttribute('value'));
+      this.selectOption(option);
+    } else if (target.hasClass('prime-multiple-select-remove-option')) {
+      this.removeOptionWithValue(target.getAttribute('value'));
+    } else {
+      console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
+    }
+
+    return false;
+  },
+
+  /**
+   * Handles mouse clicks outside of this MultipleSelect.
+   *
+   * @param {Event} event The mouse event.
+   * @returns {boolean} Always true so the event is bubbled.
+   */
+  handleGlobalClickEvent: function(event) {
+    this.closeSearchResults();
+    return true;
+  },
+
+  /**
    * Handles the key down events that should not be propagated.
    *
    * @private
@@ -670,47 +693,18 @@ Prime.Widget.MultipleSelect.prototype = {
    * @returns {boolean} True if the event is not an arrow key.
    */
   handleKeyDownEvent: function(event) {
-    // Handle backspace and escape specially since it can occur when the search is closed
     var key = event.keyCode;
-    if (key == Prime.Event.Keys.BACKSPACE) {
-      if (this.isLastOptionHighlightedForUnselect()) {
-        this.removeHighlightedOption();
-        this.highlightOptionForUnselect();
-        return false;
-      } else if (this.input.getValue() === '') {
-        this.highlightOptionForUnselect();
-        this.closeSearch();
-        return false;
-      } else {
-        return true;
-      }
-    } else if (key === Prime.Event.Keys.ESCAPE) {
-      // Close the search
-      this.closeSearch();
-      this.unhighlightOptionForUnselect();
-      return false;
-    }
-
-    if (!this.isSearchInputVisible()) {
-      return true;
-    }
-
-    var value = this.input.getValue();
-    if (key === Prime.Event.Keys.UP_ARROW) {
-      if (this.isSearchResultsVisible()) {
-        this.highlightPreviousOptionInSearchResults();
-      } else {
-        this.search(value);
-      }
-
+    if (key === Prime.Event.Keys.BACKSPACE) {
+      this.previousSearchString = this.input.getValue();
+    } else if (key === Prime.Event.Keys.UP_ARROW) {
+      this.highlightPreviousSearchResult();
       return false;
     } else if (key === Prime.Event.Keys.DOWN_ARROW) {
       if (this.isSearchResultsVisible()) {
-        this.highlightNextOptionInSearchResults();
+        this.highlightNextSearchResult();
       } else {
-        this.search(value);
+        this.search();
       }
-
       return false;
     }
 
@@ -725,15 +719,22 @@ Prime.Widget.MultipleSelect.prototype = {
    * @returns {boolean} True if the search display is not open, false otherwise. This will prevent the event from continuing.
    */
   handleKeyUpEvent: function(event) {
-    if (!this.isSearchInputVisible()) {
-      return true;
-    }
-
     var key = event.keyCode;
+    console.log('Keyup ' + key);
     var value = this.input.getValue();
-    if (key === Prime.Event.Keys.ENTER) {
+
+    if (key == Prime.Event.Keys.BACKSPACE) {
+      if (this.isLastOptionHighlightedForUnselect()) {
+        this.removeHighlightedOption();
+        this.highlightOptionForUnselect();
+      } else if (value === '' && this.previousSearchString === '') {
+        this.highlightOptionForUnselect();
+      } else {
+        this.search();
+      }
+    } else if (key === Prime.Event.Keys.ENTER) {
       // If a search result is highlighted, add it
-      if (this.indexOfHighlightedOptionInSearchResults() !== -1) {
+      if (this.getHighlightedSearchResult() !== null) {
         this.selectHighlightedSearchResult();
       } else if (this.isCustomAddVisible()) {
         // If the custom option is visible, add a custom option. Otherwise, if there is an option for the current value, select it
@@ -742,12 +743,14 @@ Prime.Widget.MultipleSelect.prototype = {
         this.selectOptionWithValue(value);
       }
 
-      this.closeSearch();
-      this.openSearch();
-
       return false;
-    } else if (key !== Prime.Event.Keys.UP_ARROW && key !== Prime.Event.Keys.DOWN_ARROW) {
-      this.search(value);
+    } else if (key === Prime.Event.Keys.ESCAPE) {
+      this.searchResultsContainer.hide();
+      this.unhighlightOptionForUnselect();
+      console.log('Escaped');
+    } else if ((key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
+      this.unhighlightOptionForUnselect();
+      this.search();
     }
 
     return true;
@@ -769,7 +772,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * @private
    */
   removeAllSearchResults: function() {
-    Prime.Dom.query('.prime-multiple-select-search-result', this.searchResultsContainer).removeAllFromDOM();
+    Prime.Dom.query('li', this.searchResultsContainer).removeAllFromDOM();
   },
 
   /**

@@ -81,7 +81,7 @@ buster.testCase('Prime.Dom.Document', {
     Prime.Dom.Document.removeEventListener('click', proxy);
     Prime.Dom.queryFirst('#html').fireEvent('click', 'foo');
     assert.isFalse(instance.called);
-    assert.equals(instance.event, null);
-    assert.equals(instance.memo, null);
+    assert.isNull(instance.event);
+    assert.isNull(instance.memo);
   }
 });

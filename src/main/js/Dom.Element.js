@@ -267,6 +267,22 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * @returns {Prime.Dom.Element} This elements next sibling or null.
+   */
+  getNextSibling: function() {
+    var sibling = this.domElement.nextSibling;
+    while (sibling !== null && sibling.nodeType !== 1) {
+      sibling = sibling.nextSibling;
+    }
+
+    if (sibling === null) {
+      return null;
+    }
+
+    return new Prime.Dom.Element(sibling);
+  },
+
+  /**
    * Retrieves the opacity value for the Element. This handles the IE alpha filter.
    *
    * @return {number} The opacity value.
@@ -287,6 +303,22 @@ Prime.Dom.Element.prototype = {
     }
 
     return opacity;
+  },
+
+  /**
+   * @returns {Prime.Dom.Element} This elements previous sibling or null.
+   */
+  getPreviousSibling: function() {
+    var sibling = this.domElement.previousSibling;
+    while (sibling !== null && sibling.nodeType !== 1) {
+      sibling = sibling.previousSibling;
+    }
+
+    if (sibling === null) {
+      return null;
+    }
+
+    return new Prime.Dom.Element(sibling);
   },
 
   /**

@@ -222,19 +222,19 @@ buster.testCase('Element class tests', {
     }
   },
 
-  "getAttribute": function() {
+  'getAttribute': function() {
     assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('attr1'), 'value1');
     assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('attr2'), 'value2');
   },
 
   'set remove attribute': function() {
-    assert.isTrue(Prime.Dom.queryFirst('#attributes').getAttribute('foo') == null);
+    assert.isNull(Prime.Dom.queryFirst('#attributes').getAttribute('foo'));
 
     Prime.Dom.queryFirst('#attributes').setAttribute('foo', 'bar');
     assert.equals(Prime.Dom.queryFirst('#attributes').getAttribute('foo'), 'bar');
 
     Prime.Dom.queryFirst('#attributes').removeAttribute('foo');
-    assert.isTrue(Prime.Dom.queryFirst('#attributes').getAttribute('foo') == null);
+    assert.isNull(Prime.Dom.queryFirst('#attributes').getAttribute('foo'));
   },
 
   "getChildren": function() {
@@ -254,12 +254,24 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Dom.queryFirst('#html').getHTML(), 'Get test');
   },
 
+  'getNextSibling': function() {
+    assert.equals(Prime.Dom.queryFirst('#queryOne').getNextSibling().getID(), 'queryTwo');
+    assert.equals(Prime.Dom.queryFirst('#queryTwo').getNextSibling().getID(), 'queryThree');
+    assert.isNull(Prime.Dom.queryFirst('#queryThree').getNextSibling());
+  },
+
+  'getPreviousSibling': function() {
+    assert.isNull(Prime.Dom.queryFirst('#queryOne').getPreviousSibling());
+    assert.equals(Prime.Dom.queryFirst('#queryTwo').getPreviousSibling().getID(), 'queryOne');
+    assert.equals(Prime.Dom.queryFirst('#queryThree').getPreviousSibling().getID(), 'queryTwo');
+  },
+
   'getSelectedValues': function() {
     assert.equals(Prime.Dom.queryFirst('#one-checkbox').getSelectedValues(), ['one', 'three']);
     assert.equals(Prime.Dom.queryFirst('#one-radio').getSelectedValues(), ['one']);
     assert.equals(Prime.Dom.queryFirst('#select').getSelectedValues(), ['one', 'three']);
-    assert.equals(Prime.Dom.queryFirst('#text').getSelectedValues(), null);
-    assert.equals(Prime.Dom.queryFirst('#textarea').getSelectedValues(), null);
+    assert.isNull(Prime.Dom.queryFirst('#text').getSelectedValues());
+    assert.isNull(Prime.Dom.queryFirst('#textarea').getSelectedValues());
   },
 
   'getStyle': function() {
@@ -726,7 +738,7 @@ buster.testCase('Element class tests', {
     Prime.Dom.queryByID('set-attributes').setAttributes({'rel': 'foo', 'width': '10%'});
 
     var element = document.getElementById('set-attributes');
-    assert(element != null);
+    refute.isNull(element);
     assert.equals(element.attributes.getNamedItem('rel').value, 'foo');
     assert.equals(element.attributes.getNamedItem('width').value, '10%');
   },
@@ -753,7 +765,7 @@ buster.testCase('Element class tests', {
     Prime.Dom.queryByID('set-styles').setStyles({'text-align': 'right', 'width': '10%'});
 
     var element = document.getElementById('set-styles');
-    assert(element != null);
+    refute.isNull(element);
     assert.equals(element.style['text-align'], 'right');
     assert.equals(element.style['width'], '10%');
   },
@@ -834,7 +846,7 @@ buster.testCase('Element class tests', {
     assert.isTrue(called);
     assert.isFalse(called2);
     assert.equals(memo, 'memo');
-    assert.equals(memo2, null);
+    assert.isNull(memo2);
 
     called = false;
     memo = null;
@@ -844,8 +856,8 @@ buster.testCase('Element class tests', {
 
     assert.isFalse(called);
     assert.isFalse(called2);
-    assert.equals(memo, null);
-    assert.equals(memo2, null);
+    assert.isNull(memo);
+    assert.isNull(memo2);
 
     // Multiple handlers
     element.
@@ -869,8 +881,8 @@ buster.testCase('Element class tests', {
 
     assert.isFalse(called);
     assert.isFalse(called2);
-    assert.equals(memo, null);
-    assert.equals(memo2, null);
+    assert.isNull(memo);
+    assert.isNull(memo2);
   },
 
   'eventsUsingObject': function() {
@@ -900,7 +912,7 @@ buster.testCase('Element class tests', {
         fireEvent('click', 'memo');
 
     assert.isFalse(instance.called);
-    assert.equals(instance.memo, null);
+    assert.isNull(instance.memo);
   },
 
   'customEvents': function() {
@@ -934,8 +946,8 @@ buster.testCase('Element class tests', {
         fireEvent('custom:pop', 'foo');
 
     assert.isFalse(instance.called);
-    assert.equals(instance.event, null);
-    assert.equals(instance.memo, null);
+    assert.isNull(instance.event);
+    assert.isNull(instance.memo);
   },
 
   'opacity': function() {

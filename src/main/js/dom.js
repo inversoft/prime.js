@@ -129,6 +129,28 @@ Prime.Dom.queryFirst = function(selector, element) {
 };
 
 /**
+ * Queries the DOM using the given Sizzle selector starting at the given element and returns the last matched element
+ * or null if there aren't any matches.
+ *
+ * @param {string} selector The selector.
+ * @param {Element|Document|Prime.Dom.Element} [element=document] The starting point for the search (defaults to document if not provided).
+ * @return {Prime.Dom.Element} An element or null.
+ */
+Prime.Dom.queryLast = function(selector, element) {
+  var domElement = null;
+  if (element !== null) {
+    domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+  }
+
+  var domElements = Sizzle(selector, domElement);
+  if (domElements.length === 0) {
+    return null;
+  }
+
+  return new Prime.Dom.Element(domElements[domElements.length - 1]);
+};
+
+/**
  * Traverses up the DOM from the starting element and looks for a Sizzle match to the selector.  Only supports single
  * element selectors right now, ie 'div.even' or '#id', etc, will throw an exception if the selector has a space in it.
  *

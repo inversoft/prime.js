@@ -54,11 +54,11 @@ buster.testCase('Dom namespace tests', {
     assert.equals(element.domElement.tagName, 'SPAN');
 
     element = Prime.Dom.newElement('<div/>', {'id': '1'});
-    assert.equals(element.domElement.id, '1');
+    assert.equals(element.getID(), '1');
     assert.equals(element.getID(), '1');
 
     element = Prime.Dom.newElement('<div/>', {'id': 'id', 'style': 'width:200px;float:left'});
-    assert.equals(element.domElement.id, 'id');
+    assert.equals(element.getID(), 'id');
     assert.equals(element.getID(), 'id');
     assert.equals(element.domElement.style['width'], '200px');
     assert.equals(element.domElement.style['float'], 'left');
@@ -70,20 +70,20 @@ buster.testCase('Dom namespace tests', {
   'query': function() {
     var list = Prime.Dom.query('p.test');
     assert.equals(list.length, 3);
-    assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].domElement.id, 'queryThree');
+    assert.equals(list[0].getID(), 'queryOne');
+    assert.equals(list[1].getID(), 'queryTwo');
+    assert.equals(list[2].getID(), 'queryThree');
 
     var parent = Prime.Dom.queryByID('query');
     list = Prime.Dom.query('p.test', parent);
-    assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].domElement.id, 'queryThree');
+    assert.equals(list[0].getID(), 'queryOne');
+    assert.equals(list[1].getID(), 'queryTwo');
+    assert.equals(list[2].getID(), 'queryThree');
 
     list = Prime.Dom.query('p.test', parent.domElement);
-    assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].domElement.id, 'queryThree');
+    assert.equals(list[0].getID(), 'queryOne');
+    assert.equals(list[1].getID(), 'queryTwo');
+    assert.equals(list[2].getID(), 'queryThree');
   },
 
   /**
@@ -92,7 +92,7 @@ buster.testCase('Dom namespace tests', {
   'queryByID': function() {
     var element = Prime.Dom.queryByID('queryOne');
     refute.isNull(element);
-    assert.equals(element.domElement.id, 'queryOne');
+    assert.equals(element.getID(), 'queryOne');
 
     element = Prime.Dom.queryFirst('invalid');
     assert.isNull(element);
@@ -104,15 +104,15 @@ buster.testCase('Dom namespace tests', {
   'queryFirst': function() {
     var element = Prime.Dom.queryFirst('p');
     refute.isNull(element);
-    assert.equals(element.domElement.id, 'queryOne');
+    assert.equals(element.getID(), 'queryOne');
 
     element = Prime.Dom.queryFirst('p#queryOne');
     refute.isNull(element);
-    assert.equals(element.domElement.id, 'queryOne');
+    assert.equals(element.getID(), 'queryOne');
 
     element = Prime.Dom.queryFirst('#queryOne');
     refute.isNull(element);
-    assert.equals(element.domElement.id, 'queryOne');
+    assert.equals(element.getID(), 'queryOne');
 
     element = Prime.Dom.queryFirst('#invalid');
     assert.isNull(element);
@@ -121,6 +121,29 @@ buster.testCase('Dom namespace tests', {
   'queryFirst with Element': function() {
     var child = Prime.Dom.queryFirst('.test', Prime.Dom.queryByID('query'));
     refute.isNull(child);
+    assert.equals(child.getID(), 'queryOne')
+  },
+
+  'queryLast': function() {
+    var element = Prime.Dom.queryLast('p.test');
+    refute.isNull(element);
+    assert.equals(element.getID(), 'queryThree');
+
+    element = Prime.Dom.queryLast('#queryOne');
+    refute.isNull(element);
+    assert.equals(element.getID(), 'queryOne');
+
+    element = Prime.Dom.queryLast('#invalid');
+    assert.isNull(element);
+
+    element = Prime.Dom.queryLast('.invalid');
+    assert.isNull(element);
+  },
+
+  'queryLast with Element': function() {
+    var child = Prime.Dom.queryLast('.test', Prime.Dom.queryByID('query'));
+    refute.isNull(child);
+    assert.equals(child.getID(), 'queryThree')
   },
 
   'queryUp': {
@@ -151,7 +174,7 @@ buster.testCase('Dom namespace tests', {
         Prime.Dom.queryUp('div div#parent', this.child);
         assert(false);
       } catch (err) {
-        assert(err !== null);
+        refute.isNull(err);
       }
     }
   }

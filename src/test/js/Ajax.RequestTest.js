@@ -53,7 +53,7 @@ buster.testCase('AJAX tests', {
       });
 
     assert.equals(req.body, 'array=value1&array=value2&name=value');
-    assert.isTrue(req.queryParams == null);
+    assert.isNull(req.queryParams);
     assert.equals(req.contentType, 'application/x-www-form-urlencoded');
   },
 
@@ -66,7 +66,7 @@ buster.testCase('AJAX tests', {
       });
 
     assert.equals(req.body, 'name1=value1&name2=value2');
-    assert.isTrue(req.queryParams == null);
+    assert.isNull(req.queryParams);
     assert.equals(req.contentType, 'application/x-www-form-urlencoded');
   },
 
@@ -79,7 +79,7 @@ buster.testCase('AJAX tests', {
       });
 
     assert.equals(req.body, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
-    assert.isTrue(req.queryParams == null);
+    assert.isNull(req.queryParams);
     assert.equals(req.contentType, 'application/x-www-form-urlencoded');
   },
 
@@ -93,7 +93,7 @@ buster.testCase('AJAX tests', {
         });
 
     assert.equals(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
-    assert.isTrue(req.body == null);
+    assert.isNull(req.body);
     assert.equals(req.contentType, 'application/json');
 
     req.xhr = new Mock.XHR();
@@ -117,8 +117,8 @@ buster.testCase('AJAX tests', {
     assert.equals(req.method, 'GET');
 
     req.reset();
-    assert.isTrue(req.queryParams == null);
-    assert.isTrue(req.contentType == null);
+    assert.isNull(req.queryParams);
+    assert.isNull(req.contentType);
     assert.equals(req.method, 'GET');
   },
 
