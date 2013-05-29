@@ -557,6 +557,22 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * Determines if this element is a child of the given element.
+   *
+   * @param {Prime.Dom.Element|Node} element The element to check to see if this element is a child of.
+   * @returns {boolean} True if this element is a child of the given element, false otherwise.
+   */
+  isChildOf: function(element) {
+    var domElement = element instanceof Prime.Dom.Element ? element.domElement : element;
+    var parent = this.domElement.parentNode;
+    while (domElement !== parent && parent !== null) {
+      parent = parent.parentNode;
+    }
+
+    return domElement === parent;
+  },
+
+  /**
    * Returns whether or not the element is selected. If the element is not an option this returns false.
    *
    * @return {boolean} True if the element is selected, false if it isn't or is not an option.

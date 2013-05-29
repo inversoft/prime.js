@@ -387,6 +387,9 @@ Prime.Widget.MultipleSelect.prototype = {
         appendTo(this.displayContainerSelectedOptionList);
     this.input = Prime.Dom.newElement('<input/>').
         addClass('prime-multiple-select-input').
+        addEventListener('click', this.handleClickEvent, this).
+        addEventListener('focus', this.handleFocusEvent, this).
+        addEventListener('blur', this.handleBlurEvent, this).
         setAttribute('type', 'text').
         appendTo(this.inputOption);
 
@@ -511,7 +514,6 @@ Prime.Widget.MultipleSelect.prototype = {
     }
 
     searchText = typeof(searchText) !== 'undefined' ? searchText.toLowerCase() : this.input.getValue();
-    this.input.focus();
     this.resizeInput();
 
     // Clear the search results (if there are any)
@@ -555,12 +557,16 @@ Prime.Widget.MultipleSelect.prototype = {
     }
 
     // Show the results
-    this.searchResultsContainer.show();
+    if (count > 0) {
+      this.searchResultsContainer.show();
 
-    if (count < 5) {
-      this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * count + 1);
+      if (count < 5) {
+        this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * count + 1);
+      } else {
+        this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * 10 + 1);
+      }
     } else {
-      this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * 10 + 1);
+      this.searchResultsContainer.hide();
     }
 
     return this;
@@ -630,6 +636,9 @@ Prime.Widget.MultipleSelect.prototype = {
 
     // Close the search results
     this.closeSearchResults();
+
+    // Scroll the display to the bottom
+    this.displayContainerSelectedOptionList.scrollToBottom();
 
     return this;
   },
@@ -703,14 +712,24 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Handles the blur event when the input goes out of focus.
+   *
+   * @private
+   */
+  handleBlurEvent: function() {
+    window.setTimeout(Prime.Utils.proxy(this.closeSearchResults, this), 300);
+  },
+
+  /**
    * Handles all click events sent to the MultipleSelect.
    *
+   * @private
    * @param {Event} event The mouse event.
    */
   handleClickEvent: function(event) {
     var target = new Prime.Dom.Element(event.currentTarget);
     if (this.displayContainer.domElement === target.domElement) {
-      this.search();
+      this.input.focus();
     } else if (target.hasClass('prime-multiple-select-add-custom')) {
       this.addCustomOption();
     } else if (target.hasClass('prime-multiple-select-search-result')) {
@@ -718,20 +737,38 @@ Prime.Widget.MultipleSelect.prototype = {
       this.selectOption(option);
     } else if (target.hasClass('prime-multiple-select-remove-option')) {
       this.removeOptionWithValue(target.getAttribute('value'));
+    } else if (target.domElement === this.input.domElement) {
+      this.search();
     } else {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
 
-    return false;
+    return true;
   },
 
   /**
-   * Handles mouse clicks outside of this MultipleSelect.
+   * Handles when the input field is focused by opening the search results.
    *
+   * @private
+   */
+  handleFocusEvent: function() {
+    this.search();
+  },
+
+  /**
+   * Handles mouse clicks outside of this MultipleSelect. If they clicked anything that is not within this MultipleSelect,
+   * it closes the search results.
+   *
+   * @private
+   * @param {Event} event The event.
    * @returns {boolean} Always true so the event is bubbled.
    */
-  handleGlobalClickEvent: function() {
-    this.closeSearchResults();
+  handleGlobalClickEvent: function(event) {
+    var target = new Prime.Dom.Element(event.target);
+    if (this.displayContainer.domElement !== target.domElement && !target.isChildOf(this.displayContainer)) {
+      this.closeSearchResults();
+    }
+
     return true;
   },
 
@@ -807,6 +844,7 @@ Prime.Widget.MultipleSelect.prototype = {
   /**
    * Handles mouseover events for the search results (only) by highlighting the event target.
    *
+   * @private
    * @param {Event} event The mouseover event.
    */
   handleMouseOverEvent: function(event) {

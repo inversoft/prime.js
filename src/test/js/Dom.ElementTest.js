@@ -557,7 +557,33 @@ buster.testCase('Element class tests', {
     assert.equals(div.getTextContent().trim(), 'foo To insert before');
   },
 
-  isVisible: function() {
+  'isChildOf': function() {
+    var nested1 = Prime.Dom.queryByID('nested1');
+    assert.isFalse(Prime.Dom.queryByID('nested1').isChildOf(nested1));
+    assert.isTrue(Prime.Dom.queryByID('nested2').isChildOf(nested1));
+    assert.isTrue(Prime.Dom.queryByID('nested3').isChildOf(nested1));
+    assert.isTrue(Prime.Dom.queryByID('nested4').isChildOf(nested1));
+
+    var nested2 = Prime.Dom.queryByID('nested2');
+    assert.isFalse(Prime.Dom.queryByID('nested1').isChildOf(nested2));
+    assert.isFalse(Prime.Dom.queryByID('nested2').isChildOf(nested2));
+    assert.isTrue(Prime.Dom.queryByID('nested3').isChildOf(nested2));
+    assert.isTrue(Prime.Dom.queryByID('nested4').isChildOf(nested2));
+
+    var nested3 = Prime.Dom.queryByID('nested3');
+    assert.isFalse(Prime.Dom.queryByID('nested1').isChildOf(nested3));
+    assert.isFalse(Prime.Dom.queryByID('nested2').isChildOf(nested3));
+    assert.isFalse(Prime.Dom.queryByID('nested3').isChildOf(nested3));
+    assert.isTrue(Prime.Dom.queryByID('nested4').isChildOf(nested3));
+
+    var nested4 = Prime.Dom.queryByID('nested4');
+    assert.isFalse(Prime.Dom.queryByID('nested1').isChildOf(nested4));
+    assert.isFalse(Prime.Dom.queryByID('nested2').isChildOf(nested4));
+    assert.isFalse(Prime.Dom.queryByID('nested3').isChildOf(nested4));
+    assert.isFalse(Prime.Dom.queryByID('nested4').isChildOf(nested4));
+  },
+
+  'isVisible': function() {
     assert.isFalse(Prime.Dom.queryByID('hidden').isVisible());
     assert.isFalse(Prime.Dom.queryByID('display-none').isVisible());
     assert.isTrue(Prime.Dom.queryByID('query').isVisible());

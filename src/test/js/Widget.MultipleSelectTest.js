@@ -32,7 +32,7 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelect.selectOptionWithValue('three');
     this.multipleSelect.closeSearchResults();
 
-    this.multipleSelectCustomAddDisabled = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select-custom-add-disabled'), false);
+    this.multipleSelectCustomAddDisabled = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select-custom-add-disabled'), 'Choose:', false);
     this.multipleSelectCustomAddDisabled.removeAllOptions();
     this.multipleSelectCustomAddDisabled.addOption('one', 'One');
     this.multipleSelectCustomAddDisabled.addOption('two', 'Two');
@@ -386,10 +386,10 @@ buster.testCase('MultipleSelect class tests', {
     // Empty search with no options available
     this.multipleSelect.selectOptionWithValue('two');
     this.multipleSelect.search('');
-    assert.isTrue(this.multipleSelect.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelect.isSearchResultsVisible());
     assert.isFalse(this.multipleSelect.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), '');
-    assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
+    assert.isFalse(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 0);
   },
 
