@@ -86,14 +86,21 @@
   left: 0;
   list-style: none;
   margin: 0;
+  padding: 0;
   position: absolute;
-  overflow-y: scroll;
+  overflow-x: hidden;
+  overflow-y: auto;
   top: 100%;
   width: 100%;
   z-index: 1010;
 }
 
 .prime-multiple-select-display .prime-multiple-select-search-result-list li {
+  -moz-box-sizing   : border-box;
+  -ms-box-sizing    : border-box;
+  -webkit-box-sizing: border-box;
+  -khtml-box-sizing : border-box;
+  box-sizing        : border-box;
   padding: 5px;
 }
 

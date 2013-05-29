@@ -332,6 +332,11 @@ Prime.Widget.MultipleSelect.prototype = {
     });
 
     option.addClass('prime-multiple-select-highlighted-search-result');
+    if (option.getOffsetTop() + 2 > this.searchResultsContainer.getHeight()) {
+      this.searchResultsContainer.scrollTo(option.getOffsetTop() - this.searchResultsContainer.getHeight() + option.getOuterHeight());
+    } else {
+      this.searchResultsContainer.scrollTo(0);
+    }
 
     return this;
   },
@@ -365,8 +370,6 @@ Prime.Widget.MultipleSelect.prototype = {
    * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
    */
   rebuildDisplay: function() {
-    console.log('Rebuilding display');
-
     // Close the search
     this.searchResultsContainer.hide();
 
@@ -482,7 +485,6 @@ Prime.Widget.MultipleSelect.prototype = {
   resizeInput: function() {
     var text = this.input.getValue() === '' ? this.input.getAttribute('placeholder') : this.input.getValue();
     var newLength =  Prime.Utils.calculateTextLength(this.input, text) + 10;
-    console.log(newLength);
     if (newLength < 25) {
       newLength = 25;
     }
@@ -515,7 +517,7 @@ Prime.Widget.MultipleSelect.prototype = {
     // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
     // the add custom option.
     var selectableOptions = this.selectableOptionsForPrefix(searchText);
-    var foundOne = false;
+    var count = 0;
     for (var i = 0; i < selectableOptions.length; i++) {
       var optionText = selectableOptions[i];
       Prime.Dom.newElement('<li/>').
@@ -524,7 +526,7 @@ Prime.Widget.MultipleSelect.prototype = {
           setHTML(optionText).
           addEventListener('click', this.handleClickEvent, this).
           appendTo(this.searchResultsContainer);
-      foundOne = true;
+      count++;
     }
 
     // Show the custom add option if necessary
@@ -535,19 +537,26 @@ Prime.Widget.MultipleSelect.prototype = {
           addEventListener('click', this.handleClickEvent, this).
           setHTML(this.customAddLabel + searchText).
           appendTo(this.searchResultsContainer);
-      foundOne = true;
+      count++;
     }
 
     // Show the no matches if necessary
-    if (!foundOne && searchText !== '') {
+    if (count === 0 && searchText !== '') {
       Prime.Dom.newElement('<li/>').
           addClass('prime-multiple-select-no-search-results').
           setHTML(this.noSearchResultsLabel + searchText).
           appendTo(this.searchResultsContainer);
+      count++;
     }
 
     // Show the results
     this.searchResultsContainer.show();
+
+    if (count < 5) {
+      this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * count + 1);
+    } else {
+      this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * 10 + 1);
+    }
 
     return this;
   },
@@ -757,7 +766,6 @@ Prime.Widget.MultipleSelect.prototype = {
    */
   handleKeyUpEvent: function(event) {
     var key = event.keyCode;
-    console.log('Keyup ' + key);
     var value = this.input.getValue();
 
     if (key == Prime.Event.Keys.BACKSPACE) {
@@ -784,7 +792,6 @@ Prime.Widget.MultipleSelect.prototype = {
     } else if (key === Prime.Event.Keys.ESCAPE) {
       this.searchResultsContainer.hide();
       this.unhighlightOptionForUnselect();
-      console.log('Escaped');
     } else if ((key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
       this.unhighlightOptionForUnselect();
       this.search();

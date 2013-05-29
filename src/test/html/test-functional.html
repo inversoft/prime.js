@@ -49,8 +49,14 @@
 
         new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-test'));
         new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-custom-add-disabled-test'), 'Choose', false);
+        new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-lots-of-options'));
       });
     </script>
+    <style>
+      #multiple-select-lots-of-options-display {
+        width: 300px;
+      }
+    </style>
   </head>
   <body>
     <div id="fade" style="border: 1px solid black;">
@@ -77,6 +83,29 @@
         <option value="one" selected="selected">One</option>
         <option value="two">Two</option>
         <option value="three" selected="selected">Three</option>
+      </select>
+      <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
+      <select id="multiple-select-lots-of-options" multiple="multiple">
+        <option value="one">One</option>
+        <option value="two">Two</option>
+        <option value="three">Three</option>
+        <option value="four">Four</option>
+        <option value="five">Five</option>
+        <option value="six">Six</option>
+        <option value="seven">Seven</option>
+        <option value="eight">Eight</option>
+        <option value="nine">Nine</option>
+        <option value="ten">Ten</option>
+        <option value="eleven">Eleven</option>
+        <option value="twelve">Twelve</option>
+        <option value="thirteen">Thirteen</option>
+        <option value="fourteen">Fourteen</option>
+        <option value="fifteen">Fifteen</option>
+        <option value="sixteen">Sixteen</option>
+        <option value="seventeen">Seventeen</option>
+        <option value="eighteen">Eighteen</option>
+        <option value="nineteen">Nineteen</option>
+        <option value="Twenty">Twenty</option>
       </select>
     </div>
   </body>

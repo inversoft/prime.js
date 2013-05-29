@@ -283,6 +283,15 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * The elements offset top in pixels.
+   *
+   * @returns {number} The offset top.
+   */
+  getOffsetTop: function() {
+    return this.domElement.offsetTop;
+  },
+
+  /**
    * Retrieves the opacity value for the Element. This handles the IE alpha filter.
    *
    * @return {number} The opacity value.
@@ -303,6 +312,26 @@ Prime.Dom.Element.prototype = {
     }
 
     return opacity;
+  },
+
+  /**
+   * Gets the outer height of the element, including the margins. This does not include the padding or borders.
+   *
+   * @returns {number} The outer height of the element.
+   */
+  getOuterHeight: function() {
+    var computedStyle = this.getComputedStyle();
+    return parseInt(computedStyle['height']) + parseInt(computedStyle['margin-top']) + parseInt(computedStyle['margin-bottom']);
+  },
+
+  /**
+   * Gets the outer width of the element, including the margins. This does not include the padding or borders.
+   *
+   * @returns {number} The outer width of the element.
+   */
+  getOuterWidth: function() {
+    var computedStyle = this.getComputedStyle();
+    return parseInt(computedStyle['width']) + parseInt(computedStyle['margin-left']) + parseInt(computedStyle['margin-right']);
   },
 
   /**
@@ -708,6 +737,17 @@ Prime.Dom.Element.prototype = {
       this.domElement.parentNode.removeChild(this.domElement);
     }
 
+    return this;
+  },
+
+  /**
+   * Scrolls this element to the given position.
+   *
+   * @param {number} position The position to scroll the element to.
+   * @return {Prime.Dom.Element} This Element.
+   */
+  scrollTo: function(position) {
+    this.domElement.scrollTop = position;
     return this;
   },
 
