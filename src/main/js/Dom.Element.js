@@ -573,6 +573,13 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
+   * @returns {boolean} True if this element has focus.
+   */
+  isFocused: function() {
+    return document.activeElement === this.domElement;
+  },
+
+  /**
    * Returns whether or not the element is selected. If the element is not an option this returns false.
    *
    * @return {boolean} True if the element is selected, false if it isn't or is not an option.

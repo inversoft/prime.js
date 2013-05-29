@@ -1,5 +1,7 @@
 /* Prime MultipleSelect */
 .prime-multiple-select-display {
+  font-family: Arial, sans-serif;
+  font-size: 12px;
   position: relative;
 }
 .prime-multiple-select-display ul.prime-multiple-select-option-list {
@@ -64,6 +66,8 @@
 
 .prime-multiple-select-input {
   border: none;
+  font-family: Arial, sans-serif;
+  font-size: 12px;
   height: 25px;
   margin: 0;
   outline: none;

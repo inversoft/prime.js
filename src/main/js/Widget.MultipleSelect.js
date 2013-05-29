@@ -717,7 +717,11 @@ Prime.Widget.MultipleSelect.prototype = {
    * @private
    */
   handleBlurEvent: function() {
-    window.setTimeout(Prime.Utils.proxy(this.closeSearchResults, this), 300);
+    window.setTimeout(Prime.Utils.proxy(function() {
+      if (document.activeElement !== this.input.domElement) {
+        this.closeSearchResults();
+      }
+    }, this), 300);
   },
 
   /**
