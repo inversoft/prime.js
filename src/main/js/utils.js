@@ -21,6 +21,37 @@ Prime.Utils = {
   typeRegex: /^\[object\s(.*)\]$/,
 
   /**
+   * Calculates the length of the given text using the style of the given element.
+   *
+   * @param {Prime.Dom.Element} element The element to use the style of.
+   * @param {string} text The text to calculate the length of.
+   * @returns {number} The length of the text.
+   */
+  calculateTextLength: function(element, text) {
+    var computedStyle = element.getComputedStyle();
+    var textCalculator = Prime.Dom.queryByID('prime-text-calculator');
+    if (textCalculator === null) {
+      textCalculator = Prime.Dom.newElement('<span/>').
+          setStyles({
+            position: 'absolute',
+            width: 'auto',
+            fontSize: computedStyle['fontSize'],
+            fontFamily: computedStyle['fontFamily'],
+            fontWeight: computedStyle['fontWeight'],
+            letterSpacing: computedStyle['letterSpacing'],
+            whiteSpace: 'nowrap'
+          }).
+          setID('prime-text-calculator').
+          setTop(-9999).
+          setLeft(-9999).
+          appendTo(document.body);
+    }
+
+    textCalculator.setHTML(text);
+    return textCalculator.getWidth();
+  },
+
+  /**
    * Attempts to invoke a function iteratively in the background a specific number of times within a specific duration.
    * This might not complete in the specified duration. The functions passed in should be short functions that return as
    * quickly as possible. If you are using long functions, use the recursive setTimeout trick by-hand instance.

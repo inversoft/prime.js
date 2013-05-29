@@ -245,7 +245,7 @@ Prime.Dom.Element.prototype = {
       throw new TypeError('height is specified in a unit other than pixels');
     }
 
-    return height.substring(0, index);
+    return parseInt(height.substring(0, index));
   },
 
   /**
@@ -388,7 +388,7 @@ Prime.Dom.Element.prototype = {
       throw new TypeError('width is specified in a unit other than pixels');
     }
 
-    return width.substring(0, index);
+    return parseInt(width.substring(0, index));
   },
 
   /**

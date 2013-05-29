@@ -47,11 +47,12 @@ Prime.Widget = Prime.Widget || {};
  *
  * @constructor
  * @param {Prime.Dom.Element} element The Prime Element for the MultipleSelect.
+ * @param {string} [placeholder="Choose"] Placeholder text.
  * @param {boolean} [customAddEnabled=true] Determines if users can add custom options to the MultipleSelect.
  * @param {string} [customAddLabel="Add Custom Value:"] The label for the custom add option in the search results.
  * @param {boolean} [noSearchResultsLabel="No Matches For:] The label used when there are no search results.
  */
-Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel, noSearchResultsLabel) {
+Prime.Widget.MultipleSelect = function(element, placeholder, customAddEnabled, customAddLabel, noSearchResultsLabel) {
   this.element = (element instanceof Prime.Dom.Element) ? element : new Prime.Dom.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widget.MultipleSelect with select elements');
@@ -62,6 +63,7 @@ Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel
   }
 
   this.element.hide();
+  this.placeholder = typeof(placeholder) !== 'undefined' ? placeholder : 'Choose';
   this.noSearchResultsLabel = typeof(noSearchResultsLabel) !== 'undefined' ? noSearchResultsLabel : 'No Matches For: ';
   this.customAddEnabled = typeof(customAddEnabled) !== 'undefined' ? customAddEnabled : true;
   this.customAddLabel = typeof(customAddLabel) !== 'undefined' ? customAddLabel : 'Add Custom Value: ';
@@ -101,7 +103,7 @@ Prime.Widget.MultipleSelect = function(element, customAddEnabled, customAddLabel
     this.searchResultsContainer = Prime.Dom.queryFirst('.prime-multiple-select-search-result-list', this.displayContainer);
   }
 
-  Prime.Dom.queryFirst('body').addEventListener('click', this.handleGlobalClickEvent, this);
+  Prime.Dom.queryFirst('html').addEventListener('click', this.handleGlobalClickEvent, this);
 
   // Rebuild the display
   this.rebuildDisplay();
@@ -145,6 +147,7 @@ Prime.Widget.MultipleSelect.prototype = {
     this.unhighlightOptionForUnselect();
     this.searchResultsContainer.hide();
     this.input.setValue('');
+    this.resizeInput();
   },
 
   /**
@@ -170,6 +173,12 @@ Prime.Widget.MultipleSelect.prototype = {
     var displayOption = Prime.Dom.queryByID(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
+    }
+
+    // If there are no selected options left, add back the placeholder attribute to the input and resize it
+    if (Prime.Dom.query('.prime-multiple-select-option', this.displayContainerSelectedOptionList).length === 0) {
+      this.input.setAttribute('placeholder', this.placeholder);
+      this.resizeInput();
     }
 
     if (this.isSearchResultsVisible()) {
@@ -376,12 +385,21 @@ Prime.Widget.MultipleSelect.prototype = {
         appendTo(this.inputOption);
 
     // Add the selected options
+    var hasSelectedOptions = false;
     for (var i = 0; i < this.element.domElement.length; i++) {
       var option = this.element.domElement.options[i];
       if (option.selected) {
         this.selectOption(new Prime.Dom.Element(option));
+        hasSelectedOptions = true;
       }
     }
+
+    // Put the placeholder attribute in if the MultipleSelect has no selected options
+    if (!hasSelectedOptions) {
+      this.input.setAttribute('placeholder', this.placeholder);
+    }
+
+    this.resizeInput();
 
     return this;
   },
@@ -459,6 +477,20 @@ Prime.Widget.MultipleSelect.prototype = {
   },
 
   /**
+   * Poor mans resizing of the input field as the user types into it.
+   */
+  resizeInput: function() {
+    var text = this.input.getValue() === '' ? this.input.getAttribute('placeholder') : this.input.getValue();
+    var newLength =  Prime.Utils.calculateTextLength(this.input, text) + 10;
+    console.log(newLength);
+    if (newLength < 25) {
+      newLength = 25;
+    }
+
+    this.input.setWidth(newLength);
+  },
+
+  /**
    * Executes a search by optionally updating the input to the given value (if specified) and then rebuilding the search
    * results using the input's value. This method also puts focus on the input and shows the search results (in case
    * they are hidden for any reason).
@@ -475,6 +507,7 @@ Prime.Widget.MultipleSelect.prototype = {
 
     searchText = typeof(searchText) !== 'undefined' ? searchText.toLowerCase() : this.input.getValue();
     this.input.focus();
+    this.resizeInput();
 
     // Clear the search results (if there are any)
     this.removeAllSearchResults();
@@ -576,6 +609,10 @@ Prime.Widget.MultipleSelect.prototype = {
           addEventListener('click', this.handleClickEvent, this).
           appendTo(li);
     }
+
+    // Remove the placeholder attribute on the input and resize it
+    this.input.removeAttribute('placeholder');
+    this.resizeInput();
 
     // Close the search results
     this.closeSearchResults();

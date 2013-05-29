@@ -23,7 +23,7 @@ var refute = buster.assertions.refute;
 
 buster.testCase('MultipleSelect class tests', {
   setUp: function() {
-    this.multipleSelect = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select'), true, 'Add New Value: ');
+    this.multipleSelect = new Prime.Widget.MultipleSelect(Prime.Dom.queryFirst('#multiple-select'), 'Select One', true, 'Add New Value: ');
     this.multipleSelect.removeAllOptions();
     this.multipleSelect.addOption('one', 'One');
     this.multipleSelect.addOption('two', 'Two');
