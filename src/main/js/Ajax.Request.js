@@ -13,15 +13,27 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+
+/**
+ * @namespace Prime
+ */
 var Prime = Prime || {};
+
+/**
+ * The Prime.Ajax namespace.
+ *
+ * This namespace contains a single class (for now) called Request.
+ *
+ * @namespace Prime.Ajax
+ */
 Prime.Ajax = Prime.Ajax || {};
 
 /**
  * Makes a new AJAX request.
  *
+ * @constructor
  * @param {string} [url] The URL to call. This can be left out for sub-classing but should otherwise be provided.
  * @param {string} [method=GET] The HTTP method to use. You can specify GET, POST, PUT, DELETE, HEAD, SEARCH, etc.
- * @constructor
  */
 Prime.Ajax.Request = function(url, method) {
   this.xhr = new XMLHttpRequest();
