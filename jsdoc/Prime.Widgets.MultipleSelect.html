@@ -1,0 +1,3654 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Documentation</title>
+	</head>
+	<body id="class">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	<li><a href="namespace_index.html">Namespaces</a></li>
+	
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+
+		API
+
+		
+</div>
+				<div class="type">Class</div>
+				<h1>
+					<a href="Prime.html" ><abbr title="Prime">Prime</abbr></a><a href="Prime.Widgets.html" ><abbr title="Prime.Widgets">.Widgets</abbr></a>.MultipleSelect
+				</h1>
+			</div>
+		</header>
+
+		<div class="content">
+
+			<div class="anchor_list">
+	<h2>Contents</h2>
+	<ul>
+		
+		
+		
+		
+		
+
+		
+
+		
+
+		
+
+		
+
+		
+		<li><a href="#methods">Methods</a></li>
+		
+
+			
+	</ul>
+</div>
+			
+			<!-- CLASS SIGNATURE -->
+			<p class="PrincipalTitle">
+				<span> </span>
+				<span>class </span>
+				<strong>
+					<a href="Prime.html" ><abbr title="Prime">Prime</abbr></a><a href="Prime.Widgets.html" ><abbr title="Prime.Widgets">.Widgets</abbr></a>.MultipleSelect
+				</strong>
+
+				
+
+				
+
+				
+			</p>
+
+
+			<!-- CLASS DESCRIPTION -->
+			<div class="description "><p>Constructs a MultipleSelect object for the given element.
+
+The MultipleSelect generates a number of different HTML elements directly after the SELECT element you pass to the
+constructor. A fully rendered MultipleSelect might look something like this:
+
+<pre>
+&lt;select id="foo">
+  &lt;option value="one">One&lt;/option>
+  &lt;option value="two">Two&lt;/option>
+  &lt;option value="three">Three&lt;/option>
+&lt;/select>
+&lt;div id="foo-display" class="prime-multiple-select-display">
+  &lt;ul id="foo-option-list" class="prime-multiple-select-option-list">
+    &lt;li id="foo-option-one" class="prime-multiple-select-option">&lt;span>One&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+    &lt;li id="foo-option-two" class="prime-multiple-select-option">&lt;span>Two&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+    &lt;li id="foo-option-three" class="prime-multiple-select-option">&lt;span>Three&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+    &lt;li class="prime-multiple-select-input-option">&lt;input type="text" class="prime-multiple-select-input" value="aaa"/>&lt;/li>
+  &lt;/ul>
+  &lt;ul class="prime-multiple-select-search-result-list">
+    &lt;li class="prime-multiple-select-search-result">One&lt;/li>
+    &lt;li class="prime-multiple-select-search-result">Two&lt;/li>
+    &lt;li class="prime-multiple-select-search-result">Three&lt;/li>
+    &lt;li class="prime-multiple-select-add-custom">Add Custom Entry: aaa/li>
+  &lt;/ul>
+&lt;/div>
+</pore></p></div>
+
+
+			<!-- CLASS CONSTRUCTOR SUMMARY -->
+			<h2>
+				<a name='constructor'></a>
+				Constructor
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+				<tbody>
+					<tr>
+						<td class="type">&nbsp;</td>
+						<td class="last">
+							<a href="#MultipleSelect">MultipleSelect</a>
+							<span>(<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> element, string placeholder, boolean customAddEnabled, string customAddLabel, boolean noSearchResultsLabel)</span>
+							
+						<td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<!-- CLASS REQUIRES -->
+
+			<!-- NAMESPACE SUB-NAMESPACES -->
+						
+
+			<!-- CLASS CONSTANTS SUMMARY -->
+			
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS SUMMARY -->
+			
+
+			<!-- CLASS PROPERTIES SUMMARY -->
+			
+
+			<!-- CLASS STATIC METHODS SUMMARY -->
+			
+
+			<!-- CLASS METHODS SUMMARY -->
+			
+			<h2>
+				<a name='methods'></a>
+				Methods
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+  <tbody>
+  
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#addOption">
+				<abbr title="Prime.Widgets.MultipleSelect#addOption">
+					addOption
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String value, String display)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#closeSearchResults">
+				<abbr title="Prime.Widgets.MultipleSelect#closeSearchResults">
+					closeSearchResults
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#containsOptionWithValue">
+				<abbr title="Prime.Widgets.MultipleSelect#containsOptionWithValue">
+					containsOptionWithValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#deselectOption">
+				<abbr title="Prime.Widgets.MultipleSelect#deselectOption">
+					deselectOption
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> option)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#deselectOptionWithValue">
+				<abbr title="Prime.Widgets.MultipleSelect#deselectOptionWithValue">
+					deselectOptionWithValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#findOptionWithText">
+				<abbr title="Prime.Widgets.MultipleSelect#findOptionWithText">
+					findOptionWithText
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String text)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#findOptionWithValue">
+				<abbr title="Prime.Widgets.MultipleSelect#findOptionWithValue">
+					findOptionWithValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getHighlightedSearchResult">
+				<abbr title="Prime.Widgets.MultipleSelect#getHighlightedSearchResult">
+					getHighlightedSearchResult
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#hasOptionWithValue">
+				<abbr title="Prime.Widgets.MultipleSelect#hasOptionWithValue">
+					hasOptionWithValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#highlightNextSearchResult">
+				<abbr title="Prime.Widgets.MultipleSelect#highlightNextSearchResult">
+					highlightNextSearchResult
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#highlightOptionForUnselect">
+				<abbr title="Prime.Widgets.MultipleSelect#highlightOptionForUnselect">
+					highlightOptionForUnselect
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#highlightPreviousSearchResult">
+				<abbr title="Prime.Widgets.MultipleSelect#highlightPreviousSearchResult">
+					highlightPreviousSearchResult
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#highlightSearchResult">
+				<abbr title="Prime.Widgets.MultipleSelect#highlightSearchResult">
+					highlightSearchResult
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> searchResult)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isCustomAddVisible">
+				<abbr title="Prime.Widgets.MultipleSelect#isCustomAddVisible">
+					isCustomAddVisible
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isLastOptionHighlightedForUnselect">
+				<abbr title="Prime.Widgets.MultipleSelect#isLastOptionHighlightedForUnselect">
+					isLastOptionHighlightedForUnselect
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isSearchResultsVisible">
+				<abbr title="Prime.Widgets.MultipleSelect#isSearchResultsVisible">
+					isSearchResultsVisible
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#rebuildDisplay">
+				<abbr title="Prime.Widgets.MultipleSelect#rebuildDisplay">
+					rebuildDisplay
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeAllOptions">
+				<abbr title="Prime.Widgets.MultipleSelect#removeAllOptions">
+					removeAllOptions
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeHighlightedOption">
+				<abbr title="Prime.Widgets.MultipleSelect#removeHighlightedOption">
+					removeHighlightedOption
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeOption">
+				<abbr title="Prime.Widgets.MultipleSelect#removeOption">
+					removeOption
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> option)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeOptionWithValue">
+				<abbr title="Prime.Widgets.MultipleSelect#removeOptionWithValue">
+					removeOptionWithValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#resizeInput">
+				<abbr title="Prime.Widgets.MultipleSelect#resizeInput">
+					resizeInput
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#search">
+				<abbr title="Prime.Widgets.MultipleSelect#search">
+					search
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string searchText)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#selectHighlightedSearchResult">
+				<abbr title="Prime.Widgets.MultipleSelect#selectHighlightedSearchResult">
+					selectHighlightedSearchResult
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#selectOption">
+				<abbr title="Prime.Widgets.MultipleSelect#selectOption">
+					selectOption
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> option)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#selectOptionWithValue">
+				<abbr title="Prime.Widgets.MultipleSelect#selectOptionWithValue">
+					selectOptionWithValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(String value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#unhighlightOptionForUnselect">
+				<abbr title="Prime.Widgets.MultipleSelect#unhighlightOptionForUnselect">
+					unhighlightOptionForUnselect
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+    
+  </tbody>
+</table>
+			
+
+
+			<!-- CLASS EVENTS SUMMARY -->
+			
+
+			<!--
+			################################################################################
+			## DETAILS
+			################################################################################
+			-->
+
+			<!-- CLASS CONSTRUCTOR DETAILS -->
+			<h2>
+				<a name='constructor_details'></a>
+				Constructor details
+				<small><a href="#">Top</a></small>
+				<h3 id="MultipleSelect"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno61">Widgets.MultipleSelect.js</a> at line 61
+
+  </div>
+	
+	<div class="signature">
+		
+  
+		<strong>MultipleSelect</strong>
+		
+    <span class="params">
+      (<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> element, string placeholder, boolean customAddEnabled, string customAddLabel, boolean noSearchResultsLabel)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Constructs a MultipleSelect object for the given element.
+
+The MultipleSelect generates a number of different HTML elements directly after the SELECT element you pass to the
+constructor. A fully rendered MultipleSelect might look something like this:
+
+<pre>
+&lt;select id="foo">
+  &lt;option value="one">One&lt;/option>
+  &lt;option value="two">Two&lt;/option>
+  &lt;option value="three">Three&lt;/option>
+&lt;/select>
+&lt;div id="foo-display" class="prime-multiple-select-display">
+  &lt;ul id="foo-option-list" class="prime-multiple-select-option-list">
+    &lt;li id="foo-option-one" class="prime-multiple-select-option">&lt;span>One&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+    &lt;li id="foo-option-two" class="prime-multiple-select-option">&lt;span>Two&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+    &lt;li id="foo-option-three" class="prime-multiple-select-option">&lt;span>Three&lt;/span>&lt;a href="#">X&lt;/a>&lt;/li>
+    &lt;li class="prime-multiple-select-input-option">&lt;input type="text" class="prime-multiple-select-input" value="aaa"/>&lt;/li>
+  &lt;/ul>
+  &lt;ul class="prime-multiple-select-search-result-list">
+    &lt;li class="prime-multiple-select-search-result">One&lt;/li>
+    &lt;li class="prime-multiple-select-search-result">Two&lt;/li>
+    &lt;li class="prime-multiple-select-search-result">Three&lt;/li>
+    &lt;li class="prime-multiple-select-add-custom">Add Custom Entry: aaa/li>
+  &lt;/ul>
+&lt;/div>
+</pore></p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>element</a><p>The Prime Element for the MultipleSelect.</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>placeholder</a> = <code>"Choose"</code><p>Placeholder text. (Optional)</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>customAddEnabled</a> = <code>true</code><p>Determines if users can add custom options to the MultipleSelect. (Optional)</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>customAddLabel</a> = <code>"Add Custom Value:"</code><p>The label for the custom add option in the search results. (Optional)</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>noSearchResultsLabel</a> = <code>"No Matches For:</code><p>The label used when there are no search results. (Optional)</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			</h2>
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS DETAIL -->
+			
+
+
+			<!-- CLASS STATIC METHODS DETAIL -->
+			
+
+
+			<!-- CLASS PROPERTIES DETAIL -->
+			
+
+
+			<!-- CLASS METHODS DETAIL -->
+			
+			<h2>
+				<a name='methods_details'></a>
+				Methods Detail
+				<small><a href="#">Top</a></small>
+			</h2>
+			<h3 id="addOption"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno131">Widgets.MultipleSelect.js</a> at line 131
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>addOption</strong>
+		
+    <span class="params">
+      (String value, String display)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Adds the given option to this select. The option will not be selected.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The value for the option.</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>display</a><p>The display text for the option.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="closeSearchResults"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno152">Widgets.MultipleSelect.js</a> at line 152
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>closeSearchResults</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Closes the search results display, unhighlights any options that are highlighted and resets the input's value to
+empty string.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="containsOptionWithValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno164">Widgets.MultipleSelect.js</a> at line 164
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>containsOptionWithValue</strong>
+		
+    <span class="params">
+      (String value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Determines if this MultipleSelect contains an option with the given value.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The value to look for.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="deselectOption"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno175">Widgets.MultipleSelect.js</a> at line 175
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>deselectOption</strong>
+		
+    <span class="params">
+      (<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> option)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Deselects the option with the given value by removing the selected attribute from the option in the select box and
+removing the option from the display container.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>option</a><p>The option to deselect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="deselectOptionWithValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno205">Widgets.MultipleSelect.js</a> at line 205
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>deselectOptionWithValue</strong>
+		
+    <span class="params">
+      (String value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Deselects the option with the given value by removing the selected attribute from the option in the select box and
+removing the option from the display container. If the MultipleSelect doesn't contain an option for the given value,
+this method throws an exception.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The value to look for.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="findOptionWithText"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno222">Widgets.MultipleSelect.js</a> at line 222
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>findOptionWithText</strong>
+		
+    <span class="params">
+      (String text)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Finds the HTMLSelectOption with the given text and returns it wrapped in a Prime.Document.Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>text</a><p>The text to look for.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The option element or null.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="findOptionWithValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno239">Widgets.MultipleSelect.js</a> at line 239
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>findOptionWithValue</strong>
+		
+    <span class="params">
+      (String value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Finds the HTMLSelectOption with the given value and returns it wrapped in a Prime.Document.Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The value to look for.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The option element or null.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getHighlightedSearchResult"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno253">Widgets.MultipleSelect.js</a> at line 253
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>getHighlightedSearchResult</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The highlighted search result or null.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="hasOptionWithValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno263">Widgets.MultipleSelect.js</a> at line 263
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>hasOptionWithValue</strong>
+		
+    <span class="params">
+      (string value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Determines if the MultipleSelect contains an option with the given value.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The value.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if the MultipleSelect contains an option with the given value, false otherwise.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="highlightNextSearchResult"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno273">Widgets.MultipleSelect.js</a> at line 273
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>highlightNextSearchResult</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Highlights the next search result if one is highlighted. If there isn't a highlighted search result, this
+highlights the first one. This method handles wrapping.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="highlightOptionForUnselect"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno297">Widgets.MultipleSelect.js</a> at line 297
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>highlightOptionForUnselect</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Highlights the final selected option (if there is one) to indicate that it will be unselected if the user clicks
+the delete key again.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="highlightPreviousSearchResult"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno312">Widgets.MultipleSelect.js</a> at line 312
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>highlightPreviousSearchResult</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Highlights the previous search result if one is highlighted. If there isn't a highlighted search result, this
+selects the last one. This method handles wrapping.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="highlightSearchResult"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno335">Widgets.MultipleSelect.js</a> at line 335
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>highlightSearchResult</strong>
+		
+    <span class="params">
+      (<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> searchResult)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Highlights the given search result.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>searchResult</a><p>The search result to highlight.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isCustomAddVisible"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno356">Widgets.MultipleSelect.js</a> at line 356
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isCustomAddVisible</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if the search results add custom option is being displayed currently.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isLastOptionHighlightedForUnselect"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno363">Widgets.MultipleSelect.js</a> at line 363
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isLastOptionHighlightedForUnselect</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if the last option is highlighted for unselect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isSearchResultsVisible"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno371">Widgets.MultipleSelect.js</a> at line 371
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isSearchResultsVisible</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if any search results are being displayed currently.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="rebuildDisplay"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno381">Widgets.MultipleSelect.js</a> at line 381
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>rebuildDisplay</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Rebuilds the display from the underlying select element. All of the current display options (li elements) are
+removed. New display options are added for each selected option in the select box.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeAllOptions"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno427">Widgets.MultipleSelect.js</a> at line 427
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>removeAllOptions</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes all of the options from the MultipleSelect.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeHighlightedOption"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno440">Widgets.MultipleSelect.js</a> at line 440
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>removeHighlightedOption</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes the highlighted option.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeOption"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno453">Widgets.MultipleSelect.js</a> at line 453
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>removeOption</strong>
+		
+    <span class="params">
+      (<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> option)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes the given option from the MultipleSelect by removing the option in the select box and the option in the
+display container.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>option</a><p>The option to remove.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeOptionWithValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno483">Widgets.MultipleSelect.js</a> at line 483
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>removeOptionWithValue</strong>
+		
+    <span class="params">
+      (<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes the option with the given value from the MultipleSelect by removing the option in the select box and the
+option in the display container. If the MultipleSelect doesn't contain an option with the given value, this throws
+an exception.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The value of the option to remove.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="resizeInput"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno497">Widgets.MultipleSelect.js</a> at line 497
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>resizeInput</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Poor mans resizing of the input field as the user types into it.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="search"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno516">Widgets.MultipleSelect.js</a> at line 516
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>search</strong>
+		
+    <span class="params">
+      (string searchText)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Executes a search by optionally updating the input to the given value (if specified) and then rebuilding the search
+results using the input's value. This method also puts focus on the input and shows the search results (in case
+they are hidden for any reason).</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>searchText</a><p>The text to search for (this value is also set into the input box). If this is not
+specified then the search is run using the input's value. (Optional)</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="selectHighlightedSearchResult"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno586">Widgets.MultipleSelect.js</a> at line 586
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>selectHighlightedSearchResult</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Selects the highlighted search result unless there isn't one highlighted, in which case, this does nothing.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="selectOption"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno610">Widgets.MultipleSelect.js</a> at line 610
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>selectOption</strong>
+		
+    <span class="params">
+      (<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> option)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Selects the given option by setting the selected attribute on the option in the select box (the object passed in is
+the option from the select box wrapped in a Prime.Document.Element) and adding it to the display container. If the
+option is already in the display container, that step is skipped.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>option</a><p>The option object from the select box wrapped in a Prime.Document.Element instance.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="selectOptionWithValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno662">Widgets.MultipleSelect.js</a> at line 662
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>selectOptionWithValue</strong>
+		
+    <span class="params">
+      (String value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Selects the option with the given value by setting the selected attribute on the option in the select box (the
+object passed in is the option from the select box wrapped in a Prime.Document.Element) and adding it to the display
+container. If the option is already in the display container, that step is skipped.
+<p/>
+If there isn't an option with the given value, this throws an exception.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				String
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The value of the option to select.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="unhighlightOptionForUnselect"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Widgets_MultipleSelect_js.html#lineno678">Widgets.MultipleSelect.js</a> at line 678
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+    </span>
+	  
+  
+		<strong>unhighlightOptionForUnselect</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Unhighlights the last option if it is highlighted.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This MultipleSelect.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			
+
+
+			<!-- CLASS EVENTS DETAIL -->
+			
+
+		</div>
+
+		<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Thu May 30 2013 10:57:43 GMT-0600 (MDT)
+</footer>
+
+	</body>
+</html>

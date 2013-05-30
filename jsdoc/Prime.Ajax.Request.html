@@ -1,0 +1,3145 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Documentation</title>
+	</head>
+	<body id="class">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	<li><a href="namespace_index.html">Namespaces</a></li>
+	
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+
+		API
+
+		
+</div>
+				<div class="type">Class</div>
+				<h1>
+					<a href="Prime.html" ><abbr title="Prime">Prime</abbr></a><a href="Prime.Ajax.html" ><abbr title="Prime.Ajax">.Ajax</abbr></a>.Request
+				</h1>
+			</div>
+		</header>
+
+		<div class="content">
+
+			<div class="anchor_list">
+	<h2>Contents</h2>
+	<ul>
+		
+		
+		
+		
+		
+
+		
+
+		
+
+		
+
+		
+
+		
+		<li><a href="#methods">Methods</a></li>
+		
+
+			
+	</ul>
+</div>
+			
+			<!-- CLASS SIGNATURE -->
+			<p class="PrincipalTitle">
+				<span> </span>
+				<span>class </span>
+				<strong>
+					<a href="Prime.html" ><abbr title="Prime">Prime</abbr></a><a href="Prime.Ajax.html" ><abbr title="Prime.Ajax">.Ajax</abbr></a>.Request
+				</strong>
+
+				
+
+				
+
+				
+			</p>
+
+
+			<!-- CLASS DESCRIPTION -->
+			<div class="description "><p>Makes a new AJAX request.</p></div>
+
+
+			<!-- CLASS CONSTRUCTOR SUMMARY -->
+			<h2>
+				<a name='constructor'></a>
+				Constructor
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+				<tbody>
+					<tr>
+						<td class="type">&nbsp;</td>
+						<td class="last">
+							<a href="#Request">Request</a>
+							<span>(string url, string method)</span>
+							
+						<td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<!-- CLASS REQUIRES -->
+
+			<!-- NAMESPACE SUB-NAMESPACES -->
+						
+
+			<!-- CLASS CONSTANTS SUMMARY -->
+			
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS SUMMARY -->
+			
+
+			<!-- CLASS PROPERTIES SUMMARY -->
+			
+
+			<!-- CLASS STATIC METHODS SUMMARY -->
+			
+
+			<!-- CLASS METHODS SUMMARY -->
+			
+			<h2>
+				<a name='methods'></a>
+				Methods
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+  <tbody>
+  
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#forURL">
+				<abbr title="Prime.Ajax.Request#forURL">
+					forURL
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string url)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#go">
+				<abbr title="Prime.Ajax.Request#go">
+					go
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#onError">
+				<abbr title="Prime.Ajax.Request#onError">
+					onError
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(XMLHttpRequest xhr)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#onLoading">
+				<abbr title="Prime.Ajax.Request#onLoading">
+					onLoading
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(XMLHttpRequest xhr)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#onOpen">
+				<abbr title="Prime.Ajax.Request#onOpen">
+					onOpen
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(XMLHttpRequest xhr)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#onSend">
+				<abbr title="Prime.Ajax.Request#onSend">
+					onSend
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(XMLHttpRequest xhr)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#onSuccess">
+				<abbr title="Prime.Ajax.Request#onSuccess">
+					onSuccess
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(XMLHttpRequest xhr)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	void
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#onUnset">
+				<abbr title="Prime.Ajax.Request#onUnset">
+					onUnset
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(XMLHttpRequest xhr)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#reset">
+				<abbr title="Prime.Ajax.Request#reset">
+					reset
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#synchronously">
+				<abbr title="Prime.Ajax.Request#synchronously">
+					synchronously
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#usingMethod">
+				<abbr title="Prime.Ajax.Request#usingMethod">
+					usingMethod
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string method)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withBody">
+				<abbr title="Prime.Ajax.Request#withBody">
+					withBody
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string body)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withContentType">
+				<abbr title="Prime.Ajax.Request#withContentType">
+					withContentType
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string contentType)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withContext">
+				<abbr title="Prime.Ajax.Request#withContext">
+					withContext
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Object context)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withData">
+				<abbr title="Prime.Ajax.Request#withData">
+					withData
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Object data)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withErrorHandler">
+				<abbr title="Prime.Ajax.Request#withErrorHandler">
+					withErrorHandler
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Function func)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withLoadingHandler">
+				<abbr title="Prime.Ajax.Request#withLoadingHandler">
+					withLoadingHandler
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Function func)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withOpenHandler">
+				<abbr title="Prime.Ajax.Request#withOpenHandler">
+					withOpenHandler
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Function func)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withResponseType">
+				<abbr title="Prime.Ajax.Request#withResponseType">
+					withResponseType
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string responseType)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withSendHandler">
+				<abbr title="Prime.Ajax.Request#withSendHandler">
+					withSendHandler
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Function func)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withSuccessHandler">
+				<abbr title="Prime.Ajax.Request#withSuccessHandler">
+					withSuccessHandler
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Function func)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#withUnsetHandler">
+				<abbr title="Prime.Ajax.Request#withUnsetHandler">
+					withUnsetHandler
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Function func)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+    
+  </tbody>
+</table>
+			
+
+
+			<!-- CLASS EVENTS SUMMARY -->
+			
+
+			<!--
+			################################################################################
+			## DETAILS
+			################################################################################
+			-->
+
+			<!-- CLASS CONSTRUCTOR DETAILS -->
+			<h2>
+				<a name='constructor_details'></a>
+				Constructor details
+				<small><a href="#">Top</a></small>
+				<h3 id="Request"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno32">Ajax.Request.js</a> at line 32
+
+  </div>
+	
+	<div class="signature">
+		
+  
+		<strong>Request</strong>
+		
+    <span class="params">
+      (string url, string method)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Makes a new AJAX request.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>url</a><p>The URL to call. This can be left out for sub-classing but should otherwise be provided. (Optional)</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>method</a> = <code>GET</code><p>The HTTP method to use. You can specify GET, POST, PUT, DELETE, HEAD, SEARCH, etc. (Optional)</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			</h2>
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS DETAIL -->
+			
+
+
+			<!-- CLASS STATIC METHODS DETAIL -->
+			
+
+
+			<!-- CLASS PROPERTIES DETAIL -->
+			
+
+
+			<!-- CLASS METHODS DETAIL -->
+			
+			<h2>
+				<a name='methods_details'></a>
+				Methods Detail
+				<small><a href="#">Top</a></small>
+			</h2>
+			<h3 id="forURL"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno58">Ajax.Request.js</a> at line 58
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>forURL</strong>
+		
+    <span class="params">
+      (string url)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Changes the URL to call.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>url</a><p>The new URL to call.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="go"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno68">Ajax.Request.js</a> at line 68
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>go</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Invokes the AJAX request. If the URL is not set, this throws an exception.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="onError"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno103">Ajax.Request.js</a> at line 103
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>onError</strong>
+		
+    <span class="params">
+      (XMLHttpRequest xhr)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Default handler for the "completed" state and an HTTP response status of anything but 2xx. Sub-classes can override
+this handler or you can pass in a handler function to the #withUnsetHandler.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				XMLHttpRequest
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>xhr</a><p>The XMLHttpRequest object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="onLoading"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno112">Ajax.Request.js</a> at line 112
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>onLoading</strong>
+		
+    <span class="params">
+      (XMLHttpRequest xhr)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Default handler for the "loading" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withLoadingHandler.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				XMLHttpRequest
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>xhr</a><p>The XMLHttpRequest object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="onOpen"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno121">Ajax.Request.js</a> at line 121
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>onOpen</strong>
+		
+    <span class="params">
+      (XMLHttpRequest xhr)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Default handler for the "open" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withOpenHandler.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				XMLHttpRequest
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>xhr</a><p>The XMLHttpRequest object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="onSend"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno130">Ajax.Request.js</a> at line 130
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>onSend</strong>
+		
+    <span class="params">
+      (XMLHttpRequest xhr)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Default handler for the "send" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withSendHandler.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				XMLHttpRequest
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>xhr</a><p>The XMLHttpRequest object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="onSuccess"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno139">Ajax.Request.js</a> at line 139
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>onSuccess</strong>
+		
+    <span class="params">
+      (XMLHttpRequest xhr)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Default handler for the "complete" state and an HTTP response status of 2xx. Sub-classes can override this handler
+or you can pass in a handler function to the #withUnsetHandler.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				XMLHttpRequest
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>xhr</a><p>The XMLHttpRequest object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="onUnset"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno148">Ajax.Request.js</a> at line 148
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      void
+    </span>
+	  
+  
+		<strong>onUnset</strong>
+		
+    <span class="params">
+      (XMLHttpRequest xhr)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Default handler for the "unset" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withUnsetHandler.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				XMLHttpRequest
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>xhr</a><p>The XMLHttpRequest object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				void
+			</span>
+    </td>
+    
+    <td class="last">
+    
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="reset"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno315">Ajax.Request.js</a> at line 315
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>reset</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Resets the Request back to a base state (basically just the URL + method).  This can be
+useful if a component is going to make many requests to the same endpoint with different parameters.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="synchronously"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno156">Ajax.Request.js</a> at line 156
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>synchronously</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the async flag to false.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="usingMethod"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno167">Ajax.Request.js</a> at line 167
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>usingMethod</strong>
+		
+    <span class="params">
+      (string method)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the method used to make the AJAX request.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>method</a><p>The HTTP method.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withBody"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno178">Ajax.Request.js</a> at line 178
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withBody</strong>
+		
+    <span class="params">
+      (string body)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the request body for the request.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>body</a><p>The request body.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withContentType"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno189">Ajax.Request.js</a> at line 189
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withContentType</strong>
+		
+    <span class="params">
+      (string contentType)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the content type for the request.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>contentType</a><p>The contentType.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withContext"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno201">Ajax.Request.js</a> at line 201
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withContext</strong>
+		
+    <span class="params">
+      (Object context)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the context for the AJAX handler functions. The object set here will be the "this" reference inside the handler
+functions.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>context</a><p>The context object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withData"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno213">Ajax.Request.js</a> at line 213
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withData</strong>
+		
+    <span class="params">
+      (Object data)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the data object for the request. Will store the values for query parameters or post data depending on the
+method that is set.  If the method is a post or put, will also set content-type to x-www-form-urlencoded.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>data</a><p>The data object.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withErrorHandler"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno237">Ajax.Request.js</a> at line 237
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withErrorHandler</strong>
+		
+    <span class="params">
+      (Function func)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
+not 2xx.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Function
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>func</a><p>The handler function.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withLoadingHandler"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno248">Ajax.Request.js</a> at line 248
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withLoadingHandler</strong>
+		
+    <span class="params">
+      (Function func)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the handler to invoke when the state of the AJAX request is "loading".</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Function
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>func</a><p>The handler function.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withOpenHandler"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno270">Ajax.Request.js</a> at line 270
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withOpenHandler</strong>
+		
+    <span class="params">
+      (Function func)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the handler to invoke when the state of the AJAX request is "open".</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Function
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>func</a><p>The handler function.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withResponseType"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno259">Ajax.Request.js</a> at line 259
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withResponseType</strong>
+		
+    <span class="params">
+      (string responseType)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the XMLHTTPRequest's response type field, which will control how the response is parsed.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>responseType</a><p>The response type.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withSendHandler"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno281">Ajax.Request.js</a> at line 281
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withSendHandler</strong>
+		
+    <span class="params">
+      (Function func)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the handler to invoke when the state of the AJAX request is "send".</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Function
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>func</a><p>The handler function.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withSuccessHandler"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno293">Ajax.Request.js</a> at line 293
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withSuccessHandler</strong>
+		
+    <span class="params">
+      (Function func)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
+2xx.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Function
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>func</a><p>The handler function.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="withUnsetHandler"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Ajax_Request_js.html#lineno304">Ajax.Request.js</a> at line 304
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+    </span>
+	  
+  
+		<strong>withUnsetHandler</strong>
+		
+    <span class="params">
+      (Function func)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the handler to invoke when the state of the AJAX request is "unset".</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Function
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>func</a><p>The handler function.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Prime.Ajax.Request.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			
+
+
+			<!-- CLASS EVENTS DETAIL -->
+			
+
+		</div>
+
+		<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Thu May 30 2013 10:57:43 GMT-0600 (MDT)
+</footer>
+
+	</body>
+</html>

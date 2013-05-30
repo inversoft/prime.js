@@ -1,0 +1,7789 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Documentation</title>
+	</head>
+	<body id="class">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	<li><a href="namespace_index.html">Namespaces</a></li>
+	
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+
+		API
+
+		
+</div>
+				<div class="type">Class</div>
+				<h1>
+					<a href="Prime.html" ><abbr title="Prime">Prime</abbr></a><a href="Prime.Document.html" ><abbr title="Prime.Document">.Document</abbr></a>.Element
+				</h1>
+			</div>
+		</header>
+
+		<div class="content">
+
+			<div class="anchor_list">
+	<h2>Contents</h2>
+	<ul>
+		
+		
+		
+		
+		
+
+		
+
+		
+		<li><a href="#static_properties">Static Properties & Enumerations</a></li>
+		
+
+		
+
+		
+
+		
+		<li><a href="#methods">Methods</a></li>
+		
+
+			
+	</ul>
+</div>
+			
+			<!-- CLASS SIGNATURE -->
+			<p class="PrincipalTitle">
+				<span> </span>
+				<span>class </span>
+				<strong>
+					<a href="Prime.html" ><abbr title="Prime">Prime</abbr></a><a href="Prime.Document.html" ><abbr title="Prime.Document">.Document</abbr></a>.Element
+				</strong>
+
+				
+
+				
+
+				
+			</p>
+
+
+			<!-- CLASS DESCRIPTION -->
+			<div class="description "><p>Creates an Element class for the given DOM element.</p></div>
+
+
+			<!-- CLASS CONSTRUCTOR SUMMARY -->
+			<h2>
+				<a name='constructor'></a>
+				Constructor
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+				<tbody>
+					<tr>
+						<td class="type">&nbsp;</td>
+						<td class="last">
+							<a href="#Element">Element</a>
+							<span>(Element element)</span>
+							
+						<td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+
+
+			<!-- CLASS REQUIRES -->
+
+			<!-- NAMESPACE SUB-NAMESPACES -->
+						
+
+			<!-- CLASS CONSTANTS SUMMARY -->
+			
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS SUMMARY -->
+			
+			<h2>
+				<a name='static_properties'></a>
+				Static Properties & Enumerations
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+  <tbody>
+  
+    
+
+    <tr class="public">
+      <td class="type">
+      	<span>
+      	
+      	</span>
+        	
+      	<span>
+        RegExp
+        </span>
+      </td>
+      
+      <td class="last">
+        <a href="#blockElementRegexp">
+        	<abbr title="Prime.Document.Element.blockElementRegexp">
+        		blockElementRegexp
+        	</abbr>
+        </a>
+        
+        <span class="value">
+        
+        </span>
+        
+        
+		
+		
+		
+		
+      <td>
+      <td>
+      	
+      </td>
+    </tr>
+    
+    
+    
+  </tbody>
+</table>
+			
+
+			<!-- CLASS PROPERTIES SUMMARY -->
+			
+
+			<!-- CLASS STATIC METHODS SUMMARY -->
+			
+
+			<!-- CLASS METHODS SUMMARY -->
+			
+			<h2>
+				<a name='methods'></a>
+				Methods
+				<small><a href="#">Top</a></small>
+			</h2>
+			<table>
+  <tbody>
+  
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#addClass">
+				<abbr title="Prime.Document.Element#addClass">
+					addClass
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string classNames)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#addEventListener">
+				<abbr title="Prime.Document.Element#addEventListener">
+					addEventListener
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string event, Function listener, Object context)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#appendTo">
+				<abbr title="Prime.Document.Element#appendTo">
+					appendTo
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Element element)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#fireEvent">
+				<abbr title="Prime.Document.Element#fireEvent">
+					fireEvent
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string event, Object memo, boolean bubbling, boolean cancelable)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#focus">
+				<abbr title="Prime.Document.Element#focus">
+					focus
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getAttribute">
+				<abbr title="Prime.Document.Element#getAttribute">
+					getAttribute
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string name)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.ElementList.html" ><abbr title="Prime.Document.ElementList">Prime.Document.ElementList</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getChildren">
+				<abbr title="Prime.Document.Element#getChildren">
+					getChildren
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getClass">
+				<abbr title="Prime.Document.Element#getClass">
+					getClass
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	IEElementStyle | CSSStyleDeclaration
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getComputedStyle">
+				<abbr title="Prime.Document.Element#getComputedStyle">
+					getComputedStyle
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	number | string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getHeight">
+				<abbr title="Prime.Document.Element#getHeight">
+					getHeight
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getHTML">
+				<abbr title="Prime.Document.Element#getHTML">
+					getHTML
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getID">
+				<abbr title="Prime.Document.Element#getID">
+					getID
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getNextSibling">
+				<abbr title="Prime.Document.Element#getNextSibling">
+					getNextSibling
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	number
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getOffsetTop">
+				<abbr title="Prime.Document.Element#getOffsetTop">
+					getOffsetTop
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	number
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getOpacity">
+				<abbr title="Prime.Document.Element#getOpacity">
+					getOpacity
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	number
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getOuterHeight">
+				<abbr title="Prime.Document.Element#getOuterHeight">
+					getOuterHeight
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	number
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getOuterWidth">
+				<abbr title="Prime.Document.Element#getOuterWidth">
+					getOuterWidth
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getPreviousSibling">
+				<abbr title="Prime.Document.Element#getPreviousSibling">
+					getPreviousSibling
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	number
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getScrollTop">
+				<abbr title="Prime.Document.Element#getScrollTop">
+					getScrollTop
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Array
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getSelectedValues">
+				<abbr title="Prime.Document.Element#getSelectedValues">
+					getSelectedValues
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getStyle">
+				<abbr title="Prime.Document.Element#getStyle">
+					getStyle
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getTagName">
+				<abbr title="Prime.Document.Element#getTagName">
+					getTagName
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getTextContent">
+				<abbr title="Prime.Document.Element#getTextContent">
+					getTextContent
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	string
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getValue">
+				<abbr title="Prime.Document.Element#getValue">
+					getValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	number
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#getWidth">
+				<abbr title="Prime.Document.Element#getWidth">
+					getWidth
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#hasClass">
+				<abbr title="Prime.Document.Element#hasClass">
+					hasClass
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string classNames)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#hide">
+				<abbr title="Prime.Document.Element#hide">
+					hide
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#insertAfter">
+				<abbr title="Prime.Document.Element#insertAfter">
+					insertAfter
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Element element)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#insertBefore">
+				<abbr title="Prime.Document.Element#insertBefore">
+					insertBefore
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Element element)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#insertTextAfter">
+				<abbr title="Prime.Document.Element#insertTextAfter">
+					insertTextAfter
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string text)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#insertTextBefore">
+				<abbr title="Prime.Document.Element#insertTextBefore">
+					insertTextBefore
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string text)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isChecked">
+				<abbr title="Prime.Document.Element#isChecked">
+					isChecked
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isChildOf">
+				<abbr title="Prime.Document.Element#isChildOf">
+					isChildOf
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> | Node element)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isFocused">
+				<abbr title="Prime.Document.Element#isFocused">
+					isFocused
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isSelected">
+				<abbr title="Prime.Document.Element#isSelected">
+					isSelected
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	boolean
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#isVisible">
+				<abbr title="Prime.Document.Element#isVisible">
+					isVisible
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#parent">
+				<abbr title="Prime.Document.Element#parent">
+					parent
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	Object
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#position">
+				<abbr title="Prime.Document.Element#position">
+					position
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#prependTo">
+				<abbr title="Prime.Document.Element#prependTo">
+					prependTo
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Element element)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeAllEventListeners">
+				<abbr title="Prime.Document.Element#removeAllEventListeners">
+					removeAllEventListeners
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeAttribute">
+				<abbr title="Prime.Document.Element#removeAttribute">
+					removeAttribute
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string name)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeClass">
+				<abbr title="Prime.Document.Element#removeClass">
+					removeClass
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string classNames)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeEventListener">
+				<abbr title="Prime.Document.Element#removeEventListener">
+					removeEventListener
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string event, * listener)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeEventListeners">
+				<abbr title="Prime.Document.Element#removeEventListeners">
+					removeEventListeners
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string event)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#removeFromDOM">
+				<abbr title="Prime.Document.Element#removeFromDOM">
+					removeFromDOM
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#scrollTo">
+				<abbr title="Prime.Document.Element#scrollTo">
+					scrollTo
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(number position)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#scrollToBottom">
+				<abbr title="Prime.Document.Element#scrollToBottom">
+					scrollToBottom
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#scrollToTop">
+				<abbr title="Prime.Document.Element#scrollToTop">
+					scrollToTop
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		()
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setAttribute">
+				<abbr title="Prime.Document.Element#setAttribute">
+					setAttribute
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string name, string value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setAttributes">
+				<abbr title="Prime.Document.Element#setAttributes">
+					setAttributes
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Object attributes)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setHeight">
+				<abbr title="Prime.Document.Element#setHeight">
+					setHeight
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(number | string height)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setHTML">
+				<abbr title="Prime.Document.Element#setHTML">
+					setHTML
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string | <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> newHTML)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setID">
+				<abbr title="Prime.Document.Element#setID">
+					setID
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string id)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setLeft">
+				<abbr title="Prime.Document.Element#setLeft">
+					setLeft
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(number | string left)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setOpacity">
+				<abbr title="Prime.Document.Element#setOpacity">
+					setOpacity
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(number opacity)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setStyle">
+				<abbr title="Prime.Document.Element#setStyle">
+					setStyle
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string name, string value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setStyles">
+				<abbr title="Prime.Document.Element#setStyles">
+					setStyles
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(Object styles)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setTop">
+				<abbr title="Prime.Document.Element#setTop">
+					setTop
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(number | string top)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setValue">
+				<abbr title="Prime.Document.Element#setValue">
+					setValue
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string value)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#setWidth">
+				<abbr title="Prime.Document.Element#setWidth">
+					setWidth
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(number | string width)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+
+    <tr  class="public">
+      <td class="type">
+      	<span>
+      	<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+      	</span>
+      </td>
+      
+      <td class="last">
+		
+			<a href="#show">
+				<abbr title="Prime.Document.Element#show">
+					show
+				</abbr>
+			</a>
+		
+        
+      	<span>
+      		(string displayValue)
+      	</span>
+        
+        
+		
+		
+
+		
+      </td>
+      
+      <td>
+      	
+      </td>
+    </tr>
+    
+    
+  </tbody>
+</table>
+			
+
+
+			<!-- CLASS EVENTS SUMMARY -->
+			
+
+			<!--
+			################################################################################
+			## DETAILS
+			################################################################################
+			-->
+
+			<!-- CLASS CONSTRUCTOR DETAILS -->
+			<h2>
+				<a name='constructor_details'></a>
+				Constructor details
+				<small><a href="#">Top</a></small>
+				<h3 id="Element"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno26">Document.Element.js</a> at line 26
+
+  </div>
+	
+	<div class="signature">
+		
+  
+		<strong>Element</strong>
+		
+    <span class="params">
+      (Element element)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Creates an Element class for the given DOM element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Element
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>element</a><p>The element</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			</h2>
+
+
+			<!-- CLASS STATIC PROPERTIES & ENUMERATIONS DETAIL -->
+			
+			<h2>
+				<a name='static_properties_details'></a>
+				Static Properties & Enumerations Detail
+				<small><a href="#">Top</a></small>
+			</h2>
+			<h3 id="blockElementRegexp" class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno41">Document.Element.js</a> at line 41
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="scope">
+	    static
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      RegExp
+    </span>
+	  
+  
+		<strong>blockElementRegexp</strong>
+	  
+	  <span class="defaultvalue">
+	    
+	  </span>
+	</div>
+</h3>
+
+<div class="description "><p>Regular expression that captures the tagnames of all the block elements in HTML5.</p></div>
+
+<div class="details ">
+	<ul class="Properties">
+	
+	</ul>
+  
+</div>
+			
+
+
+			<!-- CLASS STATIC METHODS DETAIL -->
+			
+
+
+			<!-- CLASS PROPERTIES DETAIL -->
+			
+
+
+			<!-- CLASS METHODS DETAIL -->
+			
+			<h2>
+				<a name='methods_details'></a>
+				Methods Detail
+				<small><a href="#">Top</a></small>
+			</h2>
+			<h3 id="addClass"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno54">Document.Element.js</a> at line 54
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>addClass</strong>
+		
+    <span class="params">
+      (string classNames)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Adds the given class (or list of space separated classes) to this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>classNames</a><p>The class name(s).</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="addEventListener"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno83">Document.Element.js</a> at line 83
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>addEventListener</strong>
+		
+    <span class="params">
+      (string event, Function listener, Object context)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Attaches an event listener to this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>event</a><p>The name of the event.</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				Function
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>listener</a><p>The event listener function.</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>context</a> = <code>this</code><p>The context to use when invoking the handler (this sets the 'this' variable for the
+       function call). Defaults to this Element. (Optional)</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="appendTo"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno114">Document.Element.js</a> at line 114
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>appendTo</strong>
+		
+    <span class="params">
+      (Element element)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Inserts this Element (which must be a newly created Element) into the DOM inside at the very end of the given
+element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Element
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>element</a><p>The element to insert this Element into.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="fireEvent"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno139">Document.Element.js</a> at line 139
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>fireEvent</strong>
+		
+    <span class="params">
+      (string event, Object memo, boolean bubbling, boolean cancelable)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Fires an event on the Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>event</a><p>The name of the event.</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>memo</a><p>Assigned to the memo field of the event. (Optional)</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>bubbling</a><p>If the event is bubbling, defaults to true. (Optional)</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>cancelable</a><p>If the event is cancellable, defaults to true. (Optional)</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="focus"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno188">Document.Element.js</a> at line 188
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>focus</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Puts the focus on this element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getAttribute"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno199">Document.Element.js</a> at line 199
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getAttribute</strong>
+		
+    <span class="params">
+      (string name)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Returns the value of the given attribute.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>name</a><p>The attribute name.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This attribute value or null.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getChildren"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno213">Document.Element.js</a> at line 213
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.ElementList.html" ><abbr title="Prime.Document.ElementList">Prime.Document.ElementList</abbr></a>
+    </span>
+	  
+  
+		<strong>getChildren</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the children elements of this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.ElementList.html" ><abbr title="Prime.Document.ElementList">Prime.Document.ElementList</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The children.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getClass"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno222">Document.Element.js</a> at line 222
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getClass</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the class value of the current element. This might be a single class or multiple class names.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The class.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getComputedStyle"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno231">Document.Element.js</a> at line 231
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      IEElementStyle | CSSStyleDeclaration
+    </span>
+	  
+  
+		<strong>getComputedStyle</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the computed style information for this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				IEElementStyle | CSSStyleDeclaration
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The style information.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getHeight"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno241">Document.Element.js</a> at line 241
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number | string
+    </span>
+	  
+  
+		<strong>getHeight</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the height of the Element as a number or a string value depending on if the height is in pixels or not. When
+the height is in pixels, this returns a number.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number | string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The height as pixels (number) or a string.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getHTML"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno256">Document.Element.js</a> at line 256
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getHTML</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the inner HTML content of the Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The HTML content.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getID"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno265">Document.Element.js</a> at line 265
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getID</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the ID of this element from the domElement.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>ID The id of the domElement if it exists.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getNextSibling"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno272">Document.Element.js</a> at line 272
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>getNextSibling</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This elements next sibling or null.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getOffsetTop"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno290">Document.Element.js</a> at line 290
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number
+    </span>
+	  
+  
+		<strong>getOffsetTop</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>The elements offset top in pixels.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The offset top.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getOpacity"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno299">Document.Element.js</a> at line 299
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number
+    </span>
+	  
+  
+		<strong>getOpacity</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Retrieves the opacity value for the Element. This handles the IE alpha filter.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The opacity value.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getOuterHeight"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno322">Document.Element.js</a> at line 322
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number
+    </span>
+	  
+  
+		<strong>getOuterHeight</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the outer height of the element, including the margins. This does not include the padding or borders.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The outer height of the element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getOuterWidth"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno332">Document.Element.js</a> at line 332
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number
+    </span>
+	  
+  
+		<strong>getOuterWidth</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the outer width of the element, including the margins. This does not include the padding or borders.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The outer width of the element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getPreviousSibling"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno340">Document.Element.js</a> at line 340
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>getPreviousSibling</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This elements previous sibling or null.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getScrollTop"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno356">Document.Element.js</a> at line 356
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number
+    </span>
+	  
+  
+		<strong>getScrollTop</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The scroll top position of this element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getSelectedValues"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno366">Document.Element.js</a> at line 366
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Array
+    </span>
+	  
+  
+		<strong>getSelectedValues</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Retrieves the values of this Element, if the element is a radio button, checkbox, or select. If it is anything else
+this returns null.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Array
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The values of this Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getStyle"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno394">Document.Element.js</a> at line 394
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getStyle</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets value of a style attribute</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The style value.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getTagName"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno401">Document.Element.js</a> at line 401
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getTagName</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The tag name of this element as a string. This is always uppercase.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getTextContent"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno410">Document.Element.js</a> at line 410
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getTextContent</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Retrieves the text content of this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The text contents of this Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno435">Document.Element.js</a> at line 435
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      string
+    </span>
+	  
+  
+		<strong>getValue</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Retrieves the value of this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The value of this Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="getWidth"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno420">Document.Element.js</a> at line 420
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      number
+    </span>
+	  
+  
+		<strong>getWidth</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Gets the width of the Element as a number of pixels. If the height is currently not specified by pixels, this will
+throw an exception.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>The height in pixels.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="hasClass"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno445">Document.Element.js</a> at line 445
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>hasClass</strong>
+		
+    <span class="params">
+      (string classNames)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Returns true if the element has one or all class names</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>classNames</a><p>The class name(s) in a string.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if all class names are present.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="hide"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno467">Document.Element.js</a> at line 467
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>hide</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Hides the Element by setting the display style to none.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="insertAfter"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno478">Document.Element.js</a> at line 478
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>insertAfter</strong>
+		
+    <span class="params">
+      (Element element)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Inserts this Element into the DOM after the given element, removing it from it's parent if it's an existing element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Element
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>element</a><p>The element to insert this Element after.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="insertBefore"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno500">Document.Element.js</a> at line 500
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>insertBefore</strong>
+		
+    <span class="params">
+      (Element element)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Inserts this Element into the DOM before the given element, removing it from it's parent if it's an existing element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Element
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>element</a><p>The element to insert this Element before.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="insertTextAfter"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno522">Document.Element.js</a> at line 522
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>insertTextAfter</strong>
+		
+    <span class="params">
+      (string text)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Inserts the given text after this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>text</a><p>The text to insert.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="insertTextBefore"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno539">Document.Element.js</a> at line 539
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>insertTextBefore</strong>
+		
+    <span class="params">
+      (string text)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Inserts the given text before this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>text</a><p>The text to insert.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isChecked"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno555">Document.Element.js</a> at line 555
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isChecked</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Returns whether or not the element is checked. If the element is not a checkbox or a radio this returns false.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if the element is selected, false if it isn't or is not a checkbox or a radio.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isChildOf"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno565">Document.Element.js</a> at line 565
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isChildOf</strong>
+		
+    <span class="params">
+      (<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> | Node element)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Determines if this element is a child of the given element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> | Node
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>element</a><p>The element to check to see if this element is a child of.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if this element is a child of the given element, false otherwise.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isFocused"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno578">Document.Element.js</a> at line 578
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isFocused</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if this element has focus.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isSelected"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno587">Document.Element.js</a> at line 587
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isSelected</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Returns whether or not the element is selected. If the element is not an option this returns false.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if the element is selected, false if it isn't or is not an option.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="isVisible"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno597">Document.Element.js</a> at line 597
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      boolean
+    </span>
+	  
+  
+		<strong>isVisible</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Determines if the element is visible using its display and visibility styles.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				boolean
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>True if the element is visible, false otherwise. This might return an invalid value if the element
+is absolutely positioned and off the screen, but is still technically visible.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="parent"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno607">Document.Element.js</a> at line 607
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>parent</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Returns this element's parent as  Prime.Document.Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>this element's parent or null if there is no parent</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="position"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno620">Document.Element.js</a> at line 620
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      Object
+    </span>
+	  
+  
+		<strong>position</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Returns the computed top and left coordinates of this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>An object with top and left set</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="prependTo"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno651">Document.Element.js</a> at line 651
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>prependTo</strong>
+		
+    <span class="params">
+      (Element element)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Inserts this Element (which must be a newly created Element) into the DOM inside at the very beginning of the given
+element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Element
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>element</a><p>The element to insert this Element into.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeAllEventListeners"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno672">Document.Element.js</a> at line 672
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>removeAllEventListeners</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes all of the event listeners for the given element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeAttribute"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno694">Document.Element.js</a> at line 694
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>removeAttribute</strong>
+		
+    <span class="params">
+      (string name)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes an attribute from the Element</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>name</a><p>The name of the attribute.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeClass"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno705">Document.Element.js</a> at line 705
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>removeClass</strong>
+		
+    <span class="params">
+      (string classNames)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes the given class (or list of space separated classes) from this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>classNames</a><p>The class name(s).</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeEventListener"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno728">Document.Element.js</a> at line 728
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>removeEventListener</strong>
+		
+    <span class="params">
+      (string event, * listener)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes an event listener for a specific event from this Element, you must have attached using addEventListener</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>event</a><p>The name of the event.</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				*
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>listener</a><p>The event listener that was bound.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeEventListeners"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno746">Document.Element.js</a> at line 746
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>removeEventListeners</strong>
+		
+    <span class="params">
+      (string event)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes all of the event listeners for the given event from this element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>event</a><p>The name of the event to remove the listeners for.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="removeFromDOM"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno765">Document.Element.js</a> at line 765
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>removeFromDOM</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Removes this Element from the DOM. If the Element isn't in the DOM this does nothing.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="scrollTo"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno779">Document.Element.js</a> at line 779
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>scrollTo</strong>
+		
+    <span class="params">
+      (number position)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Scrolls this element to the given position.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>position</a><p>The position to scroll the element to.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="scrollToBottom"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno789">Document.Element.js</a> at line 789
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>scrollToBottom</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Scrolls this element to the bottom.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="scrollToTop"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno799">Document.Element.js</a> at line 799
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>scrollToTop</strong>
+		
+    <span class="params">
+      ()
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Scrolls this element to the top.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setAttribute"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno811">Document.Element.js</a> at line 811
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setAttribute</strong>
+		
+    <span class="params">
+      (string name, string value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets an attribute of the Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>name</a><p>The attribute name</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The attribute value</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setAttributes"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno824">Document.Element.js</a> at line 824
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setAttributes</strong>
+		
+    <span class="params">
+      (Object attributes)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets multiple attributes of the Element from the hash</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>attributes</a><p>An object of key value style pairs.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setHeight"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno839">Document.Element.js</a> at line 839
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setHeight</strong>
+		
+    <span class="params">
+      (number | string height)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the height of this element using the height style.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number | string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>height</a><p>The new height as a number (for pixels) or string.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setHTML"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno854">Document.Element.js</a> at line 854
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setHTML</strong>
+		
+    <span class="params">
+      (string | <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a> newHTML)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the inner HTML content of the Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string | <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>newHTML</a><p>The new HTML content for the Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setID"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno871">Document.Element.js</a> at line 871
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setID</strong>
+		
+    <span class="params">
+      (string id)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the ID of the Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>id</a><p>The ID.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setLeft"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno882">Document.Element.js</a> at line 882
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setLeft</strong>
+		
+    <span class="params">
+      (number | string left)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets left position of the element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number | string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>left</a><p>The left position of the element in pixels or as a string.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setOpacity"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno898">Document.Element.js</a> at line 898
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setOpacity</strong>
+		
+    <span class="params">
+      (number opacity)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>opacity</a><p>The opacity.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setStyle"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno915">Document.Element.js</a> at line 915
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setStyle</strong>
+		
+    <span class="params">
+      (string name, string value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the style for the name of this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>name</a><p>The style name.</p>
+    </td>
+    
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The style value.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setStyles"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno926">Document.Element.js</a> at line 926
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setStyles</strong>
+		
+    <span class="params">
+      (Object styles)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets multiple styles of this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				Object
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>styles</a><p>An object with key value pairs for the new style names and values.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setTop"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno941">Document.Element.js</a> at line 941
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setTop</strong>
+		
+    <span class="params">
+      (number | string top)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets top position of the element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number | string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>top</a><p>The top position of the element in pixels or as a string.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setValue"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno957">Document.Element.js</a> at line 957
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setValue</strong>
+		
+    <span class="params">
+      (string value)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the value of this Element.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>value</a><p>The new value.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="setWidth"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno968">Document.Element.js</a> at line 968
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>setWidth</strong>
+		
+    <span class="params">
+      (number | string width)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Sets the width of this element using the height style.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				number | string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>width</a><p>The new width as a number (for pixels) or string.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+<h3 id="show"  class="public">
+  
+  <div class="location">
+
+  	<a href="_Users_bpontarelli_dev_os_inversoft_prime-js_src_main_js_Document_Element_js.html#lineno987">Document.Element.js</a> at line 987
+
+  </div>
+	
+	<div class="signature">
+		
+	  <span class="virtual">
+	    
+	  </span>
+	  
+	  <span class="scope">
+	    
+	  </span>
+	  
+	  <span class="accesslevel">
+	    public
+	  </span>
+	  
+    <span class="returnvalues">
+      <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+    </span>
+	  
+  
+		<strong>show</strong>
+		
+    <span class="params">
+      (string displayValue)
+    </span>
+	</div>
+</h3>
+
+
+<div class="description "><p>Shows the Element by setting the display style first to empty string. After this, the elements computed style is
+checked to see if the element is still not visible. If that is true, the element must have a CSS style defined in
+a stylesheet that is setting it to display: none. In this case, we determine if the element is a block level element
+and either set the display to 'block' or 'inline'.</p></div>
+
+<div class="details ">
+	<div class="tags">
+	
+    <!-- PARAMS -->
+    
+    <h4>Parameters</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				string
+			</span>
+    </td>
+    
+    <td class="last">
+    <a>displayValue</a><p>The display value to use for the show. This defaults to the W3C standard display
+setting depending on the type of element you are showing. For example, INPUT is inline and DIV is block. (Optional)</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- RETURN VALUE -->
+    
+    <h4>Return Value</h4>
+    
+
+<table>
+  <tbody>
+
+  
+  <tr>
+    <td class="type">
+			<span>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+			</span>
+    </td>
+    
+    <td class="last">
+    <p>This Element.</p>
+    </td>
+    
+  
+
+  </tbody>
+</table>
+    
+
+    <!-- EXCEPTIONS -->
+    
+    
+	</div>
+</div>
+
+			
+
+
+			<!-- CLASS EVENTS DETAIL -->
+			
+
+		</div>
+
+		<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Thu May 30 2013 10:57:43 GMT-0600 (MDT)
+</footer>
+
+	</body>
+</html>

@@ -1,0 +1,2551 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<link rel="stylesheet" type="text/css" href="styles/stylesheet.css">
+		<title>Documentation</title>
+	</head>
+	<body id="overview">
+
+		<header>
+			<div class="header">
+				<script type="text/javascript" src="js/jQuery.172.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){
+	var header = $('.header'),
+		content = $('.content')
+		footer = $('footer')
+	;
+
+	function mtn(str){
+		if(
+			'' === str
+			|| undefined === str
+			|| null === str
+		){
+			return 0;
+		}else{
+			var a = parseInt(str.replace(/px|ex|em/, ''), 10);
+			if(isNaN(a)){
+				a = 0;
+			}
+			return a;
+		}
+	}
+	
+	function resize(){
+		var availableHeight = $(window).height() - (header.outerHeight() + footer.outerHeight()),
+			availableWidth = $(window).width(),
+			contentOffsetH = mtn(content.css('borderTopWidth')) + 
+				mtn(content.css('marginTop')) +
+				mtn(content.css('paddingTop')) +
+				
+				mtn(content.css('paddingBottom')) +
+				mtn(content.css('marginBottom')) +
+				mtn(content.css('borderBottomWidth')),
+			contentOffsetW = mtn(content.css('borderLeftWidth')) + 
+				mtn(content.css('marginLeft')) +
+				mtn(content.css('paddingLeft')) +
+				
+				mtn(content.css('paddingRight')) +
+				mtn(content.css('marginRight')) +
+				mtn(content.css('borderRightWidth'))
+		;
+		content.height(availableHeight - contentOffsetH);
+		content.width(availableWidth - contentOffsetW);
+	}
+	resize();
+	$(window).resize(resize);
+});
+</script>
+
+<ul>
+	
+	<li><a href="class_index.html">Classes</a></li>
+	
+	
+	
+	
+	<li><a href="namespace_index.html">Namespaces</a></li>
+	
+	
+	
+	
+	
+	
+	<li><a href="function_index.html">Methods/Functions</a></li>
+	
+	
+	<li><a href="file_index.html">Files</a></li>
+	<li><a href="doc-index.html">Index</a></li>
+</ul>
+
+<div id="title">
+	
+
+		API
+
+		
+</div>
+
+				<div class="type">Index</div>
+
+				<a href="#letterA">A</a>&nbsp;<a href="#letterB">B</a>&nbsp;<a href="#letterC">C</a>&nbsp;<a href="#letterD">D</a>&nbsp;<a href="#letterE">E</a>&nbsp;<a href="#letterF">F</a>&nbsp;<a href="#letterG">G</a>&nbsp;<a href="#letterH">H</a>&nbsp;<a href="#letterI">I</a>&nbsp;J&nbsp;<a href="#letterK">K</a>&nbsp;L&nbsp;<a href="#letterM">M</a>&nbsp;<a href="#letterN">N</a>&nbsp;<a href="#letterO">O</a>&nbsp;<a href="#letterP">P</a>&nbsp;<a href="#letterQ">Q</a>&nbsp;<a href="#letterR">R</a>&nbsp;<a href="#letterS">S</a>&nbsp;<a href="#letterT">T</a>&nbsp;<a href="#letterU">U</a>&nbsp;V&nbsp;<a href="#letterW">W</a>&nbsp;X&nbsp;Y&nbsp;Z&nbsp;
+			</div>
+		</header>
+
+		<div class="content">
+			
+			 
+			
+
+			<h2 id="letterA">
+				A
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#addClass" ><abbr title="Prime.Document.Element#addClass">addClass</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Adds the given class (or list of space separated classes) to this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#addEventListener" ><abbr title="Prime.Document.addEventListener">addEventListener</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Attaches an event listener to the document, returning the handler proxy.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#addEventListener" ><abbr title="Prime.Document.Element#addEventListener">addEventListener</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Attaches an event listener to this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#addOption" ><abbr title="Prime.Widgets.MultipleSelect#addOption">addOption</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Adds the given option to this select. The option will not be selected.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.html" ><abbr title="Prime.Ajax">Ajax</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Ajax namespace. This namespace contains a single class (for now) called Request.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Effects.Appear.html" ><abbr title="Prime.Effects.Appear">Appear</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.Effects.html" ><abbr title="Prime.Effects">Prime.Effects</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#appendTo" ><abbr title="Prime.Document.Element#appendTo">appendTo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Inserts this Element (which must be a newly created Element) into the DOM inside at the very end of the given
+element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Template.html#appendTo" ><abbr title="Prime.Template#appendTo">appendTo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Template.html" ><abbr title="Prime.Template">Prime.Template</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Calls to generate and then appends the resulting value to the inner HTML of the provided primeElement.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterB">
+				B
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Effects.BaseTransition.html" ><abbr title="Prime.Effects.BaseTransition">BaseTransition</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.Effects.html" ><abbr title="Prime.Effects">Prime.Effects</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Browser.html" ><abbr title="Prime.Browser">Browser</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Browser namespace. This namespace does not contain any classes, just functions.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterC">
+				C
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Utils.html#calculateTextLength" ><abbr title="Prime.Utils.calculateTextLength">calculateTextLength</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Utils.html" ><abbr title="Prime.Utils">Prime.Utils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Calculates the length of the given text using the style of the given element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Utils.html#callIteratively" ><abbr title="Prime.Utils.callIteratively">callIteratively</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Utils.html" ><abbr title="Prime.Utils">Prime.Utils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Attempts to invoke a function iteratively in the background a specific number of times within a specific duration.
+This might not complete in the specified duration. The functions passed in should be short functions that return as
+quickly as possible. If you are using long functions, use the recursive setTimeout trick by-hand instance.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Effects.BaseTransition.html#changeNumberStyleIteratively" ><abbr title="Prime.Effects.BaseTransition#changeNumberStyleIteratively">changeNumberStyleIteratively</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Effects.BaseTransition.html" ><abbr title="Prime.Effects.BaseTransition">Prime.Effects.BaseTransition</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Changes an integer style property of the Element iteratively over a given period of time from one value to another
+value.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#closeSearchResults" ><abbr title="Prime.Widgets.MultipleSelect#closeSearchResults">closeSearchResults</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Closes the search results display, unhighlights any options that are highlighted and resets the input's value to
+empty string.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#containsOptionWithValue" ><abbr title="Prime.Widgets.MultipleSelect#containsOptionWithValue">containsOptionWithValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Determines if this MultipleSelect contains an option with the given value.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterD">
+				D
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#deselectOption" ><abbr title="Prime.Widgets.MultipleSelect#deselectOption">deselectOption</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Deselects the option with the given value by removing the selected attribute from the option in the select box and
+removing the option from the display container.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#deselectOptionWithValue" ><abbr title="Prime.Widgets.MultipleSelect#deselectOptionWithValue">deselectOptionWithValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Deselects the option with the given value by removing the selected attribute from the option in the select box and
+removing the option from the display container. If the MultipleSelect doesn't contain an option for the given value,
+this method throws an exception.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Browser.html#detect" ><abbr title="Prime.Browser.detect">detect</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Browser.html" ><abbr title="Prime.Browser">Prime.Browser</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Detects the browser name and version.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html" ><abbr title="Prime.Document">Document</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Document namespace. This namespace contains a number of classes (Element, ElementList, etc.) and a number of
+namespace level functions.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterE">
+				E
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.ElementList.html#each" ><abbr title="Prime.Document.ElementList#each">each</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.ElementList.html" ><abbr title="Prime.Document.ElementList">Prime.Document.ElementList</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Iterates over each of the Prime.Document.Element objects in this ElementList and calls the given function for each one.
+The 'this' variable inside the function will be the current Prime.Document.Element unless a context value is provided
+when calling this function.
+
+The function can optionally take two parameters. The first parameter is the current element. The second parameter
+is the current index.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Effects.html" ><abbr title="Prime.Effects">Effects</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Effects namespace. This contains all of the effect abstract and implementation classes.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Element</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.ElementList.html" ><abbr title="Prime.Document.ElementList">ElementList</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Events.html" ><abbr title="Prime.Events">Events</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Events namespace. This currently only contains constants for different event types.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterF">
+				F
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Effects.Fade.html" ><abbr title="Prime.Effects.Fade">Fade</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.Effects.html" ><abbr title="Prime.Effects">Prime.Effects</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#findOptionWithText" ><abbr title="Prime.Widgets.MultipleSelect#findOptionWithText">findOptionWithText</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Finds the HTMLSelectOption with the given text and returns it wrapped in a Prime.Document.Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#findOptionWithValue" ><abbr title="Prime.Widgets.MultipleSelect#findOptionWithValue">findOptionWithValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Finds the HTMLSelectOption with the given value and returns it wrapped in a Prime.Document.Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#fireEvent" ><abbr title="Prime.Document.Element#fireEvent">fireEvent</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Fires an event on the Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#focus" ><abbr title="Prime.Document.Element#focus">focus</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Puts the focus on this element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#forURL" ><abbr title="Prime.Ajax.Request#forURL">forURL</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Changes the URL to call.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterG">
+				G
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Template.html#generate" ><abbr title="Prime.Template#generate">generate</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Template.html" ><abbr title="Prime.Template">Prime.Template</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Generates a String from the given parameterHash.  Provide a hash of String keys to values.
+Keys can be regular text strings, in which case it will look for and replace #{key} as with the value.  You can
+also make the key a String "/key/", which will be converted to a Regex and run.
+
+For the value you can provide a straight up String, int, etc, or you can provide a function which will be called
+to provide the value
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getAttribute" ><abbr title="Prime.Document.Element#getAttribute">getAttribute</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns the value of the given attribute.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getChildren" ><abbr title="Prime.Document.Element#getChildren">getChildren</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the children elements of this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getClass" ><abbr title="Prime.Document.Element#getClass">getClass</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the class value of the current element. This might be a single class or multiple class names.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getComputedStyle" ><abbr title="Prime.Document.Element#getComputedStyle">getComputedStyle</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the computed style information for this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getHeight" ><abbr title="Prime.Document.Element#getHeight">getHeight</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the height of the Element as a number or a string value depending on if the height is in pixels or not. When
+the height is in pixels, this returns a number.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#getHeight" ><abbr title="Prime.Document.getHeight">getHeight</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns the height of the document.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#getHighlightedSearchResult" ><abbr title="Prime.Widgets.MultipleSelect#getHighlightedSearchResult">getHighlightedSearchResult</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getHTML" ><abbr title="Prime.Document.Element#getHTML">getHTML</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the inner HTML content of the Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getID" ><abbr title="Prime.Document.Element#getID">getID</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the ID of this element from the domElement.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Window.html#getInnerHeight" ><abbr title="Prime.Window.getInnerHeight">getInnerHeight</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class Prime.Window
+				</em>
+				</dt>
+				<dd>
+					Returns the inner height of the window. This includes only the rendering area and not the window chrome (toolbars,
+status bars, etc). If this method can't figure out the inner height, it throws an exception.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Window.html#getInnerWidth" ><abbr title="Prime.Window.getInnerWidth">getInnerWidth</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class Prime.Window
+				</em>
+				</dt>
+				<dd>
+					Returns the inner width of the window. This includes only the rendering area and not the window chrome (toolbars,
+status bars, etc). If this method can't figure out the inner width, it throws an exception.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getNextSibling" ><abbr title="Prime.Document.Element#getNextSibling">getNextSibling</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getOffsetTop" ><abbr title="Prime.Document.Element#getOffsetTop">getOffsetTop</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					The elements offset top in pixels.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getOpacity" ><abbr title="Prime.Document.Element#getOpacity">getOpacity</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Retrieves the opacity value for the Element. This handles the IE alpha filter.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getOuterHeight" ><abbr title="Prime.Document.Element#getOuterHeight">getOuterHeight</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the outer height of the element, including the margins. This does not include the padding or borders.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getOuterWidth" ><abbr title="Prime.Document.Element#getOuterWidth">getOuterWidth</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the outer width of the element, including the margins. This does not include the padding or borders.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getPreviousSibling" ><abbr title="Prime.Document.Element#getPreviousSibling">getPreviousSibling</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getScrollTop" ><abbr title="Prime.Document.Element#getScrollTop">getScrollTop</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Window.html#getScrollTop" ><abbr title="Prime.Window.getScrollTop">getScrollTop</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class Prime.Window
+				</em>
+				</dt>
+				<dd>
+					Returns the number of pixels the Window is scrolled by.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getSelectedValues" ><abbr title="Prime.Document.Element#getSelectedValues">getSelectedValues</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Retrieves the values of this Element, if the element is a radio button, checkbox, or select. If it is anything else
+this returns null.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getStyle" ><abbr title="Prime.Document.Element#getStyle">getStyle</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets value of a style attribute
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getTagName" ><abbr title="Prime.Document.Element#getTagName">getTagName</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getTextContent" ><abbr title="Prime.Document.Element#getTextContent">getTextContent</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Retrieves the text content of this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getValue" ><abbr title="Prime.Document.Element#getValue">getValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Retrieves the value of this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#getWidth" ><abbr title="Prime.Document.Element#getWidth">getWidth</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Gets the width of the Element as a number of pixels. If the height is currently not specified by pixels, this will
+throw an exception.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#getWidth" ><abbr title="Prime.Document.getWidth">getWidth</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns the height of the document.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#go" ><abbr title="Prime.Ajax.Request#go">go</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Invokes the AJAX request. If the URL is not set, this throws an exception.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Effects.Appear.html#go" ><abbr title="Prime.Effects.Appear#go">go</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Effects.Appear.html" ><abbr title="Prime.Effects.Appear">Prime.Effects.Appear</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Executes the appear effect on the element using the opacity style.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Effects.Fade.html#go" ><abbr title="Prime.Effects.Fade#go">go</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Effects.Fade.html" ><abbr title="Prime.Effects.Fade">Prime.Effects.Fade</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Executes the fade effect on the element using the opacity style.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterH">
+				H
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#hasClass" ><abbr title="Prime.Document.Element#hasClass">hasClass</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns true if the element has one or all class names
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#hasOptionWithValue" ><abbr title="Prime.Widgets.MultipleSelect#hasOptionWithValue">hasOptionWithValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Determines if the MultipleSelect contains an option with the given value.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#hide" ><abbr title="Prime.Document.Element#hide">hide</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Hides the Element by setting the display style to none.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#highlightNextSearchResult" ><abbr title="Prime.Widgets.MultipleSelect#highlightNextSearchResult">highlightNextSearchResult</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Highlights the next search result if one is highlighted. If there isn't a highlighted search result, this
+highlights the first one. This method handles wrapping.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#highlightOptionForUnselect" ><abbr title="Prime.Widgets.MultipleSelect#highlightOptionForUnselect">highlightOptionForUnselect</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Highlights the final selected option (if there is one) to indicate that it will be unselected if the user clicks
+the delete key again.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#highlightPreviousSearchResult" ><abbr title="Prime.Widgets.MultipleSelect#highlightPreviousSearchResult">highlightPreviousSearchResult</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Highlights the previous search result if one is highlighted. If there isn't a highlighted search result, this
+selects the last one. This method handles wrapping.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#highlightSearchResult" ><abbr title="Prime.Widgets.MultipleSelect#highlightSearchResult">highlightSearchResult</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Highlights the given search result.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterI">
+				I
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.ElementList.html#indexOf" ><abbr title="Prime.Document.ElementList#indexOf">indexOf</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.ElementList.html" ><abbr title="Prime.Document.ElementList">Prime.Document.ElementList</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns the indexOf the element that matches the parameter, either Prime Element or DOMElement.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#insertAfter" ><abbr title="Prime.Document.Element#insertAfter">insertAfter</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Inserts this Element into the DOM after the given element, removing it from it's parent if it's an existing element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Template.html#insertAfter" ><abbr title="Prime.Template#insertAfter">insertAfter</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Template.html" ><abbr title="Prime.Template">Prime.Template</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Calls to generate and then inserts the resulting elements into the dom after the primeElement
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#insertBefore" ><abbr title="Prime.Document.Element#insertBefore">insertBefore</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Inserts this Element into the DOM before the given element, removing it from it's parent if it's an existing element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Template.html#insertBefore" ><abbr title="Prime.Template#insertBefore">insertBefore</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Template.html" ><abbr title="Prime.Template">Prime.Template</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Calls to generate and then inserts the resulting elements into the dom before the primeElement
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#insertTextAfter" ><abbr title="Prime.Document.Element#insertTextAfter">insertTextAfter</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Inserts the given text after this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#insertTextBefore" ><abbr title="Prime.Document.Element#insertTextBefore">insertTextBefore</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Inserts the given text before this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#isChecked" ><abbr title="Prime.Document.Element#isChecked">isChecked</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns whether or not the element is checked. If the element is not a checkbox or a radio this returns false.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#isChildOf" ><abbr title="Prime.Document.Element#isChildOf">isChildOf</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Determines if this element is a child of the given element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#isCustomAddVisible" ><abbr title="Prime.Widgets.MultipleSelect#isCustomAddVisible">isCustomAddVisible</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#isFocused" ><abbr title="Prime.Document.Element#isFocused">isFocused</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#isLastOptionHighlightedForUnselect" ><abbr title="Prime.Widgets.MultipleSelect#isLastOptionHighlightedForUnselect">isLastOptionHighlightedForUnselect</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#isSearchResultsVisible" ><abbr title="Prime.Widgets.MultipleSelect#isSearchResultsVisible">isSearchResultsVisible</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#isSelected" ><abbr title="Prime.Document.Element#isSelected">isSelected</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns whether or not the element is selected. If the element is not an option this returns false.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#isVisible" ><abbr title="Prime.Document.Element#isVisible">isVisible</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Determines if the element is visible using its display and visibility styles.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterK">
+				K
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Events.Keys.html" ><abbr title="Prime.Events.Keys">Keys</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Events.Keys namespace. This currently only contains constants for different key codes.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterM">
+				M
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">MultipleSelect</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.Widgets.html" ><abbr title="Prime.Widgets">Prime.Widgets</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterN">
+				N
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#newElement" ><abbr title="Prime.Document.newElement">newElement</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Builds a new element using the given HTML snippet (currently this only supports the tag).
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterO">
+				O
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#onError" ><abbr title="Prime.Ajax.Request#onError">onError</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Default handler for the "completed" state and an HTTP response status of anything but 2xx. Sub-classes can override
+this handler or you can pass in a handler function to the #withUnsetHandler.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#onLoading" ><abbr title="Prime.Ajax.Request#onLoading">onLoading</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Default handler for the "loading" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withLoadingHandler.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#onOpen" ><abbr title="Prime.Ajax.Request#onOpen">onOpen</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Default handler for the "open" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withOpenHandler.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#onReady" ><abbr title="Prime.Document.onReady">onReady</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Adds the given callback function to the list of functions to invoke when the document is ready. If the document is
+already fully loaded, this simply invokes the callback directly.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#onSend" ><abbr title="Prime.Ajax.Request#onSend">onSend</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Default handler for the "send" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withSendHandler.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#onSuccess" ><abbr title="Prime.Ajax.Request#onSuccess">onSuccess</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Default handler for the "complete" state and an HTTP response status of 2xx. Sub-classes can override this handler
+or you can pass in a handler function to the #withUnsetHandler.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#onUnset" ><abbr title="Prime.Ajax.Request#onUnset">onUnset</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Default handler for the "unset" state. Sub-classes can override this handler or you can pass in a handler function
+to the #withUnsetHandler.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterP">
+				P
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#parent" ><abbr title="Prime.Document.Element#parent">parent</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns this element's parent as  Prime.Document.Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Utils.html#parseJSON" ><abbr title="Prime.Utils.parseJSON">parseJSON</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Utils.html" ><abbr title="Prime.Utils">Prime.Utils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Parses JSON.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#position" ><abbr title="Prime.Document.Element#position">position</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Returns the computed top and left coordinates of this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#prependTo" ><abbr title="Prime.Document.Element#prependTo">prependTo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Inserts this Element (which must be a newly created Element) into the DOM inside at the very beginning of the given
+element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.html" ><abbr title="Prime">Prime</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Utils.html#proxy" ><abbr title="Prime.Utils.proxy">proxy</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Utils.html" ><abbr title="Prime.Utils">Prime.Utils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Proxies calls to a function through an anonymous function and sets the "this" variable to the object given.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterQ">
+				Q
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#query" ><abbr title="Prime.Document.query">query</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Queries the DOM using the given Sizzle selector starting at the given element and returns all the matched elements.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#queryByID" ><abbr title="Prime.Document.queryByID">queryByID</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Queries the DOM for an element that has the given ID.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#queryFirst" ><abbr title="Prime.Document.queryFirst">queryFirst</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Queries the DOM using the given Sizzle selector starting at the given element and returns the first matched element
+or null if there aren't any matches.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#queryLast" ><abbr title="Prime.Document.queryLast">queryLast</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Queries the DOM using the given Sizzle selector starting at the given element and returns the last matched element
+or null if there aren't any matches.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#queryUp" ><abbr title="Prime.Document.queryUp">queryUp</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Traverses up the DOM from the starting element and looks for a Sizzle match to the selector.  Only supports single
+element selectors right now, ie 'div.even' or '#id', etc, will throw an exception if the selector has a space in it.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterR">
+				R
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#rebuildDisplay" ><abbr title="Prime.Widgets.MultipleSelect#rebuildDisplay">rebuildDisplay</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Rebuilds the display from the underlying select element. All of the current display options (li elements) are
+removed. New display options are added for each selected option in the select box.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#removeAllEventListeners" ><abbr title="Prime.Document.Element#removeAllEventListeners">removeAllEventListeners</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes all of the event listeners for the given element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.ElementList.html#removeAllFromDOM" ><abbr title="Prime.Document.ElementList#removeAllFromDOM">removeAllFromDOM</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.ElementList.html" ><abbr title="Prime.Document.ElementList">Prime.Document.ElementList</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes all the matched elements in the ElementList from the DOM.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#removeAllOptions" ><abbr title="Prime.Widgets.MultipleSelect#removeAllOptions">removeAllOptions</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes all of the options from the MultipleSelect.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#removeAttribute" ><abbr title="Prime.Document.Element#removeAttribute">removeAttribute</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes an attribute from the Element
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#removeClass" ><abbr title="Prime.Document.Element#removeClass">removeClass</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes the given class (or list of space separated classes) from this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#removeEventListener" ><abbr title="Prime.Document.Element#removeEventListener">removeEventListener</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes an event listener for a specific event from this Element, you must have attached using addEventListener
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.html#removeEventListener" ><abbr title="Prime.Document.removeEventListener">removeEventListener</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Document.html" ><abbr title="Prime.Document">Prime.Document</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes an event handler for a specific event from the document that you attached using addEventListener
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#removeEventListeners" ><abbr title="Prime.Document.Element#removeEventListeners">removeEventListeners</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes all of the event listeners for the given event from this element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Utils.html#removeFromArray" ><abbr title="Prime.Utils.removeFromArray">removeFromArray</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					static public  method in class <a href="Prime.Utils.html" ><abbr title="Prime.Utils">Prime.Utils</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes the given object from the given array.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#removeFromDOM" ><abbr title="Prime.Document.Element#removeFromDOM">removeFromDOM</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes this Element from the DOM. If the Element isn't in the DOM this does nothing.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#removeHighlightedOption" ><abbr title="Prime.Widgets.MultipleSelect#removeHighlightedOption">removeHighlightedOption</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes the highlighted option.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#removeOption" ><abbr title="Prime.Widgets.MultipleSelect#removeOption">removeOption</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes the given option from the MultipleSelect by removing the option in the select box and the option in the
+display container.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#removeOptionWithValue" ><abbr title="Prime.Widgets.MultipleSelect#removeOptionWithValue">removeOptionWithValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Removes the option with the given value from the MultipleSelect by removing the option in the select box and the
+option in the display container. If the MultipleSelect doesn't contain an option with the given value, this throws
+an exception.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Request</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.Ajax.html" ><abbr title="Prime.Ajax">Prime.Ajax</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#reset" ><abbr title="Prime.Ajax.Request#reset">reset</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Resets the Request back to a base state (basically just the URL + method).  This can be
+useful if a component is going to make many requests to the same endpoint with different parameters.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#resizeInput" ><abbr title="Prime.Widgets.MultipleSelect#resizeInput">resizeInput</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Poor mans resizing of the input field as the user types into it.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterS">
+				S
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#scrollTo" ><abbr title="Prime.Document.Element#scrollTo">scrollTo</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Scrolls this element to the given position.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#scrollToBottom" ><abbr title="Prime.Document.Element#scrollToBottom">scrollToBottom</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Scrolls this element to the bottom.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#scrollToTop" ><abbr title="Prime.Document.Element#scrollToTop">scrollToTop</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Scrolls this element to the top.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#search" ><abbr title="Prime.Widgets.MultipleSelect#search">search</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Executes a search by optionally updating the input to the given value (if specified) and then rebuilding the search
+results using the input's value. This method also puts focus on the input and shows the search results (in case
+they are hidden for any reason).
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#selectHighlightedSearchResult" ><abbr title="Prime.Widgets.MultipleSelect#selectHighlightedSearchResult">selectHighlightedSearchResult</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Selects the highlighted search result unless there isn't one highlighted, in which case, this does nothing.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#selectOption" ><abbr title="Prime.Widgets.MultipleSelect#selectOption">selectOption</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Selects the given option by setting the selected attribute on the option in the select box (the object passed in is
+the option from the select box wrapped in a Prime.Document.Element) and adding it to the display container. If the
+option is already in the display container, that step is skipped.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#selectOptionWithValue" ><abbr title="Prime.Widgets.MultipleSelect#selectOptionWithValue">selectOptionWithValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Selects the option with the given value by setting the selected attribute on the option in the select box (the
+object passed in is the option from the select box wrapped in a Prime.Document.Element) and adding it to the display
+container. If the option is already in the display container, that step is skipped.
+<p/>
+If there isn't an option with the given value, this throws an exception.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setAttribute" ><abbr title="Prime.Document.Element#setAttribute">setAttribute</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets an attribute of the Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setAttributes" ><abbr title="Prime.Document.Element#setAttributes">setAttributes</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets multiple attributes of the Element from the hash
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setHeight" ><abbr title="Prime.Document.Element#setHeight">setHeight</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the height of this element using the height style.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setHTML" ><abbr title="Prime.Document.Element#setHTML">setHTML</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the inner HTML content of the Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setID" ><abbr title="Prime.Document.Element#setID">setID</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the ID of the Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setLeft" ><abbr title="Prime.Document.Element#setLeft">setLeft</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets left position of the element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setOpacity" ><abbr title="Prime.Document.Element#setOpacity">setOpacity</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setStyle" ><abbr title="Prime.Document.Element#setStyle">setStyle</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the style for the name of this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setStyles" ><abbr title="Prime.Document.Element#setStyles">setStyles</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets multiple styles of this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setTop" ><abbr title="Prime.Document.Element#setTop">setTop</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets top position of the element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setValue" ><abbr title="Prime.Document.Element#setValue">setValue</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the value of this Element.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#setWidth" ><abbr title="Prime.Document.Element#setWidth">setWidth</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the width of this element using the height style.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Document.Element.html#show" ><abbr title="Prime.Document.Element#show">show</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Document.Element.html" ><abbr title="Prime.Document.Element">Prime.Document.Element</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Shows the Element by setting the display style first to empty string. After this, the elements computed style is
+checked to see if the element is still not visible. If that is true, the element must have a CSS style defined in
+a stylesheet that is setting it to display: none. In this case, we determine if the element is a block level element
+and either set the display to 'block' or 'inline'.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#synchronously" ><abbr title="Prime.Ajax.Request#synchronously">synchronously</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the async flag to false.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterT">
+				T
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Template.html" ><abbr title="Prime.Template">Template</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 class in namespace <a href="Prime.html" ><abbr title="Prime">Prime</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterU">
+				U
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.MultipleSelect.html#unhighlightOptionForUnselect" ><abbr title="Prime.Widgets.MultipleSelect#unhighlightOptionForUnselect">unhighlightOptionForUnselect</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Widgets.MultipleSelect.html" ><abbr title="Prime.Widgets.MultipleSelect">Prime.Widgets.MultipleSelect</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Unhighlights the last option if it is highlighted.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#usingMethod" ><abbr title="Prime.Ajax.Request#usingMethod">usingMethod</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the method used to make the AJAX request.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Utils.html" ><abbr title="Prime.Utils">Utils</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Utils namespace. This contains utility functions.
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		 
+			
+
+			<h2 id="letterW">
+				W
+				<small><a href="#">Top</a></small>
+			</h2>
+			<dl>
+				
+				
+				<dt>
+				<a href="Prime.Widgets.html" ><abbr title="Prime.Widgets">Widgets</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					 namespace
+				</em>
+				</dt>
+				<dd>
+					The Prime.Widgets namespace. This currently only contains the MultipleSelect class.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withBody" ><abbr title="Prime.Ajax.Request#withBody">withBody</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the request body for the request.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withContentType" ><abbr title="Prime.Ajax.Request#withContentType">withContentType</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the content type for the request.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withContext" ><abbr title="Prime.Ajax.Request#withContext">withContext</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the context for the AJAX handler functions. The object set here will be the "this" reference inside the handler
+functions.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withData" ><abbr title="Prime.Ajax.Request#withData">withData</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the data object for the request. Will store the values for query parameters or post data depending on the
+method that is set.  If the method is a post or put, will also set content-type to x-www-form-urlencoded.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Effects.BaseTransition.html#withDuration" ><abbr title="Prime.Effects.BaseTransition#withDuration">withDuration</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Effects.BaseTransition.html" ><abbr title="Prime.Effects.BaseTransition">Prime.Effects.BaseTransition</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the duration of the fade-out effect.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Effects.BaseTransition.html#withEndFunction" ><abbr title="Prime.Effects.BaseTransition#withEndFunction">withEndFunction</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Effects.BaseTransition.html" ><abbr title="Prime.Effects.BaseTransition">Prime.Effects.BaseTransition</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the function that is called when the effect has completed.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withErrorHandler" ><abbr title="Prime.Ajax.Request#withErrorHandler">withErrorHandler</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
+not 2xx.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withLoadingHandler" ><abbr title="Prime.Ajax.Request#withLoadingHandler">withLoadingHandler</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the handler to invoke when the state of the AJAX request is "loading".
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withOpenHandler" ><abbr title="Prime.Ajax.Request#withOpenHandler">withOpenHandler</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the handler to invoke when the state of the AJAX request is "open".
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withResponseType" ><abbr title="Prime.Ajax.Request#withResponseType">withResponseType</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the XMLHTTPRequest's response type field, which will control how the response is parsed.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withSendHandler" ><abbr title="Prime.Ajax.Request#withSendHandler">withSendHandler</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the handler to invoke when the state of the AJAX request is "send".
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withSuccessHandler" ><abbr title="Prime.Ajax.Request#withSuccessHandler">withSuccessHandler</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
+2xx.
+				</dd>
+				
+				
+				<dt>
+				<a href="Prime.Ajax.Request.html#withUnsetHandler" ><abbr title="Prime.Ajax.Request#withUnsetHandler">withUnsetHandler</abbr></a>
+				
+				&nbsp;&mdash;&nbsp;
+				<em>
+					public  method in class <a href="Prime.Ajax.Request.html" ><abbr title="Prime.Ajax.Request">Prime.Ajax.Request</abbr></a>
+				</em>
+				</dt>
+				<dd>
+					Sets the handler to invoke when the state of the AJAX request is "unset".
+				</dd>
+				
+			</dl>
+
+			
+
+		</dl>
+
+		
+		
+	</div>
+
+	<footer>
+	Documentation generated by <a href="https://github.com/micmath/jsdoc">JSDoc 3</a> using <a href="https://github.com/danyg/jsdoc3Template">jsdoc3Template</a> by danyg & lechecacharro on Thu May 30 2013 10:57:44 GMT-0600 (MDT)
+</footer>
+
+</body>
+</html>
