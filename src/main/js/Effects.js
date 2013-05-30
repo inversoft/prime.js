@@ -26,7 +26,7 @@ Prime.Effects = Prime.Effects || {};
 /**
  * Constructs a BaseTransition for the given element.
  *
- * @param {Prime.Dom.Element} element The Prime Element the effect will be applied to.
+ * @param {Prime.Document.Element} element The Prime Element the effect will be applied to.
  * @param {number} endValue The end value for the transition.
  * @constructor
  */
@@ -129,7 +129,7 @@ Prime.Effects.BaseTransition.prototype = {
  * 0.0. At the end, this hides the element so that it doesn't take up any space.
  *
  * @constructor
- * @param {Prime.Dom.Element} element The Prime Element to fade out.
+ * @param {Prime.Document.Element} element The Prime Element to fade out.
  */
 Prime.Effects.Fade = function(element) {
   Prime.Effects.BaseTransition.call(this, element, 0.0);
@@ -160,7 +160,7 @@ Prime.Effects.Fade.prototype.go = function() {
  * the element and finally it raises the opacity.
  *
  * @constructor
- * @param {Prime.Dom.Element} element The Prime Element to appear.
+ * @param {Prime.Document.Element} element The Prime Element to appear.
  */
 Prime.Effects.Appear = function(element) {
   Prime.Effects.BaseTransition.call(this, element, 1.0);

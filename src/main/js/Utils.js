@@ -27,15 +27,15 @@ Prime.Utils = {
   /**
    * Calculates the length of the given text using the style of the given element.
    *
-   * @param {Prime.Dom.Element} element The element to use the style of.
+   * @param {Prime.Document.Element} element The element to use the style of.
    * @param {string} text The text to calculate the length of.
    * @returns {number} The length of the text.
    */
   calculateTextLength: function(element, text) {
     var computedStyle = element.getComputedStyle();
-    var textCalculator = Prime.Dom.queryByID('prime-text-calculator');
+    var textCalculator = Prime.Document.queryByID('prime-text-calculator');
     if (textCalculator === null) {
-      textCalculator = Prime.Dom.newElement('<span/>').
+      textCalculator = Prime.Document.newElement('<span/>').
           setStyles({
             position: 'absolute',
             width: 'auto',

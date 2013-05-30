@@ -32,7 +32,7 @@ buster.testCase('Fade tests', {
       called = true;
     };
 
-    var element = Prime.Dom.queryFirst('#fade');
+    var element = Prime.Document.queryFirst('#fade');
     console.log("Test");
     console.log(element);
     new Prime.Effects.Fade(element).withDuration(500).withEndFunction(endFunction).go();
@@ -56,7 +56,7 @@ buster.testCase('Fade tests', {
     };
 
     var handler = new FadeClass();
-    var element = Prime.Dom.queryFirst('#fadeContext');
+    var element = Prime.Document.queryFirst('#fadeContext');
     var effect = new Prime.Effects.Fade(element);
     assert.equals(effect.duration, 1000);
 
@@ -90,7 +90,7 @@ buster.testCase('Appear tests', {
       called = true;
     };
 
-    var element = Prime.Dom.queryFirst('#appear');
+    var element = Prime.Document.queryFirst('#appear');
     new Prime.Effects.Appear(element).withDuration(500).withEndFunction(endFunction).go();
 
     setTimeout(function() {
@@ -107,7 +107,7 @@ buster.testCase('Appear tests', {
       called = true;
     };
 
-    var element = Prime.Dom.queryFirst('#appearCSS');
+    var element = Prime.Document.queryFirst('#appearCSS');
     new Prime.Effects.Appear(element).withDuration(500).withEndFunction(endFunction).go();
 
     setTimeout(function() {
@@ -129,7 +129,7 @@ buster.testCase('Appear tests', {
     };
 
     var handler = new AppearClass();
-    var element = Prime.Dom.queryFirst('#appearContext');
+    var element = Prime.Document.queryFirst('#appearContext');
     var effect = new Prime.Effects.Appear(element);
     assert.equals(effect.duration, 1000);
 
@@ -161,7 +161,7 @@ buster.testCase('Appear tests', {
     };
 
     var handler = new AppearClass();
-    var element = Prime.Dom.queryFirst('#appearContextCSS');
+    var element = Prime.Document.queryFirst('#appearContextCSS');
     var effect = new Prime.Effects.Appear(element);
     assert.equals(effect.duration, 1000);
 

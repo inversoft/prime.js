@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
-Prime.Dom = Prime.Dom || {};
+Prime.Document = Prime.Document || {};
 
 
 /**
@@ -23,9 +23,9 @@ Prime.Dom = Prime.Dom || {};
  * @constructor
  * @param {Element} element The element
  */
-Prime.Dom.Element = function(element) {
+Prime.Document.Element = function(element) {
   if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
-    throw new TypeError('You can only pass in DOM element Node objects to the Prime.Dom.Element constructor');
+    throw new TypeError('You can only pass in DOM element Node objects to the Prime.Document.Element constructor');
   }
 
   this.domElement = element;
@@ -38,18 +38,18 @@ Prime.Dom.Element = function(element) {
  *
  * @type {RegExp}
  */
-Prime.Dom.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
-Prime.Dom.Element.mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup|mouseover|mousemove|mouseout)$/;
-Prime.Dom.Element.htmlEventsRegexp = /^(?:abort|blur|change|error|focus|load|reset|resize|scroll|select|submit|unload)$/;
-Prime.Dom.Element.anonymousId = 1;
-Prime.Dom.Element.ieAlpaRegexp = /alpha\(opacity=(.+)\)/;
+Prime.Document.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
+Prime.Document.Element.mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup|mouseover|mousemove|mouseout)$/;
+Prime.Document.Element.htmlEventsRegexp = /^(?:abort|blur|change|error|focus|load|reset|resize|scroll|select|submit|unload)$/;
+Prime.Document.Element.anonymousId = 1;
+Prime.Document.Element.ieAlpaRegexp = /alpha\(opacity=(.+)\)/;
 
-Prime.Dom.Element.prototype = {
+Prime.Document.Element.prototype = {
   /**
    * Adds the given class (or list of space separated classes) to this Element.
    *
    * @param {string} classNames The class name(s).
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   addClass: function(classNames) {
     var currentClassName = this.domElement.className;
@@ -78,7 +78,7 @@ Prime.Dom.Element.prototype = {
    * @param {Function} listener The event listener function.
    * @param {Object} [context=this] The context to use when invoking the handler (this sets the 'this' variable for the
    *        function call). Defaults to this Element.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   addEventListener: function(event, listener, context) {
     var theContext = (arguments.length < 3) ? this : context;
@@ -109,19 +109,19 @@ Prime.Dom.Element.prototype = {
    * element.
    *
    * @param {Element} element The element to insert this Element into.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   appendTo: function(element) {
     // Error out for now if this element is in the document so we can punt on cloning for now
     if (this.domElement.parentNode) {
-      throw new TypeError('You can only insert new Prime.Dom.Elements for now');
+      throw new TypeError('You can only insert new Prime.Document.Elements for now');
     }
 
-    var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    var domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
     if (domElement.parentNode) {
       domElement.appendChild(this.domElement);
     } else {
-      throw new TypeError('The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.');
+      throw new TypeError('The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Document.Element inside an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -134,7 +134,7 @@ Prime.Dom.Element.prototype = {
    * @param {Object} [memo] Assigned to the memo field of the event.
    * @param {boolean} [bubbling] If the event is bubbling, defaults to true.
    * @param {boolean} [cancelable] If the event is cancellable, defaults to true.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   fireEvent: function(event, memo, bubbling, cancelable) {
     bubbling = typeof bubbling !== 'undefined' ? bubbling : true;
@@ -151,10 +151,10 @@ Prime.Dom.Element.prototype = {
         this.domElement.fireEvent('on' + event, evt);
       } else if (document.createEvent) {
         // Dispatch for others
-        if (Prime.Dom.Element.mouseEventsRegexp.exec(event)) {
+        if (Prime.Document.Element.mouseEventsRegexp.exec(event)) {
           evt = document.createEvent("MouseEvents");
           evt.initMouseEvent(event, bubbling, cancelable, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        } else if (Prime.Dom.Element.htmlEventsRegexp.exec(event)) {
+        } else if (Prime.Document.Element.htmlEventsRegexp.exec(event)) {
           evt = document.createEvent("HTMLEvents");
           evt.initEvent(event, bubbling, cancelable);
         } else {
@@ -183,7 +183,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Puts the focus on this element.
    *
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   focus: function() {
     this.domElement.focus();
@@ -208,10 +208,10 @@ Prime.Dom.Element.prototype = {
   /**
    * Gets the children elements of this Element.
    *
-   * @return {Prime.Dom.ElementList} The children.
+   * @return {Prime.Document.ElementList} The children.
    */
   getChildren: function() {
-    return new Prime.Dom.ElementList(this.domElement.children);
+    return new Prime.Document.ElementList(this.domElement.children);
   },
 
   /**
@@ -267,7 +267,7 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * @returns {Prime.Dom.Element} This elements next sibling or null.
+   * @returns {Prime.Document.Element} This elements next sibling or null.
    */
   getNextSibling: function() {
     var sibling = this.domElement.nextSibling;
@@ -279,7 +279,7 @@ Prime.Dom.Element.prototype = {
       return null;
     }
 
-    return new Prime.Dom.Element(sibling);
+    return new Prime.Document.Element(sibling);
   },
 
   /**
@@ -302,7 +302,7 @@ Prime.Dom.Element.prototype = {
     if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
       var filter = computedStyle['filter'];
       if (filter !== undefined && filter !== '') {
-        var matches = Prime.Dom.Element.ieAlpaRegexp.match(filter);
+        var matches = Prime.Document.Element.ieAlpaRegexp.match(filter);
         if (matches.length > 0) {
           opacity = parseFloat(matches[0]);
         }
@@ -335,7 +335,7 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * @returns {Prime.Dom.Element} This elements previous sibling or null.
+   * @returns {Prime.Document.Element} This elements previous sibling or null.
    */
   getPreviousSibling: function() {
     var sibling = this.domElement.previousSibling;
@@ -347,7 +347,7 @@ Prime.Dom.Element.prototype = {
       return null;
     }
 
-    return new Prime.Dom.Element(sibling);
+    return new Prime.Document.Element(sibling);
   },
 
   /**
@@ -367,8 +367,8 @@ Prime.Dom.Element.prototype = {
     var values = [];
     if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
       var name = this.domElement.name;
-      var form = Prime.Dom.queryUp('form', this.domElement);
-      Prime.Dom.query('input[name=' + name + ']', form).each(function(element) {
+      var form = Prime.Document.queryUp('form', this.domElement);
+      Prime.Document.query('input[name=' + name + ']', form).each(function(element) {
         if (element.isChecked()) {
           values.push(element.getValue());
         }
@@ -462,7 +462,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Hides the Element by setting the display style to none.
    *
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   hide: function() {
     this.domElement.style.display = 'none';
@@ -473,19 +473,19 @@ Prime.Dom.Element.prototype = {
    * Inserts this Element into the DOM after the given element, removing it from it's parent if it's an existing element.
    *
    * @param {Element} element The element to insert this Element after.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   insertAfter: function(element) {
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
     }
 
-    var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    var domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
     var parentElement = domElement.parentNode;
     if (parentElement) {
       parentElement.insertBefore(this.domElement, domElement.nextSibling);
     } else {
-      throw new TypeError('The element you passed into insertAfter is not in the DOM. You can\'t insert a Prime.Dom.Element after an element that isn\'t in the DOM yet.');
+      throw new TypeError('The element you passed into insertAfter is not in the DOM. You can\'t insert a Prime.Document.Element after an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -495,19 +495,19 @@ Prime.Dom.Element.prototype = {
    * Inserts this Element into the DOM before the given element, removing it from it's parent if it's an existing element.
    *
    * @param {Element} element The element to insert this Element before.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   insertBefore: function(element) {
     if (this.domElement.parentNode) {
       this.domElement.parentNode.removeChild(this.domElement);
     }
 
-    var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    var domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
     var parentElement = domElement.parentNode;
     if (parentElement) {
       parentElement.insertBefore(this.domElement, domElement);
     } else {
-      throw new TypeError('The element you passed into insertBefore is not in the DOM. You can\'t insert a Prime.Dom.Element before an element that isn\'t in the DOM yet.');
+      throw new TypeError('The element you passed into insertBefore is not in the DOM. You can\'t insert a Prime.Document.Element before an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -517,7 +517,7 @@ Prime.Dom.Element.prototype = {
    * Inserts the given text after this Element.
    *
    * @param {string} text The text to insert.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   insertTextAfter: function(text) {
     if (!this.domElement.parentNode) {
@@ -534,7 +534,7 @@ Prime.Dom.Element.prototype = {
    * Inserts the given text before this Element.
    *
    * @param {string} text The text to insert.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   insertTextBefore: function(text) {
     if (!this.domElement.parentNode) {
@@ -559,11 +559,11 @@ Prime.Dom.Element.prototype = {
   /**
    * Determines if this element is a child of the given element.
    *
-   * @param {Prime.Dom.Element|Node} element The element to check to see if this element is a child of.
+   * @param {Prime.Document.Element|Node} element The element to check to see if this element is a child of.
    * @returns {boolean} True if this element is a child of the given element, false otherwise.
    */
   isChildOf: function(element) {
-    var domElement = element instanceof Prime.Dom.Element ? element.domElement : element;
+    var domElement = element instanceof Prime.Document.Element ? element.domElement : element;
     var parent = this.domElement.parentNode;
     while (domElement !== parent && parent !== null) {
       parent = parent.parentNode;
@@ -600,13 +600,13 @@ Prime.Dom.Element.prototype = {
   },
 
   /**
-   * Returns this element's parent as  Prime.Dom.Element.
+   * Returns this element's parent as  Prime.Document.Element.
    *
-   * @return {Prime.Dom.Element} this element's parent or null if there is no parent
+   * @return {Prime.Document.Element} this element's parent or null if there is no parent
    */
   parent: function() {
     if (this.domElement.parentNode !== null) {
-      return new Prime.Dom.Element(this.domElement.parentNode);
+      return new Prime.Document.Element(this.domElement.parentNode);
     } else {
       return null;
     }
@@ -632,7 +632,7 @@ Prime.Dom.Element.prototype = {
       }
     } while (element);
 
-    new Prime.Dom.ElementList(elements).each(function(element) {
+    new Prime.Document.ElementList(elements).each(function(element) {
       var elementStyle = element.getComputedStyle();
       positionLeft += elementStyle['offsetLeft'] || 0;
       positionTop += elementStyle['offsetTop'] || 0;
@@ -646,19 +646,19 @@ Prime.Dom.Element.prototype = {
    * element.
    *
    * @param {Element} element The element to insert this Element into.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   prependTo: function(element) {
     // Error out for now if this element is in the document so we can punt on cloning for now
     if (this.domElement.parentNode) {
-      throw new TypeError('You can only insert new Prime.Dom.Elements for now');
+      throw new TypeError('You can only insert new Prime.Document.Elements for now');
     }
 
-    var domElement = (element instanceof Prime.Dom.Element) ? element.domElement : element;
+    var domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
     if (domElement.parentNode) {
       domElement.insertBefore(this.domElement, domElement.firstChild);
     } else {
-      throw new TypeError('The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Dom.Element inside an element that isn\'t in the DOM yet.');
+      throw new TypeError('The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Document.Element inside an element that isn\'t in the DOM yet.');
     }
 
     return this;
@@ -667,7 +667,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Removes all of the event listeners for the given element.
    *
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   removeAllEventListeners: function() {
     for (event in this.domElement.eventListeners) {
@@ -689,7 +689,7 @@ Prime.Dom.Element.prototype = {
    * Removes an attribute from the Element
    *
    * @param {string} name The name of the attribute.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   removeAttribute: function(name) {
     this.domElement.removeAttribute(name);
@@ -700,7 +700,7 @@ Prime.Dom.Element.prototype = {
    * Removes the given class (or list of space separated classes) from this Element.
    *
    * @param {string} classNames The class name(s).
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   removeClass: function(classNames) {
     var currentClassName = this.domElement.className;
@@ -723,7 +723,7 @@ Prime.Dom.Element.prototype = {
    *
    * @param {string} event The name of the event.
    * @param {*} listener The event listener that was bound.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   removeEventListener: function(event, listener) {
     var proxy = listener.primeProxy ? listener.primeProxy : listener;
@@ -741,7 +741,7 @@ Prime.Dom.Element.prototype = {
    * Removes all of the event listeners for the given event from this element.
    *
    * @param {string} event The name of the event to remove the listeners for.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   removeEventListeners: function(event) {
     if (this.domElement.eventListeners[event]) {
@@ -760,7 +760,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Removes this Element from the DOM. If the Element isn't in the DOM this does nothing.
    *
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   removeFromDOM: function() {
     if (this.domElement.parentNode) {
@@ -774,7 +774,7 @@ Prime.Dom.Element.prototype = {
    * Scrolls this element to the given position.
    *
    * @param {number} position The position to scroll the element to.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   scrollTo: function(position) {
     this.domElement.scrollTop = position;
@@ -784,7 +784,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Scrolls this element to the bottom.
    *
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   scrollToBottom: function() {
     this.domElement.scrollTop = this.domElement.scrollHeight;
@@ -794,7 +794,7 @@ Prime.Dom.Element.prototype = {
   /**
    * Scrolls this element to the top.
    *
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   scrollToTop: function() {
     this.domElement.scrollTop = 0;
@@ -806,7 +806,7 @@ Prime.Dom.Element.prototype = {
    *
    * @param {string} name The attribute name
    * @param {string} value The attribute value
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setAttribute: function(name, value) {
     var attribute = document.createAttribute(name);
@@ -819,7 +819,7 @@ Prime.Dom.Element.prototype = {
    * Sets multiple attributes of the Element from the hash
    *
    * @param {Object} attributes An object of key value style pairs.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setAttributes: function(attributes) {
     for (key in attributes) {
@@ -834,7 +834,7 @@ Prime.Dom.Element.prototype = {
    * Sets the height of this element using the height style.
    *
    * @param {number|string} height The new height as a number (for pixels) or string.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setHeight: function(height) {
     if (typeof(height) == 'number') {
@@ -848,12 +848,12 @@ Prime.Dom.Element.prototype = {
   /**
    * Sets the inner HTML content of the Element.
    *
-   * @param {string|Prime.Dom.Element} newHTML The new HTML content for the Element.
-   * @return {Prime.Dom.Element} This Element.
+   * @param {string|Prime.Document.Element} newHTML The new HTML content for the Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setHTML: function(newHTML) {
     if (newHTML !== null) {
-      if (newHTML instanceof Prime.Dom.Element) {
+      if (newHTML instanceof Prime.Document.Element) {
         this.domElement.innerHTML = newHTML.getHTML();
       } else {
         this.domElement.innerHTML = newHTML;
@@ -866,7 +866,7 @@ Prime.Dom.Element.prototype = {
    * Sets the ID of the Element.
    *
    * @param {string} id The ID.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setID: function(id) {
     this.domElement.id = id;
@@ -877,7 +877,7 @@ Prime.Dom.Element.prototype = {
    * Sets left position of the element.
    *
    * @param {number|string} left The left position of the element in pixels or as a string.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setLeft: function(left) {
     var leftString = left;
@@ -893,7 +893,7 @@ Prime.Dom.Element.prototype = {
    * Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.
    *
    * @param {number} opacity The opacity.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setOpacity: function(opacity) {
     if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
@@ -910,7 +910,7 @@ Prime.Dom.Element.prototype = {
    *
    * @param {string} name The style name.
    * @param {string} value The style value.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setStyle: function(name, value) {
     this.domElement.style[name] = value;
@@ -921,7 +921,7 @@ Prime.Dom.Element.prototype = {
    * Sets multiple styles of this Element.
    *
    * @param {Object} styles An object with key value pairs for the new style names and values.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setStyles: function(styles) {
     for (key in styles) {
@@ -936,7 +936,7 @@ Prime.Dom.Element.prototype = {
    * Sets top position of the element.
    *
    * @param {number|string} top The top position of the element in pixels or as a string.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setTop: function(top) {
     var topString = top;
@@ -952,7 +952,7 @@ Prime.Dom.Element.prototype = {
    * Sets the value of this Element.
    *
    * @param {string} value The new value.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setValue: function(value) {
     this.domElement.value = value;
@@ -963,7 +963,7 @@ Prime.Dom.Element.prototype = {
    * Sets the width of this element using the height style.
    *
    * @param {number|string} width The new width as a number (for pixels) or string.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   setWidth: function(width) {
     if (typeof(width) == 'number') {
@@ -982,7 +982,7 @@ Prime.Dom.Element.prototype = {
    *
    * @param {string} [displayValue] The display value to use for the show. This defaults to the W3C standard display
    * setting depending on the type of element you are showing. For example, INPUT is inline and DIV is block.
-   * @return {Prime.Dom.Element} This Element.
+   * @return {Prime.Document.Element} This Element.
    */
   show: function(displayValue) {
     if (typeof(displayValue) !== 'undefined') {
@@ -995,7 +995,7 @@ Prime.Dom.Element.prototype = {
     var computedDisplay = this.getComputedStyle()['display'];
     if (computedDisplay === 'none') {
       if (typeof(displayValue) === 'undefined') {
-        displayValue = (Prime.Dom.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
+        displayValue = (Prime.Document.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
       }
 
       this.domElement.style.display = displayValue;

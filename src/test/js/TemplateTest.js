@@ -55,14 +55,14 @@ buster.testCase('Prime.Template', {
 
   'append': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var container = Prime.Dom.newElement("<div/>");
+    var container = Prime.Document.newElement("<div/>");
     template.appendTo(container, {'foo': 'bar'});
     assert.equals(container.getHTML(), '<span>bar</span>');
   },
 
   'appendMultiple': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var container = Prime.Dom.newElement("<div/>");
+    var container = Prime.Document.newElement("<div/>");
     template.appendTo(container, {'foo': 'bar'});
     template.appendTo(container, {'foo': 'baz'});
     assert.equals(container.getHTML(), '<span>bar</span><span>baz</span>');
@@ -70,7 +70,7 @@ buster.testCase('Prime.Template', {
 
   'insertBefore': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Dom.queryByID("templateInsertBefore");
+    var target = Prime.Document.queryByID("templateInsertBefore");
 
     template.insertBefore(target, {'foo': 'bar'});
     assert.equals(target.domElement.parentNode.children[0].innerText, 'bar');
@@ -79,7 +79,7 @@ buster.testCase('Prime.Template', {
 
   'insertBeforeMultiple': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Dom.queryByID("templateInsertBeforeMultiple");
+    var target = Prime.Document.queryByID("templateInsertBeforeMultiple");
 
     template.insertBefore(target, {'foo': 'bar'});
     template.insertBefore(target, {'foo': 'baz'});
@@ -90,7 +90,7 @@ buster.testCase('Prime.Template', {
 
   'insertAfter': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Dom.queryByID("templateInsertAfter");
+    var target = Prime.Document.queryByID("templateInsertAfter");
 
     template.insertAfter(target, {'foo': 'bar'});
     assert.equals(target.domElement.parentNode.children[0].innerText, '');
@@ -99,7 +99,7 @@ buster.testCase('Prime.Template', {
 
   'insertAfterMultiple': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Dom.queryByID("templateInsertBeforeAfter");
+    var target = Prime.Document.queryByID("templateInsertBeforeAfter");
 
     template.insertAfter(target, {'foo': 'bar'});
     template.insertAfter(target, {'foo': 'baz'});

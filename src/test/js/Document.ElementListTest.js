@@ -52,19 +52,19 @@ buster.assertions.add('hasPreviousElementSiblings', {
 
 buster.testCase('ElementList namespace tests', {
   'query': function() {
-    var list = Prime.Dom.query('p.test');
+    var list = Prime.Document.query('p.test');
     assert.equals(list.length, 3);
     assert.equals(list[0].domElement.id, 'queryOne');
     assert.equals(list[1].domElement.id, 'queryTwo');
     assert.equals(list[2].domElement.id, 'queryThree');
 
-    var parent = Prime.Dom.queryByID('query');
-    list = Prime.Dom.query('p.test', parent);
+    var parent = Prime.Document.queryByID('query');
+    list = Prime.Document.query('p.test', parent);
     assert.equals(list[0].domElement.id, 'queryOne');
     assert.equals(list[1].domElement.id, 'queryTwo');
     assert.equals(list[2].domElement.id, 'queryThree');
 
-    list = Prime.Dom.query('p.test', parent.domElement);
+    list = Prime.Document.query('p.test', parent.domElement);
     assert.equals(list[0].domElement.id, 'queryOne');
     assert.equals(list[1].domElement.id, 'queryTwo');
     assert.equals(list[2].domElement.id, 'queryThree');
@@ -74,10 +74,10 @@ buster.testCase('ElementList namespace tests', {
 buster.testCase('ElementList class tests', {
   'each': function() {
     var count = 0;
-    Prime.Dom.query('p.test').each(function(element, index) {
+    Prime.Document.query('p.test').each(function(element, index) {
       assert.equals(index, count++);
       assert.isTrue(this instanceof Array);
-      assert.isTrue(element instanceof Prime.Dom.Element);
+      assert.isTrue(element instanceof Prime.Document.Element);
       assert.equals(element.domElement.tagName, 'P');
     }, []);
 
@@ -85,12 +85,12 @@ buster.testCase('ElementList class tests', {
   },
 
   'indexOf Prime Element': function() {
-    var container = Prime.Dom.queryByID("query");
-    var list = Prime.Dom.query("p", container);
+    var container = Prime.Document.queryByID("query");
+    var list = Prime.Document.query("p", container);
 
-    var one = Prime.Dom.queryByID("queryOne");
-    var two = Prime.Dom.queryByID("queryTwo");
-    var outside = Prime.Dom.queryByID("insertSingle");
+    var one = Prime.Document.queryByID("queryOne");
+    var two = Prime.Document.queryByID("queryTwo");
+    var outside = Prime.Document.queryByID("insertSingle");
 
     assert.equals(list.indexOf(one), 0);
     assert.equals(list.indexOf(one.domElement), 0);

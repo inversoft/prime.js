@@ -17,7 +17,7 @@ var Prime = Prime || {};
 
 
 /**
- * A Javascript Object that can serve to generate Prime.Dom.Element from a source string and optional parameters.
+ * A Javascript Object that can serve to generate Prime.Document.Element from a source string and optional parameters.
  *
  * @constructor
  * @param {string} template The String that defines the source of the template.
@@ -71,7 +71,7 @@ Prime.Template.prototype = {
   /**
    * Calls to generate and then appends the resulting value to the inner HTML of the provided primeElement.
    *
-   * @param {Prime.Dom.Element} primeElement The prime Element instance to append the result of executing the template to.
+   * @param {Prime.Document.Element} primeElement The prime Element instance to append the result of executing the template to.
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   appendTo: function(primeElement, parameters) {
@@ -85,14 +85,14 @@ Prime.Template.prototype = {
   /**
    * Calls to generate and then inserts the resulting elements into the dom before the primeElement
    *
-   * @param {Prime.Dom.Element} primeElement The prime Element instance to insert the result of executing the template before.
+   * @param {Prime.Document.Element} primeElement The prime Element instance to insert the result of executing the template before.
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   insertBefore: function(primeElement, parameters) {
     if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameters);
-      new Prime.Dom.Element(holder.children[0]).insertBefore(primeElement);
+      new Prime.Document.Element(holder.children[0]).insertBefore(primeElement);
     } else {
       throw new TypeError('Please supply an element to append to');
     }
@@ -101,14 +101,14 @@ Prime.Template.prototype = {
   /**
    * Calls to generate and then inserts the resulting elements into the dom after the primeElement
    *
-   * @param {Prime.Dom.Element} primeElement The prime Element instance to insert the result of executing the template after.
+   * @param {Prime.Document.Element} primeElement The prime Element instance to insert the result of executing the template after.
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   insertAfter: function(primeElement, parameters) {
     if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameters);
-      new Prime.Dom.Element(holder.children[0]).insertAfter(primeElement);
+      new Prime.Document.Element(holder.children[0]).insertAfter(primeElement);
     } else {
       throw new TypeError('Please supply an element to append to');
     }
