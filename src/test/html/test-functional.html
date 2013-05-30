@@ -32,7 +32,7 @@
     <script type="text/javascript" src="../../main/js/Event.js"></script>
     <script type="text/javascript" src="../../main/js/Template.js"></script>
     <script type="text/javascript" src="../../main/js/Utils.js"></script>
-    <script type="text/javascript" src="../../main/js/Widget.MultipleSelect.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
       Prime.Dom.onDocumentReady(function() {
@@ -47,9 +47,9 @@
             new Prime.Effects.Appear(element).withDuration(500).go();
           });
 
-        new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-test'));
-        new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-custom-add-disabled-test'), 'Choose', false);
-        new Prime.Widget.MultipleSelect(Prime.Dom.queryByID('multiple-select-lots-of-options'));
+        new Prime.Widgets.MultipleSelect(Prime.Dom.queryByID('multiple-select-test'));
+        new Prime.Widgets.MultipleSelect(Prime.Dom.queryByID('multiple-select-custom-add-disabled-test'), 'Choose', false);
+        new Prime.Widgets.MultipleSelect(Prime.Dom.queryByID('multiple-select-lots-of-options'));
       });
     </script>
     <style>

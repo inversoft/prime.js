@@ -13,9 +13,17 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-var Prime = Prime || {};
-Prime.Browser = Prime.Browser || {};
 
+/**
+ * @namespace Prime
+ */
+var Prime = Prime || {};
+
+/**
+ * The Prime.Browser namespace. This namespace does not contain any classes, just functions.
+ *
+ * @namespace Prime.Browser
+ */
 Prime.Browser = {
   /**
    * Detects the browser name and version.

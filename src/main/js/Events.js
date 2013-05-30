@@ -14,11 +14,23 @@
  * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
-Prime.Event = Prime.Event || {};
-Prime.Event.Keys = Prime.Event.Keys || {};
 
-Prime.Event.Keys.BACKSPACE = 8;
-Prime.Event.Keys.ENTER = 13;
-Prime.Event.Keys.ESCAPE = 27;
-Prime.Event.Keys.UP_ARROW = 38;
-Prime.Event.Keys.DOWN_ARROW = 40;
+/**
+ * The Prime.Events namespace. This currently only contains constants for different event types.
+ *
+ * @namespace Prime.Events
+ */
+Prime.Events = Prime.Events || {};
+
+/**
+ * The Prime.Events.Keys namespace. This currently only contains constants for different key codes.
+ *
+ * @namespace Prime.Events.Keys
+ */
+Prime.Events.Keys = Prime.Events.Keys || {};
+
+Prime.Events.Keys.BACKSPACE = 8;
+Prime.Events.Keys.ENTER = 13;
+Prime.Events.Keys.ESCAPE = 27;
+Prime.Events.Keys.UP_ARROW = 38;
+Prime.Events.Keys.DOWN_ARROW = 40;

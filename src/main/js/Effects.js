@@ -14,6 +14,12 @@
  * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
+
+/**
+ * The Prime.Effects namespace. This contains all of the effect abstract and implementation classes.
+ *
+ * @namespace Prime.Effects
+ */
 Prime.Effects = Prime.Effects || {};
 
 

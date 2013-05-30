@@ -14,7 +14,13 @@
  * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
-Prime.Widget = Prime.Widget || {};
+
+/**
+ * The Prime.Widgets namespace. This currently only contains the MultipleSelect class.
+ *
+ * @namespace Prime.Widgets
+ */
+Prime.Widgets = Prime.Widgets || {};
 
 
 /**
@@ -52,14 +58,14 @@ Prime.Widget = Prime.Widget || {};
  * @param {string} [customAddLabel="Add Custom Value:"] The label for the custom add option in the search results.
  * @param {boolean} [noSearchResultsLabel="No Matches For:] The label used when there are no search results.
  */
-Prime.Widget.MultipleSelect = function(element, placeholder, customAddEnabled, customAddLabel, noSearchResultsLabel) {
+Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, customAddLabel, noSearchResultsLabel) {
   this.element = (element instanceof Prime.Dom.Element) ? element : new Prime.Dom.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
-    throw new TypeError('You can only use Prime.Widget.MultipleSelect with select elements');
+    throw new TypeError('You can only use Prime.Widgets.MultipleSelect with select elements');
   }
 
   if (this.element.getAttribute('multiple') !== 'multiple') {
-    throw new TypeError('The select box you are attempting to convert to a Prime.Widget.MultipleSelect must have the multiple="multiple" attribute set');
+    throw new TypeError('The select box you are attempting to convert to a Prime.Widgets.MultipleSelect must have the multiple="multiple" attribute set');
   }
 
   this.element.hide();
@@ -70,7 +76,7 @@ Prime.Widget.MultipleSelect = function(element, placeholder, customAddEnabled, c
 
   var id = this.element.getID();
   if (id === null) {
-    id = 'prime-multiple-select' + Prime.Widget.MultipleSelect.count++;
+    id = 'prime-multiple-select' + Prime.Widgets.MultipleSelect.count++;
     this.element.setID(id);
   }
 
@@ -112,15 +118,15 @@ Prime.Widget.MultipleSelect = function(element, placeholder, customAddEnabled, c
 /*
  * Statics
  */
-Prime.Widget.MultipleSelect.count = 1;
+Prime.Widgets.MultipleSelect.count = 1;
 
-Prime.Widget.MultipleSelect.prototype = {
+Prime.Widgets.MultipleSelect.prototype = {
   /**
    * Adds the given option to this select. The option will not be selected.
    *
    * @param {String} value The value for the option.
    * @param {String} display The display text for the option.
-   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   addOption: function(value, display) {
     if (this.containsOptionWithValue(value)) {
@@ -164,7 +170,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * removing the option from the display container.
    *
    * @param {Prime.Dom.Element} option The option to deselect.
-   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   deselectOption: function(option) {
     option.removeAttribute('selected');
@@ -194,7 +200,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * this method throws an exception.
    *
    * @param {String} value The value to look for.
-   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   deselectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -262,7 +268,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * Highlights the next search result if one is highlighted. If there isn't a highlighted search result, this
    * highlights the first one. This method handles wrapping.
    *
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   highlightNextSearchResult: function() {
     var searchResult = this.getHighlightedSearchResult();
@@ -286,7 +292,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * Highlights the final selected option (if there is one) to indicate that it will be unselected if the user clicks
    * the delete key again.
    *
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   highlightOptionForUnselect: function() {
     var options = this.displayContainerSelectedOptionList.getChildren();
@@ -301,7 +307,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * Highlights the previous search result if one is highlighted. If there isn't a highlighted search result, this
    * selects the last one. This method handles wrapping.
    *
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   highlightPreviousSearchResult: function() {
     var searchResult = this.getHighlightedSearchResult();
@@ -324,7 +330,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * Highlights the given search result.
    *
    * @param {Prime.Dom.Element} searchResult The search result to highlight.
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   highlightSearchResult: function(searchResult) {
     this.searchResultsContainer.getChildren().each(function(element) {
@@ -370,7 +376,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * Rebuilds the display from the underlying select element. All of the current display options (li elements) are
    * removed. New display options are added for each selected option in the select box.
    *
-   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   rebuildDisplay: function() {
     // Close the search
@@ -416,7 +422,7 @@ Prime.Widget.MultipleSelect.prototype = {
   /**
    * Removes all of the options from the MultipleSelect.
    *
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   removeAllOptions: function() {
     // Remove in reverse order because the options array is dynamically updated when elements are deleted from the DOM
@@ -442,7 +448,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * display container.
    *
    * @param {Prime.Dom.Element} option The option to remove.
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   removeOption: function(option) {
     if (!(option instanceof Prime.Dom.Element)) {
@@ -472,7 +478,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * an exception.
    *
    * @param {Prime.Dom.Element} value The value of the option to remove.
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   removeOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -505,7 +511,7 @@ Prime.Widget.MultipleSelect.prototype = {
    *
    * @param {string} [searchText] The text to search for (this value is also set into the input box). If this is not
    * specified then the search is run using the input's value.
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   search: function(searchText) {
     // Set the search text into the input box if it is different and then lowercase it
@@ -575,7 +581,7 @@ Prime.Widget.MultipleSelect.prototype = {
   /**
    * Selects the highlighted search result unless there isn't one highlighted, in which case, this does nothing.
    *
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   selectHighlightedSearchResult: function() {
     var searchResult = this.getHighlightedSearchResult();
@@ -599,7 +605,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * option is already in the display container, that step is skipped.
    *
    * @param {Prime.Dom.Element} option The option object from the select box wrapped in a Prime.Dom.Element instance.
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   selectOption: function(option) {
     if (!(option instanceof Prime.Dom.Element)) {
@@ -651,7 +657,7 @@ Prime.Widget.MultipleSelect.prototype = {
    * If there isn't an option with the given value, this throws an exception.
    *
    * @param {String} value The value of the option to select.
-   * @return {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   selectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -667,7 +673,7 @@ Prime.Widget.MultipleSelect.prototype = {
   /**
    * Unhighlights the last option if it is highlighted.
    *
-   * @returns {Prime.Widget.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   unhighlightOptionForUnselect: function() {
     this.displayContainerSelectedOptionList.getChildren().each(function(element) {
@@ -785,12 +791,12 @@ Prime.Widget.MultipleSelect.prototype = {
    */
   handleKeyDownEvent: function(event) {
     var key = event.keyCode;
-    if (key === Prime.Event.Keys.BACKSPACE) {
+    if (key === Prime.Events.Keys.BACKSPACE) {
       this.previousSearchString = this.input.getValue();
-    } else if (key === Prime.Event.Keys.UP_ARROW) {
+    } else if (key === Prime.Events.Keys.UP_ARROW) {
       this.highlightPreviousSearchResult();
       return false;
-    } else if (key === Prime.Event.Keys.DOWN_ARROW) {
+    } else if (key === Prime.Events.Keys.DOWN_ARROW) {
       if (this.isSearchResultsVisible()) {
         this.highlightNextSearchResult();
       } else {
@@ -813,7 +819,7 @@ Prime.Widget.MultipleSelect.prototype = {
     var key = event.keyCode;
     var value = this.input.getValue();
 
-    if (key == Prime.Event.Keys.BACKSPACE) {
+    if (key == Prime.Events.Keys.BACKSPACE) {
       if (this.isLastOptionHighlightedForUnselect()) {
         this.removeHighlightedOption();
         this.highlightOptionForUnselect();
@@ -822,7 +828,7 @@ Prime.Widget.MultipleSelect.prototype = {
       } else {
         this.search();
       }
-    } else if (key === Prime.Event.Keys.ENTER) {
+    } else if (key === Prime.Events.Keys.ENTER) {
       // If a search result is highlighted, add it
       if (this.getHighlightedSearchResult() !== null) {
         this.selectHighlightedSearchResult();
@@ -834,7 +840,7 @@ Prime.Widget.MultipleSelect.prototype = {
       }
 
       return false;
-    } else if (key === Prime.Event.Keys.ESCAPE) {
+    } else if (key === Prime.Events.Keys.ESCAPE) {
       this.searchResultsContainer.hide();
       this.unhighlightOptionForUnselect();
     } else if ((key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {

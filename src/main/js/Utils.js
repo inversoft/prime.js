@@ -15,7 +15,11 @@
  */
 var Prime = Prime || {};
 
-
+/**
+ * The Prime.Utils namespace. This contains utility functions.
+ *
+ * @namespace Prime.Utils
+ */
 Prime.Utils = {
   spaceRegex: /\s+/,
   typeRegex: /^\[object\s(.*)\]$/,

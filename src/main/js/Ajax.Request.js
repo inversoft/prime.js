@@ -13,16 +13,10 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-
-/**
- * @namespace Prime
- */
 var Prime = Prime || {};
 
 /**
- * The Prime.Ajax namespace.
- *
- * This namespace contains a single class (for now) called Request.
+ * The Prime.Ajax namespace. This namespace contains a single class (for now) called Request.
  *
  * @namespace Prime.Ajax
  */

@@ -18,9 +18,9 @@ Prime.Dom = Prime.Dom || {};
 
 
 /**
- * Document object specific methods
+ * The Prime.Dom.Document namespace. This namespace contains a number of namespace level functions and no classes.
  *
- * @constructor
+ * @namespace Prime.Dom.Document
  */
 Prime.Dom.Document = {
   /**

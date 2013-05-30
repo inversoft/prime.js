@@ -14,6 +14,13 @@
  * language governing permissions and limitations under the License.
  */
 var Prime = Prime || {};
+
+/**
+ * The Prime.Dom namespace. This namespace contains a number of classes (Element, ElementList, etc.) and a number of
+ * namespace level functions.
+ *
+ * @namespace Prime.Dom
+ */
 Prime.Dom = Prime.Dom || {};
 
 Prime.Dom.readyFunctions = [];
