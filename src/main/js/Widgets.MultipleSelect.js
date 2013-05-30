@@ -803,6 +803,8 @@ Prime.Widgets.MultipleSelect.prototype = {
         this.search();
       }
       return false;
+    } else if (key === Prime.Events.Keys.ENTER) {
+      return false; // Don't bubble enter otherwise the form submits
     }
 
     return true;

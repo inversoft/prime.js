@@ -20,7 +20,7 @@
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Prime Functional Tests</title>
     <link rel="stylesheet" href="../js/buster-test.css"/>
-    <link rel="stylesheet" href="../../main/css/Widget.MultipleSelect.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
     <script type="text/javascript" src="../../main/js/sizzle/sizzle.js"></script>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
     <script type="text/javascript" src="../../main/js/Browser.js"></script>
@@ -71,41 +71,44 @@
     </div>
     <button id="appearButton">Appear</button>
     <div>
-      <label for="multiple-select-test">Multiple Select Test</label><br/>
-      <select id="multiple-select-test" multiple="multiple">
-        <option value="one" selected="selected">One</option>
-        <option value="two">Two</option>
-        <option value="three" selected="selected">Three</option>
-      </select>
-      <label for="multiple-select-custom-add-disabled-test">Multiple Select Test (custom add disabled)</label><br/>
-      <select id="multiple-select-custom-add-disabled-test" multiple="multiple">
-        <option value="one" selected="selected">One</option>
-        <option value="two">Two</option>
-        <option value="three" selected="selected">Three</option>
-      </select>
-      <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
-      <select id="multiple-select-lots-of-options" multiple="multiple">
-        <option value="one">One</option>
-        <option value="two">Two</option>
-        <option value="three">Three</option>
-        <option value="four">Four</option>
-        <option value="five">Five</option>
-        <option value="six">Six</option>
-        <option value="seven">Seven</option>
-        <option value="eight">Eight</option>
-        <option value="nine">Nine</option>
-        <option value="ten">Ten</option>
-        <option value="eleven">Eleven</option>
-        <option value="twelve">Twelve</option>
-        <option value="thirteen">Thirteen</option>
-        <option value="fourteen">Fourteen</option>
-        <option value="fifteen">Fifteen</option>
-        <option value="sixteen">Sixteen</option>
-        <option value="seventeen">Seventeen</option>
-        <option value="eighteen">Eighteen</option>
-        <option value="nineteen">Nineteen</option>
-        <option value="Twenty">Twenty</option>
-      </select>
+      <form action="http://www.google.com" method="GET">
+        <label for="multiple-select-test">Multiple Select Test</label><br/>
+        <select id="multiple-select-test" multiple="multiple" name="mst">
+          <option value="one" selected="selected">One</option>
+          <option value="two">Two</option>
+          <option value="three" selected="selected">Three</option>
+        </select>
+        <label for="multiple-select-custom-add-disabled-test">Multiple Select Test (custom add disabled)</label><br/>
+        <select id="multiple-select-custom-add-disabled-test" multiple="multiple" name="mscadt">
+          <option value="one" selected="selected">One</option>
+          <option value="two">Two</option>
+          <option value="three" selected="selected">Three</option>
+        </select>
+        <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
+        <select id="multiple-select-lots-of-options" multiple="multiple" name="msloo">
+          <option value="one">One</option>
+          <option value="two">Two</option>
+          <option value="three">Three</option>
+          <option value="four">Four</option>
+          <option value="five">Five</option>
+          <option value="six">Six</option>
+          <option value="seven">Seven</option>
+          <option value="eight">Eight</option>
+          <option value="nine">Nine</option>
+          <option value="ten">Ten</option>
+          <option value="eleven">Eleven</option>
+          <option value="twelve">Twelve</option>
+          <option value="thirteen">Thirteen</option>
+          <option value="fourteen">Fourteen</option>
+          <option value="fifteen">Fifteen</option>
+          <option value="sixteen">Sixteen</option>
+          <option value="seventeen">Seventeen</option>
+          <option value="eighteen">Eighteen</option>
+          <option value="nineteen">Nineteen</option>
+          <option value="Twenty">Twenty</option>
+        </select>
+        <input type="submit" value="Submit"/>
+      </form>
     </div>
   </body>
 </html>

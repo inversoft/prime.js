@@ -14,6 +14,14 @@ many other frameworks have become, here are the rules:
   * Don't define all the variables for a function at the top of the function. This should NOT be a performance concern
     at this point.
 
+  * Don't inline variables (var foo, bar, baz)
+
+  * Follow get, set, is, has method naming when appropriate
+
+  * Avoid relying on events. Pretend your classes are outside of the browser first and then add the necessary event
+    listeners at the end to make it work in the browser
+
+
 Testing --
 
   Running the tests require some kind of web server to correctly serve some of the test files up.  Typically for Macs,
