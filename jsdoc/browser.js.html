@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: Browser.js</title>
+    
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+    
+    <h1 class="page-title">Source: Browser.js</h1>
+    
+    
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source"><code>/*
+ * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+
+/**
+ * @namespace Prime
+ */
+var Prime = Prime || {};
+
+/**
+ * The Prime.Browser namespace. This namespace does not contain any classes, just functions.
+ *
+ * @namespace Prime.Browser
+ */
+Prime.Browser = {
+  /**
+   * Detects the browser name and version.
+   */
+  detect: function() {
+    this.name = this.searchString(this.dataBrowser) || "An unknown browser";
+    this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "an unknown version";
+    this.os = this.searchString(this.dataOS) || "an unknown OS";
+  },
+
+
+  /*
+   * Private functions.
+   */
+
+  /**
+   * @private
+   * @param {Object} data The data array.
+   * @return {string} The browser identity String.
+   */
+  searchString: function(data) {
+    for (var i = 0; i &lt; data.length; i++) {
+      var dataString = data[i].string;
+      var dataProp = data[i].prop;
+      this.versionSearchString = data[i].versionSearch || data[i].identity;
+      if (dataString && dataString.indexOf(data[i].subString) !== -1) {
+        return data[i].identity;
+      } else if (dataProp) {
+        return data[i].identity;
+      }
+    }
+
+    return null;
+  },
+
+  /**
+   * @private
+   * @param {string} dataString The browser data string.
+   * @return {number} The version or null.
+   */
+  searchVersion: function(dataString) {
+    var index = dataString.indexOf(this.versionSearchString);
+    if (index === -1) {
+      return null;
+    }
+
+    return parseFloat(dataString.substring(index + this.versionSearchString.length + 1));
+  },
+
+  dataBrowser: [
+    {
+      string: navigator.userAgent,
+      subString: "Chrome",
+      identity: "Chrome"
+    },
+    {
+      string: navigator.userAgent,
+      subString: "OmniWeb",
+      versionSearch: "OmniWeb/",
+      identity: "OmniWeb"
+    },
+    {
+      string: navigator.vendor,
+      subString: "Apple",
+      identity: "Safari",
+      versionSearch: "Version"
+    },
+    {
+      prop: window.opera,
+      identity: "Opera",
+      versionSearch: "Version"
+    },
+    {
+      string: navigator.vendor,
+      subString: "iCab",
+      identity: "iCab"
+    },
+    {
+      string: navigator.vendor,
+      subString: "KDE",
+      identity: "Konqueror"
+    },
+    {
+      string: navigator.userAgent,
+      subString: "Firefox",
+      identity: "Firefox"
+    },
+    {
+      string: navigator.vendor,
+      subString: "Camino",
+      identity: "Camino"
+    },
+    {    // for newer Netscapes (6+)
+      string: navigator.userAgent,
+      subString: "Netscape",
+      identity: "Netscape"
+    },
+    {
+      string: navigator.userAgent,
+      subString: "MSIE",
+      identity: "Explorer",
+      versionSearch: "MSIE"
+    },
+    {
+      string: navigator.userAgent,
+      subString: "Gecko",
+      identity: "Mozilla",
+      versionSearch: "rv"
+    },
+    {     // for older Netscapes (4-)
+      string: navigator.userAgent,
+      subString: "Mozilla",
+      identity: "Netscape",
+      versionSearch: "Mozilla"
+    }
+  ],
+  dataOS: [
+    {
+      string: navigator.platform,
+      subString: "Win",
+      identity: "Windows"
+    },
+    {
+      string: navigator.platform,
+      subString: "Mac",
+      identity: "Mac"
+    },
+    {
+      string: navigator.userAgent,
+      subString: "iPhone",
+      identity: "iPhone/iPod"
+    },
+    {
+      string: navigator.platform,
+      subString: "Linux",
+      identity: "Linux"
+    }
+  ]
+};
+Prime.Browser.detect();
+
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Index</a></h2><h3>Classes</h3><ul><li><a href="Prime.Ajax.Request.html">Request</a></li><li><a href="Prime.Dom.Element.html">Element</a></li><li><a href="Prime.Dom.ElementList.html">ElementList</a></li><li><a href="Prime.Effects.Appear.html">Appear</a></li><li><a href="Prime.Effects.BaseTransition.html">BaseTransition</a></li><li><a href="Prime.Effects.Fade.html">Fade</a></li><li><a href="Prime.Template.html">Template</a></li><li><a href="Prime.Widgets.MultipleSelect.html">MultipleSelect</a></li></ul><h3>Namespaces</h3><ul><li><a href="Prime.html">Prime</a></li><li><a href="Prime.Ajax.html">Ajax</a></li><li><a href="Prime.Browser.html">Browser</a></li><li><a href="Prime.Dom.html">Dom</a></li><li><a href="Prime.Dom.Document.html">Document</a></li><li><a href="Prime.Effects.html">Effects</a></li><li><a href="Prime.Events.html">Events</a></li><li><a href="Prime.Events.Keys.html">Keys</a></li><li><a href="Prime.Utils.html">Utils</a></li><li><a href="Prime.Widgets.html">Widgets</a></li></ul>
+</nav>
+
+<br clear="both">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0-dev</a> on Wed May 29 2013 18:26:35 GMT-0600 (MDT)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
