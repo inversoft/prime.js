@@ -65,10 +65,10 @@
 
 <p>To quickly get started with Prime JS, add this to your web page:</p>
 
-<pre><code>&lt;script type="text/javascript" src="http://prime-framework.github.io/prime-js/prime-0.12.js"&gt;&lt;/script&gt;
+<pre><code>&lt;script type="text/javascript" src="http://prime-framework.github.io/prime-js/prime-0.13.js"&gt;&lt;/script&gt;
 </code></pre>
 
-<p>The latest version of Prime JS is 0.12.</p>
+<p>The latest version of Prime JS is 0.13.</p>
 
 <p>We don't recommend using the github server to download Prime in production. Or using the full Prime JS file in production. Instead, you should minify this file before going to production.</p>
 
@@ -91,17 +91,17 @@
 
 <p>Selecting in Prime uses a static function in the Prime.Dom namespace. Under the hoods this uses Sizzle, so if you are used to JQuery or other frameworks, it works the same. Here's an example:</p>
 
-<pre><code>var element = Prime.Dom.queryFirst('.box .header');
+<pre><code>var element = Prime.Document.queryFirst('.box .header');
 </code></pre>
 
 <p>The return value of this function is a new instance of the <em>Prime.Dom.Element</em> class. You can also select multiple elements like this:</p>
 
-<pre><code>var elementList = Prime.Dom.query('p');
+<pre><code>var elementList = Prime.Document.query('p');
 </code></pre>
 
-<p>The return value of this function is a new instance of the <em>Prime.Dom.ElementList</em> class. </p>
+<p>The return value of this function is a new instance of the <em>Prime.Document.ElementList</em> class. </p>
 
-<p>There are a few other selector methods in the <em>Prime.Dom</em> namespace:</p>
+<p>There are a few other selector methods in the <em>Prime.Document</em> namespace:</p>
 
 <ul>
 <li>queryUp - queries upwards for elements</li>
@@ -112,7 +112,7 @@
 <h2>
 <a name="elementlists" class="anchor" href="#elementlists"><span class="octicon octicon-link"></span></a>ElementLists</h2>
 
-<p>The simplest usage of a <em>Prime.Dom.ElementList</em> is to iterate over all of the elements. The <em>each</em> method makes this simple:</p>
+<p>The simplest usage of a <em>Prime.Document.ElementList</em> is to iterate over all of the elements. The <em>each</em> method makes this simple:</p>
 
 <pre><code>elementList.each(function(element) {
   // Do something interesting with the element
@@ -133,12 +133,12 @@
   // Do something
 }
 
-Prime.Dom.onDocumentReady(ready);
+Prime.Document.onReady(ready);
 </code></pre>
 
 <p>Or the inline method like this:</p>
 
-<pre><code>Prime.Dom.onDocumentReady(function() {
+<pre><code>Prime.Document.onReady(function() {
   // Do something
 });
 </code></pre>
@@ -164,16 +164,17 @@ new Prime.Ajax.Request('/some/uri', 'POST').
 
 <p>We got tired of <em>this</em> being different things with every framework (or even in two different places in the same framework). We decided it was time to make <em>this</em> consistent (or at least as much as we could). Since Prime is based on Objects/Classes, you can make Prime ensure that <em>this</em> refers to the current object.</p>
 
-<p>Here is an example of using <em>Prime.Dom.Element</em> inside a class to handle click events:</p>
+<p>Here is an example of using <em>Prime.Document.Element</em> inside a class to handle click events:</p>
 
 <pre><code>var MyClass = function() {
-  this.element = Prime.Dom.queryFirst('.some-class').
+  this.element = Prime.Document.queryFirst('.some-class').
       addEventListener('click', this.handleClickEvents, this);
+  this.message = 'Hello World';
 };
 
 MyClass.prototype = {
   handleClickEvents: function(event) {
-    // The this variable will refer to this object
+    alert(this.message); // Says 'Hello World'
   }
 }
 </code></pre>
