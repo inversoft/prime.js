@@ -72,20 +72,6 @@
 
 <p>We don't recommend using the github server to download Prime in production. Or using the full Prime JS file in production. Instead, you should minify this file before going to production.</p>
 
-<p>If you want to hack on Prime, your best bet will be to clone/fork the git repository. This contains all of the JavaScript files in the src/main/js directory. If you have Gradle installed and want to generate a single JS file, run:</p>
-
-<pre><code>$ gradle jar
-</code></pre>
-
-<p>Yeah, we know this doesn't actually JAR anything, but Gradle relies on the java plugin and we just went with it. </p>
-
-<p>Gradle spits out the full Prime JS file at <strong>build/libs/prime.js</strong>. Copy this file into your web application (or symlink it). Once you have either the Prime JavaScript file copied into your project, insert the standard script tag in your header and you are SET!</p>
-
-<pre><code>&lt;script type="text/javascript" src="/js/prime.js"&gt;&lt;/script&gt;
-</code></pre>
-
-<p>You can also just use the individual Prime JavaScript files instead of the combined file. This will also require that you include the Sizzle JS file. The Sizzle file is located in the Prime JS project under src/main/js/sizzle/sizzle.js.</p>
-
 <h2>
 <a name="selecting" class="anchor" href="#selecting"><span class="octicon octicon-link"></span></a>Selecting</h2>
 
@@ -184,6 +170,25 @@ MyClass.prototype = {
 <p>Everywhere we could make this work in Prime, we did. All event functions take this third parameter. </p>
 
 <p>You can even use or proxy handling for your own needs. Check out the <em>Prime.Utils.proxy</em> function to learn more.</p>
+
+<h2>
+<a name="hacking" class="anchor" href="#hacking"><span class="octicon octicon-link"></span></a>Hacking</h2>
+
+<p>If you want to hack on Prime, your best bet will be to clone/fork the git repository. This contains all of the JavaScript files in the src/main/js directory. We link to jquery/sizzle as a submodule, so you will need to initialize and update this submodule located in the src/main/js/sizzle directory. </p>
+
+<p>If you have Gradle installed and want to generate a single JS file, run:</p>
+
+<pre><code>$ gradle jar
+</code></pre>
+
+<p>Yeah, we know this doesn't actually JAR anything, but Gradle relies on the java plugin and we just went with it. </p>
+
+<p>Gradle spits out the full Prime JS file at <strong>build/libs/prime.js</strong>. Copy this file into your web application (or symlink it). Once you have either the Prime JavaScript file copied into your project, insert the standard script tag in your header and you are SET!</p>
+
+<pre><code>&lt;script type="text/javascript" src="/js/prime.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<p>You can also just use the individual Prime JavaScript files instead of the combined file. This will also require that you include the Sizzle JS file. The Sizzle file is located in the Prime JS project under src/main/js/sizzle/sizzle.js.</p>
 
 <h2>
 <a name="credits" class="anchor" href="#credits"><span class="octicon octicon-link"></span></a>Credits</h2>
