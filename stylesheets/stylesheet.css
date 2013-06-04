@@ -165,6 +165,7 @@ h1 img {
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
+  width: 500px;
 }
 
 pre, code {
