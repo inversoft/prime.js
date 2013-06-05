@@ -383,6 +383,13 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
 
+    // Whitespace search
+    this.multipleSelect.search('   ');
+    assert.isFalse(this.multipleSelect.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelect.isCustomAddVisible());
+    assert.equals(this.multipleSelect.input.getValue(), '   ');
+    assert.isFalse(this.multipleSelect.searchResultsContainer.isVisible());
+
     // Empty search with no options available
     this.multipleSelect.selectOptionWithValue('two');
     this.multipleSelect.search('');

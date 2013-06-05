@@ -32,5 +32,7 @@ Prime.Events.Keys = Prime.Events.Keys || {};
 Prime.Events.Keys.BACKSPACE = 8;
 Prime.Events.Keys.ENTER = 13;
 Prime.Events.Keys.ESCAPE = 27;
+Prime.Events.Keys.SPACE = 32;
 Prime.Events.Keys.UP_ARROW = 38;
 Prime.Events.Keys.DOWN_ARROW = 40;
+Prime.Events.Keys.DELETE = 46;

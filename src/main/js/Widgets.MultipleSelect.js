@@ -542,7 +542,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     }
 
     // Show the custom add option if necessary
-    if (this.customAddEnabled && searchText !== '' &&
+    if (this.customAddEnabled && searchText.trim().length !== 0 &&
         (selectableOptions.length === 0 || !this.arrayContainsValueIgnoreCase(selectableOptions, searchText))) {
       Prime.Document.newElement('<li/>').
           addClass('prime-multiple-select-search-result prime-multiple-select-add-custom').
@@ -554,7 +554,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     }
 
     // Show the no matches if necessary
-    if (count === 0 && searchText !== '') {
+    if (count === 0 && searchText.trim().length !== 0) {
       Prime.Document.newElement('<li/>').
           addClass('prime-multiple-select-no-search-results').
           setHTML(this.noSearchResultsLabel + searchText).
@@ -694,7 +694,11 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @private
    */
   addCustomOption: function() {
-    var customValue = this.input.getValue();
+    var customValue = this.input.getValue().trim();
+    if (customValue.length === 0) {
+      return;
+    }
+
     this.addOption(customValue, customValue);
     this.selectOptionWithValue(customValue);
   },
@@ -845,7 +849,8 @@ Prime.Widgets.MultipleSelect.prototype = {
     } else if (key === Prime.Events.Keys.ESCAPE) {
       this.searchResultsContainer.hide();
       this.unhighlightOptionForUnselect();
-    } else if ((key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
+    } else if (key === Prime.Events.Keys.SPACE || key === Prime.Events.Keys.DELETE ||
+        (key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
       this.unhighlightOptionForUnselect();
       this.search();
     }

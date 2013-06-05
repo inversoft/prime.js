@@ -209,7 +209,7 @@
   </component>
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/prime-js.iml" filepath="$PROJECT_DIR$/prime-js.iml" />
+      <module fileurl="file://$PROJECT_DIR$/prime.js.iml" filepath="$PROJECT_DIR$/prime.js.iml" />
     </modules>
   </component>
   <component name="ProjectResources">
