@@ -566,10 +566,10 @@ Prime.Widgets.MultipleSelect.prototype = {
     if (count > 0) {
       this.searchResultsContainer.show();
 
-      if (count < 5) {
-        this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * count + 1);
-      } else {
+      if (count >= 10) {
         this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * 10 + 1);
+      } else {
+        this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * count + 1);
       }
     } else {
       this.searchResultsContainer.hide();
