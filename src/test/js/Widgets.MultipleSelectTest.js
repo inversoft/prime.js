@@ -530,6 +530,7 @@ buster.testCase('MultipleSelect class tests', {
   'setSelectedValues': function() {
     // Select one option
     this.multipleSelect.setSelectedValues('two');
+    assert.equals(this.multipleSelect.getSelectedValues(), ['two']);
 
     var select = this.multipleSelect.element.domElement;
     assert.equals(select.length, 3);
@@ -549,6 +550,7 @@ buster.testCase('MultipleSelect class tests', {
 
     // Select multiple options
     this.multipleSelect.setSelectedValues('one', 'two');
+    assert.equals(this.multipleSelect.getSelectedValues(), ['one', 'two']);
 
     select = this.multipleSelect.element.domElement;
     assert.equals(select.length, 3);

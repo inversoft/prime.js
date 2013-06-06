@@ -255,6 +255,13 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
   /**
+   * @return {string[]} The currently selected options values.
+   */
+  getSelectedValues: function() {
+    return this.element.getSelectedValues();
+  },
+
+  /**
    * Determines if the MultipleSelect contains an option with the given value.
    *
    * @param {string} value The value.
