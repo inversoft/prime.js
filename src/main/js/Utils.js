@@ -85,6 +85,16 @@ Prime.Utils = {
   },
 
   /**
+   * Determines if an object is an array or not.
+   *
+   * @param {*} o The object to check.
+   * @returns {boolean} True if the object is an array, false otherwise.
+   */
+  isArray: function(o) {
+    return Object.prototype.toString.call(o) === '[object Array]';
+  },
+
+  /**
    * Parses JSON.
    *
    * @param {string} json The JSON.

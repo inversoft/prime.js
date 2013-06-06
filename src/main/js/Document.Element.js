@@ -924,7 +924,14 @@ Prime.Document.Element.prototype = {
    * @return {Prime.Document.Element} This Element.
    */
   setSelectedValues: function() {
-    var values = Array.prototype.slice.call(arguments, 0);
+    // Handle the case where they passed in an array
+    var values = null;
+    if (arguments.length === 1 && Prime.Utils.isArray(arguments[0])) {
+      values = arguments[0];
+    } else {
+      values = Array.prototype.slice.call(arguments, 0);
+    }
+
     if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
       var name = this.domElement.name;
       var form = Prime.Document.queryUp('form', this.domElement);
