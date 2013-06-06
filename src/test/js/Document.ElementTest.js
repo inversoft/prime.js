@@ -746,37 +746,6 @@ buster.testCase('Element class tests', {
     }
   },
 
-  'select': function() {
-    Prime.Document.queryByID('two-checkbox-select').select(['three']);
-    assert.isFalse(Prime.Document.queryByID('one-checkbox-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('two-checkbox-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('three-checkbox-select').isChecked());
-
-    Prime.Document.queryByID('three-checkbox-select').select(['one', 'two']);
-    assert.isTrue(Prime.Document.queryByID('one-checkbox-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('two-checkbox-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('three-checkbox-select').isChecked());
-
-    Prime.Document.queryByID('two-radio-select').select(['two']);
-    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('two-radio-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('three-radio-select').isChecked());
-
-    Prime.Document.queryByID('two-radio-select').select(['three']);
-    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('two-radio-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('three-radio-select').isChecked());
-
-    Prime.Document.queryByID('select-single-select').select(['three']);
-    assert.equals(Prime.Document.queryByID('select-single-select').getSelectedValues(), ['three']);
-
-    Prime.Document.queryByID('select-multiple-select').select(['two']);
-    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['two']);
-
-    Prime.Document.queryByID('select-multiple-select').select(['one', 'three']);
-    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['one', 'three']);
-  },
-
   'setChecked': function() {
     Prime.Document.queryByID('two-checkbox-checked').setChecked(true);
     assert.isTrue(Prime.Document.queryByID('one-checkbox-checked').isChecked());
@@ -799,20 +768,6 @@ buster.testCase('Element class tests', {
     assert.isFalse(Prime.Document.queryByID('three-radio-checked').isChecked());
   },
 
-  'setHTML': function() {
-    Prime.Document.queryFirst('#html').setHTML('Changed');
-
-    var element = document.getElementById('html');
-    assert.equals(element.innerHTML, 'Changed');
-  },
-
-  'setHTMLByElement': function() {
-    Prime.Document.queryFirst('#htmlByElement').setHTML(Prime.Document.queryByID("htmlByElementTarget"));
-
-    var element = document.getElementById('htmlByElement');
-    assert.equals(element.innerHTML, 'By Element Target');
-  },
-
   'setAttributes': function() {
     Prime.Document.queryByID('set-attributes').setAttributes({'rel': 'foo', 'width': '10%'});
 
@@ -820,6 +775,13 @@ buster.testCase('Element class tests', {
     refute.isNull(element);
     assert.equals(element.attributes.getNamedItem('rel').value, 'foo');
     assert.equals(element.attributes.getNamedItem('width').value, '10%');
+  },
+
+  'setHTML': function() {
+    Prime.Document.queryFirst('#html').setHTML('Changed');
+
+    var element = document.getElementById('html');
+    assert.equals(element.innerHTML, 'Changed');
   },
 
   'setHeight': function() {
@@ -832,12 +794,50 @@ buster.testCase('Element class tests', {
     assert.isTrue(element.getHeight() > 0); // Just make sure it doesn't throw since the computed style is always in pixels
   },
 
+  'setHTMLByElement': function() {
+    Prime.Document.queryFirst('#htmlByElement').setHTML(Prime.Document.queryByID("htmlByElementTarget"));
+
+    var element = document.getElementById('htmlByElement');
+    assert.equals(element.innerHTML, 'By Element Target');
+  },
+
   'setLeft': function() {
     var element = Prime.Document.queryByID('set-styles').setLeft(10);
     assert.equals(element.getStyle('left'), '10px');
 
     element.setLeft('10em');
     assert.equals(element.getStyle('left'), '10em');
+  },
+
+  'setSelectedValues': function() {
+    Prime.Document.queryByID('two-checkbox-select').setSelectedValues('three');
+    assert.isFalse(Prime.Document.queryByID('one-checkbox-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('two-checkbox-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('three-checkbox-select').isChecked());
+
+    Prime.Document.queryByID('three-checkbox-select').setSelectedValues('one', 'two');
+    assert.isTrue(Prime.Document.queryByID('one-checkbox-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('two-checkbox-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('three-checkbox-select').isChecked());
+
+    Prime.Document.queryByID('two-radio-select').setSelectedValues('two');
+    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('two-radio-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('three-radio-select').isChecked());
+
+    Prime.Document.queryByID('two-radio-select').setSelectedValues('three');
+    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('two-radio-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('three-radio-select').isChecked());
+
+    Prime.Document.queryByID('select-single-select').setSelectedValues('three');
+    assert.equals(Prime.Document.queryByID('select-single-select').getSelectedValues(), ['three']);
+
+    Prime.Document.queryByID('select-multiple-select').setSelectedValues('two');
+    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['two']);
+
+    Prime.Document.queryByID('select-multiple-select').setSelectedValues('one', 'three');
+    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['one', 'three']);
   },
 
   'setStyles': function() {

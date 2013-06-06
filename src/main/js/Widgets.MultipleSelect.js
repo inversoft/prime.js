@@ -671,6 +671,18 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
   /**
+   * Sets the selected options. This mimics the function on Element to provide consistency.
+   *
+   * @param {string[]} [arguments] The list of options to select based on their values.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  setSelectedValues: function() {
+    this.element.setSelectedValues.apply(this.element, arguments);
+    this.rebuildDisplay();
+    return this;
+  },
+
+  /**
    * Unhighlights the last option if it is highlighted.
    *
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.

@@ -30,6 +30,7 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelect.addOption('three', 'Three');
     this.multipleSelect.selectOptionWithValue('one');
     this.multipleSelect.selectOptionWithValue('three');
+    this.multipleSelect.removeAllSearchResults();
     this.multipleSelect.closeSearchResults();
 
     this.multipleSelectCustomAddDisabled = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-custom-add-disabled'), 'Choose:', false);
@@ -40,6 +41,7 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelectCustomAddDisabled.addOption('twenty', 'Twenty');
     this.multipleSelectCustomAddDisabled.selectOptionWithValue('one');
     this.multipleSelectCustomAddDisabled.selectOptionWithValue('three');
+    this.multipleSelectCustomAddDisabled.removeAllSearchResults();
     this.multipleSelectCustomAddDisabled.closeSearchResults();
   },
 
@@ -523,6 +525,48 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(options[1], 'Two');
     assert.equals(options[2], 'Two1');
     assert.equals(options[3], 'Two2');
+  },
+
+  'setSelectedValues': function() {
+    // Select one option
+    this.multipleSelect.setSelectedValues('two');
+
+    var select = this.multipleSelect.element.domElement;
+    assert.equals(select.length, 3);
+    assert.equals(select.options[0].value, 'one');
+    assert.isFalse(select.options[0].selected);
+    assert.equals(select.options[1].value, 'two');
+    assert.isTrue(select.options[1].selected);
+    assert.equals(select.options[2].value, 'three');
+    assert.isFalse(select.options[2].selected);
+
+    // Ensure that the option is added to the display
+    var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
+    assert.equals(displayOptions.length, 2);
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[0].getAttribute('value'), 'two');
+    assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
+
+    // Select multiple options
+    this.multipleSelect.setSelectedValues('one', 'two');
+
+    select = this.multipleSelect.element.domElement;
+    assert.equals(select.length, 3);
+    assert.equals(select.options[0].value, 'one');
+    assert.isTrue(select.options[0].selected);
+    assert.equals(select.options[1].value, 'two');
+    assert.isTrue(select.options[1].selected);
+    assert.equals(select.options[2].value, 'three');
+    assert.isFalse(select.options[2].selected);
+
+    // Ensure that the option is added to the display
+    displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
+    assert.equals(displayOptions.length, 3);
+    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getAttribute('value'), 'one');
+    assert.equals(displayOptions[1].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[1].getAttribute('value'), 'two');
+    assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   },
 
   'unhighlightOptionForUnselect': function() {
