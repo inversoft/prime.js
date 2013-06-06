@@ -746,6 +746,59 @@ buster.testCase('Element class tests', {
     }
   },
 
+  'select': function() {
+    Prime.Document.queryByID('two-checkbox-select').select(['three']);
+    assert.isFalse(Prime.Document.queryByID('one-checkbox-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('two-checkbox-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('three-checkbox-select').isChecked());
+
+    Prime.Document.queryByID('three-checkbox-select').select(['one', 'two']);
+    assert.isTrue(Prime.Document.queryByID('one-checkbox-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('two-checkbox-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('three-checkbox-select').isChecked());
+
+    Prime.Document.queryByID('two-radio-select').select(['two']);
+    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('two-radio-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('three-radio-select').isChecked());
+
+    Prime.Document.queryByID('two-radio-select').select(['three']);
+    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
+    assert.isFalse(Prime.Document.queryByID('two-radio-select').isChecked());
+    assert.isTrue(Prime.Document.queryByID('three-radio-select').isChecked());
+
+    Prime.Document.queryByID('select-single-select').select(['three']);
+    assert.equals(Prime.Document.queryByID('select-single-select').getSelectedValues(), ['three']);
+
+    Prime.Document.queryByID('select-multiple-select').select(['two']);
+    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['two']);
+
+    Prime.Document.queryByID('select-multiple-select').select(['one', 'three']);
+    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['one', 'three']);
+  },
+
+  'setChecked': function() {
+    Prime.Document.queryByID('two-checkbox-checked').setChecked(true);
+    assert.isTrue(Prime.Document.queryByID('one-checkbox-checked').isChecked());
+    assert.isTrue(Prime.Document.queryByID('two-checkbox-checked').isChecked());
+    assert.isTrue(Prime.Document.queryByID('three-checkbox-checked').isChecked());
+
+    Prime.Document.queryByID('two-checkbox-checked').setChecked(false);
+    assert.isTrue(Prime.Document.queryByID('one-checkbox-checked').isChecked());
+    assert.isFalse(Prime.Document.queryByID('two-checkbox-checked').isChecked());
+    assert.isTrue(Prime.Document.queryByID('three-checkbox-checked').isChecked());
+
+    Prime.Document.queryByID('two-radio-checked').setChecked(true);
+    assert.isFalse(Prime.Document.queryByID('one-radio-checked').isChecked());
+    assert.isTrue(Prime.Document.queryByID('two-radio-checked').isChecked());
+    assert.isFalse(Prime.Document.queryByID('three-radio-checked').isChecked());
+
+    Prime.Document.queryByID('two-radio-checked').setChecked(false);
+    assert.isFalse(Prime.Document.queryByID('one-radio-checked').isChecked());
+    assert.isFalse(Prime.Document.queryByID('two-radio-checked').isChecked());
+    assert.isFalse(Prime.Document.queryByID('three-radio-checked').isChecked());
+  },
+
   'setHTML': function() {
     Prime.Document.queryFirst('#html').setHTML('Changed');
 
@@ -804,6 +857,19 @@ buster.testCase('Element class tests', {
     assert.equals(element.getStyle('top'), '10em');
   },
 
+  'setValue': function() {
+    assert.equals(Prime.Document.queryByID('one-checkbox-set').setValue('one-changed').getValue(), 'one-changed');
+    assert.isTrue(Prime.Document.queryByID('one-checkbox-set').isChecked());
+    assert.equals(Prime.Document.queryByID('two-checkbox-set').setValue('two-changed').getValue(), 'two-changed');
+    assert.isFalse(Prime.Document.queryByID('two-checkbox-set').isChecked());
+    assert.equals(Prime.Document.queryByID('one-radio-set').setValue('one-changed').getValue(), 'one-changed');
+    assert.isTrue(Prime.Document.queryByID('one-radio-set').isChecked());
+    assert.equals(Prime.Document.queryByID('two-radio-set').setValue('two-changed').getValue(), 'two-changed');
+    assert.isFalse(Prime.Document.queryByID('two-radio-set').isChecked());
+    assert.equals(Prime.Document.queryByID('text-set').setValue('text-set-changed').getValue(), 'text-set-changed');
+    assert.equals(Prime.Document.queryByID('textarea-set').setValue('textarea-set-changed').getValue(), 'textarea-set-changed');
+  },
+
   'setWidth': function() {
     var element = Prime.Document.queryByID('set-styles').setWidth(10);
     assert.equals(element.getStyle('width'), '10px');
@@ -850,7 +916,54 @@ buster.testCase('Element class tests', {
     assert.equals(element.style.display, 'table-cell');
   },
 
-  'eventsUsingFunction': function() {
+  'eventsUsingFunction single listener': function(done) {
+    var called = false;
+    var called2 = false;
+    var memo = null;
+    var memo2 = null;
+    var handler = function(event) {
+      called = true;
+      memo = event.memo;
+    };
+
+    Prime.Document.queryFirst('#event').
+        addEventListener('click', handler).
+        fireEvent('click', 'memo');
+
+    setTimeout(function() {
+      assert.isTrue(called);
+      assert.isFalse(called2);
+      assert.equals(memo, 'memo');
+      assert.isNull(memo2);
+      done();
+    }, 50);
+  },
+
+  'eventUsingFunction remove single listener': function(done) {
+    var called = false;
+    var called2 = false;
+    var memo = null;
+    var memo2 = null;
+    var handler = function(event) {
+      called = true;
+      memo = event.memo;
+    };
+
+    Prime.Document.queryFirst('#event').
+        addEventListener('click', handler).
+        removeEventListener('click', handler).
+        fireEvent('click', 'memo');
+
+    setTimeout(function() {
+      assert.isFalse(called);
+      assert.isFalse(called2);
+      assert.isNull(memo);
+      assert.isNull(memo2);
+      done();
+    }, 50);
+  },
+
+  'eventUsingFunction multiple listeners': function(done) {
     var called = false;
     var called2 = false;
     var memo = null;
@@ -864,51 +977,47 @@ buster.testCase('Element class tests', {
       memo2 = event.memo;
     };
 
-    // Single handlers
-    var element = Prime.Document.queryFirst('#event').
-        addEventListener('click', handler).
-        fireEvent('click', 'memo');
-
-    assert.isTrue(called);
-    assert.isFalse(called2);
-    assert.equals(memo, 'memo');
-    assert.isNull(memo2);
-
-    called = false;
-    memo = null;
-    element.
-        removeEventListener('click', handler).
-        fireEvent('click', 'memo');
-
-    assert.isFalse(called);
-    assert.isFalse(called2);
-    assert.isNull(memo);
-    assert.isNull(memo2);
-
-    // Multiple handlers
-    element.
+    Prime.Document.queryFirst('#event').
         addEventListener('click', handler).
         addEventListener('click', handler2).
         fireEvent('click', 'memo');
 
-    assert.isTrue(called);
-    assert.isTrue(called2);
-    assert.equals(memo, 'memo');
-    assert.equals(memo2, 'memo');
+    window.setTimeout(function() {
+      assert.isTrue(called);
+      assert.isTrue(called2);
+      assert.equals(memo, 'memo');
+      assert.equals(memo2, 'memo');
+      done();
+    }, 50);
+  },
 
-    // Remove all
-    called = false;
-    called2 = false;
-    memo = null;
-    memo2 = null;
-    element.
+  'eventUsingFunction remove all listeners': function(done) {
+    var called = false;
+    var called2 = false;
+    var memo = null;
+    var memo2 = null;
+    var handler = function(event) {
+      called = true;
+      memo = event.memo;
+    };
+    var handler2 = function(event) {
+      called2 = true;
+      memo2 = event.memo;
+    };
+
+    Prime.Document.queryFirst('#event').
+        addEventListener('click', handler).
+        addEventListener('click', handler2).
         removeAllEventListeners().
         fireEvent('click', 'memo');
 
-    assert.isFalse(called);
-    assert.isFalse(called2);
-    assert.isNull(memo);
-    assert.isNull(memo2);
+    window.setTimeout(function() {
+      assert.isFalse(called);
+      assert.isFalse(called2);
+      assert.isNull(memo);
+      assert.isNull(memo2);
+      done();
+    }, 50);
   },
 
   'eventsUsingObject': function() {

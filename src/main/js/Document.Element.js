@@ -358,8 +358,8 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Retrieves the values of this Element, if the element is a radio button, checkbox, or select. If it is anything else
-   * this returns null.
+   * Retrieves the values of this Element, if the element is a checkbox or select. If it is anything else this returns
+   * null.
    *
    * @return {Array} The values of this Element.
    */
@@ -428,7 +428,9 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Retrieves the value of this Element.
+   * Retrieves the value attribute of this Element. This works on all checkboxes, radio buttons, text, text areas, and
+   * options. However, this does not retrieve the selected options in a select box, checked checkboxes or checked radio
+   * buttons. Use the getSelectedValues function for that.
    *
    * @return {string} The value of this Element.
    */
@@ -802,6 +804,29 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Sets the selected value(s) of this element. This works on selects, checkboxes, and radio buttons.
+   *
+   * @param {Array} values The value(s) to select. If you want to select a single value, pass in an array with a single
+   *        element.
+   * @return {Prime.Document.Element} This Element.
+   */
+  select: function(values) {
+    if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
+      var name = this.domElement.name;
+      var form = Prime.Document.queryUp('form', this.domElement);
+      Prime.Document.query('input[name=' + name + ']', form).each(function(element) {
+        element.setChecked(values.indexOf(element.getValue()) !== -1);
+      });
+    } else if (this.domElement.tagName === 'SELECT') {
+      for (var i = 0; i < this.domElement.length; i++) {
+        this.domElement.options[i].selected = values.indexOf(this.domElement.options[i].value) !== -1;
+      }
+    }
+
+    return this;
+  },
+
+  /**
    * Sets an attribute of the Element.
    *
    * @param {string} name The attribute name
@@ -828,6 +853,16 @@ Prime.Document.Element.prototype = {
       }
     }
     return this;
+  },
+
+  /**
+   * If this element is a checkbox or radio button, this sets the checked field on the DOM object equal to the given
+   * value.
+   *
+   * @param {boolean} value The value to set the checked state of this element to.
+   */
+  setChecked: function(value) {
+    this.domElement.checked = value;
   },
 
   /**
@@ -949,7 +984,9 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Sets the value of this Element.
+   * Sets the value of this Element. This handles checkboxes, radio buttons, options, text inputs and text areas. This
+   * works on checkboxes and radio buttons, but it change the value attribute on them rather than checking and unchecking
+   * the buttons themselves. To check and uncheck the buttons, use the setSelectedValues method.
    *
    * @param {string} value The new value.
    * @return {Prime.Document.Element} This Element.
