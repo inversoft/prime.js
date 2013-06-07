@@ -75,7 +75,7 @@ Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, 
   this.customAddLabel = typeof(customAddLabel) !== 'undefined' ? customAddLabel : 'Add Custom Value: ';
 
   var id = this.element.getID();
-  if (id === null) {
+  if (id === null || id === '') {
     id = 'prime-multiple-select' + Prime.Widgets.MultipleSelect.count++;
     this.element.setID(id);
   }
@@ -119,8 +119,28 @@ Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, 
  * Statics
  */
 Prime.Widgets.MultipleSelect.count = 1;
+Prime.Widgets.MultipleSelect.AddOptionEvent= 'Prime:Widgets:MultipleSelect:addOption';
+Prime.Widgets.MultipleSelect.DeselectOptionEvent= 'Prime:Widgets:MultipleSelect:deselectOption';
+Prime.Widgets.MultipleSelect.SelectOptionEvent= 'Prime:Widgets:MultipleSelect:selectOption';
 
 Prime.Widgets.MultipleSelect.prototype = {
+  /**
+   * Pass through to add event listeners to this MultipleSelect. The custom events that this MultipleSelect fires are:
+   *
+   *  'Prime:Widgets:MultipleSelect:deselectOption'
+   *  'Prime:Widgets:MultipleSelect:selectOption'
+   *  'Prime:Widgets:MultipleSelect:addOption'
+   *
+   * @param {string} event The name of the event.
+   * @param {Function} listener The listener function.
+   * @param {*} [context] The context.
+   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  addEventListener: function(event, listener, context) {
+    this.element.addEventListener(event, listener, context);
+    return this;
+  },
+
   /**
    * Adds the given option to this select. The option will not be selected.
    *
@@ -141,6 +161,9 @@ Prime.Widgets.MultipleSelect.prototype = {
     if (this.isSearchResultsVisible()) {
       this.search();
     }
+
+    // Fire the custom event
+    this.element.fireEvent(Prime.Widgets.MultipleSelect.AddOptionEvent, value, this);
 
     return this;
   },
@@ -190,6 +213,9 @@ Prime.Widgets.MultipleSelect.prototype = {
     if (this.isSearchResultsVisible()) {
       this.search();
     }
+
+    // Fire the custom event
+    this.element.fireEvent(Prime.Widgets.MultipleSelect.DeselectOptionEvent, option.getValue(), this);
 
     return this;
   },
@@ -652,6 +678,9 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // Scroll the display to the bottom
     this.displayContainerSelectedOptionList.scrollToBottom();
+
+    // Fire the custom event
+    this.element.fireEvent(Prime.Widgets.MultipleSelect.SelectOptionEvent, option.getValue(), this);
 
     return this;
   },

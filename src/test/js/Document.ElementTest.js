@@ -169,6 +169,73 @@ buster.testCase('Element class tests', {
     }
   },
 
+  'appendElement': {
+    setUp: function() {
+      var element = Prime.Document.newElement('<p/>').
+          setID('appendElementNew').
+          appendTo(document.body);
+      element.setHTML('Hello world<strong>!</strong>');
+    },
+
+    tearDown: function() {
+      Prime.Document.queryByID('appendElementNew').removeFromDOM();
+    },
+
+    'appendElementPrimeElement': function() {
+      var newElement = Prime.Document.queryByID('appendElementNew');
+      Prime.Document.queryByID('insertSingle').appendElement(newElement);
+
+      var element = Prime.Document.queryByID('insertSingle');
+      assert.equals(element.getTagName(), 'DIV');
+      assert.equals(element.getChildren().length, 2);
+      assert.equals(element.getChildren()[0].getID(), 'insertSingleElement');
+      assert.equals(element.getChildren()[0].getTagName(), 'DIV');
+      assert.equals(element.getChildren()[1].getID(), 'appendElementNew');
+      assert.equals(element.getChildren()[1].getTagName(), 'P');
+      assert.equals(element.getChildren()[1].getTextContent(), 'Hello world!');
+      assert.equals(element.getChildren()[1].getChildren().length, 1);
+      assert.equals(element.getChildren()[1].getChildren()[0].getTagName(), 'STRONG');
+      assert.equals(element.getChildren()[1].getChildren()[0].getTextContent(), '!');
+    },
+
+    'appendElementNode': function() {
+      Prime.Document.queryByID('insertSingle').appendElement(document.getElementById('appendElementNew'));
+
+      var element = Prime.Document.queryByID('insertSingle');
+      assert.equals(element.getTagName(), 'DIV');
+      assert.equals(element.getChildren().length, 2);
+      assert.equals(element.getChildren()[0].getID(), 'insertSingleElement');
+      assert.equals(element.getChildren()[0].getTagName(), 'DIV');
+      assert.equals(element.getChildren()[1].getID(), 'appendElementNew');
+      assert.equals(element.getChildren()[1].getTagName(), 'P');
+      assert.equals(element.getChildren()[1].getTextContent(), 'Hello world!');
+      assert.equals(element.getChildren()[1].getChildren().length, 1);
+      assert.equals(element.getChildren()[1].getChildren()[0].getTagName(), 'STRONG');
+      assert.equals(element.getChildren()[1].getChildren()[0].getTextContent(), '!');
+    }
+  },
+
+  'appendHTML': {
+    tearDown: function() {
+      Prime.Document.query('#appendHTMLNew').removeAllFromDOM();
+    },
+
+    'appendHTML': function() {
+      Prime.Document.queryByID('insertSingle').appendHTML('<p id="appendHTMLNew">Hello world<strong>!</strong></p>');
+
+      var element = Prime.Document.queryByID('insertSingle');
+      assert.equals(element.getTagName(), 'DIV');
+      assert.equals(element.getChildren().length, 2);
+      assert.equals(element.getChildren()[0].getID(), 'insertSingleElement');
+      assert.equals(element.getChildren()[0].getTagName(), 'DIV');
+      assert.equals(element.getChildren()[1].getTagName(), 'P');
+      assert.equals(element.getChildren()[1].getTextContent(), 'Hello world!');
+      assert.equals(element.getChildren()[1].getChildren().length, 1);
+      assert.equals(element.getChildren()[1].getChildren()[0].getTagName(), 'STRONG');
+      assert.equals(element.getChildren()[1].getChildren()[0].getTextContent(), '!');
+    }
+  },
+
   'appendTo': {
     tearDown: function() {
       Prime.Document.query('#appendToSingleElementNew').removeAllFromDOM();
@@ -766,6 +833,19 @@ buster.testCase('Element class tests', {
     assert.isFalse(Prime.Document.queryByID('one-radio-checked').isChecked());
     assert.isFalse(Prime.Document.queryByID('two-radio-checked').isChecked());
     assert.isFalse(Prime.Document.queryByID('three-radio-checked').isChecked());
+  },
+
+  'setDisabled': function() {
+    Prime.Document.queryByID('checkbox-disabled').setDisabled(true);
+    assert.isTrue(Prime.Document.queryByID('checkbox-disabled').isDisabled());
+
+    var select = Prime.Document.queryByID('select-disabled');
+    select.getChildren().each(function(option) {
+      option.setDisabled(true);
+    });
+    select.getChildren().each(function(option) {
+      assert.isTrue(option.isDisabled());
+    });
   },
 
   'setAttributes': function() {

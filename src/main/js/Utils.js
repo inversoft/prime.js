@@ -133,6 +133,18 @@ Prime.Utils = {
   },
 
   /**
+   * Removes the objects in the toRemove array from the fromArray.
+   *
+   * @param {Array} fromArray The array to remove from.
+   * @param {Array} toRemove The values to remove.
+   */
+  removeAllFromArray: function(fromArray, toRemove) {
+    for (var i = 0; i < toRemove.length; i++) {
+      Prime.Utils.removeFromArray(fromArray, toRemove[i]);
+    }
+  },
+
+  /**
    * Removes the given object from the given array.
    *
    * @param {Array} array The array to remove from.

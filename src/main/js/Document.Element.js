@@ -105,10 +105,38 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Appends the given element to this element. If the given element already exists in the DOM, it is removed from its
+   * current location and placed at the end of this element.
+   *
+   * @param {Prime.Document.Element|Node} element The element to append.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  appendElement: function(element) {
+    var domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
+    if (domElement.parentNode) {
+      domElement.parentNode.removeChild(domElement);
+    }
+
+    this.domElement.appendChild(domElement);
+    return this;
+  },
+
+  /**
+   * Appends the given HTML string to this element.
+   *
+   * @param {string} html The HTML to append.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  appendHTML: function(html) {
+    this.domElement.insertAdjacentHTML('beforeend', html);
+    return this;
+  },
+
+  /**
    * Inserts this Element (which must be a newly created Element) into the DOM inside at the very end of the given
    * element.
    *
-   * @param {Element} element The element to insert this Element into.
+   * @param {Prime.Document.Element|Node} element The element to insert this Element into.
    * @return {Prime.Document.Element} This Element.
    */
   appendTo: function(element) {
@@ -132,13 +160,16 @@ Prime.Document.Element.prototype = {
    *
    * @param {string} event The name of the event.
    * @param {Object} [memo] Assigned to the memo field of the event.
+   * @param {Object} [target] The target.
    * @param {boolean} [bubbling] If the event is bubbling, defaults to true.
    * @param {boolean} [cancelable] If the event is cancellable, defaults to true.
    * @return {Prime.Document.Element} This Element.
    */
-  fireEvent: function(event, memo, bubbling, cancelable) {
-    bubbling = typeof bubbling !== 'undefined' ? bubbling : true;
-    cancelable = typeof cancelable !== 'undefined' ? cancelable : true;
+  fireEvent: function(event, memo, target, bubbling, cancelable) {
+    memo = typeof(memo) !== 'undefined' ? memo : {};
+    target = typeof(target) !== 'undefined' ? target : this;
+    bubbling = typeof(bubbling) !== 'undefined' ? bubbling : true;
+    cancelable = typeof(cancelable) !== 'undefined' ? cancelable : true;
 
     var evt;
     if (event.indexOf(':') === -1) {
@@ -169,7 +200,7 @@ Prime.Document.Element.prototype = {
     } else {
       // Custom event
       this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
-      evt = {'event': event, 'memo': memo};
+      evt = {'event': event, 'memo': memo, 'target': target};
       for (index in this.domElement.customEventListeners[event]) {
         if (this.domElement.customEventListeners[event].hasOwnProperty(index)) {
           this.domElement.customEventListeners[event][index](evt);
@@ -575,6 +606,13 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @returns {boolean} Whether or not this element is disabled according to the disabled property.
+   */
+  isDisabled: function() {
+    return this.domElement.disabled;
+  },
+
+  /**
    * @returns {boolean} True if this element has focus.
    */
   isFocused: function() {
@@ -837,9 +875,22 @@ Prime.Document.Element.prototype = {
    * value.
    *
    * @param {boolean} value The value to set the checked state of this element to.
+   * @return {Prime.Document.Element} This Element.
    */
   setChecked: function(value) {
     this.domElement.checked = value;
+    return this;
+  },
+
+  /**
+   * Sets if this element is disabled or not. This works with any element that responds to the disabled property.
+   *
+   * @param {boolean} value The value to set the disabled state of this element to.
+   * @return {Prime.Document.Element} This Element.
+   */
+  setDisabled: function(value) {
+    this.domElement.disabled = value;
+    return this;
   },
 
   /**

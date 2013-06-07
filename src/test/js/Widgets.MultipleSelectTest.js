@@ -70,8 +70,20 @@ buster.testCase('MultipleSelect class tests', {
   },
 
   'addOption': function() {
+    // Event listener
+    var called = false;
+    var ms = this.multipleSelect;
+    var listener = function(event) {
+      called = true;
+      assert.equals(event.event, Prime.Widgets.MultipleSelect.AddOptionEvent);
+      assert.equals(event.memo, 'four');
+      assert.equals(event.target, ms);
+    };
+
     // Add the option
+    this.multipleSelect.addEventListener(Prime.Widgets.MultipleSelect.AddOptionEvent, listener);
     this.multipleSelect.addOption('four', 'Four');
+    assert.isTrue(called);
 
     var select = this.multipleSelect.element.domElement;
     assert.equals(select.length, 4);
@@ -102,8 +114,20 @@ buster.testCase('MultipleSelect class tests', {
   },
 
   'deselectOptionWithValue': function() {
+    // Event listener
+    var called = false;
+    var ms = this.multipleSelect;
+    var listener = function(event) {
+      called = true;
+      assert.equals(event.event, Prime.Widgets.MultipleSelect.DeselectOptionEvent);
+      assert.equals(event.memo, 'one');
+      assert.equals(event.target, ms);
+    };
+
     // Deselect the option
+    this.multipleSelect.addEventListener(Prime.Widgets.MultipleSelect.DeselectOptionEvent, listener);
     this.multipleSelect.deselectOptionWithValue('one');
+    assert.isTrue(called);
 
     var select = this.multipleSelect.element.domElement;
     assert.equals(select.length, 3);
@@ -476,8 +500,20 @@ buster.testCase('MultipleSelect class tests', {
   },
 
   'selectOptionWithValue': function() {
+    // Event listener
+    var called = false;
+    var ms = this.multipleSelect;
+    var listener = function(event) {
+      called = true;
+      assert.equals(event.event, Prime.Widgets.MultipleSelect.SelectOptionEvent);
+      assert.equals(event.memo, 'two');
+      assert.equals(event.target, ms);
+    };
+
     // Select the option
+    this.multipleSelect.addEventListener(Prime.Widgets.MultipleSelect.SelectOptionEvent, listener);
     this.multipleSelect.selectOptionWithValue('two');
+    assert.isTrue(called);
 
     var select = this.multipleSelect.element.domElement;
     assert.equals(select.length, 3);
