@@ -246,10 +246,10 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @return {Prime.Document.Element} The option element or null.
    */
   findOptionWithText: function(text) {
-    for (var i = 0; i < this.element.domElement.length; i++) {
-      var cur = this.element.domElement.options[i];
-      if (cur.innerText === text) {
-        return new Prime.Document.Element(cur);
+    var options = this.element.getOptions();
+    for (var i = 0; i < options.length; i++) {
+      if (options[i].getTextContent() === text) {
+        return options[i];
       }
     }
 

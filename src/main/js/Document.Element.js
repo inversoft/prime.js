@@ -346,6 +346,18 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @return {Prime.Document.ElementList} If this element is a select box, this returns the options of the select box in
+   *          an ElementList.
+   */
+  getOptions: function() {
+    if (this.getTagName() !== 'SELECT') {
+      throw new TypeError('You can only get the options for select elements');
+    }
+
+    return new Prime.Document.ElementList(this.domElement.options);
+  },
+
+  /**
    * Gets the outer height of the element, including the margins. This does not include the padding or borders.
    *
    * @returns {number} The outer height of the element.
@@ -418,11 +430,12 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets value of a style attribute
+   * Gets value of a style attribute.
    *
    * @return {string} The style value.
    */
   getStyle: function(name) {
+    name = Prime.Utils.convertStyleName(name);
     return this.domElement.style[name];
   },
 
@@ -439,7 +452,7 @@ Prime.Document.Element.prototype = {
    * @return {string} The text contents of this Element.
    */
   getTextContent: function() {
-    return this.domElement.textContent;
+    return this.domElement.innerText ? this.domElement.innerText : this.domElement.textContent;
   },
 
   /**
@@ -849,9 +862,14 @@ Prime.Document.Element.prototype = {
    * @return {Prime.Document.Element} This Element.
    */
   setAttribute: function(name, value) {
-    var attribute = document.createAttribute(name);
-    attribute.nodeValue = value;
-    this.domElement.setAttributeNode(attribute);
+    if (this.domElement.setAttribute) {
+      this.domElement.setAttribute(name, value);
+    } else {
+      var attribute = document.createAttribute(name);
+      attribute.nodeValue = value;
+      this.domElement.setAttributeNode(attribute);
+    }
+
     return this;
   },
 

@@ -33,8 +33,6 @@ buster.testCase('Fade tests', {
     };
 
     var element = Prime.Document.queryFirst('#fade');
-    console.log("Test");
-    console.log(element);
     new Prime.Effects.Fade(element).withDuration(500).withEndFunction(endFunction).go();
 
     setTimeout(function() {

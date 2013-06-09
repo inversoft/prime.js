@@ -80,6 +80,18 @@ buster.testCase('Utils tests', {
     }, 1100);
   },
 
+  'capitalize': function() {
+    assert.equals(Prime.Utils.capitalize('fred'), 'Fred');
+    assert.equals(Prime.Utils.capitalize('-fred'), '-fred');
+    assert.equals(Prime.Utils.capitalize(''), '');
+  },
+
+  'convertStyleName': function() {
+    assert.equals(Prime.Utils.convertStyleName('-moz-box-shadow'), 'MozBoxShadow')
+    assert.equals(Prime.Utils.convertStyleName('text-align'), 'textAlign')
+    assert.equals(Prime.Utils.convertStyleName('top'), 'top')
+  },
+
   'removeAllFromArray': function() {
     var array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeAllFromArray(array, ['a', 'c']);

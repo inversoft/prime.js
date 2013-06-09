@@ -73,8 +73,8 @@ buster.testCase('Prime.Template', {
     var target = Prime.Document.queryByID("templateInsertBefore");
 
     template.insertBefore(target, {'foo': 'bar'});
-    assert.equals(target.domElement.parentNode.children[0].innerText, 'bar');
-    assert.equals(target.domElement.parentNode.children[1].innerText, '');
+    assert.equals(target.domElement.parentNode.children[0].innerHTML, 'bar');
+    assert.equals(target.domElement.parentNode.children[1].innerHTML, '');
   },
 
   'insertBeforeMultiple': function() {
@@ -83,9 +83,9 @@ buster.testCase('Prime.Template', {
 
     template.insertBefore(target, {'foo': 'bar'});
     template.insertBefore(target, {'foo': 'baz'});
-    assert.equals(target.domElement.parentNode.children[0].innerText, 'bar');
-    assert.equals(target.domElement.parentNode.children[1].innerText, 'baz');
-    assert.equals(target.domElement.parentNode.children[2].innerText, '');
+    assert.equals(target.domElement.parentNode.children[0].innerHTML, 'bar');
+    assert.equals(target.domElement.parentNode.children[1].innerHTML, 'baz');
+    assert.equals(target.domElement.parentNode.children[2].innerHTML, '');
   },
 
   'insertAfter': function() {
@@ -93,8 +93,8 @@ buster.testCase('Prime.Template', {
     var target = Prime.Document.queryByID("templateInsertAfter");
 
     template.insertAfter(target, {'foo': 'bar'});
-    assert.equals(target.domElement.parentNode.children[0].innerText, '');
-    assert.equals(target.domElement.parentNode.children[1].innerText, 'bar');
+    assert.equals(target.domElement.parentNode.children[0].innerHTML, '');
+    assert.equals(target.domElement.parentNode.children[1].innerHTML, 'bar');
   },
 
   'insertAfterMultiple': function() {
@@ -103,8 +103,8 @@ buster.testCase('Prime.Template', {
 
     template.insertAfter(target, {'foo': 'bar'});
     template.insertAfter(target, {'foo': 'baz'});
-    assert.equals(target.domElement.parentNode.children[2].innerText, 'bar');
-    assert.equals(target.domElement.parentNode.children[1].innerText, 'baz');
-    assert.equals(target.domElement.parentNode.children[0].innerText, '');
+    assert.equals(target.domElement.parentNode.children[2].innerHTML, 'bar');
+    assert.equals(target.domElement.parentNode.children[1].innerHTML, 'baz');
+    assert.equals(target.domElement.parentNode.children[0].innerHTML, '');
   }
 });

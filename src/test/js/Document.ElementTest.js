@@ -304,12 +304,12 @@ buster.testCase('Element class tests', {
     assert.isNull(Prime.Document.queryFirst('#attributes').getAttribute('foo'));
   },
 
-  "getChildren": function() {
+  'getChildren': function() {
     var element = Prime.Document.queryFirst('#children');
     assert.equals(element.getChildren().length, 4);
   },
 
-  "getClass": function() {
+  'getClass': function() {
     var element = Prime.Document.queryByID('getClass');
     assert.equals(element.getClass(), 'class1 class2');
   },
@@ -325,6 +325,14 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Document.queryFirst('#queryOne').getNextSibling().getID(), 'queryTwo');
     assert.equals(Prime.Document.queryFirst('#queryTwo').getNextSibling().getID(), 'queryThree');
     assert.isNull(Prime.Document.queryFirst('#queryThree').getNextSibling());
+  },
+
+  'getOptions': function() {
+    var options = Prime.Document.queryByID('select-single-select').getOptions();
+    assert.equals(options.length, 3);
+    assert.equals(options[0].getValue(), 'one');
+    assert.equals(options[1].getValue(), 'two');
+    assert.equals(options[2].getValue(), 'three');
   },
 
   'getPreviousSibling': function() {
@@ -488,13 +496,13 @@ buster.testCase('Element class tests', {
     },
 
     'insertBeforeExisting': function() {
-      var target = Prime.Document.queryByID("insertBefore");
-      var mover = Prime.Document.queryByID("insertBeforeMove");
+      var target = Prime.Document.queryByID('insertBefore');
+      var mover = Prime.Document.queryByID('insertBeforeMove');
 
       mover.insertBefore(target);
-      var parent = document.getElementById("insertBeforeExisting");
-      assert.equals(parent.children[0].id, "insertBeforeMove");
-      assert.equals(parent.children[1].id, "insertBefore");
+      var parent = document.getElementById('insertBeforeExisting');
+      assert.equals(parent.children[0].id, 'insertBeforeMove');
+      assert.equals(parent.children[1].id, 'insertBefore');
     }
   },
 
@@ -600,13 +608,13 @@ buster.testCase('Element class tests', {
     },
 
     'insertAfterExisting': function() {
-      var target = Prime.Document.queryByID("insertAfter");
-      var mover = Prime.Document.queryByID("insertAfterMove");
+      var target = Prime.Document.queryByID('insertAfter');
+      var mover = Prime.Document.queryByID('insertAfterMove');
 
       mover.insertAfter(target);
-      var parent = document.getElementById("insertAfterExisting");
-      assert.equals(parent.children[0].id, "insertAfter");
-      assert.equals(parent.children[1].id, "insertAfterMove");
+      var parent = document.getElementById('insertAfterExisting');
+      assert.equals(parent.children[0].id, 'insertAfter');
+      assert.equals(parent.children[1].id, 'insertAfterMove');
     }
   },
 
@@ -875,7 +883,7 @@ buster.testCase('Element class tests', {
   },
 
   'setHTMLByElement': function() {
-    Prime.Document.queryFirst('#htmlByElement').setHTML(Prime.Document.queryByID("htmlByElementTarget"));
+    Prime.Document.queryFirst('#htmlByElement').setHTML(Prime.Document.queryByID('htmlByElementTarget'));
 
     var element = document.getElementById('htmlByElement');
     assert.equals(element.innerHTML, 'By Element Target');
@@ -1175,8 +1183,6 @@ buster.testCase('Element class tests', {
 
   'opacity': function() {
     var element = Prime.Document.queryFirst('#html');
-    console.log("Test");
-    console.log(element.getOpacity());
     assert.equals(element.getOpacity(), 1.0);
 
     element.setOpacity(0.5);

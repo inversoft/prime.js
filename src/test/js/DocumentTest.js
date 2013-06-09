@@ -80,7 +80,7 @@ buster.testCase('Prime.Document namespace tests', {
     assert.equals(element.getID(), 'id');
     assert.equals(element.getID(), 'id');
     assert.equals(element.domElement.style['width'], '200px');
-    assert.equals(element.domElement.style['float'], 'left');
+    assert.equals(element.domElement.style['cssFloat'], 'left');
   },
 
   /**

@@ -85,6 +85,49 @@ Prime.Utils = {
   },
 
   /**
+   * Capitalizes the given String.
+   *
+   * @param {string} str The String to capitalize.
+   * @returns {string} The capitalized String.
+   */
+  capitalize: function(str) {
+    return str.charAt(0).toUpperCase() + str.substring(1);
+  },
+
+  /**
+   * Converts CSS style names to style JavaScript names.
+   *
+   * @param {string} name The CSS style name to convert
+   * @return {string} The converted style name.
+   */
+  convertStyleName: function(name) {
+    if (name === 'float') {
+      return 'cssFloat';
+    }
+    
+    var dash = name.indexOf('-');
+    if (dash === -1) {
+      return name;
+    }
+
+    var start = 0;
+    var result = '';
+    while (dash !== -1) {
+      var piece = name.substring(start, dash);
+      if (start === 0) {
+        result = result.concat(piece);
+      } else {
+        result = result.concat(Prime.Utils.capitalize(piece));
+      }
+
+      start = dash + 1;
+      dash = name.indexOf('-', start);
+    }
+
+    return result + Prime.Utils.capitalize(name.substring(start));
+  },
+
+  /**
    * Determines if an object is an array or not.
    *
    * @param {*} o The object to check.
