@@ -237,6 +237,13 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @returns {Number} The bottom position (in pixels) of the current element.
+   */
+  getBottom: function() {
+    return this.domElement.getBoundingClientRect().bottom;
+  },
+
+  /**
    * Gets the children elements of this Element.
    *
    * @return {Prime.Document.ElementList} The children.
@@ -295,6 +302,13 @@ Prime.Document.Element.prototype = {
    */
   getID: function() {
     return this.domElement.id;
+  },
+
+  /**
+   * @returns {Number} The left position (in pixels) of the current element.
+   */
+  getLeft: function() {
+    return this.domElement.getBoundingClientRect().left;
   },
 
   /**
@@ -394,6 +408,13 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @returns {Number} The right position (in pixels) of the current element.
+   */
+  getRight: function() {
+    return this.domElement.getBoundingClientRect().right;
+  },
+
+  /**
    * @returns {number} The scroll top position of this element.
    */
   getScrollTop: function() {
@@ -453,6 +474,13 @@ Prime.Document.Element.prototype = {
    */
   getTextContent: function() {
     return this.domElement.innerText ? this.domElement.innerText : this.domElement.textContent;
+  },
+
+  /**
+   * @returns {Number} The top position (in pixels) of the current element.
+   */
+  getTop: function() {
+    return this.domElement.getBoundingClientRect().top;
   },
 
   /**
@@ -663,35 +691,6 @@ Prime.Document.Element.prototype = {
     } else {
       return null;
     }
-  },
-
-  /**
-   * Returns the computed top and left coordinates of this Element.
-   *
-   * @return {{top: number, left: number}} An object with top and left set
-   */
-  position: function() {
-    var styles = this.getComputedStyle();
-    var positionLeft = -(styles['margin-left']);
-    var positionTop = -(styles['margin-top']);
-
-    var element = this;
-    var elements = [];
-    do {
-      elements.push(element);
-      element = element.parent();
-      if (element.domElement.type === 'body' || element.getStyle('position') !== 'static') {
-        break;
-      }
-    } while (element);
-
-    new Prime.Document.ElementList(elements).each(function(element) {
-      var elementStyle = element.getComputedStyle();
-      positionLeft += elementStyle['offsetLeft'] || 0;
-      positionTop += elementStyle['offsetTop'] || 0;
-    });
-
-    return {'top': positionTop, 'left': positionLeft};
   },
 
   /**
