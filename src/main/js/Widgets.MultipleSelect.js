@@ -57,8 +57,10 @@ Prime.Widgets = Prime.Widgets || {};
  * @param {boolean} [customAddEnabled=true] Determines if users can add custom options to the MultipleSelect.
  * @param {string} [customAddLabel="Add Custom Value:"] The label for the custom add option in the search results.
  * @param {boolean} [noSearchResultsLabel="No Matches For:] The label used when there are no search results.
+ * @param {object} [populateSelectObject=undefined] This object will be passed to the populateSelectCallback.
+ * @param {function} [populateSelectCallback=noop] If specified, calls this callback if the searchText.length > 0
  */
-Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, customAddLabel, noSearchResultsLabel) {
+Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, customAddLabel, noSearchResultsLabel, populateSelectObj, populateSelectCallback) {
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widgets.MultipleSelect with select elements');
@@ -73,6 +75,9 @@ Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, 
   this.noSearchResultsLabel = typeof(noSearchResultsLabel) !== 'undefined' ? noSearchResultsLabel : 'No Matches For: ';
   this.customAddEnabled = typeof(customAddEnabled) !== 'undefined' ? customAddEnabled : true;
   this.customAddLabel = typeof(customAddLabel) !== 'undefined' ? customAddLabel : 'Add Custom Value: ';
+  this.populateSelectCallback = typeof(populateSelectCallback) !== 'undefined' ? populateSelectCallback : function noooop() {};
+  this.populateSelectObj = populateSelectObj;
+
 
   var id = this.element.getID();
   if (id === null || id === '') {
@@ -557,6 +562,11 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // Clear the search results (if there are any)
     this.removeAllSearchResults();
+
+    // Call the callback
+    if (searchText.length > 0) {
+      this.populateSelectCallback(this.populateSelectObj, searchText);
+    }
 
     // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
     // the add custom option.
