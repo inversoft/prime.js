@@ -75,7 +75,8 @@ Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, 
   this.noSearchResultsLabel = typeof(noSearchResultsLabel) !== 'undefined' ? noSearchResultsLabel : 'No Matches For: ';
   this.customAddEnabled = typeof(customAddEnabled) !== 'undefined' ? customAddEnabled : true;
   this.customAddLabel = typeof(customAddLabel) !== 'undefined' ? customAddLabel : 'Add Custom Value: ';
-  this.populateSelectCallback = typeof(populateSelectCallback) !== 'undefined' ? populateSelectCallback : function noooop() {};
+  this.populateSelectCallback = typeof(populateSelectCallback) !== 'undefined' ? populateSelectCallback : function noooop() {
+  };
   this.populateSelectObj = populateSelectObj;
 
 
@@ -124,9 +125,9 @@ Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, 
  * Statics
  */
 Prime.Widgets.MultipleSelect.count = 1;
-Prime.Widgets.MultipleSelect.AddOptionEvent= 'Prime:Widgets:MultipleSelect:addOption';
-Prime.Widgets.MultipleSelect.DeselectOptionEvent= 'Prime:Widgets:MultipleSelect:deselectOption';
-Prime.Widgets.MultipleSelect.SelectOptionEvent= 'Prime:Widgets:MultipleSelect:selectOption';
+Prime.Widgets.MultipleSelect.AddOptionEvent = 'Prime:Widgets:MultipleSelect:addOption';
+Prime.Widgets.MultipleSelect.DeselectOptionEvent = 'Prime:Widgets:MultipleSelect:deselectOption';
+Prime.Widgets.MultipleSelect.SelectOptionEvent = 'Prime:Widgets:MultipleSelect:selectOption';
 
 Prime.Widgets.MultipleSelect.prototype = {
   /**
@@ -534,7 +535,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    */
   resizeInput: function() {
     var text = this.input.getValue() === '' ? this.input.getAttribute('placeholder') : this.input.getValue();
-    var newLength =  Prime.Utils.calculateTextLength(this.input, text) + 10;
+    var newLength = Prime.Utils.calculateTextLength(this.input, text) + 10;
     if (newLength < 25) {
       newLength = 25;
     }
@@ -597,13 +598,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     }
 
     // Show the no matches if necessary
-    if (count === 0 && searchText.trim().length !== 0) {
-      Prime.Document.newElement('<li/>').
-          addClass('prime-multiple-select-no-search-results').
-          setHTML(this.noSearchResultsLabel + searchText).
-          appendTo(this.searchResultsContainer);
-      count++;
-    }
+    count = this.updateTheNoSearchResultsLabel(count, searchText);
 
     // Show the results
     if (count > 0) {
@@ -619,6 +614,24 @@ Prime.Widgets.MultipleSelect.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Give client ability to update the label, necessary for AJAX calls that will change the label
+   * @param {int} count the number of search results
+   * @param {string} the search text
+   * returns the new count, will be 1 if the count in is 0 and searchText is not empty
+   */
+  updateTheNoSearchResultsLabel: function(count, searchText) {
+    // Show the no matches if necessary
+    if (count === 0 && searchText.trim().length !== 0) {
+      Prime.Document.newElement('<li/>').
+          addClass('prime-multiple-select-no-search-results').
+          setHTML(this.noSearchResultsLabel + searchText).
+          appendTo(this.searchResultsContainer);
+      count++;
+    }
+    return count;
   },
 
   /**
