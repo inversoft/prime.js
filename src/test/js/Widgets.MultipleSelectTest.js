@@ -43,6 +43,24 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelectCustomAddDisabled.selectOptionWithValue('three');
     this.multipleSelectCustomAddDisabled.removeAllSearchResults();
     this.multipleSelectCustomAddDisabled.closeSearchResults();
+
+    this.callbackResults = {};
+    this.callbackIndex = 0;
+
+    this.callbackFunc = function(theThis, searchText) {
+      theThis.callbackResults[theThis.callbackIndex] = searchText;
+      theThis.callbackIndex++;
+    };
+    this.multipleSelectWithCallback = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-with-callback'),
+        '', false, '', 'No Matches For', this, this.callbackFunc);
+    this.multipleSelectWithCallback.removeAllOptions();
+    this.multipleSelectWithCallback.addOption('one', 'One');
+    this.multipleSelectWithCallback.addOption('two', 'Two');
+    this.multipleSelectWithCallback.addOption('three', 'Three');
+    this.multipleSelectWithCallback.addOption('twenty', 'Twenty');
+    this.multipleSelectWithCallback.selectOptionWithValue('one');
+    this.multipleSelectWithCallback.removeAllSearchResults();
+    this.multipleSelectWithCallback.closeSearchResults();
   },
 
   'setup': function() {
@@ -424,6 +442,40 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(this.multipleSelect.input.getValue(), '');
     assert.isFalse(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 0);
+  },
+
+  'search callback': function() {
+    // Execute a search
+    this.multipleSelectWithCallback.search('t');
+    assert.isTrue(this.multipleSelectWithCallback.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelectWithCallback.isCustomAddVisible());
+    assert.equals(this.multipleSelectWithCallback.input.getValue(), 't');
+    assert.isTrue(this.multipleSelectWithCallback.searchResultsContainer.isVisible());
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren().length, 3); // The option for Twenty, Two, and Three
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[0].getHTML(), 'Three');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[1].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[1].getHTML(), 'Twenty');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[2].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[2].getHTML(), 'Two');
+    assert.equals(this.callbackIndex, 1);
+    assert.equals(this.callbackResults[0], 't');
+    this.callbackIndex = 0;
+    this.callbackResults = {};
+
+    // Add a letter
+    this.multipleSelectWithCallback.search('tw');
+    assert.isTrue(this.multipleSelectWithCallback.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelectWithCallback.isCustomAddVisible());
+    assert.equals(this.multipleSelectWithCallback.input.getValue(), 'tw');
+    assert.isTrue(this.multipleSelectWithCallback.searchResultsContainer.isVisible());
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren().length, 2); // The option for Two and the add custom option
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[0].getHTML(), 'Twenty');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[1].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelectWithCallback.searchResultsContainer.getChildren()[1].getHTML(), 'Two');
+    assert.equals(this.callbackIndex, 1);
+    assert.equals(this.callbackResults[0], 'tw');
   },
 
   'search custom add disabled': function() {
