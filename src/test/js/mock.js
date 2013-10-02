@@ -66,7 +66,7 @@ Mock.XHR.prototype = {
   /**
    * Retrieves a set request header by name, useful for test assertions.
    * @param name
-   * @return {*}
+   * @returns {*}
    */
   getRequestHeader:function (name) {
     return this.headers[name];

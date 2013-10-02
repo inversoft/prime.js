@@ -31,6 +31,8 @@
     <script type="text/javascript" src="../../main/js/Template.js"></script>
     <script type="text/javascript" src="../../main/js/Utils.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
       var documentReadyCount = 0;
@@ -61,6 +63,8 @@
     <script type="text/javascript" src="../js/TemplateTest.js"></script>
     <script type="text/javascript" src="../js/UtilsTest.js"></script>
     <script type="text/javascript" src="../js/Widgets.MultipleSelectTest.js"></script>
+    <script type="text/javascript" src="../js/Widgets.PhraseBuilderTest.js"></script>
+    <script type="text/javascript" src="../js/Widgets.SearcherTest.js"></script>
     <style>
       #showCSSBlock, #showCSSInline, .hidden {
         display: none;
@@ -350,6 +354,22 @@
         <option value="two">Two</option>
         <option value="three" selected>Three</option>
       </select>
+
+      <label for="phrase-builder">Phrase Builder</label>
+      <select id="phrase-builder" multiple="multiple">
+      </select>
+
+      <label for="searcher">Searcher</label>
+      <input type="text" id="searcher"/>
+      <div id="searcher-results">
+
+      </div>
+
+      <label for="searcher-custom-add-disabled">Searcher</label>
+      <input type="text" id="searcher-custom-add-disabled"/>
+      <div id="searcher-custom-add-disabled-results">
+
+      </div>
     </form>
   </body>
 </html>

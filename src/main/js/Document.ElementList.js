@@ -45,7 +45,7 @@ Prime.Document.ElementList.prototype = {
    *
    * @param {Function} iterationFunction The function to call.
    * @param {Object} [context=the-current-element] The context for the function call (sets the this variable).
-   * @return {Prime.Document.ElementList} This ElementList.
+   * @returns {Prime.Document.ElementList} This ElementList.
    */
   each: function(iterationFunction, context) {
     for (var i = 0; i < this.length; i++) {
@@ -60,7 +60,7 @@ Prime.Document.ElementList.prototype = {
    * Returns the indexOf the element that matches the parameter, either Prime Element or DOMElement.
    *
    * @param {Prime.Document.Element|Element} element The element to look for
-   * @return {number} The position of the element in the list, or -1 if not present.
+   * @returns {number} The position of the element in the list, or -1 if not present.
    */
   indexOf: function(element) {
     var domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -77,7 +77,7 @@ Prime.Document.ElementList.prototype = {
   /**
    * Removes all the matched elements in the ElementList from the DOM.
    *
-   * @return {Prime.Document.ElementList} This ElementList.
+   * @returns {Prime.Document.ElementList} This ElementList.
    */
   removeAllFromDOM: function() {
     for (var i = 0; i < this.length; i++) {

@@ -60,7 +60,7 @@ define(function() {
 	 * @private
 	 *
 	 * @param value anything
-	 * @return {Promise}
+	 * @returns {Promise}
 	 */
 	function resolved(value) {
 
@@ -83,7 +83,7 @@ define(function() {
 	 * @private
 	 *
 	 * @param reason rejection reason
-	 * @return {Promise}
+	 * @returns {Promise}
 	 */
 	function rejected(reason) {
 
@@ -108,7 +108,7 @@ define(function() {
 	 *
 	 * @param promiseOrValue {*} the rejected value of the returned {@link Promise}
 	 *
-	 * @return {Promise} rejected {@link Promise}
+	 * @returns {Promise} rejected {@link Promise}
 	 */
 	function reject(promiseOrValue) {
 		return when(promiseOrValue, function(value) {
@@ -565,7 +565,7 @@ define(function() {
 	 *
 	 * @param promisesOrValues {Array}
 	 * @param mapFunc {Function}
-	 * @return {Promise}
+	 * @returns {Promise}
 	 */
 	function _map(promisesOrValues, mapFunc) {
 
@@ -623,7 +623,7 @@ define(function() {
 	 * @param promisesOrValues {Array}
 	 * @param reduceFunc {Function}
 	 * @param initialValue {*}
-	 * @return {Promise}
+	 * @returns {Promise}
 	 */
 	function _reduce(promisesOrValues, reduceFunc, initialValue) {
 

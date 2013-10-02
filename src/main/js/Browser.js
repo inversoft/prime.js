@@ -42,7 +42,7 @@ Prime.Browser = {
   /**
    * @private
    * @param {Object} data The data array.
-   * @return {string} The browser identity String.
+   * @returns {string} The browser identity String.
    */
   searchString: function(data) {
     for (var i = 0; i < data.length; i++) {
@@ -62,7 +62,7 @@ Prime.Browser = {
   /**
    * @private
    * @param {string} dataString The browser data string.
-   * @return {number} The version or null.
+   * @returns {number} The version or null.
    */
   searchVersion: function(dataString) {
     var index = dataString.indexOf(this.versionSearchString);

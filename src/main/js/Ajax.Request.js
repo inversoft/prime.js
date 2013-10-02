@@ -53,7 +53,7 @@ Prime.Ajax.Request.prototype = {
    * Changes the URL to call.
    *
    * @param {string} url The new URL to call.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   forURL: function(url) {
     this.url = url;
@@ -63,7 +63,7 @@ Prime.Ajax.Request.prototype = {
   /**
    * Invokes the AJAX request. If the URL is not set, this throws an exception.
    *
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   go: function() {
     if (!this.url) {
@@ -151,7 +151,7 @@ Prime.Ajax.Request.prototype = {
   /**
    * Sets the async flag to false.
    *
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   synchronously: function() {
     this.async = false;
@@ -162,7 +162,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the method used to make the AJAX request.
    *
    * @param {string} method The HTTP method.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   usingMethod: function(method) {
     this.method = method;
@@ -173,7 +173,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the request body for the request.
    *
    * @param {string} body The request body.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withBody: function(body) {
     this.body = body;
@@ -184,7 +184,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the content type for the request.
    *
    * @param {string} contentType The contentType.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withContentType: function(contentType) {
     this.contentType = contentType;
@@ -196,7 +196,7 @@ Prime.Ajax.Request.prototype = {
    * functions.
    *
    * @param {Object} context The context object.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withContext: function(context) {
     this.context = context;
@@ -208,7 +208,7 @@ Prime.Ajax.Request.prototype = {
    * method that is set.  If the method is a post or put, will also set content-type to x-www-form-urlencoded.
    *
    * @param {Object} data The data object.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withData: function(data) {
     for (var prop in data) {
@@ -232,7 +232,7 @@ Prime.Ajax.Request.prototype = {
    * not 2xx.
    *
    * @param {Function} func The handler function.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withErrorHandler: function(func) {
     this.errorHandler = func;
@@ -243,7 +243,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "loading".
    *
    * @param {Function} func The handler function.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withLoadingHandler: function(func) {
     this.loadingHandler = func;
@@ -254,7 +254,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the XMLHTTPRequest's response type field, which will control how the response is parsed.
    *
    * @param {string} responseType The response type.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withResponseType: function(responseType) {
     this.xhr.responseType = responseType;
@@ -265,7 +265,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "open".
    *
    * @param {Function} func The handler function.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withOpenHandler: function(func) {
     this.openHandler = func;
@@ -276,7 +276,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "send".
    *
    * @param {Function} func The handler function.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withSendHandler: function(func) {
     this.sendHandler = func;
@@ -288,7 +288,7 @@ Prime.Ajax.Request.prototype = {
    * 2xx.
    *
    * @param {Function} func The handler function.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withSuccessHandler: function(func) {
     this.successHandler = func;
@@ -299,7 +299,7 @@ Prime.Ajax.Request.prototype = {
    * Sets the handler to invoke when the state of the AJAX request is "unset".
    *
    * @param {Function} func The handler function.
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withUnsetHandler: function(func) {
     this.unsetHandler = func;
@@ -310,7 +310,7 @@ Prime.Ajax.Request.prototype = {
    * Resets the Request back to a base state (basically just the URL + method).  This can be
    * useful if a component is going to make many requests to the same endpoint with different parameters.
    *
-   * @return {Prime.Ajax.Request} This Prime.Ajax.Request.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   reset: function() {
     this.queryParams = null;
@@ -349,7 +349,7 @@ Prime.Ajax.Request.prototype = {
    * @param {string} dataString The data String used to determine if an ampersand is necessary.
    * @param {string} name The name of the name-value pair.
    * @param {string|Array} value The value of the name-value pair.
-   * @return {string} The new data string.
+   * @returns {string} The new data string.
    */
   addDataValue: function(dataString, name, value) {
     var result = '';

@@ -33,7 +33,7 @@ Prime.Document.tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
  * @param {Function} handler The event handler.
  * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
  *        function call). Defaults to this Element.
- * @return {Function} The proxy handler.
+ * @returns {Function} The proxy handler.
  */
 Prime.Document.addEventListener = function(event, handler, context) {
   var theContext = (arguments.length < 3) ? this : context;
@@ -79,7 +79,7 @@ Prime.Document.getWidth = function() {
  *
  * @param {string} elementString The element string.
  * @param {Object} [properties={}] The properties for the new element.
- * @return {Prime.Document.Element} A new Prime.Document.Element.
+ * @returns {Prime.Document.Element} A new Prime.Document.Element.
  */
 Prime.Document.newElement = function(elementString, properties) {
   properties = typeof properties !== 'undefined' ? properties : {};
@@ -135,7 +135,7 @@ Prime.Document.onReady = function(callback, context) {
  *
  * @param {string} selector The selector.
  * @param {Element|Document} [element=document] The starting point for the search (defaults to document if not provided).
- * @return {Prime.Document.ElementList} An element list.
+ * @returns {Prime.Document.ElementList} An element list.
  */
 Prime.Document.query = function(selector, element) {
   var domElement = null;
@@ -150,7 +150,7 @@ Prime.Document.query = function(selector, element) {
  * Queries the DOM for an element that has the given ID.
  *
  * @param {string} id The ID.
- * @return {Prime.Document.Element} The element or null.
+ * @returns {Prime.Document.Element} The element or null.
  */
 Prime.Document.queryByID = function(id) {
   var element = document.getElementById(id);
@@ -167,7 +167,7 @@ Prime.Document.queryByID = function(id) {
  *
  * @param {string} selector The selector.
  * @param {Element|Document|Prime.Document.Element} [element=document] The starting point for the search (defaults to document if not provided).
- * @return {Prime.Document.Element} An element or null.
+ * @returns {Prime.Document.Element} An element or null.
  */
 Prime.Document.queryFirst = function(selector, element) {
   var domElement = null;
@@ -189,7 +189,7 @@ Prime.Document.queryFirst = function(selector, element) {
  *
  * @param {string} selector The selector.
  * @param {Element|Document|Prime.Document.Element} [element=document] The starting point for the search (defaults to document if not provided).
- * @return {Prime.Document.Element} An element or null.
+ * @returns {Prime.Document.Element} An element or null.
  */
 Prime.Document.queryLast = function(selector, element) {
   var domElement = null;
@@ -211,7 +211,7 @@ Prime.Document.queryLast = function(selector, element) {
  *
  * @param {string} selector The selector.
  * @param {Prime.Document.Element|Element} element The starting point for the upward traversal.
- * @return {Prime.Document.Element} An element or null.
+ * @returns {Prime.Document.Element} An element or null.
  */
 Prime.Document.queryUp = function(selector, element) {
   if (selector.match(Prime.Utils.spaceRegex)) {

@@ -40,7 +40,7 @@ Prime.Template.prototype = {
    * to provide the value
    *
    * @param {Object} parameters An object that contains the parameters for the template to replace.
-   * @return {string} The result of executing the template.
+   * @returns {string} The result of executing the template.
    */
   generate: function(parameters) {
     parameters = typeof parameters !== 'undefined' ? parameters : {};

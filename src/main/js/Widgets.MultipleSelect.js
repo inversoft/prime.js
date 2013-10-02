@@ -51,16 +51,19 @@ Prime.Widgets = Prime.Widgets || {};
  * &lt;/div>
  * </pore>
  *
+ * The with* methods can be used to setup the configuration for this MultipleSelect, but here are some defaults:
+ *
+ * <ul>
+ *   <li>placeholder = "Choose"</li>
+ *   <li>customAddEnabled = true</li>
+ *   <li>customAddLabel = "Add Custom Value:"</li>
+ *   <li>noSearchResultsLabel = "No Matches For:"</li>
+ * </ul>
+ *
  * @constructor
  * @param {Prime.Document.Element} element The Prime Element for the MultipleSelect.
- * @param {string} [placeholder="Choose"] Placeholder text.
- * @param {boolean} [customAddEnabled=true] Determines if users can add custom options to the MultipleSelect.
- * @param {string} [customAddLabel="Add Custom Value:"] The label for the custom add option in the search results.
- * @param {boolean} [noSearchResultsLabel="No Matches For:] The label used when there are no search results.
- * @param {object} [populateSelectObject=undefined] This object will be passed to the populateSelectCallback.
- * @param {function} [populateSelectCallback=noop] If specified, calls this callback if the searchText.length > 0
  */
-Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, customAddLabel, noSearchResultsLabel, populateSelectObj, populateSelectCallback) {
+Prime.Widgets.MultipleSelect = function(element) {
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widgets.MultipleSelect with select elements');
@@ -71,14 +74,10 @@ Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, 
   }
 
   this.element.hide();
-  this.placeholder = typeof(placeholder) !== 'undefined' ? placeholder : 'Choose';
-  this.noSearchResultsLabel = typeof(noSearchResultsLabel) !== 'undefined' ? noSearchResultsLabel : 'No Matches For: ';
-  this.customAddEnabled = typeof(customAddEnabled) !== 'undefined' ? customAddEnabled : true;
-  this.customAddLabel = typeof(customAddLabel) !== 'undefined' ? customAddLabel : 'Add Custom Value: ';
-  this.populateSelectCallback = typeof(populateSelectCallback) !== 'undefined' ? populateSelectCallback : function noooop() {
-  };
-  this.populateSelectObj = populateSelectObj;
-
+  this.placeholder = 'Choose';
+  this.noSearchResultsLabel = 'No Matches For: ';
+  this.customAddEnabled = true;
+  this.customAddLabel = 'Add Custom Value: ';
 
   var id = this.element.getID();
   if (id === null || id === '') {
@@ -116,9 +115,6 @@ Prime.Widgets.MultipleSelect = function(element, placeholder, customAddEnabled, 
   }
 
   Prime.Document.queryFirst('html').addEventListener('click', this.handleGlobalClickEvent, this);
-
-  // Rebuild the display
-  this.rebuildDisplay();
 };
 
 /*
@@ -140,7 +136,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @param {string} event The name of the event.
    * @param {Function} listener The listener function.
    * @param {*} [context] The context.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   addEventListener: function(event, listener, context) {
     this.element.addEventListener(event, listener, context);
@@ -152,7 +148,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    *
    * @param {String} value The value for the option.
    * @param {String} display The display text for the option.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   addOption: function(value, display) {
     if (this.containsOptionWithValue(value)) {
@@ -199,7 +195,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * removing the option from the display container.
    *
    * @param {Prime.Document.Element} option The option to deselect.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   deselectOption: function(option) {
     option.removeAttribute('selected');
@@ -232,7 +228,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * this method throws an exception.
    *
    * @param {String} value The value to look for.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   deselectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -249,7 +245,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * Finds the HTMLSelectOption with the given text and returns it wrapped in a Prime.Document.Element.
    *
    * @param {String} text The text to look for.
-   * @return {Prime.Document.Element} The option element or null.
+   * @returns {Prime.Document.Element} The option element or null.
    */
   findOptionWithText: function(text) {
     var options = this.element.getOptions();
@@ -266,7 +262,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * Finds the HTMLSelectOption with the given value and returns it wrapped in a Prime.Document.Element.
    *
    * @param {String} value The value to look for.
-   * @return {Prime.Document.Element} The option element or null.
+   * @returns {Prime.Document.Element} The option element or null.
    */
   findOptionWithValue: function(value) {
     for (var i = 0; i < this.element.domElement.length; i++) {
@@ -287,7 +283,7 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
   /**
-   * @return {string[]} The currently selected options values.
+   * @returns {string[]} The currently selected options values.
    */
   getSelectedValues: function() {
     return this.element.getSelectedValues();
@@ -412,53 +408,6 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
   /**
-   * Rebuilds the display from the underlying select element. All of the current display options (li elements) are
-   * removed. New display options are added for each selected option in the select box.
-   *
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
-   */
-  rebuildDisplay: function() {
-    // Close the search
-    this.searchResultsContainer.hide();
-
-    // Remove the currently displayed options
-    this.displayContainerSelectedOptionList.getChildren().each(function(option) {
-      option.removeFromDOM();
-    });
-
-    // Add the input option since the select options are inserted before it
-    this.inputOption = Prime.Document.newElement('<li/>').
-        addClass('prime-multiple-select-input-option').
-        appendTo(this.displayContainerSelectedOptionList);
-    this.input = Prime.Document.newElement('<input/>').
-        addClass('prime-multiple-select-input').
-        addEventListener('click', this.handleClickEvent, this).
-        addEventListener('focus', this.handleFocusEvent, this).
-        addEventListener('blur', this.handleBlurEvent, this).
-        setAttribute('type', 'text').
-        appendTo(this.inputOption);
-
-    // Add the selected options
-    var hasSelectedOptions = false;
-    for (var i = 0; i < this.element.domElement.length; i++) {
-      var option = this.element.domElement.options[i];
-      if (option.selected) {
-        this.selectOption(new Prime.Document.Element(option));
-        hasSelectedOptions = true;
-      }
-    }
-
-    // Put the placeholder attribute in if the MultipleSelect has no selected options
-    if (!hasSelectedOptions) {
-      this.input.setAttribute('placeholder', this.placeholder);
-    }
-
-    this.resizeInput();
-
-    return this;
-  },
-
-  /**
    * Removes all of the options from the MultipleSelect.
    *
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
@@ -531,6 +480,53 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
   /**
+   * Rebuilds the display from the underlying select element. All of the current display options (li elements) are
+   * removed. New display options are added for each selected option in the select box.
+   *
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  render: function() {
+    // Close the search
+    this.searchResultsContainer.hide();
+
+    // Remove the currently displayed options
+    this.displayContainerSelectedOptionList.getChildren().each(function(option) {
+      option.removeFromDOM();
+    });
+
+    // Add the input option since the select options are inserted before it
+    this.inputOption = Prime.Document.newElement('<li/>').
+        addClass('prime-multiple-select-input-option').
+        appendTo(this.displayContainerSelectedOptionList);
+    this.input = Prime.Document.newElement('<input/>').
+        addClass('prime-multiple-select-input').
+        addEventListener('click', this.handleClickEvent, this).
+        addEventListener('focus', this.handleFocusEvent, this).
+        addEventListener('blur', this.handleBlurEvent, this).
+        setAttribute('type', 'text').
+        appendTo(this.inputOption);
+
+    // Add the selected options
+    var hasSelectedOptions = false;
+    for (var i = 0; i < this.element.domElement.length; i++) {
+      var option = this.element.domElement.options[i];
+      if (option.selected) {
+        this.selectOption(new Prime.Document.Element(option));
+        hasSelectedOptions = true;
+      }
+    }
+
+    // Put the placeholder attribute in if the MultipleSelect has no selected options
+    if (!hasSelectedOptions) {
+      this.input.setAttribute('placeholder', this.placeholder);
+    }
+
+    this.resizeInput();
+
+    return this;
+  },
+
+  /**
    * Poor mans resizing of the input field as the user types into it.
    */
   resizeInput: function() {
@@ -563,11 +559,6 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // Clear the search results (if there are any)
     this.removeAllSearchResults();
-
-    // Call the callback
-    if (searchText.length > 0) {
-      this.populateSelectCallback(this.populateSelectObj, searchText);
-    }
 
     // Grab the search text and look up the options for it. If there aren't any or it doesn't exactly match any, show
     // the add custom option.
@@ -619,8 +610,8 @@ Prime.Widgets.MultipleSelect.prototype = {
   /**
    * Give client ability to update the label, necessary for AJAX calls that will change the label
    * @param {int} count the number of search results
-   * @param {string} the search text
-   * returns the new count, will be 1 if the count in is 0 and searchText is not empty
+   * @param {string} searchText The search text
+   * @returns the new count, will be 1 if the count in is 0 and searchText is not empty
    */
   updateTheNoSearchResultsLabel: function(count, searchText) {
     // Show the no matches if necessary
@@ -716,7 +707,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * If there isn't an option with the given value, this throws an exception.
    *
    * @param {String} value The value of the option to select.
-   * @return {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   selectOptionWithValue: function(value) {
     var option = this.findOptionWithValue(value);
@@ -737,7 +728,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    */
   setSelectedValues: function() {
     this.element.setSelectedValues.apply(this.element, arguments);
-    this.rebuildDisplay();
+    this.render();
     return this;
   },
 
@@ -750,6 +741,50 @@ Prime.Widgets.MultipleSelect.prototype = {
     this.displayContainerSelectedOptionList.getChildren().each(function(element) {
       element.removeClass('prime-multiple-select-option-highlighted');
     });
+    return this;
+  },
+
+  /**
+   * Sets whether or not this MultipleSelect allows custom options to be added.
+   *
+   * @param {string} enabled The flag.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  withCustomAddEnabled: function(enabled) {
+    this.customAddEnabled = enabled;
+    return this;
+  },
+
+  /**
+   * Sets the label used when custom options are added.
+   *
+   * @param {string} customAddLabel The label.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  withCustomAddLabel: function(customAddLabel) {
+    this.customAddLabel = customAddLabel;
+    return this;
+  },
+
+  /**
+   * Sets the label that is printed when there are no search results. This must be called before render is called.
+   *
+   * @param {string} noSearchResultsLabel The label text.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  withNoSearchResultsLabel: function(noSearchResultsLabel) {
+    this.noSearchResultsLabel = noSearchResultsLabel;
+    return this;
+  },
+
+  /**
+   * Sets the placeholder text for this MultipleSelect. This must be called before render is called.
+   *
+   * @param {string} placeholder The placeholder text.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  withPlaceholder: function(placeholder) {
+    this.placeholder = placeholder;
     return this;
   },
 

@@ -49,7 +49,7 @@ Prime.Document.Element.prototype = {
    * Adds the given class (or list of space separated classes) to this Element.
    *
    * @param {string} classNames The class name(s).
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   addClass: function(classNames) {
     var currentClassName = this.domElement.className;
@@ -78,7 +78,7 @@ Prime.Document.Element.prototype = {
    * @param {Function} listener The event listener function.
    * @param {Object} [context=this] The context to use when invoking the handler (this sets the 'this' variable for the
    *        function call). Defaults to this Element.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   addEventListener: function(event, listener, context) {
     var theContext = (arguments.length < 3) ? this : context;
@@ -137,7 +137,7 @@ Prime.Document.Element.prototype = {
    * element.
    *
    * @param {Prime.Document.Element|Node} element The element to insert this Element into.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   appendTo: function(element) {
     // Error out for now if this element is in the document so we can punt on cloning for now
@@ -163,7 +163,7 @@ Prime.Document.Element.prototype = {
    * @param {Object} [target] The target.
    * @param {boolean} [bubbling] If the event is bubbling, defaults to true.
    * @param {boolean} [cancelable] If the event is cancellable, defaults to true.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   fireEvent: function(event, memo, target, bubbling, cancelable) {
     memo = typeof(memo) !== 'undefined' ? memo : {};
@@ -214,7 +214,7 @@ Prime.Document.Element.prototype = {
   /**
    * Puts the focus on this element.
    *
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   focus: function() {
     this.domElement.focus();
@@ -225,7 +225,7 @@ Prime.Document.Element.prototype = {
    * Returns the value of the given attribute.
    *
    * @param {string} name The attribute name.
-   * @return {string} This attribute value or null.
+   * @returns {string} This attribute value or null.
    */
   getAttribute: function(name) {
     var attr = this.domElement.attributes.getNamedItem(name);
@@ -246,7 +246,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets the children elements of this Element.
    *
-   * @return {Prime.Document.ElementList} The children.
+   * @returns {Prime.Document.ElementList} The children.
    */
   getChildren: function() {
     return new Prime.Document.ElementList(this.domElement.children);
@@ -255,7 +255,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets the class value of the current element. This might be a single class or multiple class names.
    *
-   * @return {string} The class.
+   * @returns {string} The class.
    */
   getClass: function() {
     return this.domElement.className;
@@ -264,7 +264,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets the computed style information for this Element.
    *
-   * @return {IEElementStyle|CSSStyleDeclaration} The style information.
+   * @returns {IEElementStyle|CSSStyleDeclaration} The style information.
    */
   getComputedStyle: function() {
     return (this.domElement.currentStyle) ? this.domElement.currentStyle : document.defaultView.getComputedStyle(this.domElement, null);
@@ -274,7 +274,7 @@ Prime.Document.Element.prototype = {
    * Gets the height of the Element as a number or a string value depending on if the height is in pixels or not. When
    * the height is in pixels, this returns a number.
    *
-   * @return {number|string} The height as pixels (number) or a string.
+   * @returns {number|string} The height as pixels (number) or a string.
    */
   getHeight: function() {
     var height = this.getComputedStyle()['height'];
@@ -289,7 +289,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets the inner HTML content of the Element.
    *
-   * @return {string} The HTML content.
+   * @returns {string} The HTML content.
    */
   getHTML: function() {
     return this.domElement.innerHTML;
@@ -298,7 +298,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets the ID of this element from the domElement.
    *
-   * @return {string} ID The id of the domElement if it exists.
+   * @returns {string} ID The id of the domElement if it exists.
    */
   getID: function() {
     return this.domElement.id;
@@ -339,7 +339,7 @@ Prime.Document.Element.prototype = {
   /**
    * Retrieves the opacity value for the Element. This handles the IE alpha filter.
    *
-   * @return {number} The opacity value.
+   * @returns {number} The opacity value.
    */
   getOpacity: function() {
     var computedStyle = this.getComputedStyle();
@@ -360,7 +360,7 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * @return {Prime.Document.ElementList} If this element is a select box, this returns the options of the select box in
+   * @returns {Prime.Document.ElementList} If this element is a select box, this returns the options of the select box in
    *          an ElementList.
    */
   getOptions: function() {
@@ -425,7 +425,7 @@ Prime.Document.Element.prototype = {
    * Retrieves the values of this Element, if the element is a checkbox or select. If it is anything else this returns
    * null.
    *
-   * @return {Array} The values of this Element.
+   * @returns {Array} The values of this Element.
    */
   getSelectedValues: function() {
     var values = [];
@@ -453,7 +453,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets value of a style attribute.
    *
-   * @return {string} The style value.
+   * @returns {string} The style value.
    */
   getStyle: function(name) {
     name = Prime.Utils.convertStyleName(name);
@@ -470,7 +470,7 @@ Prime.Document.Element.prototype = {
   /**
    * Retrieves the text content of this Element.
    *
-   * @return {string} The text contents of this Element.
+   * @returns {string} The text contents of this Element.
    */
   getTextContent: function() {
     return this.domElement.innerText ? this.domElement.innerText : this.domElement.textContent;
@@ -487,7 +487,7 @@ Prime.Document.Element.prototype = {
    * Gets the width of the Element as a number of pixels. If the height is currently not specified by pixels, this will
    * throw an exception.
    *
-   * @return {number} The height in pixels.
+   * @returns {number} The height in pixels.
    */
   getWidth: function() {
     var width = this.getComputedStyle()['width'];
@@ -504,7 +504,7 @@ Prime.Document.Element.prototype = {
    * options. However, this does not retrieve the selected options in a select box, checked checkboxes or checked radio
    * buttons. Use the getSelectedValues function for that.
    *
-   * @return {string} The value of this Element.
+   * @returns {string} The value of this Element.
    */
   getValue: function() {
     return this.domElement.value;
@@ -514,7 +514,7 @@ Prime.Document.Element.prototype = {
    * Returns true if the element has one or all class names
    *
    * @param {string} classNames The class name(s) in a string.
-   * @return {boolean} True if all class names are present.
+   * @returns {boolean} True if all class names are present.
    */
   hasClass: function(classNames) {
     var currentClassNames = this.domElement.className;
@@ -536,7 +536,7 @@ Prime.Document.Element.prototype = {
   /**
    * Hides the Element by setting the display style to none.
    *
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   hide: function() {
     this.domElement.style.display = 'none';
@@ -547,7 +547,7 @@ Prime.Document.Element.prototype = {
    * Inserts this Element into the DOM after the given element, removing it from it's parent if it's an existing element.
    *
    * @param {Element} element The element to insert this Element after.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   insertAfter: function(element) {
     if (this.domElement.parentNode) {
@@ -569,7 +569,7 @@ Prime.Document.Element.prototype = {
    * Inserts this Element into the DOM before the given element, removing it from it's parent if it's an existing element.
    *
    * @param {Element} element The element to insert this Element before.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   insertBefore: function(element) {
     if (this.domElement.parentNode) {
@@ -591,7 +591,7 @@ Prime.Document.Element.prototype = {
    * Inserts the given text after this Element.
    *
    * @param {string} text The text to insert.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   insertTextAfter: function(text) {
     if (!this.domElement.parentNode) {
@@ -608,7 +608,7 @@ Prime.Document.Element.prototype = {
    * Inserts the given text before this Element.
    *
    * @param {string} text The text to insert.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   insertTextBefore: function(text) {
     if (!this.domElement.parentNode) {
@@ -624,7 +624,7 @@ Prime.Document.Element.prototype = {
   /**
    * Returns whether or not the element is checked. If the element is not a checkbox or a radio this returns false.
    *
-   * @return {boolean} True if the element is selected, false if it isn't or is not a checkbox or a radio.
+   * @returns {boolean} True if the element is selected, false if it isn't or is not a checkbox or a radio.
    */
   isChecked: function() {
     return this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio') && this.domElement.checked;
@@ -663,7 +663,7 @@ Prime.Document.Element.prototype = {
   /**
    * Returns whether or not the element is selected. If the element is not an option this returns false.
    *
-   * @return {boolean} True if the element is selected, false if it isn't or is not an option.
+   * @returns {boolean} True if the element is selected, false if it isn't or is not an option.
    */
   isSelected: function() {
     return this.domElement.tagName === 'OPTION' && this.domElement.selected;
@@ -683,7 +683,7 @@ Prime.Document.Element.prototype = {
   /**
    * Returns this element's parent as  Prime.Document.Element.
    *
-   * @return {Prime.Document.Element} this element's parent or null if there is no parent
+   * @returns {Prime.Document.Element} this element's parent or null if there is no parent
    */
   parent: function() {
     if (this.domElement.parentNode !== null) {
@@ -698,7 +698,7 @@ Prime.Document.Element.prototype = {
    * element.
    *
    * @param {Element} element The element to insert this Element into.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   prependTo: function(element) {
     // Error out for now if this element is in the document so we can punt on cloning for now
@@ -719,7 +719,7 @@ Prime.Document.Element.prototype = {
   /**
    * Removes all of the event listeners for the given element.
    *
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   removeAllEventListeners: function() {
     for (event in this.domElement.eventListeners) {
@@ -741,7 +741,7 @@ Prime.Document.Element.prototype = {
    * Removes an attribute from the Element
    *
    * @param {string} name The name of the attribute.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   removeAttribute: function(name) {
     this.domElement.removeAttribute(name);
@@ -752,7 +752,7 @@ Prime.Document.Element.prototype = {
    * Removes the given class (or list of space separated classes) from this Element.
    *
    * @param {string} classNames The class name(s).
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   removeClass: function(classNames) {
     var currentClassName = this.domElement.className;
@@ -775,7 +775,7 @@ Prime.Document.Element.prototype = {
    *
    * @param {string} event The name of the event.
    * @param {*} listener The event listener that was bound.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   removeEventListener: function(event, listener) {
     var proxy = listener.primeProxy ? listener.primeProxy : listener;
@@ -793,7 +793,7 @@ Prime.Document.Element.prototype = {
    * Removes all of the event listeners for the given event from this element.
    *
    * @param {string} event The name of the event to remove the listeners for.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   removeEventListeners: function(event) {
     if (this.domElement.eventListeners[event]) {
@@ -812,7 +812,7 @@ Prime.Document.Element.prototype = {
   /**
    * Removes this Element from the DOM. If the Element isn't in the DOM this does nothing.
    *
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   removeFromDOM: function() {
     if (this.domElement.parentNode) {
@@ -826,7 +826,7 @@ Prime.Document.Element.prototype = {
    * Scrolls this element to the given position.
    *
    * @param {number} position The position to scroll the element to.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   scrollTo: function(position) {
     this.domElement.scrollTop = position;
@@ -836,7 +836,7 @@ Prime.Document.Element.prototype = {
   /**
    * Scrolls this element to the bottom.
    *
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   scrollToBottom: function() {
     this.domElement.scrollTop = this.domElement.scrollHeight;
@@ -846,7 +846,7 @@ Prime.Document.Element.prototype = {
   /**
    * Scrolls this element to the top.
    *
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   scrollToTop: function() {
     this.domElement.scrollTop = 0;
@@ -858,7 +858,7 @@ Prime.Document.Element.prototype = {
    *
    * @param {string} name The attribute name
    * @param {string} value The attribute value
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setAttribute: function(name, value) {
     if (this.domElement.setAttribute) {
@@ -876,7 +876,7 @@ Prime.Document.Element.prototype = {
    * Sets multiple attributes of the Element from the hash
    *
    * @param {Object} attributes An object of key value style pairs.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setAttributes: function(attributes) {
     for (key in attributes) {
@@ -892,7 +892,7 @@ Prime.Document.Element.prototype = {
    * value.
    *
    * @param {boolean} value The value to set the checked state of this element to.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setChecked: function(value) {
     this.domElement.checked = value;
@@ -903,7 +903,7 @@ Prime.Document.Element.prototype = {
    * Sets if this element is disabled or not. This works with any element that responds to the disabled property.
    *
    * @param {boolean} value The value to set the disabled state of this element to.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setDisabled: function(value) {
     this.domElement.disabled = value;
@@ -914,7 +914,7 @@ Prime.Document.Element.prototype = {
    * Sets the height of this element using the height style.
    *
    * @param {number|string} height The new height as a number (for pixels) or string.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setHeight: function(height) {
     if (typeof(height) == 'number') {
@@ -929,7 +929,7 @@ Prime.Document.Element.prototype = {
    * Sets the inner HTML content of the Element.
    *
    * @param {string|Prime.Document.Element} newHTML The new HTML content for the Element.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setHTML: function(newHTML) {
     if (newHTML !== null) {
@@ -946,7 +946,7 @@ Prime.Document.Element.prototype = {
    * Sets the ID of the Element.
    *
    * @param {string} id The ID.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setID: function(id) {
     this.domElement.id = id;
@@ -957,7 +957,7 @@ Prime.Document.Element.prototype = {
    * Sets left position of the element.
    *
    * @param {number|string} left The left position of the element in pixels or as a string.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setLeft: function(left) {
     var leftString = left;
@@ -973,7 +973,7 @@ Prime.Document.Element.prototype = {
    * Sets the opacity of the element. This also sets the IE alpha filter for IE version 9 or younger.
    *
    * @param {number} opacity The opacity.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setOpacity: function(opacity) {
     if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
@@ -989,7 +989,7 @@ Prime.Document.Element.prototype = {
    * Sets the selected value(s) of this element. This works on selects, checkboxes, and radio buttons.
    *
    * @param {string} [arguments] The value(s) to select (var args).
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setSelectedValues: function() {
     // Handle the case where they passed in an array
@@ -1020,7 +1020,7 @@ Prime.Document.Element.prototype = {
    *
    * @param {string} name The style name.
    * @param {string} value The style value.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setStyle: function(name, value) {
     this.domElement.style[name] = value;
@@ -1031,7 +1031,7 @@ Prime.Document.Element.prototype = {
    * Sets multiple styles of this Element.
    *
    * @param {Object} styles An object with key value pairs for the new style names and values.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setStyles: function(styles) {
     for (key in styles) {
@@ -1046,7 +1046,7 @@ Prime.Document.Element.prototype = {
    * Sets top position of the element.
    *
    * @param {number|string} top The top position of the element in pixels or as a string.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setTop: function(top) {
     var topString = top;
@@ -1064,7 +1064,7 @@ Prime.Document.Element.prototype = {
    * the buttons themselves. To check and uncheck the buttons, use the select method.
    *
    * @param {string} value The new value.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setValue: function(value) {
     this.domElement.value = value;
@@ -1075,7 +1075,7 @@ Prime.Document.Element.prototype = {
    * Sets the width of this element using the height style.
    *
    * @param {number|string} width The new width as a number (for pixels) or string.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   setWidth: function(width) {
     if (typeof(width) == 'number') {
@@ -1094,7 +1094,7 @@ Prime.Document.Element.prototype = {
    *
    * @param {string} [displayValue] The display value to use for the show. This defaults to the W3C standard display
    * setting depending on the type of element you are showing. For example, INPUT is inline and DIV is block.
-   * @return {Prime.Document.Element} This Element.
+   * @returns {Prime.Document.Element} This Element.
    */
   show: function(displayValue) {
     if (typeof(displayValue) !== 'undefined') {

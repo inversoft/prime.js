@@ -98,7 +98,7 @@ Prime.Utils = {
    * Converts CSS style names to style JavaScript names.
    *
    * @param {string} name The CSS style name to convert
-   * @return {string} The converted style name.
+   * @returns {string} The converted style name.
    */
   convertStyleName: function(name) {
     if (name === 'float') {
@@ -141,7 +141,7 @@ Prime.Utils = {
    * Parses JSON.
    *
    * @param {string} json The JSON.
-   * @return {Object} The JSON data as an object.
+   * @returns {Object} The JSON data as an object.
    */
   parseJSON: function(json) {
     return JSON.parse(json);
@@ -152,7 +152,7 @@ Prime.Utils = {
    *
    * @param {Function} func The function to call.
    * @param {Object} context The "this" variable when the function is called.
-   * @return {Function} An anonymous function.
+   * @returns {Function} An anonymous function.
    */
   proxy: function(func, context) {
     return function() {

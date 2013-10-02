@@ -21,6 +21,8 @@
     <title>Prime Functional Tests</title>
     <link rel="stylesheet" href="../js/buster-test.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.PhraseBuilder.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.Searcher.css"/>
     <script type="text/javascript" src="../../main/js/sizzle/sizzle.js"></script>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
     <script type="text/javascript" src="../../main/js/Browser.js"></script>
@@ -32,8 +34,32 @@
     <script type="text/javascript" src="../../main/js/Template.js"></script>
     <script type="text/javascript" src="../../main/js/Utils.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
+      var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+      var searcherCallback = {
+        search: function(searchText) {
+          var result = {};
+          result.tooManyResults = searchText === 'fuck';
+          result.results = [];
+          if (!result.tooManyResults) {
+            for (var i = 0; searchText !== '' && i < values.length; i++) {
+              if (values[i].indexOf(searchText) === 0) {
+                result.results.push(values[i]);
+              }
+            }
+          }
+
+          return result;
+        },
+
+        selectSearchResult: function(value) {
+          alert("You selected [" + value + "]");
+        }
+      };
+
       Prime.Document.onReady(function() {
         Prime.Document.queryFirst('#fade').
           addEventListener('click', function() {
@@ -46,9 +72,17 @@
             new Prime.Effects.Appear(element).withDuration(500).go();
           });
 
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-test'));
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-custom-add-disabled-test'), 'Choose', false);
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-lots-of-options'));
+        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-test')).
+            render();
+        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-custom-add-disabled-test')).
+            withPlaceholder('Choose').
+            withCustomAddEnabled(false).
+            render();
+        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-lots-of-options')).
+            render();
+        new Prime.Widgets.Searcher(Prime.Document.queryByID('searcher'), Prime.Document.queryByID('searcher-results'), searcherCallback);
+        new Prime.Widgets.PhraseBuilder(Prime.Document.queryByID('phrase-builder'), searcherCallback.search, searcherCallback).
+            render();
       });
     </script>
     <style>
@@ -108,6 +142,22 @@
           <option value="Twenty">Twenty</option>
         </select>
         <input type="submit" value="Submit"/>
+        <br/>
+        <br/>
+        <div class="prime-searcher-container">
+          <label for="searcher">Searcher</label>
+          <input type="text" id="searcher"/>
+          <div id="searcher-results">
+
+          </div>
+        </div>
+        <br/>
+        <br/>
+        <label for="phrase-builder">Phrase Builder</label>
+        <select id="phrase-builder" multiple="multiple">
+          <option value="one">one</option>
+          <option value="ten">ten</option>
+        </select>
       </form>
     </div>
   </body>

@@ -45,7 +45,7 @@ Prime.Effects.BaseTransition.prototype = {
    *
    * @param {Function} endFunction The function that is called when the effect is completed.
    * @param {Object} [context] The context for the function call (sets the 'this' parameter). Defaults to the Element.
-   * @return {Prime.Effects.BaseTransition} This Effect.
+   * @returns {Prime.Effects.BaseTransition} This Effect.
    */
   withEndFunction: function(endFunction, context) {
     this.endFunction = endFunction;
@@ -57,7 +57,7 @@ Prime.Effects.BaseTransition.prototype = {
    * Sets the duration of the fade-out effect.
    *
    * @param {number} duration The duration in milliseconds.
-   * @return {Prime.Effects.BaseTransition} This Effect.
+   * @returns {Prime.Effects.BaseTransition} This Effect.
    */
   withDuration: function(duration) {
     if (duration < 100) {
