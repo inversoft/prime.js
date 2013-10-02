@@ -240,16 +240,6 @@ Prime.Widgets.Searcher.prototype = {
       throw new TypeError('The callback must return an Object that contains the properties results{Array] and tooManyResults[boolean]');
     }
 
-    // Handle too many results
-    if (searchResults.tooManyResults) {
-      Prime.Document.newElement('<li/>').
-          addClass('prime-searcher-too-many-search-results').
-          setHTML(this.tooManySearchResultsLabel + searchText).
-          appendTo(this.searchResultsContainer);
-      this.searchResultsContainer.show();
-      return this;
-    }
-
     var count = 0;
     var matchingSearchResultElement = null;
     for (var i = 0; i < searchResults.results.length; i++) {
@@ -284,6 +274,15 @@ Prime.Widgets.Searcher.prototype = {
       Prime.Document.newElement('<li/>').
           addClass('prime-searcher-no-search-results').
           setHTML(this.noSearchResultsLabel + searchText).
+          appendTo(this.searchResultsContainer);
+      count++;
+    }
+
+    // Handle too many results
+    if (searchResults.tooManyResults) {
+      Prime.Document.newElement('<li/>').
+          addClass('prime-searcher-too-many-search-results').
+          setHTML(this.tooManySearchResultsLabel + searchText).
           appendTo(this.searchResultsContainer);
       count++;
     }
