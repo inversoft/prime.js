@@ -325,10 +325,9 @@ Prime.Widgets.PhraseBuilder.prototype = {
   deletedBeyondSearchInput: function() {
     if (this.isLastWordHighlightedForRemoval()) {
       this.removeHighlightedWord();
-      this.highlightWordForRemoval();
-    } else {
-      this.highlightWordForRemoval();
     }
+
+    this.highlightWordForRemoval();
   },
 
   /**
@@ -356,7 +355,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * ===================================================================================================================*/
 
   /**
-   * Adds the given selected option to the disaply.
+   * Adds the given selected option to the display.
    *
    * @private
    * @param {Prime.Document.Element} option The option.

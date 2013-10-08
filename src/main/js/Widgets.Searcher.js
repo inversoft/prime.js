@@ -237,7 +237,7 @@ Prime.Widgets.Searcher.prototype = {
     // Call the callback
     var searchResults = this.callbackObject.search(searchText);
     if (!searchResults.hasOwnProperty('results') || !searchResults.hasOwnProperty('tooManyResults')) {
-      throw new TypeError('The callback must return an Object that contains the properties results{Array] and tooManyResults[boolean]');
+      throw new TypeError('The callback must return an Object that contains the properties results[Array] and tooManyResults[boolean]');
     }
 
     var count = 0;
@@ -251,7 +251,7 @@ Prime.Widgets.Searcher.prototype = {
           addEventListener('click', this.handleClickEvent, this).
           addEventListener('mouseover', this.handleMouseOverEvent, this).
           appendTo(this.searchResultsContainer);
-      if (searchResult.trim() === searchText.trim()) {
+      if (searchResult.toLowerCase().trim() === searchText.toLowerCase().trim()) {
         matchingSearchResultElement = element;
       }
 
@@ -260,7 +260,7 @@ Prime.Widgets.Searcher.prototype = {
 
     // Show the custom add option if necessary
     var trimmedLength = searchText.trim().length;
-    if (this.customAddEnabled && trimmedLength !== 0 && (searchResults.results.length === 0 || matchingSearchResultElement === null)) {
+    if (this.customAddEnabled && trimmedLength !== 0 && matchingSearchResultElement === null && this.callbackObject.doesNotContainValue(searchText)) {
       matchingSearchResultElement = Prime.Document.newElement('<li/>').
           addClass('prime-searcher-search-result prime-searcher-add-custom').
           addEventListener('click', this.handleClickEvent, this).

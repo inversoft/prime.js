@@ -138,6 +138,21 @@ Prime.Utils = {
   },
 
   /**
+   * Parses a CSS measure value (12px) as an integer.
+   *
+   * @param {string} measure The CSS measure
+   * @returns {number} The value as an integer.
+   */
+  parseCSSMeasure: function(measure) {
+    var index = measure.indexOf('px');
+    if (index > 0) {
+      return parseInt(measure.substring(0, measure.length - 2));
+    }
+
+    return parseInt(measure) || 0;
+  },
+
+  /**
    * Parses JSON.
    *
    * @param {string} json The JSON.

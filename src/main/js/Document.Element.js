@@ -237,7 +237,7 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * @returns {Number} The bottom position (in pixels) of the current element.
+   * @returns {number} The bottom position (in pixels) of the current element.
    */
   getBottom: function() {
     return this.domElement.getBoundingClientRect().bottom;
@@ -271,19 +271,17 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the height of the Element as a number or a string value depending on if the height is in pixels or not. When
-   * the height is in pixels, this returns a number.
+   * Gets the height of the Element as an integer value. This does not the border but does include any scroll bars. This
+   * is often called the innerHeight of the element.
    *
-   * @returns {number|string} The height as pixels (number) or a string.
+   * @returns {number} The height as pixels (number) or a string.
    */
   getHeight: function() {
-    var height = this.getComputedStyle()['height'];
-    var index = height.indexOf('px');
-    if (index === -1) {
-      throw new TypeError('height is specified in a unit other than pixels');
-    }
-
-    return parseInt(height.substring(0, index));
+    var computedStyle = this.getComputedStyle();
+    var offsetHeight = this.domElement.offsetHeight;
+    var borderTop = computedStyle['borderTopWidth'];
+    var borderBottom = computedStyle['borderBottomWidth'];
+    return offsetHeight - Prime.Utils.parseCSSMeasure(borderTop) - Prime.Utils.parseCSSMeasure(borderBottom);
   },
 
   /**
@@ -305,7 +303,7 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * @returns {Number} The left position (in pixels) of the current element.
+   * @returns {number} The left position (in pixels) of the current element.
    */
   getLeft: function() {
     return this.domElement.getBoundingClientRect().left;
@@ -372,13 +370,16 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the outer height of the element, including the margins. This does not include the padding or borders.
+   * Gets the outer height of the element, including the margins and the border.
    *
    * @returns {number} The outer height of the element.
    */
   getOuterHeight: function() {
     var computedStyle = this.getComputedStyle();
-    return parseInt(computedStyle['height']) + parseInt(computedStyle['margin-top']) + parseInt(computedStyle['margin-bottom']);
+    var offsetHeight = this.domElement.offsetHeight;
+    var marginTop = computedStyle['marginTop'];
+    var marginBottom = computedStyle['marginBottom'];
+    return offsetHeight + Prime.Utils.parseCSSMeasure(marginTop) + Prime.Utils.parseCSSMeasure(marginBottom);
   },
 
   /**
@@ -388,7 +389,10 @@ Prime.Document.Element.prototype = {
    */
   getOuterWidth: function() {
     var computedStyle = this.getComputedStyle();
-    return parseInt(computedStyle['width']) + parseInt(computedStyle['margin-left']) + parseInt(computedStyle['margin-right']);
+    var offsetWidth = this.domElement.offsetWidth;
+    var marginLeft = computedStyle['marginLeft'];
+    var marginRight = computedStyle['marginRight'];
+    return offsetWidth + Prime.Utils.parseCSSMeasure(marginLeft) + Prime.Utils.parseCSSMeasure(marginRight);
   },
 
   /**
@@ -408,7 +412,7 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * @returns {Number} The right position (in pixels) of the current element.
+   * @returns {number} The right position (in pixels) of the current element.
    */
   getRight: function() {
     return this.domElement.getBoundingClientRect().right;
@@ -477,26 +481,24 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * @returns {Number} The top position (in pixels) of the current element.
+   * @returns {number} The top position (in pixels) of the current element.
    */
   getTop: function() {
     return this.domElement.getBoundingClientRect().top;
   },
 
   /**
-   * Gets the width of the Element as a number of pixels. If the height is currently not specified by pixels, this will
-   * throw an exception.
+   * Gets the width of the Element as an integer value. This does not include the borders but does including any scroll
+   * bars. This is often called the innerWidth of the element.
    *
    * @returns {number} The height in pixels.
    */
   getWidth: function() {
-    var width = this.getComputedStyle()['width'];
-    var index = width.indexOf('px');
-    if (index === -1) {
-      throw new TypeError('width is specified in a unit other than pixels');
-    }
-
-    return parseInt(width.substring(0, index));
+    var computedStyle = this.getComputedStyle();
+    var offsetWidth = this.domElement.offsetWidth;
+    var borderLeft = computedStyle['borderLeftWidth'];
+    var borderRight= computedStyle['borderRightWidth'];
+    return offsetWidth - Prime.Utils.parseCSSMeasure(borderLeft) - Prime.Utils.parseCSSMeasure(borderRight);
   },
 
   /**

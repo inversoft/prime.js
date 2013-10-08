@@ -42,6 +42,9 @@ buster.testCase('Searcher class tests', {
     this.deletedBeyondSearchInput = function() {
       this.deletedBeyondSearchInput = true;
     };
+    this.doesNotContainValue = function(value) {
+      return true;
+    };
 
     this.searcherInput = Prime.Document.queryFirst('#searcher');
     this.searcherSearchResults = Prime.Document.queryFirst('#searcher-results');

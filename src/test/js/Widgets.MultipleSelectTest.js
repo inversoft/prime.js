@@ -34,8 +34,7 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelect.addOption('three', 'Three');
     this.multipleSelect.selectOptionWithValue('one');
     this.multipleSelect.selectOptionWithValue('three');
-    this.multipleSelect.removeAllSearchResults();
-    this.multipleSelect.closeSearchResults();
+    this.multipleSelect.searcher.closeSearchResults();
 
     this.multipleSelectCustomAddDisabled = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-custom-add-disabled')).
         withPlaceholder('Choose:').
@@ -48,8 +47,7 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelectCustomAddDisabled.addOption('twenty', 'Twenty');
     this.multipleSelectCustomAddDisabled.selectOptionWithValue('one');
     this.multipleSelectCustomAddDisabled.selectOptionWithValue('three');
-    this.multipleSelectCustomAddDisabled.removeAllSearchResults();
-    this.multipleSelectCustomAddDisabled.closeSearchResults();
+    this.multipleSelectCustomAddDisabled.searcher.closeSearchResults();
   },
 
   'setup': function() {
@@ -175,69 +173,6 @@ buster.testCase('MultipleSelect class tests', {
     assert.isFalse(this.multipleSelect.hasOptionWithValue('four'));
   },
 
-  "highlightNextSearchResult": function() {
-    this.multipleSelect.search('t'); // This will result in the search results having Two and the custom option shown
-    this.multipleSelect.highlightNextSearchResult();
-
-    // Highlight Two
-    var searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Highlight the custom add option
-    this.multipleSelect.highlightNextSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Wrap
-    this.multipleSelect.highlightNextSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Get rid of the custom add option and highlight Two
-    this.multipleSelect.search('two');
-    this.multipleSelect.highlightNextSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // This should keep Two highlighted
-    this.multipleSelect.highlightNextSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-  },
-
-  'highlightNextSearchResult custom add disabled': function() {
-    this.multipleSelectCustomAddDisabled.search('t'); // This will result in the search results having Two and Three shown
-
-    // Highlight Two
-    this.multipleSelectCustomAddDisabled.highlightNextSearchResult();
-    var searchResults = Prime.Document.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Highlight Twenty
-    this.multipleSelectCustomAddDisabled.highlightNextSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Wrap
-    this.multipleSelectCustomAddDisabled.highlightNextSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-  },
-
   'highlightOptionForUnselect': function() {
     this.multipleSelect.highlightOptionForUnselect(); // Highlight Three
     assert.isTrue(this.multipleSelect.isLastOptionHighlightedForUnselect());
@@ -249,69 +184,6 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-option-highlighted'));
     assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
-  },
-
-  "highlightPreviousSearchResult": function() {
-    this.multipleSelect.search('t'); // This will result in the search results having Two and the custom option shown
-    this.multipleSelect.highlightPreviousSearchResult();
-
-    // Highlight the custom add option
-    var searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Highlight Two
-    this.multipleSelect.highlightPreviousSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Wrap
-    this.multipleSelect.highlightPreviousSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Get rid of the custom add option and highlight Two
-    this.multipleSelect.search('two');
-    this.multipleSelect.highlightPreviousSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // This should keep Two highlighted
-    this.multipleSelect.highlightPreviousSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-  },
-
-  'highlightPreviousSearchResult custom add disabled': function() {
-    this.multipleSelectCustomAddDisabled.search('t'); // This will result in the search results having Two and Three shown
-
-    // Highlight Twenty
-    this.multipleSelectCustomAddDisabled.highlightPreviousSearchResult();
-    var searchResults = Prime.Document.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Highlight Two
-    this.multipleSelectCustomAddDisabled.highlightPreviousSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
-
-    // Wrap
-    this.multipleSelectCustomAddDisabled.highlightPreviousSearchResult();
-    searchResults = Prime.Document.queryFirst('#multiple-select-custom-add-disabled-display .prime-multiple-select-search-result-list').getChildren();
-    assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-multiple-select-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-multiple-select-highlighted-search-result'));
   },
 
   'removeHighlightedOption': function() {
@@ -352,82 +224,73 @@ buster.testCase('MultipleSelect class tests', {
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
   },
 
-  "closeSearchResults": function() {
-    this.multipleSelect.search();
-    this.multipleSelect.closeSearchResults();
-
-    searchResultList = Prime.Document.queryFirst('#multiple-select-display .prime-multiple-select-search-result-list');
-    assert.isFalse(searchResultList.isVisible());
-    assert.equals(this.multipleSelect.input.getValue(), '');
-  },
-
   'search': function() {
     // Execute a search
-    this.multipleSelect.search('t');
-    assert.isTrue(this.multipleSelect.isSearchResultsVisible());
-    assert.isTrue(this.multipleSelect.isCustomAddVisible());
+    this.multipleSelect.searcher.search('t');
+    assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
+    assert.isTrue(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 't');
     assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 2); // The option for Two and the add custom option
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getClass(), 'prime-multiple-select-search-result prime-multiple-select-add-custom');
+    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getHTML(), 'Add New Value: t');
 
     // Add a letter
-    this.multipleSelect.search('tw');
-    assert.isTrue(this.multipleSelect.isSearchResultsVisible());
-    assert.isTrue(this.multipleSelect.isCustomAddVisible());
+    this.multipleSelect.searcher.search('tw');
+    assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
+    assert.isTrue(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 'tw');
     assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 2); // The option for Two and the add custom option
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getClass(), 'prime-multiple-select-search-result prime-multiple-select-add-custom');
+    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getHTML(), 'Add New Value: tw');
 
     // Make the custom add option go away
-    this.multipleSelect.search('two');
-    assert.isTrue(this.multipleSelect.isSearchResultsVisible());
-    assert.isFalse(this.multipleSelect.isCustomAddVisible());
+    this.multipleSelect.searcher.search('two');
+    assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 'two');
     assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 1);
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-highlighted-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
 
     // Add a letter
-    this.multipleSelect.search('twos');
-    assert.isTrue(this.multipleSelect.isSearchResultsVisible());
-    assert.isTrue(this.multipleSelect.isCustomAddVisible());
+    this.multipleSelect.searcher.search('twos');
+    assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
+    assert.isTrue(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 'twos');
     assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 1); // The option for Two and the add custom option
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result prime-multiple-select-add-custom');
+    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Add New Value: twos');
 
     // Empty search
-    this.multipleSelect.search('');
-    assert.isTrue(this.multipleSelect.isSearchResultsVisible());
-    assert.isFalse(this.multipleSelect.isCustomAddVisible());
+    this.multipleSelect.searcher.search('');
+    assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), '');
     assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 1);
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-search-result');
+    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result');
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
 
     // Whitespace search
-    this.multipleSelect.search('   ');
-    assert.isFalse(this.multipleSelect.isSearchResultsVisible());
-    assert.isFalse(this.multipleSelect.isCustomAddVisible());
+    this.multipleSelect.searcher.search('   ');
+    assert.isFalse(this.multipleSelect.searcher.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), '   ');
     assert.isFalse(this.multipleSelect.searchResultsContainer.isVisible());
 
     // Empty search with no options available
     this.multipleSelect.selectOptionWithValue('two');
-    this.multipleSelect.search('');
-    assert.isFalse(this.multipleSelect.isSearchResultsVisible());
-    assert.isFalse(this.multipleSelect.isCustomAddVisible());
+    this.multipleSelect.searcher.search('');
+    assert.isFalse(this.multipleSelect.searcher.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), '');
     assert.isFalse(this.multipleSelect.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 0);
@@ -435,23 +298,49 @@ buster.testCase('MultipleSelect class tests', {
 
   'search custom add disabled': function() {
     // Search with no results
-    this.multipleSelectCustomAddDisabled.search('nothing');
-    assert.isTrue(this.multipleSelectCustomAddDisabled.isSearchResultsVisible());
-    assert.isFalse(this.multipleSelectCustomAddDisabled.isCustomAddVisible());
+    this.multipleSelectCustomAddDisabled.searcher.search('nothing');
+    assert.isTrue(this.multipleSelectCustomAddDisabled.searcher.isSearchResultsVisible());
+    assert.isFalse(this.multipleSelectCustomAddDisabled.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelectCustomAddDisabled.input.getValue(), 'nothing');
     assert.isTrue(this.multipleSelectCustomAddDisabled.searchResultsContainer.isVisible());
     assert.equals(this.multipleSelectCustomAddDisabled.searchResultsContainer.getChildren().length, 1);
-    assert.equals(this.multipleSelectCustomAddDisabled.searchResultsContainer.getChildren()[0].getClass(), 'prime-multiple-select-no-search-results');
+    assert.equals(this.multipleSelectCustomAddDisabled.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-no-search-results');
     assert.equals(this.multipleSelectCustomAddDisabled.searchResultsContainer.getChildren()[0].getHTML(), 'No Matches For: nothing');
   },
 
+  'MultipleSelect.search': function() {
+    // Deselect the options and add some extras
+    this.multipleSelect.deselectOptionWithValue('one');
+    this.multipleSelect.deselectOptionWithValue('three');
+    this.multipleSelect.addOption('one1', 'One1');
+    this.multipleSelect.addOption('one2', 'One2');
+    this.multipleSelect.addOption('two1', 'Two1');
+    this.multipleSelect.addOption('two2', 'Two2');
+
+    var options = this.multipleSelect.search(null);
+    assert.equals(options.results.length, 7);
+    assert.equals(options.results[0], 'One');
+    assert.equals(options.results[1], 'One1');
+    assert.equals(options.results[2], 'One2');
+    assert.equals(options.results[3], 'Three');
+    assert.equals(options.results[4], 'Two');
+    assert.equals(options.results[5], 'Two1');
+    assert.equals(options.results[6], 'Two2');
+
+    options = this.multipleSelect.search('t');
+    assert.equals(options.results.length, 4);
+    assert.equals(options.results[0], 'Three');
+    assert.equals(options.results[1], 'Two');
+    assert.equals(options.results[2], 'Two1');
+    assert.equals(options.results[3], 'Two2');
+  },
+
   'selectHighlightedSearchResult': function() {
-    this.multipleSelect.search('t'); // This will result in the search results having Two and the custom option shown
-    this.multipleSelect.highlightNextSearchResult(); // Highlight Two
-    this.multipleSelect.highlightNextSearchResult(); // Highlight the custom
+    // This will result in the search results having Two and the custom option shown and the custom option will be selected
+    this.multipleSelect.searcher.search('t');
 
     // Add the custom option
-    this.multipleSelect.selectHighlightedSearchResult();
+    this.multipleSelect.searcher.selectHighlightedSearchResult();
 
     // Verify the backing select box is updated
     var select = this.multipleSelect.element.domElement;
@@ -477,9 +366,9 @@ buster.testCase('MultipleSelect class tests', {
     assert.isTrue(displayOptions[3].hasClass('prime-multiple-select-input-option'));
 
     // Add a non-custom option
-    this.multipleSelect.search('t');
-    this.multipleSelect.highlightNextSearchResult(); // Highlight Two
-    this.multipleSelect.selectHighlightedSearchResult();
+    this.multipleSelect.searcher.search('t');
+    this.multipleSelect.searcher.highlightNextSearchResult(); // Highlight Two
+    this.multipleSelect.searcher.selectHighlightedSearchResult();
 
     // Verify the backing select box is updated
     assert.equals(select.length, 4);
@@ -541,33 +430,6 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(displayOptions[2].getID(), 'multiple-select-option-two');
     assert.equals(displayOptions[2].getAttribute('value'), 'two');
     assert.isTrue(displayOptions[3].hasClass('prime-multiple-select-input-option'));
-  },
-
-  'selectableOptionsForPrefix': function() {
-    // Deselect the options and add some extras
-    this.multipleSelect.deselectOptionWithValue('one');
-    this.multipleSelect.deselectOptionWithValue('three');
-    this.multipleSelect.addOption('one1', 'One1');
-    this.multipleSelect.addOption('one2', 'One2');
-    this.multipleSelect.addOption('two1', 'Two1');
-    this.multipleSelect.addOption('two2', 'Two2');
-
-    var options = this.multipleSelect.selectableOptionsForPrefix();
-    assert.equals(options.length, 7);
-    assert.equals(options[0], 'One');
-    assert.equals(options[1], 'One1');
-    assert.equals(options[2], 'One2');
-    assert.equals(options[3], 'Three');
-    assert.equals(options[4], 'Two');
-    assert.equals(options[5], 'Two1');
-    assert.equals(options[6], 'Two2');
-
-    options = this.multipleSelect.selectableOptionsForPrefix('t');
-    assert.equals(options.length, 4);
-    assert.equals(options[0], 'Three');
-    assert.equals(options[1], 'Two');
-    assert.equals(options[2], 'Two1');
-    assert.equals(options[3], 'Two2');
   },
 
   'setSelectedValues': function() {

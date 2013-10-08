@@ -165,7 +165,7 @@ buster.testCase('PhraseBuilder class tests', {
     assert.isTrue(displayOptions[2].hasClass('prime-phrase-builder-input-option'));
   },
 
-  'unhighlightOptionForRemoval': function() {
+  'unhighlightWordForRemoval': function() {
     this.phraseBuilder.highlightWordForRemoval(); // Highlight Three
     assert.isTrue(this.phraseBuilder.isLastWordHighlightedForRemoval());
     this.phraseBuilder.unhighlightWordForRemoval();
