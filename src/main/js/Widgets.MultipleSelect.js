@@ -599,7 +599,7 @@ Prime.Widgets.MultipleSelect.prototype = {
       }
 
       var html = option.getHTML();
-      if (searchText === null || searchText === '' || html.toLowerCase().indexOf(searchText) === 0) {
+      if (searchText === null || searchText === '' || html.toLowerCase().indexOf(searchText.toLowerCase()) === 0) {
         selectableOptions.push(html);
       }
     }
@@ -627,9 +627,9 @@ Prime.Widgets.MultipleSelect.prototype = {
   },
 
 
-  /*
-   * Private methods
-   */
+  /* ===================================================================================================================
+   * Private Methods
+   * ===================================================================================================================*/
 
   /**
    * Handles the blur event when the input goes out of focus.
