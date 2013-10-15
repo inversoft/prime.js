@@ -1,6 +1,6 @@
 // Project info
 group = "org.inversoft.prime"
-version = "0.20"
+version = "0.21"
 description = "Prime.js Framework"
 
 // Plugins
