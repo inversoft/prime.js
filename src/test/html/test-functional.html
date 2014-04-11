@@ -83,6 +83,10 @@
         new Prime.Widgets.Searcher(Prime.Document.queryByID('searcher'), Prime.Document.queryByID('searcher-results'), searcherCallback);
         new Prime.Widgets.PhraseBuilder(Prime.Document.queryByID('phrase-builder'), searcherCallback.search, searcherCallback).
             render();
+
+        Prime.Window.addEventListener('beforeunload', function(event) {
+          console.log('Beforeunload');
+        });
       });
     </script>
     <style>

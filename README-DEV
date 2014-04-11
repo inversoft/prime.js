@@ -27,12 +27,22 @@ Testing --
   Running the tests require some kind of web server to correctly serve some of the test files up.  Typically for Macs,
   we can use the system Apache server to do this.
 
-  1) Go to System Preference > Sharing > Web Sharing and turn this on.
-  2) This turns on several directories as document roots, the easiest to use is ~/Sites.  Create an APACHE_HOME environment
-     variable and set it to ~/Sites
-  3) Run gb testJS, which will basically copy the src directory into ~/Sites/prime-tests.
-  4) Open http://localhost/~<username>/prime-tests/test/html/test.html
-  5) Reward yourself with some coffee, though the tests don't take that long.
+  1) Make your ~/Sites directory
+  2) Create the file /etc/apache2/users/<username>.conf
+  3) Copy this in there and edit it to suit your needs
+
+    <Directory "/Users/username/Sites/">
+      Options Indexes MultiViews FollowSymLinks
+      AllowOverride All
+      Order allow,deny
+      Allow from all
+    </Directory>
+
+  4) Run the command 'sudo apachectl start'
+  5) Go to ~/Sites
+  6) Execute 'ln -s ~/dev/os/inversoft/prime.js prime-tests'
+  7) Open http://localhost/~<username>/prime-tests/src/test/html/test.html
+  8) Reward yourself with some coffee, though the tests don't take that long.
 
 Testing Mountain Lion --
 

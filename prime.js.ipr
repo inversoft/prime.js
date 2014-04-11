@@ -39,7 +39,6 @@
       <option name="myName" value="Inversoft Apache" />
       <option name="myLocal" value="true" />
     </copyright>
-    <module2copyright />
   </component>
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
@@ -47,10 +46,6 @@
   <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false" />
   <component name="EntryPointsManager">
     <entry_points version="2.0" />
-  </component>
-  <component name="GradleSettings">
-    <option name="gradleHome" value="/usr/local/Cellar/gradle/1.0-milestone-9/libexec" />
-    <option name="linkedProjectPath" value="$PROJECT_DIR$/build.gradle" />
   </component>
   <component name="IdProvider" IDEtalkID="F3BFA6F7F97511391424BC4C5FE66463" />
   <component name="Palette2">

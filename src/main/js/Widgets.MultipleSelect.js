@@ -315,7 +315,7 @@ Prime.Widgets.MultipleSelect.prototype = {
   removeHighlightedOption: function() {
     var options = this.displayContainerSelectedOptionList.getChildren();
     this.deselectOptionWithValue(options[options.length - 2].getAttribute('value'));
-    this.search();
+    this.search(null);
   },
 
   /**

@@ -18,6 +18,13 @@ var refute = buster.assertions.refute;
 
 
 buster.testCase('Window tests', {
+  'addEventListener': function() {
+    // Just tests that it doesn't fail
+    Prime.Window.addEventListener('beforeunload', function() {
+      console.log('Closed');
+    });
+  },
+
   'getInnerHeight': function() {
     assert.isTrue(Prime.Window.getInnerHeight() > 400);
   },

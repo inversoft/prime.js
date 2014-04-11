@@ -23,7 +23,7 @@ buster.testCase('Browser tests', {
 
   'safari': function() {
     assert.equals(Prime.Browser.name, 'Safari');
-    assert.equals(Prime.Browser.version, '6');
+    assert.equals(Prime.Browser.version, '7');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });

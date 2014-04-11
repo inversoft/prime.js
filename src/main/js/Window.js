@@ -17,6 +17,30 @@ var Prime = Prime || {};
 
 Prime.Window = {
   /**
+   * Attaches an event listener to the window, returning the handler proxy.
+   *
+   * @param {string} event The name of the event.
+   * @param {Function} handler The event handler.
+   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
+   *        function call). Defaults to this Element.
+   * @returns {Function} The proxy handler.
+   */
+  addEventListener: function(event, handler, context) {
+    var theContext = (arguments.length < 3) ? this : context;
+    handler.primeProxy = Prime.Utils.proxy(handler, theContext);
+
+    if (window.addEventListener) {
+      window.addEventListener(event, handler.primeProxy, false);
+    } else if (document.attachEvent) {
+      window.attachEvent('on' + event, handler.primeProxy);
+    } else {
+      throw new TypeError('Unable to set event onto the window. Neither addEventListener nor attachEvent methods are available');
+    }
+
+    return handler.primeProxy;
+  },
+
+  /**
    * Returns the inner height of the window. This includes only the rendering area and not the window chrome (toolbars,
    * status bars, etc). If this method can't figure out the inner height, it throws an exception.
    *
