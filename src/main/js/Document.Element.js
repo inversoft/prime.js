@@ -222,6 +222,22 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Returns the absolute top of this element relative to the document.
+   *
+   * @returns {number} The number of pixels that this element is from the top of the document.
+   */
+  getAbsoluteTop: function() {
+    var top = 0;
+    var e = this.domElement;
+    while (e) {
+      top += e.offsetTop;
+      e = e.offsetParent;
+    }
+
+    return top;
+  },
+
+  /**
    * Returns the value of the given attribute.
    *
    * @param {string} name The attribute name.
