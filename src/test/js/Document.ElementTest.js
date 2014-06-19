@@ -289,6 +289,10 @@ buster.testCase('Element class tests', {
     }
   },
 
+  'getAbsoluteElement': function() {
+    assert(Prime.Document.queryByID('absolute-top-element').getAbsoluteTop() > 0);
+  },
+
   'getAttribute': function() {
     assert.equals(Prime.Document.queryFirst('#attributes').getAttribute('attr1'), 'value1');
     assert.equals(Prime.Document.queryFirst('#attributes').getAttribute('attr2'), 'value2');
