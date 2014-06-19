@@ -341,6 +341,14 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Document.queryFirst('#queryThree').getPreviousSibling().getID(), 'queryTwo');
   },
 
+  'getSelectedTexts': function() {
+    assert.isNull(Prime.Document.queryFirst('#one-checkbox').getSelectedTexts());
+    assert.isNull(Prime.Document.queryFirst('#one-radio').getSelectedTexts());
+    assert.isNull(Prime.Document.queryFirst('#text').getSelectedTexts());
+    assert.isNull(Prime.Document.queryFirst('#textarea').getSelectedTexts());
+    assert.equals(Prime.Document.queryFirst('#select').getSelectedTexts(), ['One', 'Three']);
+  },
+
   'getSelectedValues': function() {
     assert.equals(Prime.Document.queryFirst('#one-checkbox').getSelectedValues(), ['one', 'three']);
     assert.equals(Prime.Document.queryFirst('#one-radio').getSelectedValues(), ['one']);

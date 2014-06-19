@@ -656,7 +656,7 @@ Prime.Widgets.MultipleSelect.prototype = {
       this.input.focus();
     } else if (target.hasClass('prime-multiple-select-remove-option')) {
       this.removeOptionWithValue(target.getAttribute('value'));
-    } else {
+    } else if (this.input.domElement !== target.currentTarget) {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
 

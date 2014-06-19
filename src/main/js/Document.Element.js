@@ -426,14 +426,37 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Retrieves the selected texts of this Element, if the element is a select. If it is anything else this returns
+   * null.
+   *
+   * @returns {Array} The texts of this Element.
+   */
+  getSelectedTexts: function() {
+    var texts;
+    if (this.domElement.tagName === 'SELECT') {
+      texts = [];
+      for (var i = 0; i < this.domElement.options.length; i++) {
+        if (this.domElement.options[i].selected) {
+          texts.push(this.domElement.options[i].text);
+        }
+      }
+    } else {
+      texts = null;
+    }
+
+    return texts;
+  },
+
+  /**
    * Retrieves the values of this Element, if the element is a checkbox or select. If it is anything else this returns
    * null.
    *
    * @returns {Array} The values of this Element.
    */
   getSelectedValues: function() {
-    var values = [];
+    var values;
     if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
+      values = [];
       var name = this.domElement.name;
       var form = Prime.Document.queryUp('form', this.domElement);
       Prime.Document.query('input[name=' + name + ']', form).each(function(element) {
@@ -442,6 +465,7 @@ Prime.Document.Element.prototype = {
         }
       });
     } else if (this.domElement.tagName === 'SELECT') {
+      values = [];
       for (var i = 0; i < this.domElement.length; i++) {
         if (this.domElement.options[i].selected) {
           values.push(this.domElement.options[i].value);
@@ -497,7 +521,7 @@ Prime.Document.Element.prototype = {
     var computedStyle = this.getComputedStyle();
     var offsetWidth = this.domElement.offsetWidth;
     var borderLeft = computedStyle['borderLeftWidth'];
-    var borderRight= computedStyle['borderRightWidth'];
+    var borderRight = computedStyle['borderRightWidth'];
     return offsetWidth - Prime.Utils.parseCSSMeasure(borderLeft) - Prime.Utils.parseCSSMeasure(borderRight);
   },
 
