@@ -181,7 +181,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   deselectOption: function(option) {
-    option.removeAttribute('selected');
+    option.setSelected(false);
 
     var id = this.makeOptionID(option);
     var displayOption = Prime.Document.queryByID(id);

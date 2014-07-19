@@ -442,6 +442,13 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @returns {boolean} True if the element is an option or radio and is selected, otherwise undefined.
+   */
+  getSelected: function() {
+    return this.domElement.selected;
+  },
+
+  /**
    * Retrieves the selected texts of this Element, if the element is a select. If it is anything else this returns
    * null.
    *
@@ -1025,6 +1032,15 @@ Prime.Document.Element.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Sets the selected value on the element. If the element is not an option or radio, this does nothing.
+   *
+   * @param {boolean} selected Selected value.
+   */
+  setSelected: function(selected) {
+    this.domElement.selected = selected;
   },
 
   /**
