@@ -444,7 +444,7 @@ Prime.Document.Element.prototype = {
   /**
    * @returns {boolean} True if the element is an option or radio and is selected, otherwise undefined.
    */
-  getSelected: function() {
+  isSelected: function() {
     return this.domElement.selected;
   },
 

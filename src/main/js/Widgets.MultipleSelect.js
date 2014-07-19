@@ -394,10 +394,11 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // Add the selected options
     var hasSelectedOptions = false;
-    for (var i = 0; i < this.element.domElement.length; i++) {
-      var option = this.element.domElement.options[i];
-      if (option.selected) {
-        this.selectOption(new Prime.Document.Element(option));
+    var options = this.element.getOptions();
+    for (var i = 0; i < options.length; i++) {
+      var option = options[i];
+      if (option.isSelected()) {
+        this.selectOption(option);
         hasSelectedOptions = true;
       }
     }
@@ -429,7 +430,7 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // Check if the option has already been selected
     if (Prime.Document.queryByID(id) === null) {
-      option.setAttribute('selected', 'selected');
+      option.setSelected(true);
 
       var li = Prime.Document.newElement('<li/>').
           addClass('prime-multiple-select-option').
