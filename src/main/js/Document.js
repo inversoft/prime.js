@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2014, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -134,7 +134,7 @@ Prime.Document.onReady = function(callback, context) {
  * Queries the DOM using the given Sizzle selector starting at the given element and returns all the matched elements.
  *
  * @param {string} selector The selector.
- * @param {Element|Document} [element=document] The starting point for the search (defaults to document if not provided).
+ * @param {Element|Document|Prime.Document.Element} [element=document] The starting point for the search (defaults to document if not provided).
  * @returns {Prime.Document.ElementList} An element list.
  */
 Prime.Document.query = function(selector, element) {
