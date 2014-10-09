@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -236,6 +236,19 @@ Prime.Ajax.Request.prototype = {
    */
   withErrorHandler: function(func) {
     this.errorHandler = func;
+    return this;
+  },
+
+  /**
+   * Sets the body of the AJAX request to the string value of the provided JSON object. The content-type of the request
+   * will also be set to 'application/json'. The provided JSON object may be passed as a string or an object.
+   *
+   * @param {Object} json The JSON object.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withJSON: function(json) {
+    this.body = typeof json === String ? json : JSON.stringify(json);
+    this.contentType = 'application/json';
     return this;
   },
 
