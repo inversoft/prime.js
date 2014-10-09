@@ -1,0 +1,43 @@
+/*
+ * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
+ */
+savantVersion = "0.2.0"
+
+project(group: "org.inversoft.prime", name: "prime.js", version: "0.27", licenses: ["ApacheV2_0"]) {
+  workflow {
+    standard()
+  }
+
+  publishWorkflow {
+    subversion(repository: "http://svn.inversoft.org/savant")
+  }
+
+  publications {
+    main {
+      publication(name: "prime", type: "js", file: "build/js/prime.js", source: "build/js/prime.js")
+    }
+  }
+}
+
+// Plugins
+dependency = loadPlugin(id: "org.savantbuild.plugin:dependency:${savantVersion}")
+file = loadPlugin(id: "org.savantbuild.plugin:file:${savantVersion}")
+release = loadPlugin(id: "org.savantbuild.plugin:release-git:${savantVersion}")
+
+target(name: "clean", description: "Does nothing. Exists for scripting") {
+  file.prune(dir: "build")
+}
+
+target(name: "int", description: "Releases a local integration build of the project") {
+  file.prune(dir: "build/js")
+  file.append(to: "build/js/prime.js") {
+    fileSet(dir: "src/main/js", includePatterns: [~/.+\.js/], excludePatterns: [~/.+\/.+/])
+    fileSet(dir: "src/main/js/sizzle", includePatterns: [ ~/sizzle\.js/])
+  }
+
+  dependency.integrate()
+}
+
+target(name: "release", description: "Releases a full version of the project", dependsOn: ["int"]) {
+  release.release()
+}
