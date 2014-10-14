@@ -1,4 +1,4 @@
-Prime JavaScrpt
-========
+## Prime JavaScript
 
-Welcome to the Prime JavaScript Framework. Visit http://inversoft.github.io/prime.js/ for the project's website.
+Prime JS is an Object Oriented namespaced JavaScript library.
+Welcome to the Prime JavaScript Framework. Visit the project [website](http://inversoft.github.io/prime.js) or the [wiki](https://github.com/inversoft/prime.js/wiki) for additional information.
