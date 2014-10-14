@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
  */
-savantVersion = "0.2.0"
+savantVersion = "0.3.0"
 
 project(group: "org.inversoft.prime", name: "prime.js", version: "0.28.0", licenses: ["ApacheV2_0"]) {
   workflow {
@@ -22,7 +22,7 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "0.28.0", licen
 // Plugins
 dependency = loadPlugin(id: "org.savantbuild.plugin:dependency:${savantVersion}")
 file = loadPlugin(id: "org.savantbuild.plugin:file:${savantVersion}")
-release = loadPlugin(id: "org.savantbuild.plugin:release-git:${savantVersion}")
+release = loadPlugin(id: "org.savantbuild.plugin:release-git:0.3.3")
 
 target(name: "clean", description: "Does nothing. Exists for scripting") {
   file.prune(dir: "build")
