@@ -45,6 +45,7 @@ Prime.Widgets = Prime.Widgets || {};
  *
  * <ul>
  *   <li>customAddEnabled = true</li>
+ *   <li>customAddCallback = function(customValue){return true;}</li>
  *   <li>customAddLabel = "Add Custom:"</li>
  *   <li>tooManySearchResultsLabel = "Too Many Matches For:"</li>
  *   <li>noSearchResultsLabel = "No Matches For:"</li>
@@ -85,6 +86,7 @@ Prime.Widgets.Searcher = function(inputElement, searchResultsContainer, callback
   this.noSearchResultsLabel = 'No Matches For: ';
   this.tooManySearchResultsLabel = 'Too Many Matches For: ';
   this.customAddEnabled = true;
+  this.customAddCallback = function(customValue) {return true;};
   this.customAddLabel = 'Add Custom: ';
   this.callbackObject = callbackObject;
 
@@ -319,6 +321,13 @@ Prime.Widgets.Searcher.prototype = {
 
     var custom = searchResult.hasClass('prime-searcher-add-custom');
     var value = (custom) ? this.inputElement.getValue().trim() : searchResult.getHTML();
+    if(custom) {
+      // The client of this searcher needs to warn the user.
+      if(!this.customAddCallback(value)) {
+        return this;
+      }
+    }
+
     this.callbackObject.selectSearchResult(value);
     this.closeSearchResults();
 
@@ -333,6 +342,17 @@ Prime.Widgets.Searcher.prototype = {
    */
   withCustomAddEnabled: function(enabled) {
     this.customAddEnabled = enabled;
+    return this;
+  },
+
+  /**
+   * Sets whether or not this Searcher allows custom options to be added.
+   *
+   * @param {function} callback The function to call that will return true if the custom option can be added.
+   * @returns {Prime.Widgets.Searcher} This Searcher.
+   */
+  withCustomAddCallback: function(callback) {
+    this.customAddCallback = callback;
     return this;
   },
 

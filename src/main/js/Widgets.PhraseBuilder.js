@@ -56,7 +56,7 @@ Prime.Widgets = Prime.Widgets || {};
  *
  * <ul>
  *   <li>placeholder = "Choose"</li>
- *   <li>customAddEnabled = true</li>
+ *   <li>customAddCallback = no-op</li>
  *   <li>customAddLabel = "Add Custom Value:"</li>
  *   <li>noSearchResultsLabel = "No Matches For:"</li>
  * </ul>
@@ -67,6 +67,7 @@ Prime.Widgets = Prime.Widgets || {};
  * @param {Prime.Document.Element} element The Prime Element for the PhraseBuilder.
  */
 Prime.Widgets.PhraseBuilder = function(element, searchCallback, callbackContext) {
+  this.customAddEnabled = false;
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widgets.PhraseBuilder with select elements');
@@ -268,8 +269,11 @@ Prime.Widgets.PhraseBuilder.prototype = {
         addClass('prime-phrase-builder-input').
         setAttribute('type', 'text').
         appendTo(this.inputOption);
-    this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this).
-        withCustomAddEnabled(false);
+    this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this)
+        .withCustomAddEnabled(this.customAddEnabled);
+    if(this.customAddEnabled) {
+      this.searcher.withCustomAddCallback(this.customAddCallback);
+    }
 
     // Add the selected options
     for (var i = 0; i < this.element.domElement.length; i++) {
@@ -312,6 +316,17 @@ Prime.Widgets.PhraseBuilder.prototype = {
     return this;
   },
 
+  /**
+   * Sets whether or not this Searcher allows custom options to be added and, optionally, a callback function.
+   *
+   * @param {function} callback The function to call that will return true if the custom option can be added. Default: function(abc){return true;}
+   * @returns {Prime.Widgets.PhraseBuilder} This PhraseBuilder.
+   */
+  withCustomAdd: function(callback) {
+    this.customAddEnabled = true;
+    this.customAddCallback = callback !== 'undefined' ? callback : function(abc) {return true;};
+    return this;
+  },
 
 
   /* ===================================================================================================================
