@@ -3,7 +3,7 @@
  */
 savantVersion = "0.3.0"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "0.29.0", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.0", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }

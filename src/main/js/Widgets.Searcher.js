@@ -262,7 +262,8 @@ Prime.Widgets.Searcher.prototype = {
 
     // Show the custom add option if necessary
     var trimmedLength = searchText.trim().length;
-    if (this.customAddEnabled && trimmedLength !== 0 && matchingSearchResultElement === null && this.callbackObject.doesNotContainValue(searchText)) {
+    if (this.customAddEnabled && trimmedLength !== 0 && matchingSearchResultElement === null
+        && ( !('doesNotContainValue' in this.callbackObject) || this.callbackObject.doesNotContainValue(searchText))) {
       matchingSearchResultElement = Prime.Document.newElement('<li/>').
           addClass('prime-searcher-search-result prime-searcher-add-custom').
           addEventListener('click', this.handleClickEvent, this).

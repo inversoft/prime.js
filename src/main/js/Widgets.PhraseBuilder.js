@@ -271,7 +271,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
         appendTo(this.inputOption);
     this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this)
         .withCustomAddEnabled(this.customAddEnabled);
-    if(this.customAddEnabled) {
+    if (this.customAddEnabled) {
       this.searcher.withCustomAddCallback(this.customAddCallback);
     }
 
@@ -320,11 +320,18 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * Sets whether or not this Searcher allows custom options to be added and, optionally, a callback function.
    *
    * @param {function} callback The function to call that will return true if the custom option can be added. Default: function(abc){return true;}
+   * @param {object} theContext The context of the callback method, MUST be supplied if callback is supplied
    * @returns {Prime.Widgets.PhraseBuilder} This PhraseBuilder.
    */
-  withCustomAdd: function(callback) {
+  withCustomAdd: function(callback, theContext) {
     this.customAddEnabled = true;
-    this.customAddCallback = callback !== 'undefined' ? callback : function(abc) {return true;};
+    if (callback === 'undefined') {
+      this.customAddCallback = function(abc) {
+        return true;
+      };
+    } else {
+      this.customAddCallback = Prime.Utils.proxy(callback, theContext);
+    }
     return this;
   },
 
@@ -362,7 +369,6 @@ Prime.Widgets.PhraseBuilder.prototype = {
   selectSearchResult: function(value) {
     this.addWord(value);
   },
-
 
 
   /* ===================================================================================================================
