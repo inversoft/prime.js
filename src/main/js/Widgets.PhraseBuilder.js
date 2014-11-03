@@ -418,7 +418,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
 
-    return true;
+    return false;
   },
 
   /**
