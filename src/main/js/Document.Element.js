@@ -759,7 +759,7 @@ Prime.Document.Element.prototype = {
     if (domElement.parentNode) {
       domElement.insertBefore(this.domElement, domElement.firstChild);
     } else {
-      throw new TypeError('The element you passed into appendTo is not in the DOM. You can\'t insert a Prime.Document.Element inside an element that isn\'t in the DOM yet.');
+      throw new TypeError('The element you passed into prependTo is not in the DOM. You can\'t insert a Prime.Document.Element inside an element that isn\'t in the DOM yet.');
     }
 
     return this;
