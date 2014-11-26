@@ -3,7 +3,7 @@
  */
 savantVersion = "0.3.1"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.1", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.2", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -15,6 +15,12 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.1", licen
   publications {
     main {
       publication(name: "prime", type: "js", file: "build/js/prime.js", source: "build/js/prime.js")
+      publication(name: "prime", type: "css", file: "build/css/prime.css", source: "build/css/prime.css")
+      /* Publish each stylesheet */
+      new File("src/main/css").eachFile { file ->
+        publication(name: file.name, type: "css", file: file.absolutePath, source: file.absolutePath)
+      }
+      publication(name: "prime-all", type: "zip", file: "build/prime-all.zip", source: "build/prime-all.zip")
     }
   }
 }
@@ -36,6 +42,26 @@ target(name: "int", description: "Releases a local integration build of the proj
     fileSet(dir: "src/main/js/sizzle", includePatterns: [ ~/sizzle\.js/])
   }
 
+  /* Build a monolithic stylesheet */
+  file.prune(dir: "build/css")
+  file.append(to: "build/css/prime.css") {
+    fileSet(dir: "src/main/css", includePatterns: [~/.+\.css/], excludePatterns: [~/.+\/.+/])
+  }
+
+  /* Also copy each stylesheet individually */
+  file.copy(to: "build/css") {
+    fileSet(dir: "src/main/css")
+  }
+
+  /* Delete previous zip and build zip containing all artifacts */
+  file.delete {
+    fileSet(dir: "build", includePatterns: [~/prime-all.+\.zip/])
+  }
+
+  file.zip(file: "build/prime-all.zip") {
+    fileSet(dir: "src/main", includePatterns: [~/css/, ~/images/])
+    fileSet(dir: "build", includePatterns: [/js\/.+\.js/])
+  }
   dependency.integrate()
 }
 

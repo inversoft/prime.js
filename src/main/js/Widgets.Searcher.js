@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -39,7 +39,7 @@ Prime.Widgets = Prime.Widgets || {};
  *     &lt;li class="prime-add-custom">Add Custom Entry: F/li>
  *   &lt;/ul>
  * &lt;/div>
- * </pore>
+ * </pre>
  *
  * The with* methods can be used to setup the configuration for this SearchResults, but here are some defaults:
  *

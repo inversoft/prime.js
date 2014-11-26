@@ -1,0 +1,108 @@
+/* Prime SplitButton */
+
+ul.prime-split-button {
+  margin-bottom: 5px;
+  margin-left: 0px;
+  z-index: 10;
+  position: absolute;
+  min-width: 90px;
+  border-bottom: 1px solid rgba(68, 68, 68, 0.3);
+  border-left: 1px solid rgba(68, 68, 68, 0.3);
+  border-right: 1px solid rgba(68, 68, 68, 0.3);
+
+  /* Box shadow */
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(68, 68, 68, 0.5);
+  -moz-box-shadow: 3px 3px 5px 0px rgba(68, 68, 68, 0.5);
+  box-shadow: 3px 3px 5px 0px rgba(68, 68, 68, 0.5);
+}
+
+ul.prime-split-button li {
+  display: block;
+  position: relative;
+  background-color: #CCC;
+  opacity: 1.0;
+}
+
+ul.prime-split-button li:hover {
+  background-color: rgb(112,112,112);
+  color: rgb(248,248,248);
+  margin-left: -1px;
+  margin-right: -1px;
+}
+ul.prime-split-button li a:hover {
+  color: rgb(248,248,248);
+}
+
+ul.prime-split-button li:first-child {
+  list-style-position: inside;
+  border-top: 1px solid rgba(68, 68, 68, 0.3);
+}
+
+ul.prime-split-button li:not(:last-of-type) {
+  list-style-position: inside;
+}
+
+ul.prime-split-button li a {
+  color: #444;
+  display: block;
+  font-size: 11px;
+  font-weight: normal;
+  padding: 5px 10px 7px 10px;
+  text-align: left;
+  text-decoration: none;
+}
+
+ul.prime-split-button li > hr {
+  margin-top: 0px;
+  margin-bottom: -1px;
+  padding-bottom: 1px;
+
+  border-top: 1px solid rgba(68, 68, 68, 0.5);
+
+  border-right-width: 0px;
+  border-bottom-width: 0px;
+  border-left-width: 0px;
+
+  background-image: -webkit-linear-gradient(left, rgba(68, 68, 68, 0.5), rgba(204, 204, 204, 0.5), rgba(224, 224, 224, 0.1));
+  background-image: -moz-linear-gradient(left, rgba(68, 68, 68, 0.5), rgba(204, 204, 204, 0.5), rgba(224, 224, 224, 0.1));
+  background-image: -ms-linear-gradient(left, rgba(68, 68, 68, 0.5), rgba(204, 204, 204, 0.5), rgba(224, 224, 224, 0.1));
+  background-image: -o-linear-gradient(left, rgba(68, 68, 68, 0.5), rgba(204, 204, 204, 0.5), rgba(224, 224, 224, 0.1));
+}
+
+div.prime-split-button {
+  min-width: 65px;
+  position: relative;
+}
+
+div.prime-split-button div:nth-child(1) {
+  background-color: #CCC;
+  border: 1px solid rgba(68, 68, 68, 0.1);
+  text-align: left;
+  float: left;
+  padding: 2px 10px 2px 7px;
+}
+
+div.prime-split-button div:nth-child(2) {
+  background-color: #CCC;
+  border: 1px solid rgba(68, 68, 68, 0.1);
+  width: 14px;
+  float: left;
+  margin-left: 1px;
+  padding: 2px 2px 2px 2px;
+}
+
+div.prime-split-button a.prime-split-button-default {
+  text-decoration: none;
+  font-weight: normal;
+  color: #444;
+}
+
+div.prime-split-button a {
+  display: block;
+  height: 16px;
+}
+
+div.prime-split-button .prime-drop-down {
+  background: url("/images/prime/16/arrow_down.png") no-repeat -1px 2px, center;
+  opacity: 0.70;
+}

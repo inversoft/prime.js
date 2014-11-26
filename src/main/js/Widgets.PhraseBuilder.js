@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 var Prime = Prime || {};
 
 /**
- * The Prime.Widgets namespace. This currently only contains the PhraseBuilder class.
+ * The Prime.Widgets namespace.
  *
  * @namespace Prime.Widgets
  */
