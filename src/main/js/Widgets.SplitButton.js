@@ -126,7 +126,6 @@ Prime.Widgets.SplitButton.prototype = {
 
     var div = Prime.Document.newElement('<div>');
     div.addClass('prime-split-button prime-inactive');
-    div.setWidth(this.defaultAction.getTextContent().length * 10 + 10);
     div.prependTo(this.container);
 
     // set a reference to this object
