@@ -24,11 +24,11 @@ ul.prime-split-button li {
 }
 
 ul.prime-split-button li:hover {
-  background-color: rgb(112,112,112);
+  background-color: rgb(182, 182, 182);
   color: rgb(248,248,248);
-  margin-left: -1px;
   margin-right: -1px;
 }
+
 ul.prime-split-button li a:hover {
   color: rgb(248,248,248);
 }
