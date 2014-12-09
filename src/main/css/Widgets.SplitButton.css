@@ -21,6 +21,7 @@ ul.prime-split-button li {
   position: relative;
   background-color: #CCC;
   opacity: 1.0;
+  white-space: nowrap;
 }
 
 ul.prime-split-button li:hover {
