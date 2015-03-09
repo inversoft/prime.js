@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
  */
 savantVersion = "0.3.1"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.5", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.6", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }

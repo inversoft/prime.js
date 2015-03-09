@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,10 +29,20 @@ Prime.Widgets = Prime.Widgets || {};
  * You may optionally add a 'default' class on one of the items to indicate this is the default action.
  * If this is not provided the first item will be considered the default action.
  *
+ * Example 1, two actions the second action is set as default and shows on top w/out expansion.
  * <pre>
  *   &lt;ul&gt;
  *     &lt;li&gt;&lt;a href="/admin/foo/delete/"&gt;Delete&lt;/a&gt;&lt;/li&gt;
  *     &lt;li class="default"&gt;&lt;a href="/admin/foo/edit/"&gt;Edit&lt;/a&gt;&lt;/li&gt;
+ *   &lt;/ul&gt;
+ * </pre>
+ *
+ * Example 2, two actions w/out a default. The top level action causes the button to expand.
+ * <pre>
+ *   &lt;ul&gt;
+ *     &lt;li&gt;&lt;a href="#"&gt;Select&hellip;&lt;/a&gt;&lt;/li&gt;
+ *     &lt;li&gt;&lt;a href="/admin/foo/delete/"&gt;Delete&lt;/a&gt;&lt;/li&gt;
+ *     &lt;li&gt;&lt;a href="/admin/foo/edit/"&gt;Edit&lt;/a&gt;&lt;/li&gt;
  *   &lt;/ul&gt;
  * </pre>
  *
@@ -137,6 +147,11 @@ Prime.Widgets.SplitButton.prototype = {
     button.addClass('prime-split-button-default');
     button.setAttribute('href', this.defaultAction.getAttribute('href'));
     button.setHTML(this.defaultAction.getHTML());
+    // Setting href to '#' will expand the button and remove it from the expanded list
+    if (button.getAttribute('href') === '#') {
+      button.addEventListener('click', this._handleDropDownClick, this);
+      this.defaultAction.removeFromDOM();
+    }
 
     var dropDownDiv = Prime.Document.newElement('<div>');
     var dropDown = Prime.Document.newElement('<a>');
