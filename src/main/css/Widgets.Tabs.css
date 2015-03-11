@@ -1,0 +1,81 @@
+/*
+ * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+
+ul.prime-tabs {
+  border-bottom: 1px solid #AAA;
+  display: inline-block;
+  line-height: 27px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+ul.prime-tabs li {
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  user-select: none;
+}
+
+ul.prime-tabs li:first-child a {
+  border-left: 1px solid #aaa;
+  border-radius: 3px 0 0 0;
+  margin-left: 10px;
+  position: relative;
+}
+
+ul.prime-tabs li:last-child a {
+  border-radius: 0 3px 0 0;
+}
+
+ul.prime-tabs li a {
+  background: #eee;
+  border-top: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+  color: #000;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 7px 10px 7px 10px;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+ul.prime-tabs li a:hover {
+  background: #e6e6e6;
+}
+
+ul.prime-tabs li.active a {
+  background: #fff;
+  border-bottom: 1px solid #fff;
+  cursor: pointer;
+}
+
+.prime-tabs-content {
+  background: #FFFFFF; /* old browsers */
+  border-bottom: 1px solid #aaa;
+  border-left: 1px solid #aaa;
+  border-right: 1px solid #aaa;
+  margin: -3px 0 0 0;
+  padding: 10px;
+}
+
+.prime-tabs-content > div {
+  display: none;
+}
