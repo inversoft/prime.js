@@ -46,7 +46,7 @@ Prime.Widgets.Tabs = function(element) {
     }
     content.addClass('prime-tab-content');
     this.tabContents.push(content);
-    li.addEventListener('click', this._handleClick, this);
+    link.addEventListener('click', this._handleClick, this);
   }, this);
   this.selectTab(0);
 };
@@ -82,7 +82,7 @@ Prime.Widgets.Tabs.prototype = {
    * @private
    */
   _handleClick: function(event) {
-    var element = event.currentTarget;
+    var element = event.currentTarget.parentNode;
     var activeIndex = 0;
     this.tabs.getChildren().each(function(tab, index) {
       if (tab.domElement === element) {
@@ -90,5 +90,6 @@ Prime.Widgets.Tabs.prototype = {
       }
     });
     this.selectTab(activeIndex);
+    return false;
   }
 };
