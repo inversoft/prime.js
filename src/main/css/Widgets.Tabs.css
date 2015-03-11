@@ -74,8 +74,5 @@ ul.prime-tabs li.active a {
   border-right: 1px solid #aaa;
   margin: -3px 0 0 0;
   padding: 10px;
-}
-
-.prime-tabs-content > div {
   display: none;
 }

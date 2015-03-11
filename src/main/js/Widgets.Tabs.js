@@ -35,28 +35,28 @@ Prime.Widgets.Tabs = function(element) {
     throw new TypeError('Tabs requires a ul element. The passed element does not contain a ul element');
   }
 
+  this.tabs.addClass('prime-tabs');
   this.tabContents = [];
 
-  // tabs require an id if not using AJAX
-  var tabCount = 0;
   Prime.Document.query('li', this.tabs).each(function(li) {
-    var content;
-    if (li.getID() === null) {
-      li.setID('prime-tab_' + tabCount);
-      content = Prime.Document.newElement("div");
-      content.setAttribute("data-tab-id", li.getID());
-      tabCount++;
-    } else {
-      content = Prime.Document.queryFirst('[data-tab-id="' + li.getID() + '"]');
+    var link = Prime.Document.queryFirst('a', li);
+    var content = Prime.Document.queryByID(link.getAttribute('href').substring(1));
+    if (content === null) {
+      throw new SyntaxError('A div is required with the following ID [' + link.getAttribute('href') + ']');
     }
-    content.addClass('prime-tabs-content');
+    content.addClass('prime-tab-content');
     this.tabContents.push(content);
-    li.addEventListener('click', this.handleClick, this);
+    li.addEventListener('click', this._handleClick, this);
   }, this);
   this.selectTab(0);
 };
 
 Prime.Widgets.Tabs.prototype = {
+
+  /**
+   * Select the active tab.
+   * @param index the index of the tab to activate
+   */
   selectTab: function(index) {
     this.tabs.getChildren().each(function(tab, i) {
       if (i === index) {
@@ -66,17 +66,22 @@ Prime.Widgets.Tabs.prototype = {
       }
     });
 
-    for (var i in this.tabContents) {
+    for (var i = 0; i < this.tabContents.length; i++) {
       if (index === i) {
         this.tabContents[i].show();
       } else {
         this.tabContents[i].hide();
       }
-    };
-
+    }
+    ;
   },
 
-  handleClick: function(event) {
+  /**
+   * Handle the tab click by showing the corresponding panel and hiding the others.
+   * @param event
+   * @private
+   */
+  _handleClick: function(event) {
     var element = event.currentTarget;
     var activeIndex = 0;
     this.tabs.getChildren().each(function(tab, index) {
@@ -84,7 +89,6 @@ Prime.Widgets.Tabs.prototype = {
         activeIndex = index;
       }
     });
-
     this.selectTab(activeIndex);
   }
 };
