@@ -44,18 +44,23 @@ Prime.Widgets.Tabs = function(element, activeTab) {
   }
 
   this.tabs.addClass('prime-tabs');
-  this.tabContents = [];
+  this.tabContents = {};
 
-  this.tabs.getChildren().each(function(tab, index) {
+  var index = 0;
+  this.tabs.getChildren().each(function(tab) {
     var a = Prime.Document.queryFirst('a', tab);
-    tab.setAttribute("data-tab-id", index);
-    var content = Prime.Document.queryByID(a.getAttribute('href').substring(1));
+    var contentId = a.getAttribute('href');
+    var content = Prime.Document.queryByID(contentId.substring(1));
     if (content === null) {
       throw new SyntaxError('A div is required with the following ID [' + a.getAttribute('href') + ']');
     }
-    content.addClass('prime-tab-content');
-    this.tabContents.push(content);
+    content.hide();
     a.addEventListener('click', this._handleClick, this);
+    if (!tab.hasClass('prime-inactive')) {
+      tab.setAttribute("data-tab-id", index++);
+      content.addClass('prime-tab-content');
+      this.tabContents[contentId] = content;
+    }
   }, this);
   this.selectTab(this.activeTab);
 };
@@ -63,26 +68,24 @@ Prime.Widgets.Tabs = function(element, activeTab) {
 Prime.Widgets.Tabs.prototype = {
 
   /**
-   * Select the active tab.
+   * Select the active tab. Sets the prime-active class on the li and shows only the corresponding tab content.
    * @param index the index of the tab to activate
    */
   selectTab: function(index) {
-    this.tabs.getChildren().each(function(tab, i) {
-      if (i === index) {
-        tab.addClass('active');
-        this.activeTab = index;
-      } else {
-        tab.removeClass('active');
-      }
-    });
+    this.tabs.getChildren().each(function(tab) {
+      tab.removeClass('prime-active');
+    }, this);
+    var tab = Prime.Document.queryFirst('li[data-tab-id="' + index + '"]', this.tabs);
+    tab.addClass('prime-active');
+    var contentId = Prime.Document.queryFirst('a', tab).getAttribute('href');
 
-    for (var i = 0; i < this.tabContents.length; i++) {
-      if (index === i) {
-        this.tabContents[i].show();
+    for (var id in this.tabContents) {
+      if (id === contentId) {
+        this.tabContents[id].show();
       } else {
-        this.tabContents[i].hide();
+        this.tabContents[id].hide();
       }
-    };
+    }
   },
 
   /**
@@ -91,9 +94,11 @@ Prime.Widgets.Tabs.prototype = {
    * @private
    */
   _handleClick: function(event) {
-    var tab = event.currentTarget.parentNode;
-    this.activeTab = parseInt(tab.getAttribute("data-tab-id"));
-    this.selectTab(this.activeTab);
+    var tab = new Prime.Document.Element(event.currentTarget).parent();
+    if (!tab.hasClass('prime-inactive')) {
+      this.activeTab = parseInt(tab.getAttribute("data-tab-id"));
+      this.selectTab(this.activeTab);
+    }
     return false;
   }
 };

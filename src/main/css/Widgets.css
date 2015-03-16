@@ -1,3 +1,7 @@
 .prime-inactive {
   opacity: 0.6;
 }
+
+.prime-inactive a {
+  pointer-events: none;
+}

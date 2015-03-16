@@ -44,16 +44,17 @@ ul.prime-tabs li a {
   padding: 7px 10px 7px 10px;
   text-decoration: none;
   text-transform: uppercase;
+  cursor: pointer;
 }
 
 ul.prime-tabs li a:hover {
   background: #e6e6e6;
 }
 
-ul.prime-tabs li.active a {
+ul.prime-tabs li.prime-active a {
   background: #fff;
   border-bottom: 1px solid #fff;
-  cursor: pointer;
+  pointer-events: none;
 }
 
 ul.prime-tabs li:first-child a {
