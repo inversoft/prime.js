@@ -26,12 +26,12 @@ Prime.Widgets = Prime.Widgets || {};
  * Constructs a new Tabs object for the given ul element.
  *
  * @param element The ul element to build the tab widget from
- * @param activeTab (optional) Tab index of the active tab
  * @constructor
  */
-Prime.Widgets.Tabs = function(element, activeTab) {
+Prime.Widgets.Tabs = function(element) {
 
-  this.activeTab = activeTab ? parseInt(activeTab) : 0;
+  this.activeTab = 0;
+  this.initialized = false;
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
   if (this.element.getTagName().toLowerCase() === 'ul') {
     this.tabs = this.element;
@@ -44,28 +44,49 @@ Prime.Widgets.Tabs = function(element, activeTab) {
   }
 
   this.tabs.addClass('prime-tabs');
+  this.tabs.hide();
   this.tabContents = {};
-
-  var index = 0;
-  this.tabs.getChildren().each(function(tab) {
-    var a = Prime.Document.queryFirst('a', tab);
-    var contentId = a.getAttribute('href');
-    var content = Prime.Document.queryByID(contentId.substring(1));
-    if (content === null) {
-      throw new SyntaxError('A div is required with the following ID [' + a.getAttribute('href') + ']');
-    }
-    content.hide();
-    a.addEventListener('click', this._handleClick, this);
-    if (!tab.hasClass('prime-inactive')) {
-      tab.setAttribute("data-tab-id", index++);
-      content.addClass('prime-tab-content');
-      this.tabContents[contentId] = content;
-    }
-  }, this);
-  this.selectTab(this.activeTab);
 };
 
 Prime.Widgets.Tabs.prototype = {
+
+  /**
+   * Sets the initial active tab.
+   * @param index
+   * @returns {Prime.Widgets.Tabs} This Tabs object.
+   */
+  withActiveTab: function(index) {
+    if (this.initialized) {
+      throw new SyntaxError('Widget is already initialized, call this before initializing with .go()');
+    }
+    this.activeTab = index ? parseInt(index) : 0;
+    return this;
+  },
+
+  /**
+   * Executes the initialization of the Tabs widget
+   */
+  go: function() {
+    var index = 0;
+    this.tabs.getChildren().each(function(tab) {
+      var a = Prime.Document.queryFirst('a', tab);
+      var contentId = a.getAttribute('href');
+      var content = Prime.Document.queryByID(contentId.substring(1));
+      if (content === null) {
+        throw new SyntaxError('A div is required with the following ID [' + a.getAttribute('href') + ']');
+      }
+      content.hide();
+      a.addEventListener('click', this._handleClick, this);
+      if (!tab.hasClass('prime-inactive')) {
+        tab.setAttribute("data-tab-id", index++);
+        content.addClass('prime-tab-content');
+        this.tabContents[contentId] = content;
+      }
+    }, this);
+    this.selectTab(this.activeTab);
+    this.initialized = true;
+    this.tabs.show();
+  },
 
   /**
    * Select the active tab. Sets the prime-active class on the li and shows only the corresponding tab content.
