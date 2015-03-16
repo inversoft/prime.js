@@ -22,8 +22,16 @@ var Prime = Prime || {};
  */
 Prime.Widgets = Prime.Widgets || {};
 
-Prime.Widgets.Tabs = function(element) {
+/**
+ * Constructs a new Tabs object for the given ul element.
+ *
+ * @param element The ul element to build the tab widget from
+ * @param activeTab (optional) Tab index of the active tab
+ * @constructor
+ */
+Prime.Widgets.Tabs = function(element, activeTab) {
 
+  this.activeTab = activeTab ? parseInt(activeTab) : 0;
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
   if (this.element.getTagName().toLowerCase() === 'ul') {
     this.tabs = this.element;
@@ -38,17 +46,18 @@ Prime.Widgets.Tabs = function(element) {
   this.tabs.addClass('prime-tabs');
   this.tabContents = [];
 
-  Prime.Document.query('li', this.tabs).each(function(li) {
-    var link = Prime.Document.queryFirst('a', li);
-    var content = Prime.Document.queryByID(link.getAttribute('href').substring(1));
+  this.tabs.getChildren().each(function(tab, index) {
+    var a = Prime.Document.queryFirst('a', tab);
+    tab.setAttribute("data-tab-id", index);
+    var content = Prime.Document.queryByID(a.getAttribute('href').substring(1));
     if (content === null) {
-      throw new SyntaxError('A div is required with the following ID [' + link.getAttribute('href') + ']');
+      throw new SyntaxError('A div is required with the following ID [' + a.getAttribute('href') + ']');
     }
     content.addClass('prime-tab-content');
     this.tabContents.push(content);
-    link.addEventListener('click', this._handleClick, this);
+    a.addEventListener('click', this._handleClick, this);
   }, this);
-  this.selectTab(0);
+  this.selectTab(this.activeTab);
 };
 
 Prime.Widgets.Tabs.prototype = {
@@ -61,6 +70,7 @@ Prime.Widgets.Tabs.prototype = {
     this.tabs.getChildren().each(function(tab, i) {
       if (i === index) {
         tab.addClass('active');
+        this.activeTab = index;
       } else {
         tab.removeClass('active');
       }
@@ -72,8 +82,7 @@ Prime.Widgets.Tabs.prototype = {
       } else {
         this.tabContents[i].hide();
       }
-    }
-    ;
+    };
   },
 
   /**
@@ -82,14 +91,9 @@ Prime.Widgets.Tabs.prototype = {
    * @private
    */
   _handleClick: function(event) {
-    var element = event.currentTarget.parentNode;
-    var activeIndex = 0;
-    this.tabs.getChildren().each(function(tab, index) {
-      if (tab.domElement === element) {
-        activeIndex = index;
-      }
-    });
-    this.selectTab(activeIndex);
+    var tab = event.currentTarget.parentNode;
+    this.activeTab = parseInt(tab.getAttribute("data-tab-id"));
+    this.selectTab(this.activeTab);
     return false;
   }
 };
