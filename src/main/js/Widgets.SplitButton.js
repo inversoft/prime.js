@@ -57,6 +57,9 @@ Prime.Widgets.SplitButton = function(element) {
   }
 
   this.element = element;
+  if (this.element.hasClass('prime-initialized')) {
+    throw new Error('This element has already been initialized. Call destroy before initializing again.');
+  }
   this.element.hide().addClass('prime-split-button prime-initialized');
   this.container = Prime.Document.queryUp('div,td', this.element);
 
@@ -84,6 +87,16 @@ Prime.Widgets.SplitButton = function(element) {
 Prime.Widgets.SplitButton.constructor = Prime.Widgets.SplitButton;
 
 Prime.Widgets.SplitButton.prototype = {
+
+  /**
+   * Destroy the the SplitButton widget
+   */
+  destroy: function() {
+    this.splitButton.removeFromDOM();
+    this.element.removeAttribute('data-prime-active');
+    this.element.setStyle('margin-top', '');
+    this.element.removeClass('prime-initialized prime-split-button').show();;
+  },
 
   /**
    * Handle the split button click to expand the action list.

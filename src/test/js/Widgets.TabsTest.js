@@ -24,8 +24,13 @@ buster.testCase('Tabs class tests', {
   setUp: function() {
     this.container = Prime.Document.queryByID('tab-test1');
     this.tabs = Prime.Document.queryFirst('ul', this.container);
-    new Prime.Widgets.Tabs(this.tabs).go();
+    this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).go();
     this.tabContents = Prime.Document.query('div.prime-tab-content', this.container);
+  },
+
+  tearDown: function() {
+    this.tabsWidget.destroy();
+    this.tabsWidget = null;
   },
 
   'tabs constructed ok': function() {
@@ -44,10 +49,13 @@ buster.testCase('Tabs class tests', {
     }, this);
   },
 
-  'click switches active tab': function() {
+  'click switches active tab': function(done) {
     var inactiveTab = Prime.Document.queryFirst('li:not(.prime-active)', this.container);
     var a = Prime.Document.queryFirst('a', inactiveTab);
+    assert.isFalse(inactiveTab.hasClass('prime-active'));
     a.fireEvent('click');
-    assert.isTrue(inactiveTab.hasClass('prime-active'));
+    setTimeout(done(function() {
+      assert.isTrue(inactiveTab.hasClass('prime-active'));
+    }), 10);
   }
 });

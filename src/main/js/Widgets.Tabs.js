@@ -31,7 +31,6 @@ Prime.Widgets = Prime.Widgets || {};
 Prime.Widgets.Tabs = function(element) {
 
   this.activeTab = 0;
-  this.initialized = false;
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
   if (this.element.getTagName().toLowerCase() === 'ul') {
     this.tabs = this.element;
@@ -43,6 +42,10 @@ Prime.Widgets.Tabs = function(element) {
     throw new TypeError('Tabs requires a ul element. The passed element does not contain a ul element');
   }
 
+  if (this.tabs.hasClass('prime-initialized')) {
+    throw new Error('This element has already been initialized. Call destroy before initializing again.');
+  }
+
   this.tabs.addClass('prime-tabs');
   this.tabs.hide();
   this.tabContents = {};
@@ -51,12 +54,25 @@ Prime.Widgets.Tabs = function(element) {
 Prime.Widgets.Tabs.prototype = {
 
   /**
+   * Destroys the Tabs widget
+   */
+  destroy: function() {
+    this.tabs.getChildren().each(function(tab) {
+      tab.removeAttribute('data-tab-id').removeClass('prime-active');
+    }, this);
+    for (var id in this.tabContents) {
+      this.tabContents[id].removeClass('prime-tab-content').show();
+    }
+    this.tabs.removeClass('prime-tabs prime-initialized').show();
+  },
+
+  /**
    * Sets the initial active tab.
    * @param index
    * @returns {Prime.Widgets.Tabs} This Tabs object.
    */
   withActiveTab: function(index) {
-    if (this.initialized) {
+    if (this.tabs.hasClass('prime-initialized')) {
       throw new SyntaxError('Widget is already initialized, call this before initializing with .go()');
     }
     this.activeTab = index ? parseInt(index) : 0;
@@ -65,8 +81,14 @@ Prime.Widgets.Tabs.prototype = {
 
   /**
    * Executes the initialization of the Tabs widget
+   * @returns {Prime.Widgets.Tabs} This Tabs object.
    */
   go: function() {
+
+    if (this.tabs.hasClass('prime-initialized')) {
+      throw new Error('This element has already been initialized. Call destroy before initializing again.');
+    }
+
     var index = 0;
     this.tabs.getChildren().each(function(tab) {
       var a = Prime.Document.queryFirst('a', tab);
@@ -84,8 +106,9 @@ Prime.Widgets.Tabs.prototype = {
       }
     }, this);
     this.selectTab(this.activeTab);
-    this.initialized = true;
+    this.tabs.addClass('prime-initialized');
     this.tabs.show();
+    return this;
   },
 
   /**
