@@ -35,6 +35,13 @@ buster.testCase('Tabs class tests', {
     // only one tab should ever be active
     var activeTabs = Prime.Document.query('li.prime-active', this.container);
     assert.equals(activeTabs.length, 1);
+
+    // assert data-tab-id attributes are set correctly
+    var index = 0;
+    Prime.Document.query('li', this.tabs).each(function(li) {
+      assert.equals(li.getAttribute('data-tab-id'), index + '');
+      index++;
+    }, this);
   },
 
   'click switches active tab': function() {
