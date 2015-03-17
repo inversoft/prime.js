@@ -16,14 +16,36 @@
 
 var assert = buster.assertions.assert;
 
-buster.testCase('Browser tests', {
+buster.testCase('Safari Browser tests', {
+
+  requiresSupportFor: {
+    "browser_name": Prime.Browser.name === 'Safari'
+  },
+
   setUp: function() {
     this.timeout = 2000;
   },
 
-  'safari': function() {
+  'safari_mac': function() {
     assert.equals(Prime.Browser.name, 'Safari');
-    assert.equals(Prime.Browser.version, '7');
+    assert.equals(Prime.Browser.version, '8');
+    assert.equals(Prime.Browser.os, 'Mac');
+  }
+});
+
+buster.testCase('Chrome Browser tests', {
+
+  requiresSupportFor: {
+    "browser_name": Prime.Browser.name === 'Chrome'
+  },
+
+  setUp: function() {
+    this.timeout = 2000;
+  },
+
+  'chrome': function() {
+    assert.equals(Prime.Browser.name, 'Chrome');
+    assert.equals(Prime.Browser.version, '41');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });
