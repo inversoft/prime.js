@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -26,11 +26,11 @@ buster.testCase('Searcher class tests', {
     // Define the callback interface
     this.searchResults = [];
     this.tooManyResults = false;
-    this.searchString = null;
+    this._searchString = null;
     this.selectedSearchResult = null;
     this.deletedBeyondSearchInput = false;
     this.search = function(searchString) {
-      this.searchString = searchString;
+      this._searchString = searchString;
       return {
         'results': this.searchResults,
         'tooManyResults': this.tooManyResults

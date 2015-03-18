@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2014, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -117,9 +117,9 @@ Prime.Document.onReady = function(callback, context) {
     // If this is the first call, register the event listener on the document
     if (this.readyFunctions.length === 0) {
       if (document.addEventListener) {
-        document.addEventListener('DOMContentLoaded', Prime.Document.callReadyListeners, false);
+        document.addEventListener('DOMContentLoaded', Prime.Document._callReadyListeners, false);
       } else if (document.attachEvent) {
-        document.attachEvent('onreadystatechange', Prime.Document.callReadyListeners);
+        document.attachEvent('onreadystatechange', Prime.Document._callReadyListeners);
       } else {
         throw new TypeError('No way to attach an event to the document. What browser are you running?');
       }
@@ -252,17 +252,16 @@ Prime.Document.removeEventListener = function(event, handler) {
   }
 };
 
-
-/*
- * Private methods
- */
+/* ===================================================================================================================
+ * Private Methods
+ * ===================================================================================================================*/
 
 /**
  * Calls all the registered document ready listeners.
  *
  * @private
  */
-Prime.Document.callReadyListeners = function() {
+Prime.Document._callReadyListeners = function() {
   if (document.addEventListener || document.readyState === 'complete') {
     var readyFunction;
     while (readyFunction = Prime.Document.readyFunctions.shift()) {
@@ -271,8 +270,8 @@ Prime.Document.callReadyListeners = function() {
   }
 
   if (document.removeEventListener) {
-    document.removeEventListener('DOMContentLoaded', Prime.Document.callReadyListeners, false);
+    document.removeEventListener('DOMContentLoaded', Prime.Document._callReadyListeners, false);
   } else {
-    document.detachEvent('onreadystatechange', Prime.Document.callReadyListeners);
+    document.detachEvent('onreadystatechange', Prime.Document._callReadyListeners);
   }
 };

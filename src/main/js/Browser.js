@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -29,22 +29,23 @@ Prime.Browser = {
    * Detects the browser name and version.
    */
   detect: function() {
-    this.name = this.searchString(this.dataBrowser) || "An unknown browser";
-    this.version = this.searchVersion(navigator.userAgent) || this.searchVersion(navigator.appVersion) || "an unknown version";
-    this.os = this.searchString(this.dataOS) || "an unknown OS";
+    this.name = this._searchString(this.dataBrowser) || "An unknown browser";
+    this.version = this._searchVersion(navigator.userAgent) || this._searchVersion(navigator.appVersion) || "an unknown version";
+    this.os = this._searchString(this.dataOS) || "an unknown OS";
   },
 
 
-  /*
-   * Private functions.
-   */
+  /* ===================================================================================================================
+   * Private Methods
+   * ===================================================================================================================*/
 
   /**
-   * @private
+   *
    * @param {Object} data The data array.
    * @returns {string} The browser identity String.
+   * @private
    */
-  searchString: function(data) {
+  _searchString: function(data) {
     for (var i = 0; i < data.length; i++) {
       var dataString = data[i].string;
       var dataProp = data[i].prop;
@@ -60,11 +61,12 @@ Prime.Browser = {
   },
 
   /**
-   * @private
+   *
    * @param {string} dataString The browser data string.
    * @returns {number} The version or null.
+   * @private
    */
-  searchVersion: function(dataString) {
+  _searchVersion: function(dataString) {
     var index = dataString.indexOf(this.versionSearchString);
     if (index === -1) {
       return null;

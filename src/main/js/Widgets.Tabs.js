@@ -46,9 +46,28 @@ Prime.Widgets.Tabs = function(element) {
     throw new Error('This element has already been initialized. Call destroy before initializing again.');
   }
 
-  this.tabs.addClass('prime-tabs');
-  this.tabs.hide();
+  this.tabs.hide().addClass('prime-tabs');
   this.tabContents = {};
+
+  var index = 0;
+  this.tabs.getChildren().each(function(tab) {
+    var a = Prime.Document.queryFirst('a', tab);
+    var contentId = a.getAttribute('href');
+    var content = Prime.Document.queryByID(contentId.substring(1));
+    if (content === null) {
+      throw new Error('A div is required with the following ID [' + a.getAttribute('href') + ']');
+    }
+    content.hide();
+    a.addEventListener('click', this._handleClick, this);
+    if (!tab.hasClass('prime-inactive')) {
+      tab.setAttribute("data-tab-id", index++);
+      content.addClass('prime-tab-content');
+      this.tabContents[contentId] = content;
+    }
+  }, this);
+  this.selectTab(this.activeTab);
+  this.tabs.addClass('prime-initialized');
+  this.tabs.show();
 };
 
 Prime.Widgets.Tabs.prototype = {
@@ -59,56 +78,13 @@ Prime.Widgets.Tabs.prototype = {
   destroy: function() {
     this.tabs.getChildren().each(function(tab) {
       tab.removeAttribute('data-tab-id').removeClass('prime-active');
+      var a = Prime.Document.queryFirst('a', tab);
+      a.removeEventListener('click', this._handleClick);
     }, this);
     for (var id in this.tabContents) {
       this.tabContents[id].removeClass('prime-tab-content').show();
     }
     this.tabs.removeClass('prime-tabs prime-initialized').show();
-  },
-
-  /**
-   * Sets the initial active tab.
-   * @param index
-   * @returns {Prime.Widgets.Tabs} This Tabs object.
-   */
-  withActiveTab: function(index) {
-    if (this.tabs.hasClass('prime-initialized')) {
-      throw new SyntaxError('Widget is already initialized, call this before initializing with .go()');
-    }
-    this.activeTab = index ? parseInt(index) : 0;
-    return this;
-  },
-
-  /**
-   * Executes the initialization of the Tabs widget
-   * @returns {Prime.Widgets.Tabs} This Tabs object.
-   */
-  go: function() {
-
-    if (this.tabs.hasClass('prime-initialized')) {
-      throw new Error('This element has already been initialized. Call destroy before initializing again.');
-    }
-
-    var index = 0;
-    this.tabs.getChildren().each(function(tab) {
-      var a = Prime.Document.queryFirst('a', tab);
-      var contentId = a.getAttribute('href');
-      var content = Prime.Document.queryByID(contentId.substring(1));
-      if (content === null) {
-        throw new SyntaxError('A div is required with the following ID [' + a.getAttribute('href') + ']');
-      }
-      content.hide();
-      a.addEventListener('click', this._handleClick, this);
-      if (!tab.hasClass('prime-inactive')) {
-        tab.setAttribute("data-tab-id", index++);
-        content.addClass('prime-tab-content');
-        this.tabContents[contentId] = content;
-      }
-    }, this);
-    this.selectTab(this.activeTab);
-    this.tabs.addClass('prime-initialized');
-    this.tabs.show();
-    return this;
   },
 
   /**
@@ -130,9 +106,14 @@ Prime.Widgets.Tabs.prototype = {
         this.tabContents[id].hide();
       }
     }
+    this.activeTab = index;
   },
 
-  /**
+  /* ===================================================================================================================
+   * Private methods
+   * ===================================================================================================================*/
+
+   /**
    * Handle the tab click by showing the corresponding panel and hiding the others.
    * @param event
    * @private
@@ -140,8 +121,8 @@ Prime.Widgets.Tabs.prototype = {
   _handleClick: function(event) {
     var tab = new Prime.Document.Element(event.currentTarget).parent();
     if (!tab.hasClass('prime-inactive')) {
-      this.activeTab = parseInt(tab.getAttribute("data-tab-id"));
-      this.selectTab(this.activeTab);
+      var tabId = parseInt(tab.getAttribute("data-tab-id"));
+      this.selectTab(tabId);
     }
     return false;
   }

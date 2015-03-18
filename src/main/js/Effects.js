@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,21 +101,20 @@ Prime.Effects.BaseTransition.prototype = {
       setFunction.call(self.element, currentValue);
     };
 
-    Prime.Utils.callIteratively(this.duration, this.iterations, stepFunction, this.internalEndFunction, this);
+    Prime.Utils.callIteratively(this.duration, this.iterations, stepFunction, this._internalEndFunction, this);
   },
 
-
-  /*
-   * Private functions
-   */
+  /* ===================================================================================================================
+   * Private Methods
+   * ===================================================================================================================*/
 
   /**
    * Handles the call back at the end.
    *
    * @private
    */
-  internalEndFunction: function() {
-    this.subclassEndFunction();
+  _internalEndFunction: function() {
+    this._subclassEndFunction();
     var context = this.context || this.element;
     if (this.endFunction !== null) {
       this.endFunction.call(context);
@@ -142,7 +141,7 @@ Prime.Effects.Fade.constructor = Prime.Effects.Fade;
  *
  * @private
  */
-Prime.Effects.Fade.prototype.subclassEndFunction = function() {
+Prime.Effects.Fade.prototype._subclassEndFunction = function() {
   this.element.hide();
 };
 
@@ -173,7 +172,7 @@ Prime.Effects.Appear.constructor = Prime.Effects.Appear;
  *
  * @private
  */
-Prime.Effects.Appear.prototype.subclassEndFunction = function() {
+Prime.Effects.Appear.prototype._subclassEndFunction = function() {
   // Nothing.
 };
 

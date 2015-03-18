@@ -30,6 +30,9 @@ buster.testCase('SplitButton class tests', {
 
     this.splitButtonWidget1 = new Prime.Widgets.SplitButton(this.splitButton1);
     this.splitButtonWidget2 = new Prime.Widgets.SplitButton(this.splitButton2);
+
+    this.dropDown1 = Prime.Document.queryFirst('a.prime-drop-down', this.container1);
+    this.dropDown2 = Prime.Document.queryFirst('a.prime-drop-down', this.container2);
   },
 
   tearDown: function() {
@@ -47,23 +50,26 @@ buster.testCase('SplitButton class tests', {
     assert.isFalse(this.splitButton2.isVisible());
   },
 
-  'click expands button': function(done) {
-    var dropDown1 = Prime.Document.queryFirst('a.prime-drop-down', this.container1);
-    var dropDown2 = Prime.Document.queryFirst('a.prime-drop-down', this.container2);
-
+  'click drop down expands button': function(done) {
     assert.isFalse(this.splitButton1.isVisible());
     assert.isFalse(this.splitButton2.isVisible());
 
-    dropDown1.fireEvent('click');
-    dropDown2.fireEvent('click');
+    this.dropDown1.fireEvent('click');
+    setTimeout(Prime.Utils.proxy(done(function() {
+      assert.isTrue(this.splitButton1.isVisible());
+      assert.isFalse(this.splitButton2.isVisible());
+    }), this), 5);
+  },
 
-    var splitButton1 = this.splitButton1;
-    var splitButton2 = this.splitButton2;
-    // TODO Not sure why this assert isn't working
-    //setTimeout(done(function() {
-    //  assert.isTrue(splitButton1.isVisible());
-    //  assert.isTrue(splitButton2.isVisible());
-    //}), 10);
+  'click select... expands button': function(done) {
+    assert.isFalse(this.splitButton1.isVisible());
+    assert.isFalse(this.splitButton2.isVisible());
+
+    Prime.Document.queryFirst('a.prime-split-button-default', this.container2).fireEvent('click');
+    setTimeout(Prime.Utils.proxy(done(function() {
+      assert.isFalse(this.splitButton1.isVisible());
+      assert.isTrue(this.splitButton2.isVisible());
+    }), this), 5);
   }
 });
 

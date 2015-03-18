@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2013-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -776,7 +776,7 @@ Prime.Document.Element.prototype = {
         for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
           var listener = this.domElement.eventListeners[event][i];
           var proxy = listener.primeProxy ? listener.primeProxy : listener;
-          this.internalRemoveEventListener(event, proxy);
+          this._internalRemoveEventListener(event, proxy);
         }
       }
     }
@@ -833,7 +833,7 @@ Prime.Document.Element.prototype = {
       Prime.Utils.removeFromArray(listeners, proxy);
     }
 
-    this.internalRemoveEventListener(event, proxy);
+    this._internalRemoveEventListener(event, proxy);
 
     return this;
   },
@@ -849,7 +849,7 @@ Prime.Document.Element.prototype = {
       for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
         var listener = this.domElement.eventListeners[event][i];
         var proxy = listener.primeProxy ? listener.primeProxy : listener;
-        this.internalRemoveEventListener(event, proxy);
+        this._internalRemoveEventListener(event, proxy);
       }
 
       delete this.domElement.eventListeners[event];
@@ -1174,21 +1174,21 @@ Prime.Document.Element.prototype = {
     return this;
   },
 
-  /*
-   * Private methods
-   */
+  /* ===================================================================================================================
+   * Private Methods
+   * ===================================================================================================================*/
 
   /**
    * Changes a style property iteratively over a given period of time from one value to another value.
    *
-   * @private
    * @param {Object} config The configuration object for the iteration. This must contain the name of the style property
    *        being changed, the units of the property (px, em, etc), the defaultStartValue if the element doesn't have the
    *        style already, the end value, the duration, and the number of iterations.
    * @param {Function} [endFunction] Optional end function to call.
    * @param {Object} [context] Optional context for the function calls.
+   * @private
    */
-  changeNumberStyleIteratively: function(config, endFunction, context) {
+  _changeNumberStyleIteratively: function(config, endFunction, context) {
     var domElement = this.domElement;
     var currentValue = (domElement.style[config.name]) ? (domElement.style[config.name]) : config.defaultStartValue;
     var step = currentValue / config.iterations;
@@ -1217,11 +1217,11 @@ Prime.Document.Element.prototype = {
   /**
    * Removes the event listener proxy from this element.
    *
-   * @private
    * @param {string} event The event name.
    * @param {Function} proxy The proxy function.
+   * @private
    */
-  internalRemoveEventListener: function(event, proxy) {
+  _internalRemoveEventListener: function(event, proxy) {
     if (event.indexOf(':') === -1) {
       // Traditional event
       if (this.domElement.removeEventListener) {

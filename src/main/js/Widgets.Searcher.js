@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -55,7 +55,7 @@ Prime.Widgets = Prime.Widgets || {};
  *
  * <pre>
  *   CallbackObject {
- *     object{results:Array, tooManyResults:boolean} search(searchString:string),
+ *     object{results:Array, tooManyResults:boolean} search(_searchString:string),
  *     void selectSearchResult(selectedSearchResult:string),
  *     void deletedBeyondSearchInput()
  *   }
@@ -74,11 +74,11 @@ Prime.Widgets.Searcher = function(inputElement, searchResultsContainer, callback
   }
   this.inputElement.
       addClass('prime-searcher-input').
-      addEventListener('blur', this.handleBlurEvent, this).
-      addEventListener('click', this.handleClickEvent, this).
-      addEventListener('keyup', this.handleKeyUpEvent, this).
-      addEventListener('keydown', this.handleKeyDownEvent, this).
-      addEventListener('focus', this.handleFocusEvent, this);
+      addEventListener('blur', this._handleBlurEvent, this).
+      addEventListener('click', this._handleClickEvent, this).
+      addEventListener('keyup', this._handleKeyUpEvent, this).
+      addEventListener('keydown', this._handleKeyDownEvent, this).
+      addEventListener('focus', this._handleFocusEvent, this);
 
   this.searchResultsContainer = (searchResultsContainer instanceof Prime.Document.Element) ? searchResultsContainer : new Prime.Document.Element(searchResultsContainer);
   this.searchResultsContainer.addClass('prime-searcher-search-results-list');
@@ -100,7 +100,7 @@ Prime.Widgets.Searcher.prototype = {
    * empty string.
    */
   closeSearchResults: function() {
-    this.removeAllSearchResults();
+    this._removeAllSearchResults();
     this.searchResultsContainer.hide();
     this.inputElement.setValue('');
     this.resizeInput();
@@ -234,7 +234,7 @@ Prime.Widgets.Searcher.prototype = {
     this.resizeInput();
 
     // Clear the search results (if there are any)
-    this.removeAllSearchResults();
+    this._removeAllSearchResults();
 
     // Call the callback
     var searchResults = this.callbackObject.search(searchText);
@@ -250,8 +250,8 @@ Prime.Widgets.Searcher.prototype = {
           addClass('prime-searcher-search-result').
           setAttribute('value', searchResult).
           setHTML(searchResult).
-          addEventListener('click', this.handleClickEvent, this).
-          addEventListener('mouseover', this.handleMouseOverEvent, this).
+          addEventListener('click', this._handleClickEvent, this).
+          addEventListener('mouseover', this._handleMouseOverEvent, this).
           appendTo(this.searchResultsContainer);
       if (searchResult.toLowerCase().trim() === searchText.toLowerCase().trim()) {
         matchingSearchResultElement = element;
@@ -266,8 +266,8 @@ Prime.Widgets.Searcher.prototype = {
         && ( !('doesNotContainValue' in this.callbackObject) || this.callbackObject.doesNotContainValue(searchText))) {
       matchingSearchResultElement = Prime.Document.newElement('<li/>').
           addClass('prime-searcher-search-result prime-searcher-add-custom').
-          addEventListener('click', this.handleClickEvent, this).
-          addEventListener('mouseover', this.handleMouseOverEvent, this).
+          addEventListener('click', this._handleClickEvent, this).
+          addEventListener('mouseover', this._handleMouseOverEvent, this).
           setHTML(this.customAddLabel + searchText).
           appendTo(this.searchResultsContainer);
       count++;
@@ -390,17 +390,16 @@ Prime.Widgets.Searcher.prototype = {
     return this;
   },
 
-
-  /*
+  /* ===================================================================================================================
    * Private methods
-   */
+   * ===================================================================================================================*/
 
   /**
    * Handles the blur event when the input goes out of focus.
    *
    * @private
    */
-  handleBlurEvent: function() {
+  _handleBlurEvent: function() {
     window.setTimeout(Prime.Utils.proxy(function() {
       if (document.activeElement !== this.inputElement.domElement) {
         this.closeSearchResults();
@@ -411,10 +410,10 @@ Prime.Widgets.Searcher.prototype = {
   /**
    * Handles all click events sent to the Searcher.
    *
-   * @private
    * @param {Event} event The mouse event.
+   * @private
    */
-  handleClickEvent: function(event) {
+  _handleClickEvent: function(event) {
     var target = new Prime.Document.Element(event.currentTarget);
     if (target.hasClass('prime-searcher-add-custom') || target.hasClass('prime-searcher-search-result')) {
       this.selectHighlightedSearchResult();
@@ -432,18 +431,18 @@ Prime.Widgets.Searcher.prototype = {
    *
    * @private
    */
-  handleFocusEvent: function() {
+  _handleFocusEvent: function() {
     this.search();
   },
 
   /**
    * Handles the key down events that should not be propagated.
    *
-   * @private
    * @param {Event} event The browser event object.
    * @returns {boolean} True if the event is not an arrow key.
+   * @private
    */
-  handleKeyDownEvent: function(event) {
+  _handleKeyDownEvent: function(event) {
     var key = event.keyCode;
     if (key === Prime.Events.Keys.BACKSPACE) {
       this.previousSearchString = this.inputElement.getValue();
@@ -468,11 +467,11 @@ Prime.Widgets.Searcher.prototype = {
   /**
    * Handles all key up events sent to the search results container.
    *
-   * @private
    * @param {Event} event The browser event object.
    * @returns {boolean} True if the search display is not open, false otherwise. This will prevent the event from continuing.
+   *  @private
    */
-  handleKeyUpEvent: function(event) {
+  _handleKeyUpEvent: function(event) {
     var key = event.keyCode;
     var value = this.inputElement.getValue();
 
@@ -502,10 +501,10 @@ Prime.Widgets.Searcher.prototype = {
   /**
    * Handles mouseover events for the search results (only) by highlighting the event target.
    *
-   * @private
    * @param {Event} event The mouseover event.
+   * @private
    */
-  handleMouseOverEvent: function(event) {
+  _handleMouseOverEvent: function(event) {
     var target = new Prime.Document.Element(event.currentTarget);
     this.highlightSearchResult(target);
   },
@@ -515,7 +514,7 @@ Prime.Widgets.Searcher.prototype = {
    *
    * @private
    */
-  removeAllSearchResults: function() {
+  _removeAllSearchResults: function() {
     Prime.Document.query('li', this.searchResultsContainer).removeAllFromDOM();
   }
 };

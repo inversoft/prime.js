@@ -60,7 +60,7 @@ Prime.Widgets.SplitButton = function(element) {
   if (this.element.hasClass('prime-initialized')) {
     throw new Error('This element has already been initialized. Call destroy before initializing again.');
   }
-  this.element.hide().addClass('prime-split-button prime-initialized');
+  this.element.hide().addClass('prime-split-button');
   this.container = Prime.Document.queryUp('div,td', this.element);
 
   // If a default action was not found, use the first one
@@ -82,6 +82,7 @@ Prime.Widgets.SplitButton = function(element) {
     body.addEventListener('click', this._hideAllButtons, this);
     body.setAttribute('data-prime-split-button-handler', 'true');
   }
+  this.element.addClass('prime-initialized');
 };
 
 Prime.Widgets.SplitButton.constructor = Prime.Widgets.SplitButton;
@@ -92,18 +93,26 @@ Prime.Widgets.SplitButton.prototype = {
    * Destroy the the SplitButton widget
    */
   destroy: function() {
+    this.splitButton.removeAllEventListeners();
+    this.dropDown.removeAllEventListeners();
     this.splitButton.removeFromDOM();
+
+    this.element.removeEventListener('mouseout', this._handleMouseOut);
     this.element.removeAttribute('data-prime-active');
     this.element.setStyle('margin-top', '');
-    this.element.removeClass('prime-initialized prime-split-button').show();;
+    this.element.removeClass('prime-initialized prime-split-button').show();
+    this.defaultAction.show();
   },
 
-  /**
+  /* ===================================================================================================================
+   * Private methods
+   * ===================================================================================================================*/
+
+   /**
    * Handle the split button click to expand the action list.
    * @private
    */
   _handleDropDownClick: function(event) {
-
     this._clearActiveMarker();
     this._setActiveMarker();
     this._hideAllButtons();
@@ -163,7 +172,8 @@ Prime.Widgets.SplitButton.prototype = {
     // Setting href to '#' will expand the button and remove it from the expanded list
     if (button.getAttribute('href') === '#') {
       button.addEventListener('click', this._handleDropDownClick, this);
-      this.defaultAction.removeFromDOM();
+      //this.defaultAction.removeFromDOM();
+      this.defaultAction.hide();
     }
 
     var dropDownDiv = Prime.Document.newElement('<div>');
@@ -183,7 +193,6 @@ Prime.Widgets.SplitButton.prototype = {
     this.dropDown = Prime.Document.queryFirst('a.prime-drop-down', this.splitButton);
     this.dropDownDiv = Prime.Document.queryUp('div', this.dropDown);
     this.element.setStyle('margin-top', this.dropDown.getHeight() + '');
-
   },
 
   /**

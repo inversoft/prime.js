@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,7 +80,7 @@ Prime.Ajax.Request.prototype = {
     }
 
     if (this.async) {
-      this.xhr.onreadystatechange = Prime.Utils.proxy(this.handler, this);
+      this.xhr.onreadystatechange = Prime.Utils.proxy(this._handler, this);
     }
 
     this.xhr.open(this.method, requestUrl, this.async, this.username, this.password);
@@ -214,9 +214,9 @@ Prime.Ajax.Request.prototype = {
     for (var prop in data) {
       if (data.hasOwnProperty(prop)) {
         if (this.method === 'PUT' || this.method === 'POST') {
-          this.body = this.addDataValue(this.body, prop, data[prop]);
+          this.body = this._addDataValue(this.body, prop, data[prop]);
         } else {
-          this.queryParams = this.addDataValue(this.queryParams, prop, data[prop]);
+          this.queryParams = this._addDataValue(this.queryParams, prop, data[prop]);
         }
       }
     }
@@ -333,10 +333,14 @@ Prime.Ajax.Request.prototype = {
     return this;
   },
 
-  /**
+  /* ===================================================================================================================
+   * Private Methods
+   * ===================================================================================================================*/
+
+   /**
    * @private
    */
-  handler: function() {
+  _handler: function() {
     if (this.xhr.readyState === 0) {
       this.unsetHandler.call(this.context, this.xhr);
     } else if (this.xhr.readyState === 1) {
@@ -358,13 +362,13 @@ Prime.Ajax.Request.prototype = {
    * Adds the given name-value pair to the given data String. If the value is an array, it adds multiple values for each
    * piece. Otherwise, it assumes value is a String or can be converted to a String.
    *
-   * @private
    * @param {string} dataString The data String used to determine if an ampersand is necessary.
    * @param {string} name The name of the name-value pair.
    * @param {string|Array} value The value of the name-value pair.
    * @returns {string} The new data string.
+   * @private
    */
-  addDataValue: function(dataString, name, value) {
+  _addDataValue: function(dataString, name, value) {
     var result = '';
     if (value instanceof Array) {
       for (var i = 0; i < value.length; i++) {

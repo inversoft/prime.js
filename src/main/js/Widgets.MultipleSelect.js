@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -91,8 +91,8 @@ Prime.Widgets.MultipleSelect = function(element) {
     this.displayContainer = Prime.Document.newElement('<div/>').
         setID(id + '-display').
         addClass('prime-multiple-select-display').
-        addEventListener('click', this.handleClickEvent, this).
-        addEventListener('keyup', this.handleKeyUpEvent, this).
+        addEventListener('click', this._handleClickEvent, this).
+        addEventListener('keyup', this._handleKeyUpEvent, this).
         insertAfter(this.element);
 
     this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>').
@@ -106,13 +106,13 @@ Prime.Widgets.MultipleSelect = function(element) {
   } else {
     this.displayContainer.
         removeAllEventListeners().
-        addEventListener('click', this.handleClickEvent, this).
-        addEventListener('keyup', this.handleKeyUpEvent, this);
+        addEventListener('click', this._handleClickEvent, this).
+        addEventListener('keyup', this._handleKeyUpEvent, this);
     this.displayContainerSelectedOptionList = Prime.Document.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Document.queryFirst('.prime-multiple-select-search-result-list', this.displayContainer);
   }
 
-  Prime.Document.queryFirst('html').addEventListener('click', this.handleGlobalClickEvent, this);
+  Prime.Document.queryFirst('html').addEventListener('click', this._handleGlobalClickEvent, this);
 };
 
 /*
@@ -183,7 +183,7 @@ Prime.Widgets.MultipleSelect.prototype = {
   deselectOption: function(option) {
     option.setSelected(false);
 
-    var id = this.makeOptionID(option);
+    var id = this._makeOptionID(option);
     var displayOption = Prime.Document.queryByID(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
@@ -332,7 +332,7 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     option.removeFromDOM();
 
-    var id = this.makeOptionID(option);
+    var id = this._makeOptionID(option);
     var displayOption = Prime.Document.queryByID(id);
 
     // Check if the option has already been selected
@@ -383,8 +383,8 @@ Prime.Widgets.MultipleSelect.prototype = {
         appendTo(this.displayContainerSelectedOptionList);
     this.input = Prime.Document.newElement('<input/>').
         addClass('prime-multiple-select-input').
-        addEventListener('click', this.handleClickEvent, this).
-        addEventListener('blur', this.handleBlurEvent, this).
+        addEventListener('click', this._handleClickEvent, this).
+        addEventListener('blur', this._handleBlurEvent, this).
         setAttribute('type', 'text').
         appendTo(this.inputOption);
     this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this).
@@ -426,7 +426,7 @@ Prime.Widgets.MultipleSelect.prototype = {
       throw new TypeError('MultipleSelect#selectOption only takes Prime.Document.Element instances');
     }
 
-    var id = this.makeOptionID(option);
+    var id = this._makeOptionID(option);
 
     // Check if the option has already been selected
     if (Prime.Document.queryByID(id) === null) {
@@ -446,7 +446,7 @@ Prime.Widgets.MultipleSelect.prototype = {
           setAttribute('value', option.getValue()).
           addClass('prime-multiple-select-remove-option').
           setHTML('X').
-          addEventListener('click', this.handleClickEvent, this).
+          addEventListener('click', this._handleClickEvent, this).
           appendTo(li);
     }
 
@@ -637,7 +637,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    *
    * @private
    */
-  handleBlurEvent: function() {
+  _handleBlurEvent: function() {
     window.setTimeout(Prime.Utils.proxy(function() {
       if (document.activeElement !== this.input.domElement) {
         this.searcher.closeSearchResults();
@@ -648,10 +648,10 @@ Prime.Widgets.MultipleSelect.prototype = {
   /**
    * Handles all click events sent to the MultipleSelect.
    *
-   * @private
    * @param {Event} event The mouse event.
+   * @private
    */
-  handleClickEvent: function(event) {
+  _handleClickEvent: function(event) {
     var target = new Prime.Document.Element(event.currentTarget);
     if (this.displayContainer.domElement === target.domElement) {
       this.input.focus();
@@ -668,11 +668,11 @@ Prime.Widgets.MultipleSelect.prototype = {
    * Handles mouse clicks outside of this MultipleSelect. If they clicked anything that is not within this MultipleSelect,
    * it closes the search results.
    *
-   * @private
    * @param {Event} event The event.
    * @returns {boolean} Always true so the event is bubbled.
+   * @private
    */
-  handleGlobalClickEvent: function(event) {
+  _handleGlobalClickEvent: function(event) {
     var target = new Prime.Document.Element(event.target);
     if (this.displayContainer.domElement !== target.domElement && !target.isChildOf(this.displayContainer)) {
       this.searcher.closeSearchResults();
@@ -684,11 +684,11 @@ Prime.Widgets.MultipleSelect.prototype = {
   /**
    * Handles all key up events sent to the display container.
    *
-   * @private
    * @param {Event} event The browser event object.
    * @returns {boolean} True if the search display is not open, false otherwise. This will prevent the event from continuing.
+   * @private
    */
-  handleKeyUpEvent: function(event) {
+  _handleKeyUpEvent: function(event) {
     var key = event.keyCode;
     if (key === Prime.Events.Keys.ESCAPE) {
       this.unhighlightOptionForUnselect();
@@ -700,10 +700,10 @@ Prime.Widgets.MultipleSelect.prototype = {
   /**
    * Makes an ID for the option.
    *
-   * @private
    * @param {Prime.Document.Element} option The option to make the ID for.
+   * @private
    */
-  makeOptionID: function(option) {
+  _makeOptionID: function(option) {
     return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
   }
 };
