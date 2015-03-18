@@ -172,8 +172,7 @@ Prime.Widgets.SplitButton.prototype = {
     // Setting href to '#' will expand the button and remove it from the expanded list
     if (button.getAttribute('href') === '#') {
       button.addEventListener('click', this._handleDropDownClick, this);
-      //this.defaultAction.removeFromDOM();
-      this.defaultAction.hide();
+      this.defaultAction.parent().hide();
     }
 
     var dropDownDiv = Prime.Document.newElement('<div>');
