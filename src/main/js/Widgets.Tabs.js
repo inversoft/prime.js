@@ -59,7 +59,7 @@ Prime.Widgets.Tabs = function(element) {
     }
     content.hide();
     a.addEventListener('click', this._handleClick, this);
-    if (!tab.hasClass('prime-inactive')) {
+    if (!tab.hasClass('prime-disabled')) {
       tab.setAttribute("data-tab-id", index++);
       content.addClass('prime-tab-content');
       this.tabContents[contentId] = content;
@@ -120,7 +120,7 @@ Prime.Widgets.Tabs.prototype = {
    */
   _handleClick: function(event) {
     var tab = new Prime.Document.Element(event.currentTarget).parent();
-    if (!tab.hasClass('prime-inactive')) {
+    if (!tab.hasClass('prime-disabled')) {
       var tabId = parseInt(tab.getAttribute("data-tab-id"));
       this.selectTab(tabId);
     }
