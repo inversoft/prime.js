@@ -52,11 +52,11 @@ Prime.Widgets = Prime.Widgets || {};
 Prime.Widgets.SplitButton = function(element) {
 
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
-  if (this.element.domElement.nodeName.toLowerCase() !== 'ul') {
-    throw new TypeError('SplitButton requires a ul element. The passed element type is <' + element.domElement.nodeType.toLowerCase() + '>');
+  var nodeName = this.element.domElement.nodeName.toLowerCase();
+  if (nodeName !== 'ul') {
+    throw new TypeError('SplitButton requires a ul element. The passed element type is <' + nodeName + '>');
   }
 
-  this.element = element;
   if (this.element.hasClass('prime-initialized')) {
     throw new Error('This element has already been initialized. Call destroy before initializing again.');
   }
