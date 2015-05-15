@@ -671,6 +671,15 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Returns true if the element matches the provided selector.
+   *
+   * @param {boolean} True if the element matches the selector, false if it does not match the selector.
+   */
+  is: function(selector) {
+    return Sizzle.matchesSelector(this.domElement, selector);
+  },
+
+  /**
    * Returns whether or not the element is checked. If the element is not a checkbox or a radio this returns false.
    *
    * @returns {boolean} True if the element is selected, false if it isn't or is not a checkbox or a radio.

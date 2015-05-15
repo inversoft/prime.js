@@ -407,6 +407,27 @@ buster.testCase('Element class tests', {
   },
 
   /**
+   * Tests .is(selector)
+   */
+  'is': function() {
+    assert.isTrue(Prime.Document.queryFirst('#is-test td').is('td'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test tr').is('tr'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test textarea').is('textarea'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test input').is('input'));
+    assert.isFalse(Prime.Document.queryFirst('#is-test tr').is('td'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test div.foo').is('div'));
+    assert.isFalse(Prime.Document.queryFirst('#is-test div.foo').is('div.bar'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test div.foo.bar').is('div'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test div.foo.bar').is('div.foo'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test div.foo.bar').is('div.foo.bar'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test div.display-none').is('div:hidden'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test div.display-none').is('div.display-none'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test div.display-none').is('div'));
+    assert.isFalse(Prime.Document.queryFirst('#is-test div.display-none').is('div.bar'));
+    assert.isFalse(Prime.Document.queryFirst('#is-test div.display-none').is('td'));
+  },
+
+  /**
    * Tests inserting a new Element into the DOM after other elements.
    */
   'insertBefore': {
