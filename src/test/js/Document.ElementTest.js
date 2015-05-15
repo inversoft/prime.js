@@ -420,7 +420,6 @@ buster.testCase('Element class tests', {
     assert.isTrue(Prime.Document.queryFirst('#is-test div.foo.bar').is('div'));
     assert.isTrue(Prime.Document.queryFirst('#is-test div.foo.bar').is('div.foo'));
     assert.isTrue(Prime.Document.queryFirst('#is-test div.foo.bar').is('div.foo.bar'));
-    assert.isTrue(Prime.Document.queryFirst('#is-test div.display-none').is('div:hidden'));
     assert.isTrue(Prime.Document.queryFirst('#is-test div.display-none').is('div.display-none'));
     assert.isTrue(Prime.Document.queryFirst('#is-test div.display-none').is('div'));
     assert.isFalse(Prime.Document.queryFirst('#is-test div.display-none').is('div.bar'));
