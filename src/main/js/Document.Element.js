@@ -673,7 +673,8 @@ Prime.Document.Element.prototype = {
   /**
    * Returns true if the element matches the provided selector.
    *
-   * @param {boolean} True if the element matches the selector, false if it does not match the selector.
+   * @param {string} selector to match against the Element
+   * @returns {boolean} True if the element matches the selector, false if it does not match the selector.
    */
   is: function(selector) {
     return Sizzle.matchesSelector(this.domElement, selector);
