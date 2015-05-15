@@ -75,6 +75,10 @@ div.prime-split-button {
   position: relative;
 }
 
+div.prime-split-button > div {
+  cursor: pointer;
+}
+
 div.prime-split-button div:nth-child(1) {
   background-color: #CCC;
   border: 1px solid rgba(68, 68, 68, 0.1);
@@ -106,4 +110,5 @@ div.prime-split-button a {
 div.prime-split-button .prime-drop-down {
   background: url("/images/prime/16/arrow_down.png") no-repeat -1px 2px, center;
   opacity: 0.70;
+  cursor: pointer;
 }

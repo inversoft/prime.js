@@ -61,6 +61,18 @@ buster.testCase('SplitButton class tests', {
     }), this), 5);
   },
 
+  'click drop down div expands button': function(done) {
+    assert.isFalse(this.splitButton1.isVisible());
+    assert.isFalse(this.splitButton2.isVisible());
+
+    var div = Prime.Document.queryUp('div', this.dropDown1);
+    div.fireEvent('click');
+    setTimeout(Prime.Utils.proxy(done(function() {
+      assert.isTrue(this.splitButton1.isVisible());
+      assert.isFalse(this.splitButton2.isVisible());
+    }), this), 5);
+  },
+
   'click select... expands button': function(done) {
     assert.isFalse(this.splitButton1.isVisible());
     assert.isFalse(this.splitButton2.isVisible());

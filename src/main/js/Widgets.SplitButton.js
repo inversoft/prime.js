@@ -75,6 +75,8 @@ Prime.Widgets.SplitButton = function(element) {
   this.splitButton.addEventListener('mouseout', this._handleMouseOut, this);
   this.element.addEventListener('mouseout', this._handleMouseOut, this);
   this.dropDown.addEventListener('click', this._handleDropDownClick, this);
+  this.dropDownDiv.addEventListener('click', this._handleDropDownClick, this);
+  this.defaultButton.addEventListener('click', this._handleDefaultButton, this);
 
   // Register a single global listener to handle closing buttons
   var body = new Prime.Document.Element(document.body);
@@ -107,6 +109,15 @@ Prime.Widgets.SplitButton.prototype = {
   /* ===================================================================================================================
    * Private methods
    * ===================================================================================================================*/
+
+  /**
+   * Handle the default button click
+   * @private
+   */
+  _handleDefaultButton: function() {
+    this.defaultAction.fireEvent('click', null, null, false, null);
+    return false;
+  },
 
    /**
    * Handle the split button click to expand the action list.
@@ -189,6 +200,7 @@ Prime.Widgets.SplitButton.prototype = {
     buttonDiv = Prime.Document.queryFirst('div', this.splitButton);
     button.prependTo(buttonDiv.domElement);
 
+    this.defaultButton = Prime.Document.queryFirst('div', this.splitButton);
     this.dropDown = Prime.Document.queryFirst('a.prime-drop-down', this.splitButton);
     this.dropDownDiv = Prime.Document.queryUp('div', this.dropDown);
     this.element.setStyle('margin-top', this.dropDown.getHeight() + '');
