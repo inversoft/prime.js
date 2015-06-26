@@ -1,9 +1,9 @@
 /*
  * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
  */
-savantVersion = "0.3.1"
+savantVersion = "0.4.4"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.10", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.11", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -28,8 +28,8 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "0.30.10", lice
 // Plugins
 dependency = loadPlugin(id: "org.savantbuild.plugin:dependency:${savantVersion}")
 file = loadPlugin(id: "org.savantbuild.plugin:file:${savantVersion}")
-idea = loadPlugin(id: "org.savantbuild.plugin:idea:0.3.2")
-release = loadPlugin(id: "org.savantbuild.plugin:release-git:0.3.4")
+idea = loadPlugin(id: "org.savantbuild.plugin:idea:${savantVersion}")
+release = loadPlugin(id: "org.savantbuild.plugin:release-git:${savantVersion}")
 
 target(name: "clean", description: "Does nothing. Exists for scripting") {
   file.prune(dir: "build")
@@ -66,7 +66,7 @@ target(name: "int", description: "Releases a local integration build of the proj
 }
 
 target(name: "idea", description: "Updates the IntelliJ IDEA module file") {
-    idea.iml()
+  idea.iml()
 }
 
 target(name: "release", description: "Releases a full version of the project", dependsOn: ["int"]) {

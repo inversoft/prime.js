@@ -228,6 +228,49 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
+   * Sets the data for the request using the form fields in the given form element. Will store the values for query
+   * parameters or post data depending on the method that is set.  If the method is a post or put, will also set
+   * content-type to x-www-form-urlencoded.
+   *
+   * @param {FormElement|Prime.Document.Element} form The form object.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withDataFromForm: function(form) {
+    var domElement = form;
+    if (form instanceof Prime.Document.Element) {
+      domElement = form.domElement;
+    }
+
+    for (var i = 0; i < domElement.elements.length; i++) {
+      var primeElement = new Prime.Document.Element(domElement.elements[i]);
+      if (primeElement.isDisabled()) {
+        continue;
+      }
+
+      var type = primeElement.getAttribute('type').toLowerCase();
+      var name = primeElement.domElement.name;
+      var values;
+      if (primeElement.getTagName() === 'SELECT' || type === 'radio' || type === 'checkbox') {
+        values = primeElement.getSelectedValues();
+      } else {
+        values = primeElement.getValue();
+      }
+
+      if (this.method === 'PUT' || this.method === 'POST') {
+        this.body = this._addDataValue(this.body, name, values)
+      } else {
+        this.queryParams = this._addDataValue(this.queryParams, name, values);
+      }
+    }
+
+    if (this.method === "PUT" || this.method === "POST") {
+      this.contentType = 'application/x-www-form-urlencoded';
+    }
+
+    return this;
+  },
+
+  /**
    * Sets the handler to invoke when the state of the AJAX request is "complete" and the HTTP status in the response is
    * not 2xx.
    *
