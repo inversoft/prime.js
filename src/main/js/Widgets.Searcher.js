@@ -207,11 +207,7 @@ Prime.Widgets.Searcher.prototype = {
    */
   resizeInput: function() {
     var text = this.inputElement.getValue() === '' ? this.inputElement.getAttribute('placeholder') : this.inputElement.getValue();
-    var newLength = Prime.Utils.calculateTextLength(this.inputElement, text) + 10;
-    if (newLength < 25) {
-      newLength = 25;
-    }
-
+    var newLength = Prime.Utils.calculateTextLength(this.inputElement, text) + 35;
     this.inputElement.setWidth(newLength);
   },
 
