@@ -121,7 +121,8 @@ Prime.Widgets.SplitButton.prototype = {
 
    /**
    * Handle the split button click to expand the action list.
-   * @private
+   * @param {Event} event The JavaScript event.
+    * @private
    */
   _handleDropDownClick: function(event) {
     this._clearActiveMarker();
@@ -218,7 +219,7 @@ Prime.Widgets.SplitButton.prototype = {
 
   /**
    * Hide all visible split buttons on the page. And ensure all are set to inactive.
-   * @param event
+   * @param {Event} event The JavaScript event.
    * @private
    */
   _hideAllButtons: function(event) {
