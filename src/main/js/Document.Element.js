@@ -253,6 +253,22 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Returns all of the attributes on the element as an object.
+   *
+   * @returns {object} This attributes or an empty object if there are no attributes on this element.
+   */
+  getAttributes: function() {
+    var attrs = {};
+    if (this.domElement.hasAttributes()) {
+      for (var i = 0; i < this.domElement.attributes.length; i++) {
+        attrs[this.domElement.attributes[i].name] = this.domElement.attributes[i].value;
+      }
+    }
+
+    return attrs;
+  },
+
+  /**
    * @returns {number} The bottom position (in pixels) of the current element.
    */
   getBottom: function() {
@@ -284,6 +300,27 @@ Prime.Document.Element.prototype = {
    */
   getComputedStyle: function() {
     return (this.domElement.currentStyle) ? this.domElement.currentStyle : document.defaultView.getComputedStyle(this.domElement, null);
+  },
+
+  /**
+   * Returns the dataset if it exists, otherwise, this creates a new dataset object and returns it.
+   *
+   * @returns {object} This dataset object.
+   */
+  getDataSet: function() {
+    if (this.domElement.dataset) {
+      return this.domElement.dataset;
+    }
+
+    this.domElement.dataset = {};
+    var attrs = this.getAttributes();
+    for (var prop in attrs) {
+      if (attrs.hasOwnProperty(prop) && prop.indexOf('data-') === 0) {
+        var dataName = prop.substring(5).replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+        this.domElement.dataset[dataName] = attrs[prop];
+      }
+    }
+    return this.domElement.dataset;
   },
 
   /**

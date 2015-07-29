@@ -298,6 +298,10 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Document.queryFirst('#attributes').getAttribute('attr2'), 'value2');
   },
 
+  'getAttributes': function() {
+    assert.equals(Prime.Document.queryFirst('#attributes').getAttributes(), {'attr1': 'value1', 'attr2': 'value2', 'id': 'attributes'});
+  },
+
   'set remove attribute': function() {
     assert.isNull(Prime.Document.queryFirst('#attributes').getAttribute('foo'));
 
@@ -316,6 +320,13 @@ buster.testCase('Element class tests', {
   'getClass': function() {
     var element = Prime.Document.queryByID('getClass');
     assert.equals(element.getClass(), 'class1 class2');
+  },
+
+  'getDataSet': function() {
+    console.log(Prime.Document.queryFirst('#dataset').getDataSet());
+    assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().attr1, 'value1');
+    assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().attr2, 'value2');
+    assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().camelCase, 'valueCamelCase');
   },
 
   'getHTML': function() {
