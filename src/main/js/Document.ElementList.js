@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2013-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,12 +18,13 @@ Prime.Document = Prime.Document || {};
 
 
 /**
- * Constructs an ElementList object using the given array of DOMElements or Prime.Document.Elements.
+ * Constructs an ElementList object using the given array containing DOMElements or Prime.Document.Element objects, or the NodeList containing Node objects.
  *
  * @constructor
- * @param {Array} elements The array of DOMElement or Prime.Document.Element objects.
+ * @param {Array|NodeList} elements An array containing DOMElement or Prime.Document.Element objects, or a NodeList containing Node objects.
  */
 Prime.Document.ElementList = function(elements) {
+  // NodeList does not inherit from Array so do not assume object type.
   this.length = elements.length;
   for (var i = 0; i < elements.length; i++) {
     if (elements[i] instanceof Prime.Document.Element) {

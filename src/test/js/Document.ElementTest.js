@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -299,7 +299,11 @@ buster.testCase('Element class tests', {
   },
 
   'getAttributes': function() {
-    assert.equals(Prime.Document.queryFirst('#attributes').getAttributes(), {'attr1': 'value1', 'attr2': 'value2', 'id': 'attributes'});
+    assert.equals(Prime.Document.queryFirst('#attributes').getAttributes(), {
+      'attr1': 'value1',
+      'attr2': 'value2',
+      'id': 'attributes'
+    });
   },
 
   'set remove attribute': function() {
@@ -317,13 +321,17 @@ buster.testCase('Element class tests', {
     assert.equals(element.getChildren().length, 4);
   },
 
+  'getChildren with selector': function() {
+    var element = Prime.Document.queryFirst('#children');
+    assert.equals(element.getChildren('.foo').length, 2);
+  },
+
   'getClass': function() {
     var element = Prime.Document.queryByID('getClass');
     assert.equals(element.getClass(), 'class1 class2');
   },
 
   'getDataSet': function() {
-    console.log(Prime.Document.queryFirst('#dataset').getDataSet());
     assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().attr1, 'value1');
     assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().attr2, 'value2');
     assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().camelCase, 'valueCamelCase');
@@ -1230,5 +1238,86 @@ buster.testCase('Element class tests', {
 
     element.setOpacity(0.5);
     assert.equals(element.getOpacity(), 0.5);
+  },
+
+  'is': function() {
+    var element1 = Prime.Document.queryFirst('div');
+    assert.isTrue(element1.is('div'));
+
+    var element2 = Prime.Document.queryFirst('a');
+    assert.isTrue(element2.is('a'));
+
+    var element3 = Prime.Document.queryFirst('div.foo.bar');
+    assert.isTrue(element3.is('.foo'));
+    assert.isTrue(element3.is('.bar'));
+    assert.isTrue(element3.is('.foo.bar'));
+    assert.isTrue(element3.is('.bar.foo'));
+
+    assert.isFalse(element3.is('.div'));
+    assert.isFalse(element3.is('.baz'));
+    assert.isFalse(element3.is('a'));
+    assert.isFalse(element3.is('span'));
+
+    var element4 = Prime.Document.queryFirst('#is-test textarea', element4);
+    assert.isTrue(element4.is('textarea'));
+    assert.isTrue(element4.is('td textarea'));
+    assert.isTrue(element4.is('tr td textarea'));
+    assert.isTrue(element4.is('table tr td textarea'));
+    assert.isTrue(element4.is('#is-test table tr td textarea'));
+    assert.isTrue(element4.is('#is-test > table tr td textarea'));
+    assert.isFalse(element4.is('div > textarea'));
+    assert.isFalse(element4.is('a > textarea'));
+    assert.isFalse(element4.is('body > textarea'));
+    assert.isFalse(element4.is('input'));
+    assert.isFalse(element4.is('a'));
+  },
+
+  'query': function() {
+    var list = Prime.Document.queryByID('query').query('p.test');
+    assert.equals(list.length, 3);
+    assert.equals(list[0].getID(), 'queryOne');
+    assert.equals(list[1].getID(), 'queryTwo');
+    assert.equals(list[2].getID(), 'queryThree');
+  },
+
+  'queryUp': {
+    setUp: function() {
+      this.child = Prime.Document.queryByID('child');
+      this.parent = Prime.Document.queryByID('parent');
+      this.ancestor = Prime.Document.queryFirst('div.ancestor');
+    },
+
+    'find parent by id': function() {
+      assert.equals(this.child.queryUp('#parent'), this.parent);
+    },
+
+    'find parent by type + id': function() {
+      assert.equals(this.child.queryUp('div#parent'), this.parent);
+    },
+
+    'find parent by type only': function() {
+      assert.equals(this.child.queryUp('div'), this.parent);
+    },
+
+    'find ancestor': function() {
+      assert.equals(this.child.queryUp('.ancestor'), this.ancestor);
+    },
+
+    'find parent with a space in the selector': function() {
+      assert.equals(this.child.queryUp('div #parent'), this.parent);
+      assert.equals(this.child.queryUp('body .ancestor'), this.ancestor);
+    }
+  },
+
+  'queryFirst': function() {
+    var child = Prime.Document.queryByID('query').queryFirst('.test');
+    refute.isNull(child);
+    assert.equals(child.getID(), 'queryOne')
+  },
+
+  'queryLast': function() {
+    var child = Prime.Document.queryByID('query').queryLast('.test');
+    refute.isNull(child);
+    assert.equals(child.getID(), 'queryThree')
   }
 });

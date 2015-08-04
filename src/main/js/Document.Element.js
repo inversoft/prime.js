@@ -276,12 +276,25 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the children elements of this Element.
+   * Gets the children elements of this Element, optionally reduced to those matching the optional selector.
    *
+   * @param {string} selector The selector. If not provided all children will be returned.
    * @returns {Prime.Document.ElementList} The children.
    */
-  getChildren: function() {
-    return new Prime.Document.ElementList(this.domElement.children);
+  getChildren: function(selector) {
+    if (typeof selector === 'undefined' || selector === null) {
+      return new Prime.Document.ElementList(this.domElement.children);
+    }
+
+    var matched = [];
+    for (var i = 0; i < this.domElement.children.length; i++) {
+      var child = this.domElement.children[i];
+      if (child.matches(selector)) {
+        matched.push(child);
+      }
+    }
+
+    return new Prime.Document.ElementList(matched);
   },
 
   /**
@@ -714,7 +727,7 @@ Prime.Document.Element.prototype = {
    * @returns {boolean} True if the element matches the selector, false if it does not match the selector.
    */
   is: function(selector) {
-    return Sizzle.matchesSelector(this.domElement, selector);
+    return this.domElement.matches(selector);
   },
 
   /**
@@ -810,6 +823,48 @@ Prime.Document.Element.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Queries the DOM using the given selector starting at this element and returns all the matched elements.
+   *
+   * @param {string} selector The selector.
+   * @returns {Prime.Document.ElementList} An element list.
+   */
+  query: function(selector) {
+    return Prime.Document.query(selector, this);
+  },
+
+  /**
+   * Queries the DOM using the given selector starting at this element and returns the first matched element
+   * or null if there aren't any matches.
+   *
+   * @param {string} selector The selector.
+   * @returns {Prime.Document.Element} An element or null.
+   */
+  queryFirst: function(selector) {
+    return Prime.Document.queryFirst(selector, this);
+  },
+
+  /**
+   * Queries the DOM using the given selector starting at this element and returns the last matched element
+   * or null if there aren't any matches.
+   *
+   * @param {string} selector The selector.
+   * @returns {Prime.Document.Element} An element or null.
+   */
+  queryLast: function(selector) {
+    return Prime.Document.queryLast(selector, this);
+  },
+
+  /**
+   * Traverses up the DOM from this element and looks for a match to the selector.
+   *
+   * @param {string} selector The selector.
+   * @returns {Prime.Document.Element} An element or null.
+   */
+  queryUp: function(selector) {
+    return Prime.Document.queryUp(selector, this);
   },
 
   /**
@@ -1285,3 +1340,25 @@ Prime.Document.Element.prototype = {
     }
   }
 };
+
+
+/* ===================================================================================================================
+ * Polyfill
+ * ===================================================================================================================*/
+
+(function() {
+  if (!Element.prototype.matches) {
+
+    Element.prototype.matches = function(selector) {
+      var domElement = this;
+      var matches = (domElement.parentNode || domElement.document).querySelectorAll(selector);
+      var i = 0;
+
+      while (matches[i] && matches[i] !== domElement) {
+        i++;
+      }
+
+      return matches[i] ? true : false;
+    };
+  }
+})();

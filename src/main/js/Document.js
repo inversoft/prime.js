@@ -131,7 +131,7 @@ Prime.Document.onReady = function(callback, context) {
 };
 
 /**
- * Queries the DOM using the given Sizzle selector starting at the given element and returns all the matched elements.
+ * Queries the DOM using the given selector starting at the given element and returns all the matched elements.
  *
  * @param {string} selector The selector.
  * @param {Element|Document|Prime.Document.Element} [element=document] The starting point for the search (defaults to document if not provided).
@@ -139,11 +139,14 @@ Prime.Document.onReady = function(callback, context) {
  */
 Prime.Document.query = function(selector, element) {
   var domElement = null;
-  if (element !== null) {
+  if (typeof element === 'undefined' || element === null) {
+    domElement = document;
+  } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
   }
 
-  return new Prime.Document.ElementList(Sizzle(selector, domElement));
+  var elements = domElement.querySelectorAll(selector);
+  return new Prime.Document.ElementList(elements);
 };
 
 /**
@@ -162,7 +165,7 @@ Prime.Document.queryByID = function(id) {
 };
 
 /**
- * Queries the DOM using the given Sizzle selector starting at the given element and returns the first matched element
+ * Queries the DOM using the given selector starting at the given element and returns the first matched element
  * or null if there aren't any matches.
  *
  * @param {string} selector The selector.
@@ -171,20 +174,22 @@ Prime.Document.queryByID = function(id) {
  */
 Prime.Document.queryFirst = function(selector, element) {
   var domElement = null;
-  if (element !== null) {
+  if (typeof element === 'undefined' || element === null) {
+    domElement = document;
+  } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
   }
 
-  var domElements = Sizzle(selector, domElement);
-  if (domElements.length === 0) {
+  domElement = domElement.querySelector(selector);
+  if (domElement === null) {
     return null;
   }
 
-  return new Prime.Document.Element(domElements[0]);
+  return new Prime.Document.Element(domElement);
 };
 
 /**
- * Queries the DOM using the given Sizzle selector starting at the given element and returns the last matched element
+ * Queries the DOM using the given selector starting at the given element and returns the last matched element
  * or null if there aren't any matches.
  *
  * @param {string} selector The selector.
@@ -193,11 +198,13 @@ Prime.Document.queryFirst = function(selector, element) {
  */
 Prime.Document.queryLast = function(selector, element) {
   var domElement = null;
-  if (element !== null) {
+  if (typeof element === 'undefined' || element === null) {
+    domElement = document;
+  } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
   }
 
-  var domElements = Sizzle(selector, domElement);
+  var domElements = domElement.querySelectorAll(selector);
   if (domElements.length === 0) {
     return null;
   }
@@ -206,25 +213,22 @@ Prime.Document.queryLast = function(selector, element) {
 };
 
 /**
- * Traverses up the DOM from the starting element and looks for a Sizzle match to the selector.  Only supports single
- * element selectors right now, ie 'div.even' or '#id', etc, will throw an exception if the selector has a space in it.
+ * Traverses up the DOM from the starting element and looks for a match to the selector.
  *
  * @param {string} selector The selector.
  * @param {Prime.Document.Element|Element} element The starting point for the upward traversal.
  * @returns {Prime.Document.Element} An element or null.
  */
 Prime.Document.queryUp = function(selector, element) {
-  if (selector.match(Prime.Utils.spaceRegex)) {
-    throw new TypeError('Ancestor selector must not contain a space');
-  }
-
   var domElement = null;
-  if (element !== null) {
+  if (typeof element === 'undefined' || element === null) {
+    domElement = document;
+  } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
   }
 
   domElement = domElement.parentNode;
-  while (domElement !== null && !Sizzle.matchesSelector(domElement, selector)) {
+  while (domElement !== null && !domElement.matches(selector)) {
     domElement = domElement.parentNode;
   }
 

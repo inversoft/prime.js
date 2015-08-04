@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -182,13 +182,9 @@ buster.testCase('Prime.Document namespace tests', {
       assert.equals(Prime.Document.queryUp('.ancestor', this.child), this.ancestor);
     },
 
-    'throws error on bad selector': function() {
-      try {
-        Prime.Document.queryUp('div div#parent', this.child);
-        assert(false);
-      } catch (err) {
-        refute.isNull(err);
-      }
+    'find parent with a space in the selector': function() {
+      assert.equals(Prime.Document.queryUp('div #parent', this.child), this.parent);
+      assert.equals(Prime.Document.queryUp('body .ancestor', this.child), this.ancestor);
     }
   },
 

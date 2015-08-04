@@ -64,9 +64,9 @@ Prime.Widgets.SplitButton = function(element) {
   this.container = Prime.Document.queryUp('div,td', this.element);
 
   // If a default action was not found, use the first one
-  this.defaultAction = Prime.Document.queryFirst('> li.default a', this.element);
+  this.defaultAction = this.element.queryFirst('ul > li.default a');
   if (this.defaultAction === null) {
-    this.defaultAction = Prime.Document.queryFirst('> li a', this.element);
+    this.defaultAction = this.element.queryFirst('ul > li a');
   }
 
   // Build the split button markup and add listeners
