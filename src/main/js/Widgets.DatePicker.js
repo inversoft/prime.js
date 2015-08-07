@@ -90,6 +90,10 @@ Prime.Widgets.DatePicker.prototype = {
     this.container.removeFromDOM();
   },
 
+  nextDay: function() {
+    // Stub
+  },
+
   /**
    * Moves the DatePicker to the next month and redraws the calendar.
    */
@@ -109,6 +113,10 @@ Prime.Widgets.DatePicker.prototype = {
     this.date.setMonth(currentMonth);
     this.date.setYear(currentYear);
     this.setDate(this.date);
+  },
+
+  previousDay: function() {
+    // Stub
   },
 
   /**
@@ -153,6 +161,11 @@ Prime.Widgets.DatePicker.prototype = {
     this.calendarBody.setHTML(rows);
   },
 
+  /**
+   * Sets the date of the DatePicker and redraws the calendar to the month for the date.
+   *
+   * @param newDate {Date} The new date.
+   */
   setDate: function(newDate) {
     this.date = newDate;
     this.element.setValue(newDate.toString());
