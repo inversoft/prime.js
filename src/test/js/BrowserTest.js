@@ -45,7 +45,7 @@ buster.testCase('Chrome Browser tests', {
 
   'chrome': function() {
     assert.equals(Prime.Browser.name, 'Chrome');
-    assert.equals(Prime.Browser.version, '43');
+    assert.equals(Prime.Browser.version, '44');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });

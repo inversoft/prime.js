@@ -133,8 +133,8 @@ Prime.Document.onReady = function(callback, context) {
 /**
  * Take the HTML string and append it to the provided element, or body if no element is provided.
  *
- * @param html {string} The HTML to append
- * @param element {Element|Document|Prime.Document.Element} [element=document.body] Default to body if not provided.
+ * @param {string} html  The HTML to append
+ * @param {Element|Document|Prime.Document.Element} [element=document.body] Default to body if not provided.
  */
 Prime.Document.appendHTML = function(html, element) {
   var domElement;

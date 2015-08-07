@@ -17,6 +17,7 @@
 .prime-date-picker {
   width: 250px;
   height: 300px;
+  margin-left: 10px;
   margin-bottom: 10px;
   padding: 5px;
   position: absolute;
@@ -29,11 +30,6 @@
 
 .prime-date-picker div.month {
   text-align: center;
-}
-
-.prime-date-picker span.next,
-.prime-date-picker span.prev {
-  cursor: pointer;
 
   /* Un-selectable - keeps the background from being highlighted when clicking */
   -moz-user-select: -moz-none;
@@ -41,6 +37,12 @@
   -webkit-user-select: none;
   user-select: none;
 }
+
+.prime-date-picker span.next,
+.prime-date-picker span.prev {
+  cursor: pointer;
+}
+
 .prime-date-picker span.prev {
   margin-left: 7px;
   float: left;
@@ -68,6 +70,24 @@
   text-align: center;
   font-weight: bold;
   border: 0;
+}
+
+.prime-date-picker td {
+  border: 0;
+  padding: 1px;
+}
+
+.prime-date-picker td a,
+.prime-date-picker td span {
+  display: block;
+  padding: .2em;
+  text-align: right;
+  text-decoration: none;
+
+  border: 1px solid #d3d3d3;
+  background: #e6e6e6;
+  font-weight: normal;
+  color: #555555;
 }
 
 .prime-date-picker table thead {

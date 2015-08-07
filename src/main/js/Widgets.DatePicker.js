@@ -47,20 +47,11 @@ Prime.Widgets.DatePicker = function(element) {
 
 Prime.Widgets.DatePicker.prototype = {
 
-  months: {
-    1: "January",
-    2: "February",
-    3: "March",
-    4: "April",
-    5: "May",
-    6: "June",
-    7: "July",
-    8: "August",
-    9: "September",
-    10: "October",
-    11: "November",
-    12: "December"
-  },
+  shortDayNames: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+
+  months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+
+  longDayNames: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
 
   /**
    * Destroys the DatePicker Widget
@@ -89,16 +80,17 @@ Prime.Widgets.DatePicker.prototype = {
         '  <table class="month">' +
         '    <thead>' +
         '      <tr>' +
-        '        <th>Su</th>' +
-        '        <th>Mo</th>' +
-        '        <th>Tu</th>' +
-        '        <th>We</th>' +
-        '        <th>Th</th>' +
-        '        <th>Fr</th>' +
-        '        <th>Sa</th>' +
+        '        <th>' + this.shortDayNames[0] + '</th>' +
+        '        <th>' + this.shortDayNames[1] + '</th>' +
+        '        <th>' + this.shortDayNames[2] + '</th>' +
+        '        <th>' + this.shortDayNames[3] + '</th>' +
+        '        <th>' + this.shortDayNames[4] + '</th>' +
+        '        <th>' + this.shortDayNames[5] + '</th>' +
+        '        <th>' + this.shortDayNames[6] + '</th>' +
         '      </tr>' +
         '    </thead>' +
         '    <tbody>' +
+        '      ' + this._buildCalendarMonth(now.getMonth(), year) +
         '    </tbody>' +
         '  </table>' +
         '</div>';
@@ -108,22 +100,131 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
+   *
+   * @param {number} month
+   * @returns {string}
+   * @private
+   */
+  _buildCalendarMonth: function(month, year) {
+
+    var monthDate = new Date(year, month);
+    var firstDayOfMonth = this._getFirstDayOfMonth(month, monthDate.getFullYear());
+    var daysInMonth = this._getDaysInMonth(month, monthDate.getFullYear());
+
+    var rows = '';
+    var weeksInMonth = this._getWeeksInMonth(month, year);
+
+    var startDay = 1;
+    for (var i = 0; i < weeksInMonth; i++) {
+      var startDayOfWeek = i === 0 ? firstDayOfMonth : 0;
+      rows += this._buildCalendarWeek(startDayOfWeek, startDay, daysInMonth);
+      startDay += 7 - startDayOfWeek; // increment by 7 adjusted by a week day of week offset
+    }
+
+    return rows;
+  },
+
+  /**
+   * Build the HTML for a single calendar week.
+   *
+   * @param {number} startDayOfWeek The day of the week of this week begins. A 0 based number between 0 and 6.
+   * @param {number} startDayOfMonth The day of the month this week begins. A number between 1 and 31.
+   * @param {number} daysInMonth The number of days in this calendar month.
+   * @returns {string} The HTML for this week.
+   * @private
+   */
+  _buildCalendarWeek: function(startDayOfWeek, startDayOfMonth, daysInMonth) {
+
+    var row = '<tr>';
+    var emptyColumns = 0;
+    for (var i = 0; i < 7; i++) {
+
+      var dayOfWeek = startDayOfMonth + i;
+      if (dayOfWeek <= startDayOfWeek || dayOfWeek > daysInMonth) {
+        row += this._buildCalendarDay(null)
+        emptyColumns++;
+      } else {
+        row += this._buildCalendarDay(dayOfWeek - emptyColumns)
+      }
+    }
+
+    row += '</tr>';
+    return row;
+  },
+
+  /**
+   * Build the HTML for a single calendar day
+   * @param {number} day The day of the month. A number between 0 and 31. May be null to indicate an empty day on the calendar.
+   * @returns {string} The HTML for this day.
+   * @private
+   */
+  _buildCalendarDay: function(day) {
+    if (day === null) {
+      return '<td>&nbsp;</td>';
+    } else {
+      return '<td><a href="#">' + day + '</a></td>';
+    }
+  },
+
+  /**
+   * Return the days in this month
+   *
+   * @param {number} month The month.
+   * @param {number} year The year.
+   * @returns {number} The number of days in the month.
+   * @private
+   */
+  _getDaysInMonth: function(month, year) {
+    return new Date(year, month + 1, 0).getDate();
+  },
+
+  /**
+   * Return the first day of the month. 0 based integer where 0 is Sunday and 6 is Saturday.
+   *
+   * @param {number} month The month.
+   * @param {number} year The year.
+   * @returns {number} The first day of the month.
+   * @private
+   */
+  _getFirstDayOfMonth: function(month, year) {
+    return new Date(year, month, 1).getDay();
+  },
+
+  /**
+   * Return the number of weeks in this calendar month.
+   *
+   * @param {number} month The month.
+   * @param {number} year The year.
+   * @returns {number} The number of weeks in the specified month. A number between 1 and 6.
+   * @private
+   */
+  _getWeeksInMonth: function(month, year) {
+    var firstDay = new Date(year, month, 1);
+    var lastDay = new Date(year, month + 1, 0);
+    var used = firstDay.getDay() + lastDay.getDate();
+    return Math.ceil(used / 7);
+  },
+
+  /**
    * Handle the next month button click.
    * @private
    */
   _handleNextMonth: function() {
-    var currentMonth = parseInt(this.month.getDataSet().month);
-    var currentYear = parseInt(this.month.getDataSet().year);
-    if (currentMonth < 12) {
+    var currentMonth = parseInt(this.month.getDataAttribute('month'));
+    var currentYear = parseInt(this.month.getDataAttribute('year'));
+    if (currentMonth < 11) {
       currentMonth++;
     } else {
       currentYear++;
-      currentMonth = 1;
+      currentMonth = 0;
     }
 
     this.month.setAttribute('data-month', currentMonth);
     this.month.setAttribute('data-year', currentYear);
     this.month.setHTML(this.months[currentMonth] + ' ' + currentYear);
+
+    var month = this._buildCalendarMonth(currentMonth, currentYear);
+    this.container.queryFirst('.month tbody').setHTML(month);
   },
 
   /**
@@ -131,18 +232,21 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _handlePreviousMonth: function() {
-    var currentMonth = parseInt(this.month.getDataSet().month);
-    var currentYear = parseInt(this.month.getDataSet().year);
-    if (currentMonth > 1) {
+    var currentMonth = parseInt(this.month.getDataAttribute('month'));
+    var currentYear = parseInt(this.month.getDataAttribute('year'));
+    if (currentMonth > 0) {
       currentMonth--;
     } else {
       currentYear--;
-      currentMonth = 12;
+      currentMonth = 11;
     }
 
     this.month.setAttribute('data-month', currentMonth);
     this.month.setAttribute('data-year', currentYear);
     this.month.setHTML(this.months[currentMonth] + ' ' + currentYear);
+
+    var month = this._buildCalendarMonth(currentMonth, currentYear);
+    this.container.queryFirst('.month tbody').setHTML(month);
   }
 
 };
