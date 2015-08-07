@@ -81,26 +81,26 @@ Prime.Widgets.DatePicker.prototype = {
     var year = now.getUTCFullYear();
     var html =
         '<div class="prime-date-picker">' +
-        '<div class="month">' +
-        '<span class="prev">&#9664;</span>' +
-        '<span class="month" data-month="' + now.getMonth() + '" data-year="' + year + '">' + this.months[now.getMonth()] + ' ' + year + '</span>' +
-        '<span class="next">&#9654;</span>' +
-        '</div>' +
-        '<table class="month">' +
-        '<thead>' +
-        '<tr>' +
-        '<th>Su</th>' +
-        '<th>Mo</th>' +
-        '<th>Tu</th>' +
-        '<th>We</th>' +
-        '<th>Th</th>' +
-        '<th>Fr</th>' +
-        '<th>Sa</th>' +
-        '</tr>' +
-        '</thead>' +
-        '<tbody>' +
-        '</tbody>' +
-        '</table>' +
+        '  <div class="month">' +
+        '    <span class="prev">&#9664;</span>' +
+        '    <span class="month" data-month="' + now.getMonth() + '" data-year="' + year + '">' + this.months[now.getMonth()] + ' ' + year + '</span>' +
+        '    <span class="next">&#9654;</span>' +
+        '  </div>' +
+        '  <table class="month">' +
+        '    <thead>' +
+        '      <tr>' +
+        '        <th>Su</th>' +
+        '        <th>Mo</th>' +
+        '        <th>Tu</th>' +
+        '        <th>We</th>' +
+        '        <th>Th</th>' +
+        '        <th>Fr</th>' +
+        '        <th>Sa</th>' +
+        '      </tr>' +
+        '    </thead>' +
+        '    <tbody>' +
+        '    </tbody>' +
+        '  </table>' +
         '</div>';
 
     Prime.Document.appendHTML(html);
