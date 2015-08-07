@@ -30,7 +30,6 @@ Prime.Widgets = Prime.Widgets || {};
  * @constructor
  */
 Prime.Widgets.DatePicker = function(element) {
-
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
   if (!this.element.is('input')) {
     throw new TypeError('You can only use Prime.Widgets.DatePicker with an input element');
@@ -79,13 +78,29 @@ Prime.Widgets.DatePicker.prototype = {
    */
   _buildDatePicker: function() {
     var now = new Date();
+    var year = now.getUTCFullYear();
     var html =
         '<div class="prime-date-picker">' +
-          '<div class="month">' +
-            '<span class="prev">&#9664;</span>' +
-              '<span class="month" data-month="' + now.getMonth() + '">' + this.months[now.getMonth()] + '</span>' +
-            '<span class="next">&#9654;</span>' +
-          '</div>' +
+        '<div class="month">' +
+        '<span class="prev">&#9664;</span>' +
+        '<span class="month" data-month="' + now.getMonth() + '" data-year="' + year + '">' + this.months[now.getMonth()] + ' ' + year + '</span>' +
+        '<span class="next">&#9654;</span>' +
+        '</div>' +
+        '<table class="month">' +
+        '<thead>' +
+        '<tr>' +
+        '<th>Su</th>' +
+        '<th>Mo</th>' +
+        '<th>Tu</th>' +
+        '<th>We</th>' +
+        '<th>Th</th>' +
+        '<th>Fr</th>' +
+        '<th>Sa</th>' +
+        '</tr>' +
+        '</thead>' +
+        '<tbody>' +
+        '</tbody>' +
+        '</table>' +
         '</div>';
 
     Prime.Document.appendHTML(html);
@@ -97,12 +112,18 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _handleNextMonth: function() {
-    var current = parseInt(this.month.getDataSet().month);
-    if (current < 12) {
-      var next = current + 1;
-      this.month.setAttribute('data-month', next);
-      this.month.setHTML(this.months[next]);
+    var currentMonth = parseInt(this.month.getDataSet().month);
+    var currentYear = parseInt(this.month.getDataSet().year);
+    if (currentMonth < 12) {
+      currentMonth++;
+    } else {
+      currentYear++;
+      currentMonth = 1;
     }
+
+    this.month.setAttribute('data-month', currentMonth);
+    this.month.setAttribute('data-year', currentYear);
+    this.month.setHTML(this.months[currentMonth] + ' ' + currentYear);
   },
 
   /**
@@ -110,12 +131,18 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _handlePreviousMonth: function() {
-    var current = parseInt(this.month.getDataSet().month);
-    if (current > 1) {
-      var previous = current - 1;
-      this.month.setAttribute('data-month', previous);
-      this.month.setHTML(this.months[previous]);
+    var currentMonth = parseInt(this.month.getDataSet().month);
+    var currentYear = parseInt(this.month.getDataSet().year);
+    if (currentMonth > 1) {
+      currentMonth--;
+    } else {
+      currentYear--;
+      currentMonth = 12;
     }
+
+    this.month.setAttribute('data-month', currentMonth);
+    this.month.setAttribute('data-year', currentYear);
+    this.month.setHTML(this.months[currentMonth] + ' ' + currentYear);
   }
 
 };
