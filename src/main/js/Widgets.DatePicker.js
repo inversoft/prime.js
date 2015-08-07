@@ -36,6 +36,8 @@ Prime.Widgets.DatePicker = function(element) {
     throw new TypeError('You can only use Prime.Widgets.DatePicker with an input element');
   }
 
+  this._buildDatePicker();
+
 };
 
 Prime.Widgets.DatePicker.prototype = {
@@ -49,4 +51,13 @@ Prime.Widgets.DatePicker.prototype = {
   /* ===================================================================================================================
    * Private methods
    * ===================================================================================================================*/
+
+  /**
+   * Build the HTML to render the date picker widget.
+   * @private
+   */
+  _buildDatePicker: function() {
+    var container = Prime.Document.newElement('<div>');
+  }
+
 };
