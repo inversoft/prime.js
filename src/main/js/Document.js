@@ -136,13 +136,7 @@ Prime.Document.onReady = function(callback, context) {
  * @param {string} html The HTML to append
  */
 Prime.Document.appendHTML = function(html) {
-  var domElement = document.body;
-  var div = document.createElement('div');
-  div.innerHTML = html;
-
-  while (div.children.length > 0) {
-    domElement.appendChild(div.children[0]);
-  }
+  document.body.insertAdjacentHTML('beforeend', html);
 };
 
 /**
