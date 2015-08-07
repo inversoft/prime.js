@@ -131,6 +131,28 @@ Prime.Document.onReady = function(callback, context) {
 };
 
 /**
+ * Take the HTML string and append it to the provided element, or body if no element is provided.
+ *
+ * @param html {string} The HTML to append
+ * @param element {Element|Document|Prime.Document.Element} [element=document.body] Default to body if not provided.
+ */
+Prime.Document.appendHTML = function(html, element) {
+  var domElement;
+  if (typeof element === 'undefined' || element === null) {
+    domElement = document.body;
+  } else {
+    domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
+  }
+
+  var div = document.createElement('div');
+  div.innerHTML = html;
+
+  while (div.children.length > 0) {
+    domElement.appendChild(div.children[0]);
+  }
+};
+
+/**
  * Queries the DOM using the given selector starting at the given element and returns all the matched elements.
  *
  * @param {string} selector The selector.

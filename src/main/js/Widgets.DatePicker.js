@@ -36,11 +36,32 @@ Prime.Widgets.DatePicker = function(element) {
     throw new TypeError('You can only use Prime.Widgets.DatePicker with an input element');
   }
 
-  this._buildDatePicker();
+  this.container = this._buildDatePicker();
 
+  this.nextMonth = this.container.queryFirst('.month span.next');
+  this.previousMonth = this.container.queryFirst('.month span.prev');
+  this.month = this.container.queryFirst('.month span.month');
+
+  this.nextMonth.addEventListener('click', this._handleNextMonth, this);
+  this.previousMonth.addEventListener('click', this._handlePreviousMonth, this);
 };
 
 Prime.Widgets.DatePicker.prototype = {
+
+  months: {
+    1: "January",
+    2: "February",
+    3: "March",
+    4: "April",
+    5: "May",
+    6: "June",
+    7: "July",
+    8: "August",
+    9: "September",
+    10: "October",
+    11: "November",
+    12: "December"
+  },
 
   /**
    * Destroys the DatePicker Widget
@@ -57,7 +78,44 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _buildDatePicker: function() {
-    var container = Prime.Document.newElement('<div>');
+    var now = new Date();
+    var html =
+        '<div class="prime-date-picker">' +
+          '<div class="month">' +
+            '<span class="prev">&#9664;</span>' +
+              '<span class="month" data-month="' + now.getMonth() + '">' + this.months[now.getMonth()] + '</span>' +
+            '<span class="next">&#9654;</span>' +
+          '</div>' +
+        '</div>';
+
+    Prime.Document.appendHTML(html);
+    return Prime.Document.queryFirst('div.prime-date-picker');
+  },
+
+  /**
+   * Handle the next month button click.
+   * @private
+   */
+  _handleNextMonth: function() {
+    var current = parseInt(this.month.getDataSet().month);
+    if (current < 12) {
+      var next = current + 1;
+      this.month.setAttribute('data-month', next);
+      this.month.setHTML(this.months[next]);
+    }
+  },
+
+  /**
+   * Handle the previous month button click.
+   * @private
+   */
+  _handlePreviousMonth: function() {
+    var current = parseInt(this.month.getDataSet().month);
+    if (current > 1) {
+      var previous = current - 1;
+      this.month.setAttribute('data-month', previous);
+      this.month.setHTML(this.months[previous]);
+    }
   }
 
 };

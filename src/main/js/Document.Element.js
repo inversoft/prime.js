@@ -1008,10 +1008,13 @@ Prime.Document.Element.prototype = {
    * Sets an attribute of the Element.
    *
    * @param {string} name The attribute name
-   * @param {string} value The attribute value
+   * @param {number|string} value The attribute value
    * @returns {Prime.Document.Element} This Element.
    */
   setAttribute: function(name, value) {
+    if (typeof value === "number") {
+      value = value.toString();
+    }
     if (this.domElement.setAttribute) {
       this.domElement.setAttribute(name, value);
     } else {
@@ -1179,10 +1182,13 @@ Prime.Document.Element.prototype = {
    * Sets the style for the name of this Element.
    *
    * @param {string} name The style name.
-   * @param {string} value The style value.
+   * @param {number|string} value The style value.
    * @returns {Prime.Document.Element} This Element.
    */
   setStyle: function(name, value) {
+    if (typeof value === "number") {
+      value = value.toString();
+    }
     this.domElement.style[name] = value;
     return this;
   },

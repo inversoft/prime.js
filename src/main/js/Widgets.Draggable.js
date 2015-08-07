@@ -37,6 +37,8 @@ Prime.Widgets.Draggable = function(element) {
     'z-index': this.element.getStyle('z-index')
   };
 
+  this.offset = {};
+
   this.element.addEventListener('mousedown', this._handleMouseDown, this);
   this.element.addEventListener('mouseup', this._handleOnMouseUp, this);
 
