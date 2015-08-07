@@ -141,10 +141,10 @@ Prime.Widgets.DatePicker.prototype = {
 
       var dayOfWeek = startDayOfMonth + i;
       if (dayOfWeek <= startDayOfWeek || dayOfWeek > daysInMonth) {
-        row += this._buildCalendarDay(null)
+        row += this._buildCalendarDay(null);
         emptyColumns++;
       } else {
-        row += this._buildCalendarDay(dayOfWeek - emptyColumns)
+        row += this._buildCalendarDay(dayOfWeek - emptyColumns);
       }
     }
 
