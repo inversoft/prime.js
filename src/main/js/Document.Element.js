@@ -343,18 +343,7 @@ Prime.Document.Element.prototype = {
    * @returns {string} This attribute value or null.
    */
   getDataAttribute: function(name) {
-    if (this.domElement.dataset) {
-      return this.domElement.dataset[name];
-    }
-
-    this.domElement.dataset = {};
-    // camelCase --> data-camel-case
-    var attributeName = 'data-' + name.replace( /([A-Z])/g, "-$1").toLowerCase();
-    var attr = this.getAttribute(attributeName);
-    if (attr !== null) {
-      this.domElement.dataset[name] = attr;
-    }
-    return this.domElement.dataset[name];
+    return this.getDataSet()[name];
   },
 
   /**
