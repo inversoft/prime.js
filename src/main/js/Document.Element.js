@@ -21,7 +21,7 @@ Prime.Document = Prime.Document || {};
  * Creates an Element class for the given DOM element.
  *
  * @constructor
- * @param {Element} element The element
+ * @param {Element|EventTarget} element The element
  */
 Prime.Document.Element = function(element) {
   if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
@@ -278,7 +278,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets the children elements of this Element, optionally reduced to those matching the optional selector.
    *
-   * @param {string} selector The selector. If not provided all children will be returned.
+   * @param {string} [selector] The selector. Optional, if not provided all children will be returned.
    * @returns {Prime.Document.ElementList} The children.
    */
   getChildren: function(selector) {

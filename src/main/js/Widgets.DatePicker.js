@@ -68,8 +68,7 @@ Prime.Widgets.DatePicker = function(element) {
       '</div>';
   Prime.Document.appendHTML(html);
   this.container = Prime.Document.queryFirst('.prime-date-picker');
-  this.calendarBody = this.container.queryFirst('table tbody');
-
+  this.calendarBody = this.container.queryFirst('table tbody').addEventListener('click', this._handleDayClick, this);
   this.setDate(this.date);
 
   this.nextMonthAnchor = this.container.queryFirst('.month span.next').addEventListener('click', this._handleNextMonth, this);
@@ -90,12 +89,17 @@ Prime.Widgets.DatePicker.prototype = {
     this.container.removeFromDOM();
   },
 
+  /**
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
   nextDay: function() {
     // Stub
+    return this;
   },
 
   /**
    * Moves the DatePicker to the next month and redraws the calendar.
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   nextMonth: function() {
     var currentMonth = parseInt(this.month.getDataAttribute('month'));
@@ -113,14 +117,21 @@ Prime.Widgets.DatePicker.prototype = {
     this.date.setMonth(currentMonth);
     this.date.setYear(currentYear);
     this.setDate(this.date);
+
+    return this;
   },
 
+  /**
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
   previousDay: function() {
     // Stub
+    return this;
   },
 
   /**
    * Moves the DatePicker to the previous month and redraws the calendar.
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   previousMonth: function() {
     var currentMonth = parseInt(this.month.getDataAttribute('month'));
@@ -138,13 +149,16 @@ Prime.Widgets.DatePicker.prototype = {
     this.date.setMonth(currentMonth);
     this.date.setYear(currentYear);
     this.setDate(this.date);
+
+    return this;
   },
 
   /**
    * Rebuilds the calendar using the date value of the DatePicker. Even if the user has moved to a different month
    * display, this will rebuild the table completely.
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
-  rebuildCalendar: function() {
+  refresh: function() {
     var firstDayOfMonth = this._getFirstDayOfMonth();
     var daysInMonth = this._getDaysInMonth();
 
@@ -159,17 +173,31 @@ Prime.Widgets.DatePicker.prototype = {
     }
 
     this.calendarBody.setHTML(rows);
+    return this;
+  },
+
+  /**
+   * Set the day of the month.
+   * @param {number} day
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  setDay: function(day) {
+    this.date.setDate(day);
+    this.setDate(this.date);
+    return this;
   },
 
   /**
    * Sets the date of the DatePicker and redraws the calendar to the month for the date.
    *
    * @param newDate {Date} The new date.
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   setDate: function(newDate) {
     this.date = newDate;
     this.element.setValue(newDate.toString());
-    this.rebuildCalendar();
+    this.refresh();
+    return this;
   },
 
   /* ===================================================================================================================
@@ -213,7 +241,8 @@ Prime.Widgets.DatePicker.prototype = {
     if (day === null) {
       return '<td>&nbsp;</td>';
     } else {
-      return '<td><a href="#">' + day + '</a></td>';
+      var selected = this.date.getDate() === day;
+      return '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#">' + day + '</a></td>';
     }
   },
 
@@ -248,6 +277,20 @@ Prime.Widgets.DatePicker.prototype = {
     var lastDay = new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0);
     var used = firstDay.getDay() + lastDay.getDate();
     return Math.ceil(used / 7);
+  },
+
+  /**
+   * Handle the click on a day.
+   * @parameter {Event} event The click event.
+   * @private
+   */
+  _handleDayClick: function(event) {
+    var day = new Prime.Document.Element(event.target);
+    if (!day.is('a')) {
+      day = day.queryFirst('a');
+    }
+    this.setDay(day.getHTML());
+    return false;
   },
 
   /**

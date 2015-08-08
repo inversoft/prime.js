@@ -86,8 +86,7 @@
   padding: 1px;
 }
 
-.prime-date-picker td a,
-.prime-date-picker td span {
+.prime-date-picker td a {
   display: block;
   padding: .2em;
   text-align: right;
@@ -99,10 +98,16 @@
   color: #555555;
 }
 
-.prime-date-picker td a:hover,
-.prime-date-picker td span:hover {
+.prime-date-picker td a:hover {
   border: 1px solid #999999;
   background: #dadada;
+  font-weight: normal;
+  color: #212121;
+}
+
+.prime-date-picker td a.prime-selected {
+  border: 1px solid #4c4c4c;
+  background: #f3f3f3;
   font-weight: normal;
   color: #212121;
 }
