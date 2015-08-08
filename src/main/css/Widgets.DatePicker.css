@@ -123,14 +123,31 @@
   border: 1px solid #d3d3d3;
   text-align: center;
   margin: 20px auto 0;
+  background: #e6e6e6;
+  border-radius: 2px;
 }
 
 .prime-date-picker .time input {
-  width: 40px;
+  width: 18px;
   height: 20px;
   border: none;
-  line-height: 12px;
-  font-size: 12px;
+  line-height: 14px;
+  font-size: 14px;
+  border-radius: 2px;
+  background: #e6e6e6;
+  text-align: center;
+}
+
+.prime-date-picker .time input[name=hour] {
+  text-align: right;
+}
+
+.prime-date-picker .time input[name=minute] {
+  text-align: left;
+}
+
+.prime-date-picker .time span {
+  margin: 0px 2px 0px 2px;
 }
 
 .prime-date-picker .time input:focus {

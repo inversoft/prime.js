@@ -43,6 +43,7 @@ Prime.Widgets.DatePicker = function(element) {
   }
 
   var year = this.date.getUTCFullYear();
+  var timeSeparator = '<span>' + Prime.Widgets.DatePicker.timeSeparator + '</span>';
   var html =
       '<div class="prime-date-picker">' +
       '  <div class="month">' +
@@ -66,12 +67,10 @@ Prime.Widgets.DatePicker = function(element) {
       '    </tbody>' +
       '  </table>' +
       '  <div class="time">' +
-      '    <input type="text" name="hour">' + Prime.Widgets.DatePicker.timeSeparator +
-      '    <input type="text" name="minute">' + Prime.Widgets.DatePicker.timeSeparator +
-      '    <input type="text" name="second">' +
+      '    <input size="2" type="text" name="hour">' + timeSeparator + '<input size="2" type="text" name="minute">' + timeSeparator + '<input size="2" type="text" name="second">' +
       '    <select name="am_pm">' +
-      '      <option>' + Prime.Widgets.DatePicker.ampm[0] + '</option>' +
-      '      <option>' + Prime.Widgets.DatePicker.ampm[1] + '</option>' +
+      '      <option value="am">' + Prime.Widgets.DatePicker.ampm[0] + '</option>' +
+      '      <option value="pm">' + Prime.Widgets.DatePicker.ampm[1] + '</option>' +
       '    </select>' +
       '  </div>'  +
       '</div>';
@@ -83,10 +82,14 @@ Prime.Widgets.DatePicker = function(element) {
   this.hours = this.time.queryFirst('input[name=hour]');
   this.minutes = this.time.queryFirst('input[name=minute]');
   this.seconds = this.time.queryFirst('input[name=second]');
+  this.ampm = this.time.queryFirst('select[name=am_pm]');
   this.setDate(this.date);
 
   this.nextMonthAnchor = this.container.queryFirst('.month span.next').addEventListener('click', this._handleNextMonth, this);
   this.previousMonthAnchor = this.container.queryFirst('.month span.prev').addEventListener('click', this._handlePreviousMonth, this);
+  this.time.query('input, select').each(function(element) {
+    element.addEventListener('change', this._handleTimeChange, this);
+  }, this);
 };
 
 Prime.Widgets.DatePicker.shortDayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -107,7 +110,8 @@ Prime.Widgets.DatePicker.prototype = {
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   nextDay: function() {
-    // Stub
+    this.setDay(this.date.getDate() + 1);
+    this.setDate(this.date);
     return this;
   },
 
@@ -117,21 +121,7 @@ Prime.Widgets.DatePicker.prototype = {
    */
   nextMonth: function() {
     var currentMonth = parseInt(this.month.getDataAttribute('month'));
-    var currentYear = parseInt(this.month.getDataAttribute('year'));
-    if (currentMonth < 11) {
-      currentMonth++;
-    } else {
-      currentYear++;
-      currentMonth = 0;
-    }
-
-    this.month.setAttribute('data-month', currentMonth);
-    this.month.setAttribute('data-year', currentYear);
-    this.month.setHTML(Prime.Widgets.DatePicker.months[currentMonth] + ' ' + currentYear);
-    this.date.setMonth(currentMonth);
-    this.date.setYear(currentYear);
-    this.setDate(this.date);
-
+    this.setMonth(currentMonth + 1);
     return this;
   },
 
@@ -139,7 +129,8 @@ Prime.Widgets.DatePicker.prototype = {
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   previousDay: function() {
-    // Stub
+    this.setDay(this.date.getDate() - 1);
+    this.setDate(this.date);
     return this;
   },
 
@@ -149,21 +140,7 @@ Prime.Widgets.DatePicker.prototype = {
    */
   previousMonth: function() {
     var currentMonth = parseInt(this.month.getDataAttribute('month'));
-    var currentYear = parseInt(this.month.getDataAttribute('year'));
-    if (currentMonth > 0) {
-      currentMonth--;
-    } else {
-      currentYear--;
-      currentMonth = 11;
-    }
-
-    this.month.setAttribute('data-month', currentMonth);
-    this.month.setAttribute('data-year', currentYear);
-    this.month.setHTML(Prime.Widgets.DatePicker.months[currentMonth] + ' ' + currentYear);
-    this.date.setMonth(currentMonth);
-    this.date.setYear(currentYear);
-    this.setDate(this.date);
-
+    this.setMonth(currentMonth - 1);
     return this;
   },
 
@@ -190,10 +167,15 @@ Prime.Widgets.DatePicker.prototype = {
 
     // Set Time -- assuming 12 hour time
     var hours = this.date.getHours();
-    hours = hours > 12 ? hours -= 12 : hours;
+    if (hours > 12) {
+      hours -= 12;
+      this.ampm.setSelectedValues('pm')
+    } else {
+      this.ampm.setSelectedValues('am')
+    }
     this.hours.setValue(hours);
-    this.minutes.setValue(this.date.getMinutes());
-    this.seconds.setValue(this.date.getSeconds());
+    this.minutes.setValue(("00" + this.date.getMinutes()).slice(-2));
+    this.seconds.setValue(("00" + this.date.getSeconds()).slice(-2));
 
     return this;
   },
@@ -219,6 +201,44 @@ Prime.Widgets.DatePicker.prototype = {
     this.date = newDate;
     this.element.setValue(newDate.toString());
     this.refresh();
+    return this;
+  },
+
+  setMonth: function(month) {
+    var currentYear = parseInt(this.month.getDataAttribute('year'));
+    if (month < 0) {
+      month = 11;
+      currentYear--;
+    } else if (month > 11) {
+      currentYear++;
+      month = 0;
+    }
+
+    this.month.setAttribute('data-month', month);
+    this.month.setAttribute('data-year', currentYear);
+    this.month.setHTML(Prime.Widgets.DatePicker.months[month] + ' ' + currentYear);
+    this.date.setMonth(month);
+    this.date.setYear(currentYear);
+    this.setDate(this.date);
+
+    return this;
+  },
+
+  /**
+   * Sets the time of the DatePicker and redraws the calendar.
+   *
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  setTime: function() {
+    console.info(this.date);
+    var hours = this.hours.getValue();
+    if (this.ampm.getValue() !== Prime.Widgets.DatePicker.ampm[0]) {
+      hours = hours + 12;
+      hours = hours.toString();
+    }
+    this.date.setHours(hours, this.minutes.getValue(), this.seconds.getValue());
+    this.setDate(this.date);
+    console.info(this.date);
     return this;
   },
 
@@ -285,7 +305,7 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _getFirstDayOfMonth: function() {
-    return new Date(this.date.getMonth(), this.date.getFullYear(), 1).getDay();
+    return new Date(this.date.getFullYear(), this.date.getMonth(), 1).getDay();
   },
 
   /**
@@ -332,6 +352,15 @@ Prime.Widgets.DatePicker.prototype = {
    */
   _handlePreviousMonth: function() {
     this.previousMonth();
+    return false;
+  },
+
+  /**
+   * Handle time change events.
+   * @private
+   */
+  _handleTimeChange: function() {
+    this.setTime();
     return false;
   }
 };
