@@ -21,7 +21,9 @@
   padding: 5px;
   position: absolute;
   background-color: #FFFFFF;
-  line-height: 20px;
+
+  font-size: 0.9em;
+  line-height: 18px;
 
   -webkit-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
   -moz-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
@@ -33,6 +35,7 @@
 
 .prime-date-picker div.month {
   text-align: center;
+  margin-top: 5px;
 
   /* Un-selectable - keeps the background from being highlighted when clicking */
   -moz-user-select: -moz-none;
@@ -96,6 +99,10 @@
   background: #e6e6e6;
   font-weight: normal;
   color: #555555;
+}
+
+.prime-date-picker td a.prime-inactive {
+  opacity: 0.4;
 }
 
 .prime-date-picker td a:hover {

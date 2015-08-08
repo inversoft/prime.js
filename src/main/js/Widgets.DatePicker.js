@@ -67,12 +67,12 @@ Prime.Widgets.DatePicker = function(element) {
       '    </tbody>' +
       '  </table>' +
       '  <div class="time">' +
-      '    <input size="2" type="text" name="hour">' + timeSeparator + '<input size="2" type="text" name="minute">' + timeSeparator + '<input size="2" type="text" name="second">' +
+      '    <input size="2" maxlength="2" type="text" name="hour">' + timeSeparator + '<input size="2" maxlength="2" type="text" name="minute">' + timeSeparator + '<input size="2" maxlength="2" type="text" name="second">' +
       '    <select name="am_pm">' +
       '      <option value="am">' + Prime.Widgets.DatePicker.ampm[0] + '</option>' +
       '      <option value="pm">' + Prime.Widgets.DatePicker.ampm[1] + '</option>' +
       '    </select>' +
-      '  </div>'  +
+      '  </div>' +
       '</div>';
   Prime.Document.appendHTML(html);
   this.container = Prime.Document.queryFirst('.prime-date-picker');
@@ -147,36 +147,12 @@ Prime.Widgets.DatePicker.prototype = {
   /**
    * Rebuilds the calendar using the date value of the DatePicker. Even if the user has moved to a different month
    * display, this will rebuild the table completely.
+   *
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   refresh: function() {
-    var firstDayOfMonth = this._getFirstDayOfMonth();
-    var daysInMonth = this._getDaysInMonth();
-
-    var rows = '';
-    var weeksInMonth = this._getWeeksInMonth();
-
-    var startDay = 1;
-    for (var i = 0; i < weeksInMonth; i++) {
-      var startDayOfWeek = i === 0 ? firstDayOfMonth : 0;
-      rows += this._buildCalendarWeek(startDayOfWeek, startDay, daysInMonth);
-      startDay += 7 - startDayOfWeek; // increment by 7 adjusted by a week day of week offset
-    }
-
-    this.calendarBody.setHTML(rows);
-
-    // Set Time -- assuming 12 hour time
-    var hours = this.date.getHours();
-    if (hours > 12) {
-      hours -= 12;
-      this.ampm.setSelectedValues('pm')
-    } else {
-      this.ampm.setSelectedValues('am')
-    }
-    this.hours.setValue(hours);
-    this.minutes.setValue(("00" + this.date.getMinutes()).slice(-2));
-    this.seconds.setValue(("00" + this.date.getSeconds()).slice(-2));
-
+    this._setDate();
+    this._setTime();
     return this;
   },
 
@@ -256,36 +232,35 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _buildCalendarWeek: function(startDayOfWeek, startDayOfMonth, daysInMonth) {
+    var daysInPreviousMonth = this._getDaysInPreviousMonth();
+    var startDayOfPreviousMonth = daysInPreviousMonth - startDayOfWeek + 1;
+    var startDayOfNextMonth = 1;
+
     var row = '<tr>';
     var emptyColumns = 0;
+
     for (var i = 0; i < 7; i++) {
 
       var dayOfWeek = startDayOfMonth + i;
-      if (dayOfWeek <= startDayOfWeek || dayOfWeek > daysInMonth) {
-        row += this._buildCalendarDay(null);
+      // Days of the previous month
+      if (dayOfWeek <= startDayOfWeek) {
+        row += '<td><a class="prime-inactive" href="#">' + startDayOfPreviousMonth + '</a></td>';
+        startDayOfPreviousMonth++;
         emptyColumns++;
+      } else if (dayOfWeek > daysInMonth) {
+        // Days of the next month
+        row += '<td><a class="prime-inactive" href="#">' + startDayOfNextMonth + '</a></td>';
+        startDayOfNextMonth++;
       } else {
-        row += this._buildCalendarDay(dayOfWeek - emptyColumns);
+        // Days in the current month
+        var day = dayOfWeek - emptyColumns;
+        var selected = this.date.getDate() === day;
+        row += '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#">' + day + '</a></td>';
       }
     }
 
     row += '</tr>';
     return row;
-  },
-
-  /**
-   * Build the HTML for a single calendar day
-   * @param {number} day The day of the month. A number between 0 and 31. May be null to indicate an empty day on the calendar.
-   * @returns {string} The HTML for this day.
-   * @private
-   */
-  _buildCalendarDay: function(day) {
-    if (day === null) {
-      return '<td>&nbsp;</td>';
-    } else {
-      var selected = this.date.getDate() === day;
-      return '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#">' + day + '</a></td>';
-    }
   },
 
   /**
@@ -296,6 +271,18 @@ Prime.Widgets.DatePicker.prototype = {
    */
   _getDaysInMonth: function() {
     return new Date(this.date.getFullYear(), this.date.getMonth() + 1, 0).getDate();
+  },
+
+  /**
+   * Return the days in the previous month.
+   *
+   * @returns {number} The number of days in the month.
+   * @private
+   */
+  _getDaysInPreviousMonth: function() {
+    var previous = new Date(this.date);
+    previous.setMonth(this.date.getMonth());
+    return new Date(previous.getFullYear(), previous.getMonth() + 1, 0).getDate();
   },
 
   /**
@@ -362,5 +349,43 @@ Prime.Widgets.DatePicker.prototype = {
   _handleTimeChange: function() {
     this.setTime();
     return false;
+  },
+
+  _setDate: function() {
+    var firstDayOfMonth = this._getFirstDayOfMonth();
+    var daysInMonth = this._getDaysInMonth();
+
+    var rows = '';
+    var weeksInMonth = this._getWeeksInMonth();
+
+    var startDay = 1;
+    for (var i = 0; i < weeksInMonth; i++) {
+      var startDayOfWeek = i === 0 ? firstDayOfMonth : 0;
+      rows += this._buildCalendarWeek(startDayOfWeek, startDay, daysInMonth);
+      startDay += 7 - startDayOfWeek; // increment by 7 adjusted by a week day of week offset
+    }
+
+    this.calendarBody.setHTML(rows);
+  },
+
+  /**
+   *
+   * @private
+   */
+  _setTime: function() {
+    // Set Time -- assuming 12 hour time
+    var hours = this.date.getHours();
+    if (hours == 0) {
+      hours = 12;
+      this.ampm.setSelectedValues('am')
+    } else if (hours > 12) {
+      hours -= 12;
+      this.ampm.setSelectedValues('pm')
+    } else {
+      this.ampm.setSelectedValues('am')
+    }
+    this.hours.setValue(hours);
+    this.minutes.setValue(("00" + this.date.getMinutes()).slice(-2));
+    this.seconds.setValue(("00" + this.date.getSeconds()).slice(-2));
   }
 };
