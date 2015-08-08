@@ -117,3 +117,22 @@
   vertical-align: middle;
   border-color: inherit;
 }
+
+/* Time */
+.prime-date-picker .time {
+  border: 1px solid #d3d3d3;
+  text-align: center;
+  margin: 20px auto 0;
+}
+
+.prime-date-picker .time input {
+  width: 40px;
+  height: 20px;
+  border: none;
+  line-height: 12px;
+  font-size: 12px;
+}
+
+.prime-date-picker .time input:focus {
+  outline: none;
+}

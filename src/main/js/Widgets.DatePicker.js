@@ -65,21 +65,35 @@ Prime.Widgets.DatePicker = function(element) {
       '    <tbody>' +
       '    </tbody>' +
       '  </table>' +
+      '  <div class="time">' +
+      '    <input type="text" name="hour">' + Prime.Widgets.DatePicker.timeSeparator +
+      '    <input type="text" name="minute">' + Prime.Widgets.DatePicker.timeSeparator +
+      '    <input type="text" name="second">' +
+      '    <select name="am_pm">' +
+      '      <option>' + Prime.Widgets.DatePicker.ampm[0] + '</option>' +
+      '      <option>' + Prime.Widgets.DatePicker.ampm[1] + '</option>' +
+      '    </select>' +
+      '  </div>'  +
       '</div>';
   Prime.Document.appendHTML(html);
   this.container = Prime.Document.queryFirst('.prime-date-picker');
   this.calendarBody = this.container.queryFirst('table tbody').addEventListener('click', this._handleDayClick, this);
+  this.month = this.container.queryFirst('.month span.month');
+  this.time = this.container.queryFirst('div.time');
+  this.hours = this.time.queryFirst('input[name=hour]');
+  this.minutes = this.time.queryFirst('input[name=minute]');
+  this.seconds = this.time.queryFirst('input[name=second]');
   this.setDate(this.date);
 
   this.nextMonthAnchor = this.container.queryFirst('.month span.next').addEventListener('click', this._handleNextMonth, this);
   this.previousMonthAnchor = this.container.queryFirst('.month span.prev').addEventListener('click', this._handlePreviousMonth, this);
-  this.month = this.container.queryFirst('.month span.month');
 };
 
 Prime.Widgets.DatePicker.shortDayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 Prime.Widgets.DatePicker.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 Prime.Widgets.DatePicker.longDayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
+Prime.Widgets.DatePicker.timeSeparator = ':';
+Prime.Widgets.DatePicker.ampm = ['AM', 'PM'];
 
 Prime.Widgets.DatePicker.prototype = {
   /**
@@ -173,6 +187,14 @@ Prime.Widgets.DatePicker.prototype = {
     }
 
     this.calendarBody.setHTML(rows);
+
+    // Set Time -- assuming 12 hour time
+    var hours = this.date.getHours();
+    hours = hours > 12 ? hours -= 12 : hours;
+    this.hours.setValue(hours);
+    this.minutes.setValue(this.date.getMinutes());
+    this.seconds.setValue(this.date.getSeconds());
+
     return this;
   },
 

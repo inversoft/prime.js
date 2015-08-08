@@ -439,6 +439,7 @@ buster.testCase('Element class tests', {
     assert.isTrue(Prime.Document.queryFirst('#is-test tr').is('tr'));
     assert.isTrue(Prime.Document.queryFirst('#is-test textarea').is('textarea'));
     assert.isTrue(Prime.Document.queryFirst('#is-test input').is('input'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test input[name=is-test]').is('input'));
     assert.isFalse(Prime.Document.queryFirst('#is-test tr').is('td'));
     assert.isTrue(Prime.Document.queryFirst('#is-test div.foo').is('div'));
     assert.isFalse(Prime.Document.queryFirst('#is-test div.foo').is('div.bar'));

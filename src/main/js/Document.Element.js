@@ -1022,7 +1022,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   setAttribute: function(name, value) {
-    if (typeof value === "number") {
+    if (typeof value === 'number') {
       value = value.toString();
     }
     if (this.domElement.setAttribute) {
@@ -1196,7 +1196,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   setStyle: function(name, value) {
-    if (typeof value === "number") {
+    if (typeof value === 'number') {
       value = value.toString();
     }
     this.domElement.style[name] = value;
@@ -1239,10 +1239,13 @@ Prime.Document.Element.prototype = {
    * works on checkboxes and radio buttons, but it change the value attribute on them rather than checking and unchecking
    * the buttons themselves. To check and uncheck the buttons, use the select method.
    *
-   * @param {string} value The new value.
+   * @param {number|string} value The new value.
    * @returns {Prime.Document.Element} This Element.
    */
   setValue: function(value) {
+    if (typeof value === 'number') {
+      value = value.toString();
+    }
     this.domElement.value = value;
     return this;
   },
