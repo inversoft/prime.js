@@ -67,29 +67,32 @@ Prime.Widgets.DatePicker = function(element) {
       '    </tbody>' +
       '  </table>' +
       '  <div class="time">' +
-      '    <input size="2" maxlength="2" type="text" name="hour">' + timeSeparator + '<input size="2" maxlength="2" type="text" name="minute">' + timeSeparator + '<input size="2" maxlength="2" type="text" name="second">' +
-      '    <select name="am_pm">' +
-      '      <option value="am">' + Prime.Widgets.DatePicker.ampm[0] + '</option>' +
-      '      <option value="pm">' + Prime.Widgets.DatePicker.ampm[1] + '</option>' +
-      '    </select>' +
+      '    <input size="2" maxlength="2" type="text" name="hour">' + timeSeparator + '<input size="2" maxlength="2" type="text" name="minute">' +
+      '    <input size="2" maxlength="2" type="text" name="am_pm">' +
       '  </div>' +
       '</div>';
   Prime.Document.appendHTML(html);
-  this.container = Prime.Document.queryFirst('.prime-date-picker');
-  this.calendarBody = this.container.queryFirst('table tbody').addEventListener('click', this._handleDayClick, this);
-  this.month = this.container.queryFirst('.month span.month');
-  this.time = this.container.queryFirst('div.time');
+  this.datepicker = Prime.Document.queryFirst('.prime-date-picker');
+  this.datepicker.hide();
+  this.element.addEventListener('click', this._handleInputClick, this);
+  this.element.addEventListener('focus', this._handleInputClick, this);
+
+  this.calendarBody = this.datepicker.queryFirst('table tbody').addEventListener('click', this._handleDayClick, this);
+  this.month = this.datepicker.queryFirst('.month span.month');
+  this.time = this.datepicker.queryFirst('div.time');
   this.hours = this.time.queryFirst('input[name=hour]');
   this.minutes = this.time.queryFirst('input[name=minute]');
-  this.seconds = this.time.queryFirst('input[name=second]');
-  this.ampm = this.time.queryFirst('select[name=am_pm]');
+  this.ampm = this.time.queryFirst('input[name=am_pm]');
   this.setDate(this.date);
 
-  this.nextMonthAnchor = this.container.queryFirst('.month span.next').addEventListener('click', this._handleNextMonth, this);
-  this.previousMonthAnchor = this.container.queryFirst('.month span.prev').addEventListener('click', this._handlePreviousMonth, this);
-  this.time.query('input, select').each(function(element) {
+  this.nextMonthAnchor = this.datepicker.queryFirst('.month span.next').addEventListener('click', this._handleNextMonth, this);
+  this.previousMonthAnchor = this.datepicker.queryFirst('.month span.prev').addEventListener('click', this._handlePreviousMonth, this);
+  this.time.query('input[name=hour], input[name=minute]').each(function(element) {
     element.addEventListener('change', this._handleTimeChange, this);
   }, this);
+
+  this.ampm.addEventListener('click', this._handleAmPmClick, this);
+  this.element.addClass('prime-initialized');
 };
 
 Prime.Widgets.DatePicker.shortDayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -103,7 +106,20 @@ Prime.Widgets.DatePicker.prototype = {
    * Destroys the DatePicker Widget
    */
   destroy: function() {
-    this.container.removeFromDOM();
+    this.datepicker.removeFromDOM();
+    this.element.removeEventListener('click', this._handleInputClick);
+    this.element.removeEventListener('focus', this._handleInputClick);
+    new Prime.Document.Element(document.body).removeListener('click', this.hide, this);
+    this.element.removeClass('prime-initialized');
+  },
+
+  /**
+   * Hide the Date Picker widget
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  hide: function() {
+    new Prime.Effects.Fade(this.datepicker).withDuration(100).go();
+    return this;
   },
 
   /**
@@ -212,9 +228,18 @@ Prime.Widgets.DatePicker.prototype = {
       hours = hours + 12;
       hours = hours.toString();
     }
-    this.date.setHours(hours, this.minutes.getValue(), this.seconds.getValue());
+    this.date.setHours(hours, this.minutes.getValue());
     this.setDate(this.date);
     console.info(this.date);
+    return this;
+  },
+
+  /**
+   * Show the Date Picker widget
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  show: function() {
+    new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
     return this;
   },
 
@@ -308,6 +333,16 @@ Prime.Widgets.DatePicker.prototype = {
     return Math.ceil(used / 7);
   },
 
+  _handleAmPmClick: function() {
+    var current = this.ampm.getValue();
+    if (current === Prime.Widgets.DatePicker.ampm[0]) {
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
+    } else {
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
+    }
+    return false;
+   },
+
   /**
    * Handle the click on a day.
    * @parameter {Event} event The click event.
@@ -319,6 +354,16 @@ Prime.Widgets.DatePicker.prototype = {
       day = day.queryFirst('a');
     }
     this.setDay(day.getHTML());
+    this.hide();
+    return false;
+  },
+
+  _handleInputClick: function() {
+    if (!this.datepicker.isVisible()) {
+      this.datepicker.setLeft(this.element.getLeft());
+      this.datepicker.setTop(this.element.getTop() + this.element.getHeight() + 8);
+      new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
+    }
     return false;
   },
 
@@ -377,15 +422,14 @@ Prime.Widgets.DatePicker.prototype = {
     var hours = this.date.getHours();
     if (hours == 0) {
       hours = 12;
-      this.ampm.setSelectedValues('am')
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
     } else if (hours > 12) {
       hours -= 12;
-      this.ampm.setSelectedValues('pm')
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
     } else {
-      this.ampm.setSelectedValues('am')
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
     }
     this.hours.setValue(hours);
     this.minutes.setValue(("00" + this.date.getMinutes()).slice(-2));
-    this.seconds.setValue(("00" + this.date.getSeconds()).slice(-2));
   }
 };

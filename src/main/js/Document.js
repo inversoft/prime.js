@@ -231,7 +231,7 @@ Prime.Document.queryLast = function(selector, element) {
 Prime.Document.queryUp = function(selector, element) {
   var domElement = null;
   if (typeof element === 'undefined' || element === null) {
-    domElement = document;
+    throw new SyntaxError('Missing required parameter. The element is required.');
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
   }
@@ -239,6 +239,9 @@ Prime.Document.queryUp = function(selector, element) {
   domElement = domElement.parentNode;
   while (domElement !== null && !domElement.matches(selector)) {
     domElement = domElement.parentNode;
+    if (domElement === document) {
+      domElement = null;
+    }
   }
 
   if (domElement !== null) {

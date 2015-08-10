@@ -16,8 +16,7 @@
 
 .prime-date-picker {
   width: 250px;
-  margin-left: 10px;
-  margin-bottom: 10px;
+  margin: 1px;
   padding: 5px;
   position: absolute;
   background-color: #FFFFFF;
@@ -31,6 +30,19 @@
 
   border: 1px solid rgba(204,204,204,0.5);
   border-radius: 4px;
+
+  z-index: 3000;
+}
+
+.prime-date-picker:before {
+  content: '';
+  display: inline-block;
+  border-right: 7px solid transparent;
+  border-bottom: 7px solid #FFFFFF;
+  border-left: 7px solid transparent;
+  position: absolute;
+  top: -7px;
+  left: 6px;
 }
 
 .prime-date-picker div.month {
@@ -152,6 +164,11 @@
 .prime-date-picker .time input[name=minute] {
   text-align: left;
 }
+
+.prime-date-picker .time input[name=am_pm] {
+  width: 25px;
+}
+
 
 .prime-date-picker .time span {
   margin: 0px 2px 0px 2px;
