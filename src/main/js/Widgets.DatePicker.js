@@ -384,8 +384,7 @@ Prime.Widgets.DatePicker.prototype = {
       this.months.getChildren().each(function(month) {
         month.addEventListener('click', function() {
           new Prime.Effects.Fade(this.months).withDuration(100).go();
-          this.date.setMonth(month.getDataAttribute('month'));
-          this.setDate(this.date);
+          this.setMonth(parseInt(month.getDataAttribute('month')));
         }, this);
       }, this);
     }
@@ -398,8 +397,6 @@ Prime.Widgets.DatePicker.prototype = {
   _handleYearExpand: function() {
 
   },
-
-
 
   /**
    * Handle the next month button click.
