@@ -32,6 +32,8 @@ Prime.Widgets = Prime.Widgets || {};
 Prime.Widgets.Draggable = function(element) {
 
   this.element = element;
+  this.element.addClass('prime-draggable-grip');
+
   this.originalStyle = {
     'cursor': this.element.getStyle('cursor'),
     'z-index': this.element.getStyle('z-index')
@@ -75,11 +77,11 @@ Prime.Widgets.Draggable.prototype = {
       'z_index': this.element.getStyle('z-index'),
       'height': this.element.getOuterHeight(),
       'width': this.element.getOuterWidth(),
-      'x': this.element.getLeft() + this.element.getOuterHeight() - event.pageX,
-      'y': this.element.getTop() + this.element.getOuterWidth() - event.pageY
+      'x': this.element.getLeft() + this.element.getOuterWidth() - event.pageX,
+      'y': this.element.getTop() + this.element.getOuterHeight() - event.pageY
     };
 
-    this.element.setStyle('z-index', 1000);
+    this.element.setStyle('z-index', this.offset.z_index + 1000);
     // defensive move to make sure we don't register more than one.
     this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
     this.parent.addEventListener('mousemove', this._handleParentMouseMove, this);
