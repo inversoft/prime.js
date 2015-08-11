@@ -1037,6 +1037,21 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Sets a data- attribute of the Element.
+   *
+   * Example: setDataAttribute('fooBar', 'baz');
+   *  is equivalent to calling setAttribute('data-foo-bar', 'baz');
+   *
+   * @param {string} name The attribute name
+   * @param {number|string} value The attribute value
+   * @returns {Prime.Document.Element} This Element.
+   */
+  setDataAttribute: function(name, value) {
+    var dataName = 'data-' + name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+    return this.setAttribute(dataName, value);
+  },
+
+  /**
    * Sets multiple attributes of the Element from the hash
    *
    * @param {Object} attributes An object of key value style pairs.

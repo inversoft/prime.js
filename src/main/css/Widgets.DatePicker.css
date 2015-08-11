@@ -45,7 +45,7 @@
   left: 6px;
 }
 
-.prime-date-picker div.month {
+.prime-date-picker .header {
   text-align: center;
   margin-top: 5px;
 
@@ -71,8 +71,50 @@
   float: right;
 }
 
-.prime-date-picker span.month {
+.prime-date-picker .header .month {
   width: 70%;
+}
+
+.prime-date-picker .header .month {
+  margin-right: 12px;
+}
+
+.prime-date-picker .header .month:after,
+.prime-date-picker .header .year:after {
+  content: '';
+  display: inline-block;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #555555;
+  border-left: 4px solid transparent;
+  position: absolute;
+  margin-left: 3px;
+  margin-top: 4px;
+  cursor: pointer;
+}
+
+/* Month Drop Selector */
+.prime-date-picker .months {
+  display: inline-block;
+  position: absolute;
+  z-index: 3001;
+  border: 1px solid #e6e6e6;
+  overflow: scroll;
+  height: 150px;
+  background-color: #FFFFFF;
+
+  -webkit-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
+  -moz-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
+  box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
+}
+
+.prime-date-picker .months > div {
+  padding: 4px 15px 4px 10px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+}
+
+.prime-date-picker .months > div:hover {
+  background-color: #f0f0f0;
 }
 
 /* Calendar Table */

@@ -46,9 +46,10 @@ Prime.Widgets.DatePicker = function(element) {
   var timeSeparator = '<span>' + Prime.Widgets.DatePicker.timeSeparator + '</span>';
   var html =
       '<div class="prime-date-picker">' +
-      '  <div class="month">' +
+      '  <div class="header">' +
       '    <span class="prev">&#9664;</span>' +
-      '    <span class="month" data-month="' + this.date.getMonth() + '" data-year="' + year + '">' + Prime.Widgets.DatePicker.months[this.date.getMonth()] + ' ' + year + '</span>' +
+      '    <span class="month" data-month="' + this.date.getMonth() + '">' + Prime.Widgets.DatePicker.months[this.date.getMonth()] + '</span>' +
+      '    <span class="year" data-year="' + year + '">' + year + '</span>' +
       '    <span class="next">&#9654;</span>' +
       '  </div>' +
       '  <table class="month">' +
@@ -78,15 +79,16 @@ Prime.Widgets.DatePicker = function(element) {
   this.element.addEventListener('focus', this._handleInputClick, this);
 
   this.calendarBody = this.datepicker.queryFirst('table tbody').addEventListener('click', this._handleDayClick, this);
-  this.month = this.datepicker.queryFirst('.month span.month');
+  this.month = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand, this);
+  this.year = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand, this);
   this.time = this.datepicker.queryFirst('div.time');
   this.hours = this.time.queryFirst('input[name=hour]');
   this.minutes = this.time.queryFirst('input[name=minute]');
   this.ampm = this.time.queryFirst('input[name=am_pm]');
   this.setDate(this.date);
 
-  this.nextMonthAnchor = this.datepicker.queryFirst('.month span.next').addEventListener('click', this._handleNextMonth, this);
-  this.previousMonthAnchor = this.datepicker.queryFirst('.month span.prev').addEventListener('click', this._handlePreviousMonth, this);
+  this.nextMonthAnchor = this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth, this);
+  this.previousMonthAnchor = this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth, this);
   this.time.query('input[name=hour], input[name=minute]').each(function(element) {
     element.addEventListener('change', this._handleTimeChange, this);
   }, this);
@@ -197,7 +199,7 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   setMonth: function(month) {
-    var currentYear = parseInt(this.month.getDataAttribute('year'));
+    var currentYear = parseInt(this.year.getDataAttribute('year'));
     if (month < 0) {
       month = 11;
       currentYear--;
@@ -206,9 +208,10 @@ Prime.Widgets.DatePicker.prototype = {
       month = 0;
     }
 
-    this.month.setAttribute('data-month', month);
-    this.month.setAttribute('data-year', currentYear);
-    this.month.setHTML(Prime.Widgets.DatePicker.months[month] + ' ' + currentYear);
+    this.month.setDataAttribute('month', month);
+    this.year.setDataAttribute('year', currentYear);
+    this.month.setHTML(Prime.Widgets.DatePicker.months[month]);
+    this.year.setHTML(currentYear);
     this.date.setMonth(month);
     this.date.setYear(currentYear);
     this.setDate(this.date);
@@ -366,6 +369,37 @@ Prime.Widgets.DatePicker.prototype = {
     }
     return false;
   },
+
+  _handleMonthExpand: function() {
+    this.months = this.datepicker.queryFirst('.months');
+
+    if (this.months === null) {
+      var html = '<div class="months">';
+      for (var i = 0; i < Prime.Widgets.DatePicker.months.length; i++) {
+        html += '<div data-month="' + i + '">' + Prime.Widgets.DatePicker.months[i] + '</div>';
+      }
+      html += '</div>';
+      this.datepicker.appendHTML(html);
+      this.months = this.datepicker.queryFirst('.months');
+      this.months.getChildren().each(function(month) {
+        month.addEventListener('click', function() {
+          new Prime.Effects.Fade(this.months).withDuration(100).go();
+          this.date.setMonth(month.getDataAttribute('month'));
+          this.setDate(this.date);
+        }, this);
+      }, this);
+    }
+
+    new Prime.Effects.Appear(this.months).withDuration(100).go();
+    this.months.setLeft(this.month.getLeft() - 10);
+    this.months.setTop(this.datepicker.getOffsetTop() - this.datepicker.getTop() - (this.months.getHeight() / 2));
+  },
+
+  _handleYearExpand: function() {
+
+  },
+
+
 
   /**
    * Handle the next month button click.
