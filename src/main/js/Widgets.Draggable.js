@@ -27,12 +27,21 @@ Prime.Widgets = Prime.Widgets || {};
  * Constructs a new Draggable object for the given element.
  *
  * @param {Prime.Document.Element} element The Prime Element for the Draggable widget.
+ * @param {string} gripSelector [gripSelector=] The optional selector to identify the 'grippy' part.
  * @constructor
  */
-Prime.Widgets.Draggable = function(element) {
+Prime.Widgets.Draggable = function(element, gripSelector) {
 
   this.element = element;
-  this.element.addClass('prime-draggable-grip');
+  if (typeof gripSelector === 'undefined' || gripSelector === null) {
+    this.grip = this.element;
+  } else {
+    this.grip = this.element.queryFirst(gripSelector);
+    if (this.grip === null) {
+      throw Error('Unable to find an element using the provided selector [' + gripSelector + ']');
+    }
+  }
+  this.grip.addClass('prime-draggable-grip');
 
   this.originalStyle = {
     'cursor': this.element.getStyle('cursor'),
@@ -41,7 +50,7 @@ Prime.Widgets.Draggable = function(element) {
 
   this.offset = {};
 
-  this.element.addEventListener('mousedown', this._handleMouseDown, this);
+  this.grip.addEventListener('mousedown', this._handleMouseDown, this);
   this.element.addEventListener('mouseup', this._handleOnMouseUp, this);
 
   this.parent = new Prime.Document.Element(this.element.domElement.parentNode);
@@ -71,7 +80,6 @@ Prime.Widgets.Draggable.prototype = {
   _handleMouseDown: function(event) {
 
     this.element.addClass('prime-draggable-active');
-    this.element.setStyle('cursor', 'move');
 
     this.offset = {
       'z_index': this.element.getStyle('z-index'),

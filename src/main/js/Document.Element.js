@@ -1234,6 +1234,26 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Sets the textContent of the Element.
+   *
+   * @param {number|string|Prime.Document.Element} newText The new text content for the Element.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  setTextContent: function(newText) {
+    if (newText !== null) {
+      if (newText instanceof Prime.Document.Element) {
+        this.domElement.textContent = newText.getTextContent();
+      } else {
+        if (typeof newText === 'number') {
+          newText = newText.toString();
+        }
+        this.domElement.textContent = newText;
+      }
+    }
+    return this;
+  },
+
+  /**
    * Sets top position of the element.
    *
    * @param {number|string} top The top position of the element in pixels or as a string.

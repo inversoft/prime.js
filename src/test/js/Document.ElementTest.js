@@ -930,6 +930,13 @@ buster.testCase('Element class tests', {
     assert.equals(element.innerHTML, 'Changed');
   },
 
+  'setTextContent': function() {
+    Prime.Document.queryFirst('#html').setTextContent('Changed');
+
+    var element = document.getElementById('html');
+    assert.equals(element.textContent, 'Changed');
+  },
+
   'setHeight': function() {
     var element = Prime.Document.queryByID('set-styles').setHeight(10);
     assert.equals(element.getStyle('height'), '10px');
