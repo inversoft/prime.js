@@ -394,7 +394,7 @@ Prime.Widgets.DatePicker.prototype = {
     if (!this.datepicker.isVisible()) {
       this.datepicker.setLeft(this.element.getLeft());
       this.datepicker.setTop(this.element.getTop() + this.element.getHeight() + 8);
-      new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
+      this.show();
     }
     return false;
   },
