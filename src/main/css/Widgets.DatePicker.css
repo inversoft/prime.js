@@ -93,7 +93,8 @@
 }
 
 /* Month Drop Selector */
-.prime-date-picker .months {
+.prime-date-picker .months,
+.prime-date-picker .years {
   display: inline-block;
   position: absolute;
   z-index: 3001;
@@ -107,13 +108,15 @@
   box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
 }
 
-.prime-date-picker .months > div {
+.prime-date-picker .months > div,
+.prime-date-picker .years > div {
   padding: 4px 15px 4px 10px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
 }
 
-.prime-date-picker .months > div:hover {
+.prime-date-picker .months > div:hover,
+.prime-date-picker .years > div:hover {
   background-color: #f0f0f0;
 }
 

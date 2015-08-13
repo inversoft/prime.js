@@ -169,8 +169,9 @@ Prime.Widgets.DatePicker.prototype = {
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   refresh: function() {
-    this._setDate();
-    this._setTime();
+    this._refreshMonthYear();
+    this._refreshCalendar();
+    this._refreshTime();
     return this;
   },
 
@@ -198,6 +199,10 @@ Prime.Widgets.DatePicker.prototype = {
     return this;
   },
 
+  /**
+   * @param {number} month The month. A 0 based number between 0 (January) and 11 (December).
+   * @returns {Prime.Widgets.DatePicker}
+   */
   setMonth: function(month) {
     var currentYear = parseInt(this.year.getDataAttribute('year'));
     if (month < 0) {
@@ -208,14 +213,23 @@ Prime.Widgets.DatePicker.prototype = {
       month = 0;
     }
 
-    this.month.setDataAttribute('month', month);
-    this.year.setDataAttribute('year', currentYear);
-    this.month.setHTML(Prime.Widgets.DatePicker.months[month]);
-    this.year.setHTML(currentYear);
     this.date.setMonth(month);
     this.date.setYear(currentYear);
     this.setDate(this.date);
 
+    return this;
+  },
+
+  /**
+   *
+   * @param {number} year The year.
+   * @returns {Prime.Widgets.DatePicker}
+   */
+  setYear: function(year) {
+    this.year.setDataAttribute('year', year);
+    this.year.setTextContent(year);
+    this.date.setYear(year);
+    this.setDate(this.date);
     return this;
   },
 
@@ -266,24 +280,26 @@ Prime.Widgets.DatePicker.prototype = {
 
     var row = '<tr>';
     var emptyColumns = 0;
+    var year = this.date.getFullYear();
+    var month = this.date.getMonth();
 
     for (var i = 0; i < 7; i++) {
 
       var dayOfWeek = startDayOfMonth + i;
       // Days of the previous month
       if (dayOfWeek <= startDayOfWeek) {
-        row += '<td><a class="prime-inactive" href="#">' + startDayOfPreviousMonth + '</a></td>';
+        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + (month - 1) + '">' + startDayOfPreviousMonth + '</a></td>';
         startDayOfPreviousMonth++;
         emptyColumns++;
       } else if (dayOfWeek > daysInMonth) {
         // Days of the next month
-        row += '<td><a class="prime-inactive" href="#">' + startDayOfNextMonth + '</a></td>';
+        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + (month + 1) + '">' + startDayOfNextMonth + '</a></td>';
         startDayOfNextMonth++;
       } else {
         // Days in the current month
         var day = dayOfWeek - emptyColumns;
         var selected = this.date.getDate() === day;
-        row += '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#">' + day + '</a></td>';
+        row += '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#" data-year="' + year + '" data-month="' + month + '">' + day + '</a></td>';
       }
     }
 
@@ -344,7 +360,7 @@ Prime.Widgets.DatePicker.prototype = {
       this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
     }
     return false;
-   },
+  },
 
   /**
    * Handle the click on a day.
@@ -352,11 +368,20 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _handleDayClick: function(event) {
-    var day = new Prime.Document.Element(event.target);
-    if (!day.is('a')) {
-      day = day.queryFirst('a');
+    var dayElement = new Prime.Document.Element(event.target);
+    if (!dayElement.is('a')) {
+      dayElement = dayElement.queryFirst('a');
     }
-    this.setDay(day.getHTML());
+
+    var day = parseInt(dayElement.getTextContent());
+    var month = parseInt(dayElement.getDataAttribute('month'));
+    var year = parseInt(dayElement.getDataAttribute('year'));
+
+    this.date.setDate(day);
+    this.date.setMonth(month);
+    this.date.setYear(year);
+
+    this.setDate(this.date);
     this.hide();
     return false;
   },
@@ -395,7 +420,29 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   _handleYearExpand: function() {
+    this.years = this.datepicker.queryFirst('.years');
 
+    if (this.years === null) {
+      var html = '<div class="years">';
+      var startYear = this.date.getFullYear() - 10;
+      var endYear = this.date.getFullYear() + 10;
+      for (var i = startYear; i < endYear; i++) {
+        html += '<div data-year="' + i + '">' + i + '</div>';
+      }
+      html += '</div>';
+      this.datepicker.appendHTML(html);
+      this.years = this.datepicker.queryFirst('.years');
+      this.years.getChildren().each(function(year) {
+        year.addEventListener('click', function() {
+          new Prime.Effects.Fade(this.years).withDuration(100).go();
+          this.setYear(parseInt(year.getDataAttribute('year')));
+        }, this);
+      }, this);
+    }
+
+    new Prime.Effects.Appear(this.years).withDuration(100).go();
+    this.years.setLeft(this.year.getLeft() - 10);
+    this.years.setTop(this.datepicker.getOffsetTop() - this.datepicker.getTop() - (this.years.getHeight() / 2));
   },
 
   /**
@@ -427,7 +474,11 @@ Prime.Widgets.DatePicker.prototype = {
     return false;
   },
 
-  _setDate: function() {
+  /**
+   * Refresh the UI
+   * @private
+   */
+  _refreshCalendar: function() {
     var firstDayOfMonth = this._getFirstDayOfMonth();
     var daysInMonth = this._getDaysInMonth();
 
@@ -445,10 +496,28 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
-   *
+   * Refresh the UI
    * @private
    */
-  _setTime: function() {
+  _refreshMonthYear: function() {
+
+    var month = this.date.getMonth();
+    var year = this.date.getFullYear();
+
+    // update data- attributes
+    this.month.setDataAttribute('month', month);
+    this.year.setDataAttribute('year', year);
+
+    // update text
+    this.month.setTextContent(Prime.Widgets.DatePicker.months[month]);
+    this.year.setTextContent(year);
+  },
+
+  /**
+   * Refresh the UI
+   * @private
+   */
+  _refreshTime: function() {
     // Set Time -- assuming 12 hour time
     var hours = this.date.getHours();
     if (hours == 0) {
