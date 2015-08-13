@@ -352,9 +352,13 @@ Prime.Widgets.DatePicker.prototype = {
     var current = this.ampm.getValue();
     if (current === Prime.Widgets.DatePicker.ampm[0]) {
       this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
+      this.date.setHours(this.date.getHours() + 12);
     } else {
       this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
+      this.date.setHours(this.date.getHours() - 12);
     }
+
+    this.setDate(this.date);
     return false;
   },
 
