@@ -239,7 +239,6 @@ Prime.Widgets.DatePicker.prototype = {
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   setTime: function() {
-    console.info(this.date);
     var hours = this.hours.getValue();
     if (this.ampm.getValue() !== Prime.Widgets.DatePicker.ampm[0]) {
       hours = hours + 12;
@@ -247,7 +246,6 @@ Prime.Widgets.DatePicker.prototype = {
     }
     this.date.setHours(hours, this.minutes.getValue());
     this.setDate(this.date);
-    console.info(this.date);
     return this;
   },
 
@@ -288,18 +286,18 @@ Prime.Widgets.DatePicker.prototype = {
       var dayOfWeek = startDayOfMonth + i;
       // Days of the previous month
       if (dayOfWeek <= startDayOfWeek) {
-        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + (month - 1) + '">' + startDayOfPreviousMonth + '</a></td>';
+        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + (month - 1) + '" data-day="' + startDayOfPreviousMonth + '">' + startDayOfPreviousMonth + '</a></td>';
         startDayOfPreviousMonth++;
         emptyColumns++;
       } else if (dayOfWeek > daysInMonth) {
         // Days of the next month
-        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + (month + 1) + '">' + startDayOfNextMonth + '</a></td>';
+        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + month + '" data-day="' + dayOfWeek + '">' + startDayOfNextMonth + '</a></td>';
         startDayOfNextMonth++;
       } else {
         // Days in the current month
         var day = dayOfWeek - emptyColumns;
         var selected = this.date.getDate() === day;
-        row += '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#" data-year="' + year + '" data-month="' + month + '">' + day + '</a></td>';
+        row += '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#" data-year="' + year + '" data-month="' + month + '" data-day="' + day + '">' + day + '</a></td>';
       }
     }
 
@@ -324,9 +322,7 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _getDaysInPreviousMonth: function() {
-    var previous = new Date(this.date);
-    previous.setMonth(this.date.getMonth());
-    return new Date(previous.getFullYear(), previous.getMonth() + 1, 0).getDate();
+    return new Date(this.date.getFullYear(), this.date.getMonth(), 0).getDate();
   },
 
   /**
@@ -373,13 +369,17 @@ Prime.Widgets.DatePicker.prototype = {
       dayElement = dayElement.queryFirst('a');
     }
 
-    var day = parseInt(dayElement.getTextContent());
+    var day = parseInt(dayElement.getDataAttribute('day'));
     var month = parseInt(dayElement.getDataAttribute('month'));
     var year = parseInt(dayElement.getDataAttribute('year'));
 
-    this.date.setDate(day);
-    this.date.setMonth(month);
+    // temporarily set the day to 1 so it does not shift when changing year or month
+    this.date.setDate(1);
+
+    // setting year, month and then day is important.
     this.date.setYear(year);
+    this.date.setMonth(month);
+    this.date.setDate(day);
 
     this.setDate(this.date);
     this.hide();
