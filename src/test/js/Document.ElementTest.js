@@ -343,11 +343,27 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().camelCase, 'valueCamelCase');
   },
 
+  'getFirstChild': function() {
+    var element = Prime.Document.queryFirst('#children');
+    assert.isTrue(element.getFirstChild().is('div.child-one'));
+    assert.isTrue(element.getFirstChild('.foo').is('div.foo'));
+    assert.isNull(element.getFirstChild('.no-match'));
+    assert.isNull(element.getFirstChild().getFirstChild());
+  },
+
   'getHTML': function() {
     var element = document.getElementById('html');
     element.innerHTML = 'Get test';
 
     assert.equals(Prime.Document.queryFirst('#html').getHTML(), 'Get test');
+  },
+
+  'getLastChild': function() {
+    var element = Prime.Document.queryFirst('#children');
+    assert.isTrue(element.getLastChild().is('div.foo'));
+    assert.isTrue(element.getLastChild('.child-one').is('div.child-one'));
+    assert.isNull(element.getLastChild('.no-match'));
+    assert.isNull(element.getLastChild().getLastChild());
   },
 
   'getNextSibling': function() {

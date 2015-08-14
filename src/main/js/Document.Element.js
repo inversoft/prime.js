@@ -347,6 +347,20 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Get the first child element of this Element, optionally filtered using the optional selector.
+   *
+   * @param {string} [selector] The selector. Optional.
+   * @returns {Prime.Document.Element} The first child element or null if the element has no children or a selector was provided and nothing matched the selector..
+   */
+  getFirstChild: function(selector) {
+    var lastChild = this.getChildren(selector)[0];
+    if (typeof lastChild === 'undefined') {
+      return null;
+    }
+    return lastChild;
+  },
+
+  /**
    * Gets the height of the Element as an integer value. This does not the border but does include any scroll bars. This
    * is often called the innerHeight of the element.
    *
@@ -376,6 +390,20 @@ Prime.Document.Element.prototype = {
    */
   getID: function() {
     return this.domElement.id;
+  },
+
+  /**
+   * Get the last child element of this Element, optionally filtered using the optional selector.
+   *
+   * @param {string} [selector] The selector. Optional.
+   * @returns {Prime.Document.Element} The last child element or null if the element has no children or a selector was provided and nothing matched the selector..
+   */
+  getLastChild: function(selector) {
+    var elementList = this.getChildren(selector);
+    if (elementList.length > 0) {
+      return elementList[elementList.length - 1];
+    }
+    return null;
   },
 
   /**
