@@ -82,19 +82,16 @@ Prime.Widgets.DatePicker = function(element) {
   this.month = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand, this);
   this.year = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand, this);
   this.time = this.datepicker.queryFirst('div.time');
-  this.hours = this.time.queryFirst('input[name=hour]');
-  this.minutes = this.time.queryFirst('input[name=minute]');
-  this.ampm = this.time.queryFirst('input[name=am_pm]');
-  this.setDate(this.date);
+  this.hours = this.time.queryFirst('input[name=hour]').addEventListener('change', this._handleTimeChange, this);
+  this.minutes = this.time.queryFirst('input[name=minute]').addEventListener('change', this._handleTimeChange, this);
+  this.ampm = this.time.queryFirst('input[name=am_pm]').addEventListener('keydown', this._handleAmPmKey, this);
 
   this.nextMonthAnchor = this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth, this);
   this.previousMonthAnchor = this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth, this);
-  this.time.query('input[name=hour], input[name=minute]').each(function(element) {
-    element.addEventListener('change', this._handleTimeChange, this);
-  }, this);
 
-  this.ampm.addEventListener('click', this._handleAmPmClick, this);
   this.element.addClass('prime-initialized');
+
+  this.setDate(this.date);
 };
 
 Prime.Widgets.DatePicker.shortDayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -348,14 +345,27 @@ Prime.Widgets.DatePicker.prototype = {
     return Math.ceil(used / 7);
   },
 
-  _handleAmPmClick: function() {
+  _handleAmPmKey: function(event) {
+    // Decode the key event
     var current = this.ampm.getValue();
-    if (current === Prime.Widgets.DatePicker.ampm[0]) {
-      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
-      this.date.setHours(this.date.getHours() + 12);
-    } else {
-      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
-      this.date.setHours(this.date.getHours() - 12);
+    if (event.keyCode === 65) {
+      if (current === Prime.Widgets.DatePicker.ampm[1]) {
+        this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
+        this.date.setHours(this.date.getHours() - 12);
+      }
+    } else if (event.keyCode === 80) {
+      if (current === Prime.Widgets.DatePicker.ampm[0]) {
+        this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
+        this.date.setHours(this.date.getHours() + 12);
+      }
+    } else if (event.keyCode === 38 || event.keyCode === 40) {
+      if (current === Prime.Widgets.DatePicker.ampm[0]) {
+        this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
+        this.date.setHours(this.date.getHours() + 12);
+      } else if (current === Prime.Widgets.DatePicker.ampm[1]) {
+        this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
+        this.date.setHours(this.date.getHours() - 12);
+      }
     }
 
     this.setDate(this.date);
