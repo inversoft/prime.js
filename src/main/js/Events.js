@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2013-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ Prime.Events.Keys.BACKSPACE = 8;
 Prime.Events.Keys.ENTER = 13;
 Prime.Events.Keys.ESCAPE = 27;
 Prime.Events.Keys.SPACE = 32;
+Prime.Events.Keys.TAB = 9;
 Prime.Events.Keys.UP_ARROW = 38;
 Prime.Events.Keys.DOWN_ARROW = 40;
 Prime.Events.Keys.DELETE = 46;
