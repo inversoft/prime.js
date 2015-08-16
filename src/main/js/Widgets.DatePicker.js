@@ -486,7 +486,13 @@ Prime.Widgets.DatePicker.prototype = {
 
     new Prime.Effects.Appear(this.months).withDuration(100).go();
     this.months.setLeft(this.month.getLeft() - 10);
-    this.months.setTop(this.datepicker.getOffsetTop() - this.datepicker.getTop() - (this.months.getHeight() / 2));
+    this.months.setTop(this.month.getOffsetTop());
+    var currentMonth = this.months.queryFirst('[data-month="' + this.date.getMonth() + '"]');
+    this.months.getChildren().each(function(month) {
+      month.removeClass('prime-selected');
+    }, this);
+    currentMonth.addClass('prime-selected');
+    currentMonth.domElement.scrollIntoView();
   },
 
   _handleYearExpand: function() {
@@ -512,8 +518,15 @@ Prime.Widgets.DatePicker.prototype = {
 
     new Prime.Effects.Appear(this.years).withDuration(100).go();
     this.years.setLeft(this.year.getLeft() - 10);
-    this.years.setTop(this.datepicker.getOffsetTop() - this.datepicker.getTop() - (this.years.getHeight() / 2));
+    this.years.setTop(this.year.getOffsetTop());
+    var currentYear = this.years.queryFirst('[data-year="' + this.date.getFullYear() + '"]');
+    this.years.getChildren().each(function(year) {
+      year.removeClass('prime-selected');
+    }, this);
+    currentYear.addClass('prime-selected');
+    currentYear.domElement.scrollIntoView();
   },
+
 
   /**
    * Handle the next month button click.
@@ -620,14 +633,14 @@ Prime.Widgets.DatePicker.prototype = {
     var hours = this.date.getHours();
     if (hours == 0) {
       this.hours.setValue("12");
-      this.ampm.setValue("AM");
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
     } else if (hours > 12) {
       hours = hours - 12;
       this.hours.setValue(hours);
-      this.ampm.setValue("PM");
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
     } else {
       this.hours.setValue(hours);
-      this.ampm.setValue("AM");
+      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
     }
 
     var minutes = this.date.getMinutes();

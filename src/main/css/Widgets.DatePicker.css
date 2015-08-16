@@ -73,9 +73,6 @@
 
 .prime-date-picker .header .month {
   width: 70%;
-}
-
-.prime-date-picker .header .month {
   margin-right: 12px;
 }
 
@@ -118,6 +115,12 @@
 .prime-date-picker .months > div:hover,
 .prime-date-picker .years > div:hover {
   background-color: #f0f0f0;
+}
+
+.prime-date-picker .months > div.prime-selected,
+.prime-date-picker .years > div.prime-selected {
+  background-color: #f0f0f0;
+  border: 1px solid #d3d3d3;
 }
 
 /* Calendar Table */

@@ -727,7 +727,7 @@ Prime.Document.Element.prototype = {
   /**
    * Inserts the given HTML snippet directly after this element.
    *
-   * @param html {String} The HTML string.
+   * @param {string} html The HTML string.
    * @returns {Prime.Document.Element} This Element.
    */
   insertHTMLAfter: function(html) {
