@@ -26,8 +26,10 @@ Prime.Widgets = Prime.Widgets || {};
 /**
  * Constructs a new DatePicker object for the given input element.
  *
- *  TODO - Month and Year select boxes don't scroll to current value. Maybe we should just use the browser select boxes?
+ *  TODO - We could optionally use select boxes for month and year expansion selections?
  *  TODO - The global click handle method doesn't work properly for the Month and Year select boxes. If you click outside the DatePicker but inside the select boxes, it still closes the DatePicker.
+ *  TODO - Opening the month or year selector should dismiss the other.
+ *  TODO - Should the up and down arrows increment and decrement the hours and minutes as well? As it does for AM / PM ?
  *
  * @param {Prime.Document.Element} element The Prime Element for the DatePicker widget.
  * @constructor
