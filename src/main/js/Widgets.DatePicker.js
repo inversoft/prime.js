@@ -26,6 +26,9 @@ Prime.Widgets = Prime.Widgets || {};
 /**
  * Constructs a new DatePicker object for the given input element.
  *
+ *  TODO - Month and Year select boxes don't scroll to current value. Maybe we should just use the browser select boxes?
+ *  TODO - The global click handle method doesn't work properly for the Month and Year select boxes. If you click outside the DatePicker but inside the select boxes, it still closes the DatePicker.
+ *
  * @param {Prime.Document.Element} element The Prime Element for the DatePicker widget.
  * @constructor
  */
@@ -72,9 +75,8 @@ Prime.Widgets.DatePicker = function(element) {
       '    <input size="2" maxlength="2" type="text" name="am_pm">' +
       '  </div>' +
       '</div>';
-  Prime.Document.appendHTML(html);
-  this.datepicker = Prime.Document.queryFirst('.prime-date-picker');
-  this.datepicker.hide();
+  this.element.insertHTMLAfter(html);
+  this.datepicker = Prime.Document.queryFirst('.prime-date-picker').hide();
   this.element.addEventListener('click', this._handleInputClick, this);
   this.element.addEventListener('focus', this._handleInputClick, this);
 
@@ -82,16 +84,18 @@ Prime.Widgets.DatePicker = function(element) {
   this.month = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand, this);
   this.year = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand, this);
   this.time = this.datepicker.queryFirst('div.time');
-  this.hours = this.time.queryFirst('input[name=hour]').addEventListener('change', this._handleTimeChange, this);
+  this.hours = this.time.queryFirst('input[name=hour]').addEventListener('change', this._handleTimeChange, this).addEventListener('keydown', this._handleHourKey, this);
   this.minutes = this.time.queryFirst('input[name=minute]').addEventListener('change', this._handleTimeChange, this);
   this.ampm = this.time.queryFirst('input[name=am_pm]').addEventListener('keydown', this._handleAmPmKey, this);
 
-  this.nextMonthAnchor = this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth, this);
-  this.previousMonthAnchor = this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth, this);
+  this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth, this);
+  this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth, this);
 
-  this.element.addClass('prime-initialized');
+  this.globalHandler = Prime.Document.addEventListener('click', this._handleGlobalClick, this);
 
   this.setDate(this.date);
+
+  this.element.addClass('prime-initialized');
 };
 
 Prime.Widgets.DatePicker.shortDayNames = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -109,6 +113,7 @@ Prime.Widgets.DatePicker.prototype = {
     this.element.removeEventListener('click', this._handleInputClick);
     this.element.removeEventListener('focus', this._handleInputClick);
     new Prime.Document.Element(document.body).removeListener('click', this.hide, this);
+    Prime.Document.removeEventListener('click', this.globalHandler);
     this.element.removeClass('prime-initialized');
   },
 
@@ -191,7 +196,7 @@ Prime.Widgets.DatePicker.prototype = {
    */
   setDate: function(newDate) {
     this.date = newDate;
-    this.element.setValue(newDate.toString());
+    this.element.setValue(newDate.toISOString());
     this.refresh();
     return this;
   },
@@ -231,17 +236,15 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
-   * Sets the time of the DatePicker and redraws the calendar.
+   * Sets the time of the DatePicker from the given Date object and redraws everything.
    *
+   * @param time {Date} The date to extract the time from.
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
-  setTime: function() {
-    var hours = this.hours.getValue();
-    if (this.ampm.getValue() !== Prime.Widgets.DatePicker.ampm[0]) {
-      hours = hours + 12;
-      hours = hours.toString();
-    }
-    this.date.setHours(hours, this.minutes.getValue());
+  setTime: function(time) {
+    this.date.setHours(time.getHours());
+    this.date.setMinutes(time.getMinutes());
+    this.date.setSeconds(time.getSeconds());
     this.setDate(this.date);
     return this;
   },
@@ -345,20 +348,31 @@ Prime.Widgets.DatePicker.prototype = {
     return Math.ceil(used / 7);
   },
 
+  /**
+   * Handles when the AM/PM element is selected and the user hits a key. If the user hits A, this changes to AM. If the
+   * user hits P, this changes to PM. If the use hits the up or down arrows, this toggles between AM and PM.
+   *
+   * @param event {KeyboardEvent} The keyboard event.
+   * @returns {boolean} Always false so that the keyboard event is not propagated.
+   * @private
+   */
   _handleAmPmKey: function(event) {
     // Decode the key event
     var current = this.ampm.getValue();
     if (event.keyCode === 65) {
+      // User hit A
       if (current === Prime.Widgets.DatePicker.ampm[1]) {
         this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
         this.date.setHours(this.date.getHours() - 12);
       }
     } else if (event.keyCode === 80) {
+      // User hit P
       if (current === Prime.Widgets.DatePicker.ampm[0]) {
         this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
         this.date.setHours(this.date.getHours() + 12);
       }
     } else if (event.keyCode === 38 || event.keyCode === 40) {
+      // User hit up or down arrow
       if (current === Prime.Widgets.DatePicker.ampm[0]) {
         this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
         this.date.setHours(this.date.getHours() + 12);
@@ -366,6 +380,13 @@ Prime.Widgets.DatePicker.prototype = {
         this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
         this.date.setHours(this.date.getHours() - 12);
       }
+    } else if (event.keyCode === 9) {
+      if (event.shiftKey) {
+        this.minutes.focus();
+      } else {
+        this.hours.focus();
+      }
+      return false;
     }
 
     this.setDate(this.date);
@@ -374,7 +395,9 @@ Prime.Widgets.DatePicker.prototype = {
 
   /**
    * Handle the click on a day.
-   * @parameter {Event} event The click event.
+   *
+   * @parameter {MouseEvent} event The click event.
+   * @return {boolean} Always false.
    * @private
    */
   _handleDayClick: function(event) {
@@ -396,14 +419,47 @@ Prime.Widgets.DatePicker.prototype = {
     this.date.setDate(day);
 
     this.setDate(this.date);
-    this.hide();
     return false;
+  },
+
+  /**
+   * Handles a global click event. This determines if the click was outside of the DatePicker and closes it.
+   *
+   * @param event {MouseEvent} The click event.
+   * @returns {boolean} Always true.
+   * @private
+   */
+  _handleGlobalClick: function(event) {
+    var top = this.datepicker.getTop();
+    var bottom = this.datepicker.getBottom();
+    var left = this.datepicker.getLeft();
+    var right = this.datepicker.getRight();
+    if (this.datepicker.isVisible() && (event.x < left || event.x > right || event.y < top || event.y > bottom)) {
+      this.hide();
+    }
+    return true;
+  },
+
+  /**
+   * Handles when a key is click in the hours input field so that tab and shift tab work properly.
+   *
+   * @param event {KeyboardEvent} The key event.
+   * @returns {boolean} False if the keys are shift+tab, true otherwise.
+   * @private
+   */
+  _handleHourKey: function(event) {
+    if (event.keyCode === 9 && event.shiftKey) {
+      this.ampm.focus();
+      return false;
+    }
+
+    return true;
   },
 
   _handleInputClick: function() {
     if (!this.datepicker.isVisible()) {
       this.datepicker.setLeft(this.element.getLeft());
-      this.datepicker.setTop(this.element.getTop() + this.element.getHeight() + 8);
+      this.datepicker.setTop(this.element.getAbsoluteTop() + this.element.getHeight() + 8);
       this.show();
     }
     return false;
@@ -480,11 +536,40 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
-   * Handle time change events.
+   * Handle time change events. This pulls the values from the 3 time fields and makes a new Date. Then it calls
+   * {@link #setTime(Date)}.
+   *
    * @private
    */
   _handleTimeChange: function() {
-    this.setTime();
+    var newTime = new Date();
+    var hours = parseInt(this.hours.getValue());
+    if (hours < 1 || hours > 12) {
+      hours = 1;
+      this.hours.setValue(hours);
+    }
+    if (this.ampm.getValue() === Prime.Widgets.DatePicker.ampm[0]) {
+      if (hours === 12) {
+        newTime.setHours(0);
+      } else {
+        newTime.setHours(hours);
+      }
+    } else {
+      if (hours === 12) {
+        newTime.setHours(12);
+      } else {
+        newTime.setHours(hours + 12);
+      }
+    }
+
+    var minutes = parseInt(this.minutes.getValue());
+    if (minutes < 1 || minutes > 59) {
+      minutes = 1;
+      this.minutes.setValue(minutes);
+    }
+    newTime.setMinutes(minutes);
+
+    this.setTime(newTime);
     return false;
   },
 
@@ -514,7 +599,6 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _refreshMonthYear: function() {
-
     var month = this.date.getMonth();
     var year = this.date.getFullYear();
 
@@ -532,18 +616,21 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _refreshTime: function() {
-    // Set Time -- assuming 12 hour time
+    // Set Time -- assuming 12-hour time for the input fields and ISO 24-hour time for the field
     var hours = this.date.getHours();
     if (hours == 0) {
-      hours = 12;
-      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
+      this.hours.setValue("12");
+      this.ampm.setValue("AM");
     } else if (hours > 12) {
-      hours -= 12;
-      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[1]);
+      hours = hours - 12;
+      this.hours.setValue(hours);
+      this.ampm.setValue("PM");
     } else {
-      this.ampm.setValue(Prime.Widgets.DatePicker.ampm[0]);
+      this.hours.setValue(hours);
+      this.ampm.setValue("AM");
     }
-    this.hours.setValue(hours);
-    this.minutes.setValue(("00" + this.date.getMinutes()).slice(-2));
+
+    var minutes = this.date.getMinutes();
+    this.minutes.setValue(("00" + minutes).slice(-2));
   }
 };

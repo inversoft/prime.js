@@ -725,6 +725,17 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Inserts the given HTML snippet directly after this element.
+   *
+   * @param html {String} The HTML string.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  insertHTMLAfter: function(html) {
+    this.domElement.insertAdjacentHTML('afterend', html);
+    return this;
+  },
+
+  /**
    * Inserts the given text after this Element.
    *
    * @param {string} text The text to insert.
