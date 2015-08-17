@@ -18,12 +18,14 @@
   background-color: #FFFFFF;
   border: 1px solid rgba(204,204,204,0.5);
   border-radius: 4px;
-  -webkit-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
-  -moz-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
-  box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
+  -webkit-box-shadow: 3px 3px 15px 0 rgba(204,204,204,1);
+  -moz-box-shadow: 3px 3px 15px 0 rgba(204,204,204,1);
+  box-shadow: 3px 3px 15px 0 rgba(204,204,204,1);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   display: block;
-  font-size: 0.9em;
+  font-size: 12px;
   line-height: 18px;
   margin: 1px;
   padding: 5px;
@@ -44,20 +46,22 @@
 }
 
 .prime-date-picker .header {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   display: block;
   margin-top: 5px;
   padding: 0;
   text-align: center;
-
-  /* Un-selectable - keeps the background from being highlighted when clicking */
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
 }
 
 .prime-date-picker .header span {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
 }
@@ -78,44 +82,35 @@
 }
 
 .prime-date-picker .header .month {
-  margin-right: 12px;
+  font-weight: bold;
+  margin-right: 4px;
+  text-transform: uppercase;
   width: 70%;
-}
-
-.prime-date-picker .header .month:after,
-.prime-date-picker .header .year:after {
-  content: '';
-  display: inline-block;
-  border-right: 4px solid transparent;
-  border-top: 4px solid #555555;
-  border-left: 4px solid transparent;
-  position: absolute;
-  margin-left: 3px;
-  margin-top: 4px;
-  cursor: pointer;
 }
 
 /* Month Drop Selector */
 .prime-date-picker .months,
 .prime-date-picker .years {
+  background-color: #FFFFFF;
+  border: 1px solid #e6e6e6;
+  -webkit-box-shadow: 3px 3px 15px 0 rgba(204,204,204,1);
+  -moz-box-shadow: 3px 3px 15px 0 rgba(204,204,204,1);
+  box-shadow: 3px 3px 15px 0 rgba(204,204,204,1);
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   display: inline-block;
+  height: 150px;
+  overflow: scroll;
   position: absolute;
   z-index: 3001;
-  border: 1px solid #e6e6e6;
-  overflow: scroll;
-  height: 150px;
-  background-color: #FFFFFF;
-
-  -webkit-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
-  -moz-box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
-  box-shadow: 3px 3px 15px 0px rgba(204,204,204,1);
 }
 
 .prime-date-picker .months > div,
 .prime-date-picker .years > div {
-  padding: 4px 15px 4px 10px;
   border-bottom: 1px solid #f0f0f0;
   cursor: pointer;
+  padding: 4px 15px 4px 10px;
 }
 
 .prime-date-picker .months > div:hover,
@@ -131,40 +126,52 @@
 
 /* Calendar Table */
 .prime-date-picker table {
-  width: 100%;
-  font-size: .9em;
   border-collapse: collapse;
+  border: none;
+  /*font-size: .9rem;*/
   margin: 0 0 .4em;
-
-  /* Un-selectable - keeps the background from being highlighted when clicking */
-  -moz-user-select: -moz-none;
-  -khtml-user-select: none;
+  padding: 0;
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
+  width: 100%;
+}
+
+.prime-date-picker table thead {
+  border-color: inherit;
+  display: table-header-group;
+  vertical-align: middle;
 }
 
 .prime-date-picker th {
+  border: 0;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
   padding: .7em .3em;
   text-align: center;
-  font-weight: bold;
-  border: 0;
 }
 
 .prime-date-picker td {
-  border: 0;
+  border: none;
+  margin: 0;
   padding: 1px;
 }
 
 .prime-date-picker td a {
+  background: #e6e6e6;
+  border: 1px solid #d3d3d3;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  color: #555555;
   display: block;
+  font-weight: normal;
+  margin: 0;
   padding: .2em;
   text-align: right;
   text-decoration: none;
-
-  border: 1px solid #d3d3d3;
-  background: #e6e6e6;
-  font-weight: normal;
-  color: #555555;
 }
 
 .prime-date-picker td a.prime-inactive {
@@ -174,8 +181,8 @@
 .prime-date-picker td a:hover {
   border: 1px solid #999999;
   background: #dadada;
-  font-weight: normal;
   color: #212121;
+  font-weight: normal;
 }
 
 .prime-date-picker td a.prime-selected {
@@ -185,49 +192,76 @@
   color: #212121;
 }
 
-.prime-date-picker table thead {
-  display: table-header-group;
-  vertical-align: middle;
-  border-color: inherit;
-}
-
-/* Time */
-.prime-date-picker .time {
+/* Inputs */
+.prime-date-picker .inputs {
+  background: #e6e6e6;
   border: 1px solid #d3d3d3;
-  text-align: center;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  display: block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   margin: 20px auto 0;
-  background: #e6e6e6;
-  border-radius: 2px;
-}
-
-.prime-date-picker .time input {
-  width: 18px;
-  height: 20px;
-  border: none;
-  line-height: 14px;
-  font-size: 14px;
-  border-radius: 2px;
-  background: #e6e6e6;
+  padding: 5px;
   text-align: center;
 }
 
-.prime-date-picker .time input[name=hour] {
+.prime-date-picker .inputs .date, .prime-date-picker .inputs .time {
+  background: white;
+  border: 1px inset #d3d3d3;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 auto;
+  padding: 0;
+  text-align: center;
+}
+
+.prime-date-picker .inputs span {
+  margin: 0 2px;
+}
+
+.prime-date-picker .inputs input {
+  background: white;
+  border: none;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  border-radius: 2px;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  display: inline;
+  font-size: 14px;
+  height: 20px;
+  line-height: 14px;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  width: 18px;
+}
+
+.prime-date-picker .inputs input[name=hour] {
   text-align: right;
 }
 
-.prime-date-picker .time input[name=minute] {
+.prime-date-picker .inputs input[name=minute] {
   text-align: left;
 }
 
-.prime-date-picker .time input[name=am_pm] {
+.prime-date-picker .inputs input[name=am_pm] {
   width: 25px;
 }
 
-
-.prime-date-picker .time span {
-  margin: 0px 2px 0px 2px;
+.prime-date-picker .inputs input[name=year] {
+  width: 40px;
 }
 
-.prime-date-picker .time input:focus {
+.prime-date-picker .inputs input:focus {
   outline: none;
 }
