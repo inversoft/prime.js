@@ -77,8 +77,8 @@ Prime.Widgets.DatePicker = function(element) {
       '    <input size="2" maxlength="2" type="text" name="am_pm">' +
       '  </div>' +
       '</div>';
-  this.element.insertHTMLAfter(html);
-  this.datepicker = Prime.Document.queryFirst('.prime-date-picker').hide();
+  Prime.Document.appendHTML(html);
+  this.datepicker = Prime.Document.queryLast('.prime-date-picker').hide();
   this.element.addEventListener('click', this._handleInputClick, this);
   this.element.addEventListener('focus', this._handleInputClick, this);
 
@@ -95,7 +95,7 @@ Prime.Widgets.DatePicker = function(element) {
 
   this.globalHandler = Prime.Document.addEventListener('click', this._handleGlobalClick, this);
 
-  this.setDate(this.date);
+  this.refresh();
 
   this.element.addClass('prime-initialized');
 };
@@ -180,17 +180,6 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
-   * Set the day of the month.
-   * @param {number} day
-   * @returns {Prime.Widgets.DatePicker} This DatePicker.
-   */
-  setDay: function(day) {
-    this.date.setDate(day);
-    this.setDate(this.date);
-    return this;
-  },
-
-  /**
    * Sets the date of the DatePicker and redraws the calendar to the month for the date.
    *
    * @param newDate {Date} The new date.
@@ -200,6 +189,17 @@ Prime.Widgets.DatePicker.prototype = {
     this.date = newDate;
     this.element.setValue(newDate.toISOString());
     this.refresh();
+    return this;
+  },
+
+  /**
+   * Set the day of the month.
+   * @param {number} day
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  setDay: function(day) {
+    this.date.setDate(day);
+    this.setDate(this.date);
     return this;
   },
 
@@ -225,19 +225,6 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
-   *
-   * @param {number} year The year.
-   * @returns {Prime.Widgets.DatePicker}
-   */
-  setYear: function(year) {
-    this.year.setDataAttribute('year', year);
-    this.year.setTextContent(year);
-    this.date.setYear(year);
-    this.setDate(this.date);
-    return this;
-  },
-
-  /**
    * Sets the time of the DatePicker from the given Date object and redraws everything.
    *
    * @param time {Date} The date to extract the time from.
@@ -252,10 +239,26 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
+   *
+   * @param {number} year The year.
+   * @returns {Prime.Widgets.DatePicker}
+   */
+  setYear: function(year) {
+    this.year.setDataAttribute('year', year);
+    this.year.setTextContent(year);
+    this.date.setYear(year);
+    this.setDate(this.date);
+    return this;
+  },
+
+  /**
    * Show the Date Picker widget
+   *
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   show: function() {
+    this.datepicker.setLeft(this.element.getLeft());
+    this.datepicker.setTop(this.element.getAbsoluteTop() + this.element.getHeight() + 8);
     new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
     return this;
   },
@@ -432,6 +435,11 @@ Prime.Widgets.DatePicker.prototype = {
    * @private
    */
   _handleGlobalClick: function(event) {
+    // Skip this function completely if they clicked the input field
+    if (event.target === this.element.domElement) {
+      return true;
+    }
+
     var top = this.datepicker.getTop();
     var bottom = this.datepicker.getBottom();
     var left = this.datepicker.getLeft();
@@ -476,6 +484,20 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
+   * Handle the click event for the input date field. If the DatePicker is hidden this will call the {@link #show()}
+   * function.
+   *
+   * @returns {boolean} Always true.
+   * @private
+   */
+  _handleInputClick: function() {
+    if (!this.datepicker.isVisible()) {
+      this.show();
+    }
+    return true;
+  },
+
+  /**
    * Handle the key down event and capture the up and down arrow key to increment and decrement the minute.
 
    * @param {KeyboardEvent} event The key event.
@@ -493,20 +515,6 @@ Prime.Widgets.DatePicker.prototype = {
       return false;
     }
     return true;
-  },
-
-  /**
-   * Handle the click event for the input date field. If the datepicker is hidden - show it.
-   * @returns {boolean}
-   * @private
-   */
-  _handleInputClick: function() {
-    if (!this.datepicker.isVisible()) {
-      this.datepicker.setLeft(this.element.getLeft());
-      this.datepicker.setTop(this.element.getAbsoluteTop() + this.element.getHeight() + 8);
-      this.show();
-    }
-    return false;
   },
 
   _handleMonthExpand: function() {
