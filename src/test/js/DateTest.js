@@ -1,0 +1,103 @@
+/*
+ * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+var assert = buster.assertions.assert;
+var refute = buster.assertions.refute;
+
+buster.testCase('Prime.Date namespace tests', {
+  'plusDays': function() {
+    var date = new Date(2015, 8, 1); // September 1
+    Prime.Date.plusDays(date, 1); // September 2
+    assert.equals(date, new Date(2015, 8, 2));
+
+    date = new Date(2015, 8, 30); // September 30
+    Prime.Date.plusDays(date, 1); // October 1
+    assert.equals(date, new Date(2015, 9, 1));
+
+    date = new Date(2015, 8, 30); // September 30
+    Prime.Date.plusDays(date, 31); // October 31
+    assert.equals(date, new Date(2015, 9, 31));
+
+    date = new Date(2015, 8, 30); // September 30
+    Prime.Date.plusDays(date, 32); // November 1
+    assert.equals(date, new Date(2015, 10, 1));
+
+    date = new Date(2015, 8, 20); // September 20
+    Prime.Date.plusDays(date, 11 + 31 + 30 + 31 + 15); // January 16
+    assert.equals(date, new Date(2016, 0, 16));
+
+    date = new Date(2015, 8, 20); // September 20
+    Prime.Date.plusDays(date, 365); // September 20
+    assert.equals(date, new Date(2016, 8, 20));
+
+    date = new Date(2015, 8, 20); // September 20
+    Prime.Date.plusDays(date, 365 + 11 + 31 + 30 + 31 + 15); // September 20
+    assert.equals(date, new Date(2017, 0, 16));
+
+    date = new Date(2015, 8, 20); // September 20
+    Prime.Date.plusDays(date, -1); // September 19
+    assert.equals(date, new Date(2015, 8, 19));
+
+    date = new Date(2015, 8, 1); // September 1
+    Prime.Date.plusDays(date, -1); // August 31
+    assert.equals(date, new Date(2015, 7, 31));
+
+    date = new Date(2015, 8, 1); // September 1
+    Prime.Date.plusDays(date, -10); // August 22
+    assert.equals(date, new Date(2015, 7, 22));
+
+    date = new Date(2015, 8, 1); // September 1
+    Prime.Date.plusDays(date, -365); // September 1
+    assert.equals(date, new Date(2014, 8, 1));
+
+    date = new Date(2015, 8, 1); // September 1
+    Prime.Date.plusDays(date, -365 - 1 - 31 - 31 - 30 - 31 - 30 - 31 - 28 - 31 - 11); // December 20
+    assert.equals(date, new Date(2013, 11, 20));
+  },
+
+  'plusMonths': function() {
+    var date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, 1); // November
+    assert.equals(date, new Date(2015, 9, 1));
+
+    date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, 4); // January
+    assert.equals(date, new Date(2016, 0, 1));
+
+    date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, 24); // September
+    assert.equals(date, new Date(2017, 8, 1));
+
+    date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, 28); // January
+    assert.equals(date, new Date(2018, 0, 1));
+
+    date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, -4); // May
+    assert.equals(date, new Date(2015, 4, 1));
+
+    date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, -8); // January
+    assert.equals(date, new Date(2015, 0, 1));
+
+    date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, -24); // September
+    assert.equals(date, new Date(2013, 8, 1));
+
+    date = new Date(2015, 8, 1); // September
+    Prime.Date.plusMonths(date, -32); // January
+    assert.equals(date, new Date(2013, 0, 1));
+  }
+});
