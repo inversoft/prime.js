@@ -67,6 +67,90 @@ buster.testCase('Prime.Date namespace tests', {
     assert.equals(date, new Date(2013, 11, 20));
   },
 
+  'plusHours': function() {
+    var date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, 1); // September 1 1:00am
+    assert.equals(date, new Date(2015, 8, 1, 1, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, 10); // September 1 10:00am
+    assert.equals(date, new Date(2015, 8, 1, 10, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, 24); // September 2 12:00am
+    assert.equals(date, new Date(2015, 8, 2, 0, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, 25); // September 2 1:00am
+    assert.equals(date, new Date(2015, 8, 2, 1, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, 24 * 32 + 10); // October 3 10:00am
+    assert.equals(date, new Date(2015, 9, 3, 10, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, -1); // August 31 11:00pm
+    assert.equals(date, new Date(2015, 7, 31, 23, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, -10); // August 31 2:00pm
+    assert.equals(date, new Date(2015, 7, 31, 14, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, -24); // August 31 12:00am
+    assert.equals(date, new Date(2015, 7, 31, 0, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, -25); // August 30 11:00pm
+    assert.equals(date, new Date(2015, 7, 30, 23, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusHours(date, -24 * 32 - 10); // July 30 2:00pm
+    assert.equals(date, new Date(2015, 6, 30, 14, 0, 0));
+  },
+
+  'plusMinutes': function() {
+    var date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, 1); // September 1 12:01am
+    assert.equals(date, new Date(2015, 8, 1, 0, 1, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, 10); // September 1 12:10am
+    assert.equals(date, new Date(2015, 8, 1, 0, 10, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, 60); // September 1 1:00am
+    assert.equals(date, new Date(2015, 8, 1, 1, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, 61); // September 1 1:01am
+    assert.equals(date, new Date(2015, 8, 1, 1, 1, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, 60 * 24 * 32 + 10); // October 3 12:10am
+    assert.equals(date, new Date(2015, 9, 3, 0, 10, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, -1); // August 31 11:59pm
+    assert.equals(date, new Date(2015, 7, 31, 23, 59, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, -10); // August 31 11:50pm
+    assert.equals(date, new Date(2015, 7, 31, 23, 50, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, -60); // August 31 11:00pm
+    assert.equals(date, new Date(2015, 7, 31, 23, 0, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, -61); // August 31 10:59pm
+    assert.equals(date, new Date(2015, 7, 31, 22, 59, 0));
+
+    date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
+    Prime.Date.plusMinutes(date, -60 * 24 * 32 - 10); // July 30 11:50pm
+    assert.equals(date, new Date(2015, 6, 30, 23, 50, 0));
+  },
+
   'plusMonths': function() {
     var date = new Date(2015, 8, 1); // September
     Prime.Date.plusMonths(date, 1); // November

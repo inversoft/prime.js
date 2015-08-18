@@ -17,10 +17,10 @@
 var Prime = Prime || {};
 
 Prime.Date = {
-  daysInMonths: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
+  DAYS_IN_MONTH: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 
   numberOfDaysInMonth: function(month) {
-    return Prime.Date.daysInMonths[month];
+    return Prime.Date.DAYS_IN_MONTH[month];
   },
 
   /**
@@ -34,31 +34,18 @@ Prime.Date = {
       return;
     }
 
-    console.log(date.getDate());
     var newDate = date.getDate() + number;
     var numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
 
     if (newDate > 0) {
-      // currentDate = 31  numberOfDaysInMonth = 31  number = 1  newDate = 32  newMonth = 0 (newMonth = 1  newDate = 1)
-      // currentDate = 30  numberOfDaysInMonth = 31  number = 10  newDate = 40  newMonth = 0 (newMonth = 1  newDate = 9)
-      // currentDate = 30  numberOfDaysInMonth = 31  number = 100  newDate = 130  newMonth = 0 (newMonth = 1  newDate = 99) (newMonth = 2  newDate = 71) (newMonth = 3  newDate = 40) (newMonth = 4  newDate = 9)
-      console.log('start');
-      console.log('newDate=' + newDate);
-      console.log('numberOfDaysInMonth=' + numberOfDaysInMonth);
       while (newDate > numberOfDaysInMonth) {
         Prime.Date.plusMonths(date, 1);
         newDate = newDate - numberOfDaysInMonth;
         numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
-        console.log('newDate=' + newDate);
-        console.log('numberOfDaysInMonth=' + numberOfDaysInMonth);
       }
 
-      console.log('done');
       date.setDate(newDate);
     } else {
-      // currentDate = 30  numberOfDaysInMonth = 31  number = -10  newDate = 20 newMonth = 0 (newMonth = 0  newDate = 20)
-      // currentDate = 30  numberOfDaysInMonth = 31  number = -30 newDate = 0 newMonth = 0 (newMonth = -1  newDate = 31)
-      // currentDate = 30  numberOfDaysInMonth = 31  number = -100 newDate = -70 newMonth = 0 (newMonth = -1  newDate = -39) (newMonth = -2  newDate = -9) (newMonth = -3  newDate = 22)
       while (newDate <= 0) {
         Prime.Date.plusMonths(date, -1);
         numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
@@ -66,6 +53,60 @@ Prime.Date = {
       }
 
       date.setDate(newDate);
+    }
+  },
+
+  /**
+   * Adds the given number of hours to the given Date. The number can be negative.
+   *
+   * @param date {Date} The date.
+   * @param number {Number} The number of hours to add.
+   */
+  plusHours: function(date, number) {
+    if (number === 0) {
+      return;
+    }
+
+    var deltaDays = parseInt(number / 24);
+    Prime.Date.plusDays(date, deltaDays);
+
+    var deltaHours = number % 24;
+    var newHour = date.getHours() + deltaHours;
+    if (newHour > 23) {
+      Prime.Date.plusDays(date, 1);
+      date.setHours(newHour - 24);
+    } else if (newHour < 0) {
+      Prime.Date.plusDays(date, -1);
+      date.setHours(24 + newHour);
+    } else {
+      date.setHours(newHour);
+    }
+  },
+
+  /**
+   * Adds the given number of minutes to the given Date. The number can be negative.
+   *
+   * @param date {Date} The date.
+   * @param number {Number} The number of minutes to add.
+   */
+  plusMinutes: function(date, number) {
+    if (number === 0) {
+      return;
+    }
+
+    var deltaHours = parseInt(number / 60);
+    Prime.Date.plusHours(date, deltaHours);
+
+    var deltaMinutes = number % 60;
+    var newMinute = date.getMinutes() + deltaMinutes;
+    if (newMinute > 60) {
+      Prime.Date.plusHours(date, 1);
+      date.setMinutes(newMinute - 60);
+    } else if (newMinute < 0) {
+      Prime.Date.plusHours(date, -1);
+      date.setMinutes(60 + newMinute);
+    } else {
+      date.setMinutes(newMinute);
     }
   },
 
@@ -80,21 +121,10 @@ Prime.Date = {
       return;
     }
 
-    // number = 8  deltaYears = 0  deltaMonths = 8
-    // number = 80  deltaYears = 6  deltaMonths = 8
-    // number = -8  deltaYears = 0  deltaMonths = -8
-    // number = -80  deltaYears = 6  deltaMonths = -8
     var deltaYears = parseInt(number / 12);
     var deltaMonths = number % 12;
-    //console.log('deltaYears=' + deltaYears);
-    //console.log('deltaMonths=' + deltaMonths);
-
-    // month = 4[May]        deltaMonths = -8  newMonth = -4  after(deltaMonths = -4  currentMonth = 12  result = 8[September])
-    // month = 8[September]  deltaMonths = 8   newMonth = 16  after(deltaMonth = 4    currentMonth = 0   result = 4[May])
     var currentMonth = date.getMonth();
     var newMonth = currentMonth + deltaMonths;
-    //console.log('currentMonth=' + currentMonth);
-    //console.log('newMonth=' + newMonth);
     if (newMonth < 0) {
       deltaYears--;
       deltaMonths = newMonth;
@@ -104,11 +134,49 @@ Prime.Date = {
       deltaMonths = newMonth - 12;
       currentMonth = 0;
     }
-    //console.log('deltaYears=' + deltaYears);
-    //console.log('deltaMonths=' + deltaMonths);
-    //console.log('currentMonth=' + currentMonth);
 
     date.setYear(date.getFullYear() + deltaYears);
     date.setMonth(currentMonth + deltaMonths);
+  },
+
+  /**
+   * Adds the given number of seconds to the given Date. The number can be negative.
+   *
+   * @param date {Date} The date.
+   * @param number {Number} The number of seconds to add.
+   */
+  plusSeconds: function(date, number) {
+    if (number === 0) {
+      return;
+    }
+
+    var deltaMinutes = parseInt(number / 60);
+    Prime.Date.plusMinutes(date, deltaMinutes);
+
+    var deltaSeconds = number % 60;
+    var newSecond = date.getSeconds() + deltaSeconds;
+    if (newSecond > 60) {
+      Prime.Date.plusMinutes(date, 1);
+      date.setSeconds(newSecond - 60);
+    } else if (newSecond < 0) {
+      Prime.Date.plusMinutes(date, -1);
+      date.setSeconds(60 + newSecond);
+    } else {
+      date.setSeconds(newSecond);
+    }
+  },
+
+  /**
+   * Adds the given number of years to the given Date. The number can be negative.
+   *
+   * @param date {Date} The date.
+   * @param number {Number} The number of years to add.
+   */
+  plusYears: function(date, number) {
+    if (number === 0) {
+      return;
+    }
+
+    date.setFullYear(date.getFullYear() + number);
   }
 };
