@@ -106,8 +106,8 @@ Prime.Widgets.DatePicker = function(element) {
   this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth, this);
   this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth, this);
 
-  this.globalClickHandler = Prime.Document.addEventListener('click', this._handleGlobalClick, this);
-  this.globalKeyHandler = Prime.Document.addEventListener('keydown', this._handleGlobalKey, this);
+  Prime.Document.addEventListener('click', this._handleGlobalClick, this);
+  Prime.Document.addEventListener('keydown', this._handleGlobalKey, this);
 
   this.refresh();
 
@@ -128,9 +128,9 @@ Prime.Widgets.DatePicker.prototype = {
     this.datepicker.removeFromDOM();
     this.element.removeEventListener('click', this._handleInputClick);
     this.element.removeEventListener('focus', this._handleInputClick);
-    new Prime.Document.Element(document.body).removeListener('click', this.hide, this);
-    Prime.Document.removeEventListener('click', this.globalClickHandler);
-    Prime.Document.removeEventListener('keydown', this.globalKeyHandler);
+    this.element.removeEventListener('keydown', this._handleInputKey);
+    Prime.Document.removeEventListener('click', this._handleGlobalClick);
+    Prime.Document.removeEventListener('keydown', this._handleGlobalKey);
     this.element.removeClass('prime-initialized');
   },
 
