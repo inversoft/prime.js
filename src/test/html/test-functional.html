@@ -25,6 +25,7 @@
     <link rel="stylesheet" href="../../main/css/Widgets.PhraseBuilder.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.Searcher.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.DatePicker.css"/>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
@@ -40,6 +41,7 @@
     <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.DatePicker.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
@@ -90,6 +92,7 @@
         new Prime.Widgets.PhraseBuilder(Prime.Document.queryByID('phrase-builder'), searcherCallback.search, searcherCallback).
             render();
 
+        new Prime.Widgets.Tabs(Prime.Document.queryByID('tabs'));
         var draggable = new Prime.Widgets.Draggable(Prime.Document.queryByID('draggable'));
         var destroy = Prime.Document.queryByID('destroy-draggable').addEventListener('click', function() {
           draggable.destroy();
@@ -115,6 +118,19 @@
         <input id="datepicker" type="text" name="datepicker" size="40">
       </form>
     </div>
+
+    <ul id="tabs">
+      <li><a href="#fooTab">Foo</a></li>
+      <li><a href="#barTab">Bar</a></li>
+    </ul>
+    <div id="fooTab">
+      Foo Tab
+    </div>
+    <div id="barTab">
+      Bar Tab
+    </div>
+    <div style="height:25px;"></div>
+
     <div id="fade" style="border: 1px solid black;">
       Some content in the div.
       <p>
