@@ -445,6 +445,7 @@ Prime.Widgets.DatePicker.prototype = {
     }
 
     this.setDate(this.date);
+    this.ampmInput.domElement.setSelectionRange(0, this.ampmInput.getValue().length);
     return false;
   },
 
@@ -523,10 +524,12 @@ Prime.Widgets.DatePicker.prototype = {
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
       Prime.Date.plusDays(this.date, 1);
       this.setDate(this.date);
+      this.dayInput.domElement.setSelectionRange(0, this.dayInput.getValue().length);
       return false;
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusDays(this.date, -1);
       this.setDate(this.date);
+      this.dayInput.domElement.setSelectionRange(0, this.dayInput.getValue().length);
       return false;
     }
 
@@ -598,10 +601,12 @@ Prime.Widgets.DatePicker.prototype = {
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
       Prime.Date.plusHours(this.date, 1);
       this.setDate(this.date);
+      this.hourInput.domElement.setSelectionRange(0, this.hourInput.getValue().length);
       return false;
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusHours(this.date, -1);
       this.setDate(this.date);
+      this.hourInput.domElement.setSelectionRange(0, this.hourInput.getValue().length);
       return false;
     }
     return true;
@@ -618,6 +623,7 @@ Prime.Widgets.DatePicker.prototype = {
     if (!this.datepicker.isVisible()) {
       this.show();
       this.monthInput.focus();
+      this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
     }
     return true;
   },
@@ -654,10 +660,12 @@ Prime.Widgets.DatePicker.prototype = {
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
       Prime.Date.plusMinutes(this.date, 1);
       this.setDate(this.date);
+      this.minuteInput.domElement.setSelectionRange(0, this.minuteInput.getValue().length);
       return false;
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusMinutes(this.date, -1);
       this.setDate(this.date);
+      this.minuteInput.domElement.setSelectionRange(0, this.minuteInput.getValue().length);
       return false;
     }
     return true;
@@ -690,10 +698,12 @@ Prime.Widgets.DatePicker.prototype = {
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
       Prime.Date.plusMonths(this.date, 1);
       this.setDate(this.date);
+      this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
       return false;
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusMonths(this.date, -1);
       this.setDate(this.date);
+      this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
       return false;
     }
     return true;
@@ -730,10 +740,12 @@ Prime.Widgets.DatePicker.prototype = {
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
       Prime.Date.plusSeconds(this.date, 1);
       this.setDate(this.date);
+      this.secondInput.domElement.setSelectionRange(0, this.secondInput.getValue().length);
       return false;
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusSeconds(this.date, -1);
       this.setDate(this.date);
+      this.secondInput.domElement.setSelectionRange(0, this.secondInput.getValue().length);
       return false;
     }
     return true;
@@ -761,10 +773,12 @@ Prime.Widgets.DatePicker.prototype = {
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
       Prime.Date.plusYears(this.date, 1);
       this.setDate(this.date);
+      this.yearInput.domElement.setSelectionRange(0, this.yearInput.getValue().length);
       return false;
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusYears(this.date, -1);
       this.setDate(this.date);
+      this.yearInput.domElement.setSelectionRange(0, this.yearInput.getValue().length);
       return false;
     }
     return true;
