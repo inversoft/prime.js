@@ -42,10 +42,13 @@ Prime.Widgets.DatePicker = function(element) {
 
   var value = this.element.getValue();
   if (value === '' || value === null) {
-    this.date = new Date();
+    this.date = new Prime.Date();
+    this.date = new Prime.Date();
   } else {
-    this.date = new Date(value);
+    this.date = new Prime.Date(value);
   }
+
+  this.date.plusDays(1);
 
   var year = this.date.getUTCFullYear();
   var timeSeparator = '<span>' + Prime.Widgets.DatePicker.timeSeparator + '</span>';
@@ -112,6 +115,8 @@ Prime.Widgets.DatePicker = function(element) {
 
   this.refresh();
 
+  console.log(new Date(2015, 2, -1, 1, 0, 0));
+
   this.element.addClass('prime-initialized');
 };
 
@@ -145,8 +150,9 @@ Prime.Widgets.DatePicker.prototype = {
     var month = date.getMonth();
     var year = date.getFullYear();
     var firstDay = new Date(year, month, 1);
+    var lastDay = new Date(year, month + 1, 0);
     var firstDayOfMonth = firstDay.getDay();
-    var daysInMonth = Prime.Date.numberOfDaysInMonth(month);
+    var daysInMonth = lastDay.getDate();
     var used = firstDayOfMonth + daysInMonth;
     var weeksInMonth = Math.ceil(used / 7);
 
@@ -182,15 +188,39 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  nextDay: function() {
+    this.setDay(this.date.getDate() + 1);
+    this.setDate(this.date);
+    return this;
+  },
+
+  /**
    * Moves the DatePicker to the next month and redraws the calendar.
    *
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   nextMonth: function() {
+    var currentMonth = parseInt(this.monthDisplay.getDataAttribute('month'));
     var newDate = new Date(this.date);
-    newDate.setMonth(parseInt(this.monthDisplay.getDataAttribute('month')));
-    Prime.Date.plusMonths(newDate, 1);
+    if (currentMonth === 11) {
+      var currentYear = parseInt(this.yearDisplay.getDataAttribute('year'));
+      newDate.setMonth(0);
+      newDate.setYear(currentYear + 1);
+    } else {
+      newDate.setMonth(currentMonth + 1);
+    }
     this.drawCalendar(newDate);
+    return this;
+  },
+
+  /**
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  previousDay: function() {
+    this.setDay(this.date.getDate() - 1);
+    this.setDate(this.date);
     return this;
   },
 
@@ -199,9 +229,15 @@ Prime.Widgets.DatePicker.prototype = {
    * @returns {Prime.Widgets.DatePicker} This DatePicker.
    */
   previousMonth: function() {
+    var currentMonth = parseInt(this.monthDisplay.getDataAttribute('month'));
     var newDate = new Date(this.date);
-    newDate.setMonth(parseInt(this.monthDisplay.getDataAttribute('month')));
-    Prime.Date.plusMonths(newDate, -1);
+    if (currentMonth === 0) {
+      var currentYear = parseInt(this.yearDisplay.getDataAttribute('year'));
+      newDate.setMonth(11);
+      newDate.setYear(currentYear - 1);
+    } else {
+      newDate.setMonth(currentMonth - 1);
+    }
     this.drawCalendar(newDate);
     return this;
   },
@@ -232,6 +268,17 @@ Prime.Widgets.DatePicker.prototype = {
   },
 
   /**
+   * Set the day of the month.
+   * @param {number} day
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  setDay: function(day) {
+    this.date.setDate(day);
+    this.setDate(this.date);
+    return this;
+  },
+
+  /**
    * @param {number} month The month. A 0 based number between 0 (January) and 11 (December).
    * @returns {Prime.Widgets.DatePicker}
    */
@@ -249,6 +296,20 @@ Prime.Widgets.DatePicker.prototype = {
     this.date.setYear(currentYear);
     this.setDate(this.date);
 
+    return this;
+  },
+
+  /**
+   * Sets the time of the DatePicker from the given Date object and redraws everything.
+   *
+   * @param time {Date} The date to extract the time from.
+   * @returns {Prime.Widgets.DatePicker} This DatePicker.
+   */
+  setTime: function(time) {
+    this.date.setHours(time.getHours());
+    this.date.setMinutes(time.getMinutes());
+    this.date.setSeconds(time.getSeconds());
+    this.setDate(this.date);
     return this;
   },
 
