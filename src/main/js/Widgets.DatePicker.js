@@ -188,6 +188,7 @@ Prime.Widgets.DatePicker.prototype = {
   nextMonth: function() {
     var newDate = new Date(this.date);
     newDate.setMonth(parseInt(this.monthDisplay.getDataAttribute('month')));
+    newDate.setFullYear(parseInt(this.yearDisplay.getDataAttribute('year')));
     Prime.Date.plusMonths(newDate, 1);
     this.drawCalendar(newDate);
     return this;
@@ -274,6 +275,7 @@ Prime.Widgets.DatePicker.prototype = {
   previousMonth: function() {
     var newDate = new Date(this.date);
     newDate.setMonth(parseInt(this.monthDisplay.getDataAttribute('month')));
+    newDate.setFullYear(parseInt(this.yearDisplay.getDataAttribute('year')));
     Prime.Date.plusMonths(newDate, -1);
     this.drawCalendar(newDate);
     return this;
