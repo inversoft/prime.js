@@ -183,5 +183,13 @@ buster.testCase('Prime.Date namespace tests', {
     date = new Date(2015, 8, 1); // September
     Prime.Date.plusMonths(date, -32); // January
     assert.equals(date, new Date(2013, 0, 1));
+
+    date = new Date(2015, 2, 31); // March 31
+    Prime.Date.plusMonths(date, -1); // February
+    assert.equals(date, new Date(2015, 1, 28));
+
+    date = new Date(2015, 7, 31); // August 31
+    Prime.Date.plusMonths(date, -1); // July
+    assert.equals(date, new Date(2015, 6, 31));
   }
 });
