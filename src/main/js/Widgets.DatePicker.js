@@ -502,11 +502,10 @@ Prime.Widgets.DatePicker.prototype = {
       dayElement = dayElement.queryFirst('a');
     }
 
-    var day = parseInt(dayElement.getDataAttribute('day'));
-    var month = parseInt(dayElement.getDataAttribute('month'));
-    var year = parseInt(dayElement.getDataAttribute('year'));
-
-    var newDate = new Date(year, month, day);
+    var newDate = new Date(this.date);
+    newDate.setFullYear(parseInt(dayElement.getDataAttribute('year')));
+    newDate.setMonth(parseInt(dayElement.getDataAttribute('month')));
+    newDate.setDate(parseInt(dayElement.getDataAttribute('day')));
     this.setDate(newDate);
     return false;
   },
