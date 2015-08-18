@@ -136,7 +136,12 @@ Prime.Date = {
     }
 
     date.setYear(date.getFullYear() + deltaYears);
-    date.setMonth(currentMonth + deltaMonths);
+    // If the day is 31 and you set month to 1 (February) it will adjust to March 3 (Feb 28 + 3)
+    var adjustedMonth = currentMonth + deltaMonths;
+    if (date.getDate() > this.DAYS_IN_MONTH[adjustedMonth]) {
+      date.setDate(this.DAYS_IN_MONTH[adjustedMonth]);
+    }
+    date.setMonth(adjustedMonth);
   },
 
   /**

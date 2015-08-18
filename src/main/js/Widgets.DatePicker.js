@@ -274,6 +274,7 @@ Prime.Widgets.DatePicker.prototype = {
    */
   previousMonth: function() {
     var newDate = new Date(this.date);
+    newDate.setDate(1); // Set to 1 until month has been set
     newDate.setMonth(parseInt(this.monthDisplay.getDataAttribute('month')));
     newDate.setFullYear(parseInt(this.yearDisplay.getDataAttribute('year')));
     Prime.Date.plusMonths(newDate, -1);
@@ -482,6 +483,7 @@ Prime.Widgets.DatePicker.prototype = {
       this.minuteInput.setValue(minutes);
     }
     newDate.setMinutes(minutes);
+    newDate.setDate(1); // Set to 1 until month has been set
     newDate.setMonth(parseInt(this.monthInput.getValue()) - 1);
     newDate.setDate(parseInt(this.dayInput.getValue()));
     newDate.setYear(parseInt(this.yearInput.getValue()));
@@ -504,6 +506,7 @@ Prime.Widgets.DatePicker.prototype = {
     }
 
     var newDate = new Date(this.date);
+    newDate.setDate(1); // Set to 1 until month has been set
     newDate.setFullYear(parseInt(dayElement.getDataAttribute('year')));
     newDate.setMonth(parseInt(dayElement.getDataAttribute('month')));
     newDate.setDate(parseInt(dayElement.getDataAttribute('day')));
