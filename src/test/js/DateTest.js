@@ -149,6 +149,24 @@ buster.testCase('Prime.Date namespace tests', {
     date = new Date(2015, 8, 1, 0, 0, 0); // September 1 12:00am
     Prime.Date.plusMinutes(date, -60 * 24 * 32 - 10); // July 30 11:50pm
     assert.equals(date, new Date(2015, 6, 30, 23, 50, 0));
+
+    date = new Date(2015, 2, 1, 0, 0, 0); // March 1 12:00am
+    Prime.Date.plusMinutes(date, -1); // February 28 11:59pm
+    assert.equals(date, new Date(2015, 1, 28, 23, 59, 0));
+
+    date = new Date(2015, 1, 28, 23, 59, 0); // February 28 23:59pm
+    Prime.Date.plusMinutes(date, 1); // March 1 12:00am
+    assert.equals(date, new Date(2015, 2, 1, 0, 0, 0));
+  },
+
+  'plusSeconds': function() {
+    var date = new Date(2015, 2, 1, 0, 0, 0); // March 1 12:00:00am
+    Prime.Date.plusSeconds(date, -1); // February 28 11:59:59pm
+    assert.equals(date, new Date(2015, 1, 28, 23, 59, 59));
+
+    date = new Date(2015, 1, 28, 23, 59, 59); // February 28 23:59:59pm
+    Prime.Date.plusSeconds(date, 1); // March 1 12:00:00am
+    assert.equals(date, new Date(2015, 2, 1, 0, 0, 0));
   },
 
   'plusMonths': function() {
