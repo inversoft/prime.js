@@ -183,5 +183,20 @@ Prime.Date = {
     }
 
     date.setFullYear(date.getFullYear() + number);
+  },
+
+  /**
+   * Return a string in simplified extended ISO format (ISO 8601) truncated to only return YYYY-MM-DD.
+   *
+   * For example: new Date(2015, 6, 4) --> 2015-07-04
+   *
+   * @param date {Date} The date.
+   * @returns {String} A date string in the format YYYY-MM-DD.
+   */
+  toDateOnlyISOString: function(date) {
+    if (date instanceof Date) {
+      return date.toISOString().substring(0, 10);
+    }
+    throw TypeError('date parameter must be a Date object.');
   }
 };

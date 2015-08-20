@@ -9,3 +9,7 @@
 .prime-inactive {
   opacity: 0.7;
 }
+
+.prime-focus {
+  outline: -webkit-focus-ring-color auto 5px;
+}

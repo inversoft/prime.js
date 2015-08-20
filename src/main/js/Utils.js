@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -125,6 +125,36 @@ Prime.Utils = {
     }
 
     return result + Prime.Utils.capitalize(name.substring(start));
+  },
+
+  /**
+   * Return an options map {Object} of the data set values coerced to a typed value of boolean, string or number.
+   *
+   * @param {Prime.Document.Element} element The element.
+   * @returns {Object} The options object.
+   */
+  dataSetToOptions: function(element) {
+    var options = {};
+    var data = element.getDataSet();
+    for (var prop in data) {
+      if (!data.hasOwnProperty(prop)) {
+        continue;
+      }
+      var value = data[prop];
+      if (isNaN(value)) {
+        if (value === 'true') {
+          options[prop] = true;
+        } else if (value === 'false') {
+          options[prop] = false;
+        } else {
+          options[prop] = value;
+        }
+      } else {
+        options[prop] = parseInt(value);
+      }
+    }
+
+    return options;
   },
 
   /**

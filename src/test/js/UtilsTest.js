@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -90,6 +90,15 @@ buster.testCase('Utils tests', {
     assert.equals(Prime.Utils.convertStyleName('-moz-box-shadow'), 'MozBoxShadow')
     assert.equals(Prime.Utils.convertStyleName('text-align'), 'textAlign')
     assert.equals(Prime.Utils.convertStyleName('top'), 'top')
+  },
+
+  'dataSetToOptions': function() {
+    var element = Prime.Document.queryFirst('#data-set-to-options input[name=one]');
+    assert.equals(Prime.Utils.dataSetToOptions(element), {'foo': 2, 'bar': '2 + 1'});
+    element = Prime.Document.queryFirst('#data-set-to-options input[name=two]');
+    assert.equals(Prime.Utils.dataSetToOptions(element), {'foo': true, 'bar': false});
+    element = Prime.Document.queryFirst('#data-set-to-options input[name=three]');
+    assert.equals(Prime.Utils.dataSetToOptions(element), {'foo': 'bar'});
   },
 
   'removeAllFromArray': function() {

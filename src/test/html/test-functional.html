@@ -27,7 +27,7 @@
     <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.DatePicker.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
     <script type="text/javascript" src="../../main/js/Browser.js"></script>
     <script type="text/javascript" src="../../main/js/Date.js"></script>
@@ -43,7 +43,7 @@
     <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.DatePicker.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
       var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
@@ -99,7 +99,11 @@
           return false;
         }, this);
 
-        new Prime.Widgets.DatePicker(Prime.Document.queryByID('datepicker'));
+        new Prime.Widgets.DateTimePicker(Prime.Document.queryByID('datepicker1'))
+            .render();
+
+        new Prime.Widgets.DateTimePicker(Prime.Document.queryByID('datepicker2'))
+            .render();
 
         Prime.Window.addEventListener('beforeunload', function(event) {
           console.log('Beforeunload');
@@ -115,7 +119,8 @@
   <body>
     <div class="datepicker" style="margin-bottom: 50px;">
       <form>
-        <input id="datepicker" type="text" name="datepicker" size="40">
+        <input id="datepicker1" type="text" name="datepicker" size="40">
+        <input id="datepicker2" type="text" name="datepicker" size="40" data-date-only="true">
       </form>
     </div>
 

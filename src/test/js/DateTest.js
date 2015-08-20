@@ -209,5 +209,10 @@ buster.testCase('Prime.Date namespace tests', {
     date = new Date(2015, 7, 31); // August 31
     Prime.Date.plusMonths(date, -1); // July
     assert.equals(date, new Date(2015, 6, 31));
+  },
+
+  'toISODateString': function() {
+    var date = new Date(2015, 6, 4); // July 4th 2015
+    assert.equals(Prime.Date.toDateOnlyISOString(date), '2015-07-04');
   }
 });
