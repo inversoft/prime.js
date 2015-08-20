@@ -21,3 +21,13 @@
   -moz-box-shadow: 3px 3px 13px 1px rgba(0,0,0,0.75);
   box-shadow: 3px 3px 13px 1px rgba(0,0,0,0.75);
 }
+
+.prime-draggable-grip {
+  cursor: move;
+
+  /* Un-selectable - keeps the background from being highlighted when clicking */
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
+}

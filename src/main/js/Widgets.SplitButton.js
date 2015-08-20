@@ -119,12 +119,11 @@ Prime.Widgets.SplitButton.prototype = {
     return false;
   },
 
-   /**
+  /**
    * Handle the split button click to expand the action list.
-   * @param {Event} event The JavaScript event.
-    * @private
+   * @private
    */
-  _handleDropDownClick: function(event) {
+  _handleDropDownClick: function() {
     this._clearActiveMarker();
     this._setActiveMarker();
     this._hideAllButtons();
@@ -135,10 +134,14 @@ Prime.Widgets.SplitButton.prototype = {
     } else {
       this.element.setStyle('margin-top', this.dropDownDiv.getHeight() + 2 + 'px');
       this.element.show();
+      var width = 1;
+      this.splitButton.getChildren('div').each(function(element) {
+        width += element.getWidth();
+      }, this);
+      this.element.setWidth(width);
       this.splitButton.removeClass('prime-inactive')
     }
 
-    event.stopPropagation();
     return false;
   },
 
@@ -219,7 +222,7 @@ Prime.Widgets.SplitButton.prototype = {
 
   /**
    * Hide all visible split buttons on the page. And ensure all are set to inactive.
-   * @param {Event} event The JavaScript event.
+   * @param {Event} [event] The JavaScript event - this parameter is optional.
    * @private
    */
   _hideAllButtons: function(event) {

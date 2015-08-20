@@ -14,6 +14,9 @@ ul.prime-split-button {
   -webkit-box-shadow: 3px 3px 5px 0px rgba(68, 68, 68, 0.5);
   -moz-box-shadow: 3px 3px 5px 0px rgba(68, 68, 68, 0.5);
   box-shadow: 3px 3px 5px 0px rgba(68, 68, 68, 0.5);
+
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
 }
 
 ul.prime-split-button li {

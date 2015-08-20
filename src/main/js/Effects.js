@@ -160,9 +160,13 @@ Prime.Effects.Fade.prototype.go = function() {
  *
  * @constructor
  * @param {Prime.Document.Element} element The Prime Element to appear.
+ * @param {number} [opacity=1.0] The final opacity to reach when the effect is complete. Defaults to 1.0.
  */
-Prime.Effects.Appear = function(element) {
-  Prime.Effects.BaseTransition.call(this, element, 1.0);
+Prime.Effects.Appear = function(element, opacity) {
+  if (typeof opacity === 'undefined' || opacity === null) {
+    opacity = 1.0;
+  }
+  Prime.Effects.BaseTransition.call(this, element, opacity);
 };
 Prime.Effects.Appear.prototype = Object.create(Prime.Effects.BaseTransition.prototype);
 Prime.Effects.Appear.constructor = Prime.Effects.Appear;

@@ -25,9 +25,12 @@
     <link rel="stylesheet" href="../../main/css/Widgets.PhraseBuilder.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.Searcher.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.DatePicker.css"/>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
     <script type="text/javascript" src="../../main/js/Browser.js"></script>
+    <script type="text/javascript" src="../../main/js/Date.js"></script>
     <script type="text/javascript" src="../../main/js/Document.js"></script>
     <script type="text/javascript" src="../../main/js/Document.Element.js"></script>
     <script type="text/javascript" src="../../main/js/Document.ElementList.js"></script>
@@ -38,7 +41,9 @@
     <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.DatePicker.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
       var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
@@ -87,11 +92,14 @@
         new Prime.Widgets.PhraseBuilder(Prime.Document.queryByID('phrase-builder'), searcherCallback.search, searcherCallback).
             render();
 
+        new Prime.Widgets.Tabs(Prime.Document.queryByID('tabs'));
         var draggable = new Prime.Widgets.Draggable(Prime.Document.queryByID('draggable'));
         var destroy = Prime.Document.queryByID('destroy-draggable').addEventListener('click', function() {
           draggable.destroy();
           return false;
         }, this);
+
+        new Prime.Widgets.DatePicker(Prime.Document.queryByID('datepicker'));
 
         Prime.Window.addEventListener('beforeunload', function(event) {
           console.log('Beforeunload');
@@ -105,6 +113,24 @@
     </style>
   </head>
   <body>
+    <div class="datepicker" style="margin-bottom: 50px;">
+      <form>
+        <input id="datepicker" type="text" name="datepicker" size="40">
+      </form>
+    </div>
+
+    <ul id="tabs">
+      <li><a href="#fooTab">Foo</a></li>
+      <li><a href="#barTab">Bar</a></li>
+    </ul>
+    <div id="fooTab">
+      Foo Tab
+    </div>
+    <div id="barTab">
+      Bar Tab
+    </div>
+    <div style="height:25px;"></div>
+
     <div id="fade" style="border: 1px solid black;">
       Some content in the div.
       <p>
@@ -173,6 +199,6 @@
         </select>
       </form>
     </div>
-    <div id="draggable" style="width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br><button id="destroy-draggable">Destroy</button></div>
+    <div id="draggable" style="right: 50px; width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br><button id="destroy-draggable">Destroy</button></div>
   </body>
 </html>

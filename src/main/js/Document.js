@@ -131,6 +131,15 @@ Prime.Document.onReady = function(callback, context) {
 };
 
 /**
+ * Take the HTML string and append it to the body.
+ *
+ * @param {string} html The HTML to append
+ */
+Prime.Document.appendHTML = function(html) {
+  document.body.insertAdjacentHTML('beforeend', html);
+};
+
+/**
  * Queries the DOM using the given selector starting at the given element and returns all the matched elements.
  *
  * @param {string} selector The selector.
@@ -222,7 +231,7 @@ Prime.Document.queryLast = function(selector, element) {
 Prime.Document.queryUp = function(selector, element) {
   var domElement = null;
   if (typeof element === 'undefined' || element === null) {
-    domElement = document;
+    throw new SyntaxError('Missing required parameter. The element is required.');
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
   }
@@ -230,6 +239,9 @@ Prime.Document.queryUp = function(selector, element) {
   domElement = domElement.parentNode;
   while (domElement !== null && !domElement.matches(selector)) {
     domElement = domElement.parentNode;
+    if (domElement === document) {
+      domElement = null;
+    }
   }
 
   if (domElement !== null) {

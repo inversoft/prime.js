@@ -331,10 +331,24 @@ buster.testCase('Element class tests', {
     assert.equals(element.getClass(), 'class1 class2');
   },
 
+  'getDataAttribute': function() {
+    assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('attr1'), 'value1');
+    assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('attr2'), 'value2');
+    assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('camelCase'), 'valueCamelCase');
+  },
+
   'getDataSet': function() {
     assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().attr1, 'value1');
     assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().attr2, 'value2');
     assert.equals(Prime.Document.queryFirst('#dataset').getDataSet().camelCase, 'valueCamelCase');
+  },
+
+  'getFirstChild': function() {
+    var element = Prime.Document.queryFirst('#children');
+    assert.isTrue(element.getFirstChild().is('div.child-one'));
+    assert.isTrue(element.getFirstChild('.foo').is('div.foo'));
+    assert.isNull(element.getFirstChild('.no-match'));
+    assert.isNull(element.getFirstChild().getFirstChild());
   },
 
   'getHTML': function() {
@@ -342,6 +356,14 @@ buster.testCase('Element class tests', {
     element.innerHTML = 'Get test';
 
     assert.equals(Prime.Document.queryFirst('#html').getHTML(), 'Get test');
+  },
+
+  'getLastChild': function() {
+    var element = Prime.Document.queryFirst('#children');
+    assert.isTrue(element.getLastChild().is('div.foo'));
+    assert.isTrue(element.getLastChild('.child-one').is('div.child-one'));
+    assert.isNull(element.getLastChild('.no-match'));
+    assert.isNull(element.getLastChild().getLastChild());
   },
 
   'getNextSibling': function() {
@@ -433,6 +455,7 @@ buster.testCase('Element class tests', {
     assert.isTrue(Prime.Document.queryFirst('#is-test tr').is('tr'));
     assert.isTrue(Prime.Document.queryFirst('#is-test textarea').is('textarea'));
     assert.isTrue(Prime.Document.queryFirst('#is-test input').is('input'));
+    assert.isTrue(Prime.Document.queryFirst('#is-test input[name=is-test]').is('input'));
     assert.isFalse(Prime.Document.queryFirst('#is-test tr').is('td'));
     assert.isTrue(Prime.Document.queryFirst('#is-test div.foo').is('div'));
     assert.isFalse(Prime.Document.queryFirst('#is-test div.foo').is('div.bar'));
@@ -921,6 +944,13 @@ buster.testCase('Element class tests', {
 
     var element = document.getElementById('html');
     assert.equals(element.innerHTML, 'Changed');
+  },
+
+  'setTextContent': function() {
+    Prime.Document.queryFirst('#html').setTextContent('Changed');
+
+    var element = document.getElementById('html');
+    assert.equals(element.textContent, 'Changed');
   },
 
   'setHeight': function() {

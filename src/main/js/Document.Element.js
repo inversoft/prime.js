@@ -21,7 +21,7 @@ Prime.Document = Prime.Document || {};
  * Creates an Element class for the given DOM element.
  *
  * @constructor
- * @param {Element} element The element
+ * @param {Element|EventTarget} element The element
  */
 Prime.Document.Element = function(element) {
   if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
@@ -278,7 +278,7 @@ Prime.Document.Element.prototype = {
   /**
    * Gets the children elements of this Element, optionally reduced to those matching the optional selector.
    *
-   * @param {string} selector The selector. If not provided all children will be returned.
+   * @param {string} [selector] The selector. Optional, if not provided all children will be returned.
    * @returns {Prime.Document.ElementList} The children.
    */
   getChildren: function(selector) {
@@ -337,6 +337,30 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Returns the data value if it exists, otherwise returns null.
+   *
+   * @param {string} name The attribute name.
+   * @returns {string} This attribute value or null.
+   */
+  getDataAttribute: function(name) {
+    return this.getDataSet()[name];
+  },
+
+  /**
+   * Get the first child element of this Element, optionally filtered using the optional selector.
+   *
+   * @param {string} [selector] The selector. Optional.
+   * @returns {Prime.Document.Element} The first child element or null if the element has no children or a selector was provided and nothing matched the selector..
+   */
+  getFirstChild: function(selector) {
+    var lastChild = this.getChildren(selector)[0];
+    if (typeof lastChild === 'undefined') {
+      return null;
+    }
+    return lastChild;
+  },
+
+  /**
    * Gets the height of the Element as an integer value. This does not the border but does include any scroll bars. This
    * is often called the innerHeight of the element.
    *
@@ -366,6 +390,20 @@ Prime.Document.Element.prototype = {
    */
   getID: function() {
     return this.domElement.id;
+  },
+
+  /**
+   * Get the last child element of this Element, optionally filtered using the optional selector.
+   *
+   * @param {string} [selector] The selector. Optional.
+   * @returns {Prime.Document.Element} The last child element or null if the element has no children or a selector was provided and nothing matched the selector..
+   */
+  getLastChild: function(selector) {
+    var elementList = this.getChildren(selector);
+    if (elementList.length > 0) {
+      return elementList[elementList.length - 1];
+    }
+    return null;
   },
 
   /**
@@ -683,6 +721,17 @@ Prime.Document.Element.prototype = {
       throw new TypeError('The element you passed into insertBefore is not in the DOM. You can\'t insert a Prime.Document.Element before an element that isn\'t in the DOM yet.');
     }
 
+    return this;
+  },
+
+  /**
+   * Inserts the given HTML snippet directly after this element.
+   *
+   * @param {string} html The HTML string.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  insertHTMLAfter: function(html) {
+    this.domElement.insertAdjacentHTML('afterend', html);
     return this;
   },
 
@@ -1008,10 +1057,13 @@ Prime.Document.Element.prototype = {
    * Sets an attribute of the Element.
    *
    * @param {string} name The attribute name
-   * @param {string} value The attribute value
+   * @param {number|string} value The attribute value
    * @returns {Prime.Document.Element} This Element.
    */
   setAttribute: function(name, value) {
+    if (typeof value === 'number') {
+      value = value.toString();
+    }
     if (this.domElement.setAttribute) {
       this.domElement.setAttribute(name, value);
     } else {
@@ -1021,6 +1073,21 @@ Prime.Document.Element.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Sets a data- attribute of the Element.
+   *
+   * Example: setDataAttribute('fooBar', 'baz');
+   *  is equivalent to calling setAttribute('data-foo-bar', 'baz');
+   *
+   * @param {string} name The attribute name
+   * @param {number|string} value The attribute value
+   * @returns {Prime.Document.Element} This Element.
+   */
+  setDataAttribute: function(name, value) {
+    var dataName = 'data-' + name.replace(/([a-z])([A-Z])/g, "$1-$2").toLowerCase();
+    return this.setAttribute(dataName, value);
   },
 
   /**
@@ -1179,10 +1246,13 @@ Prime.Document.Element.prototype = {
    * Sets the style for the name of this Element.
    *
    * @param {string} name The style name.
-   * @param {string} value The style value.
+   * @param {number|string} value The style value.
    * @returns {Prime.Document.Element} This Element.
    */
   setStyle: function(name, value) {
+    if (typeof value === 'number') {
+      value = value.toString();
+    }
     this.domElement.style[name] = value;
     return this;
   },
@@ -1197,6 +1267,26 @@ Prime.Document.Element.prototype = {
     for (key in styles) {
       if (styles.hasOwnProperty(key)) {
         this.setStyle(key, styles[key]);
+      }
+    }
+    return this;
+  },
+
+  /**
+   * Sets the textContent of the Element.
+   *
+   * @param {number|string|Prime.Document.Element} newText The new text content for the Element.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  setTextContent: function(newText) {
+    if (newText !== null) {
+      if (newText instanceof Prime.Document.Element) {
+        this.domElement.textContent = newText.getTextContent();
+      } else {
+        if (typeof newText === 'number') {
+          newText = newText.toString();
+        }
+        this.domElement.textContent = newText;
       }
     }
     return this;
@@ -1223,10 +1313,13 @@ Prime.Document.Element.prototype = {
    * works on checkboxes and radio buttons, but it change the value attribute on them rather than checking and unchecking
    * the buttons themselves. To check and uncheck the buttons, use the select method.
    *
-   * @param {string} value The new value.
+   * @param {number|string} value The new value.
    * @returns {Prime.Document.Element} This Element.
    */
   setValue: function(value) {
+    if (typeof value === 'number') {
+      value = value.toString();
+    }
     this.domElement.value = value;
     return this;
   },
