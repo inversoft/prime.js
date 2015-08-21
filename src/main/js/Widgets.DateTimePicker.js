@@ -624,6 +624,7 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.setDate(this.date);
       this.hide();
       this.element.focus();
+      return false;
     } else if (event.keyCode === Prime.Events.Keys.ESCAPE) {
       this.hide();
       this.element.focus();
