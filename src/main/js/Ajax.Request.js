@@ -247,8 +247,11 @@ Prime.Ajax.Request.prototype = {
         continue;
       }
 
-      var type = primeElement.getAttribute('type').toLowerCase();
-      var name = primeElement.domElement.name;
+      var type = primeElement.getAttribute('type');
+      if (type !== null) {
+        type = type.toLowerCase();
+      }
+
       var values;
       if (primeElement.getTagName() === 'SELECT' || type === 'radio' || type === 'checkbox') {
         values = primeElement.getSelectedValues();
@@ -256,6 +259,7 @@ Prime.Ajax.Request.prototype = {
         values = primeElement.getValue();
       }
 
+      var name = primeElement.domElement.name;
       if (this.method === 'PUT' || this.method === 'POST') {
         this.body = this._addDataValue(this.body, name, values)
       } else {
