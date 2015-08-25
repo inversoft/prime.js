@@ -570,7 +570,7 @@ Prime.Document.Element.prototype = {
       values = [];
       var name = this.domElement.name;
       var form = Prime.Document.queryUp('form', this.domElement);
-      Prime.Document.query('input[name=' + name + ']', form).each(function(element) {
+      Prime.Document.query('input[name="' + name + '"]', form).each(function(element) {
         if (element.isChecked()) {
           values.push(element.getValue());
         }

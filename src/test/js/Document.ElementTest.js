@@ -396,6 +396,7 @@ buster.testCase('Element class tests', {
 
   'getSelectedValues': function() {
     assert.equals(Prime.Document.queryFirst('#one-checkbox').getSelectedValues(), ['one', 'three']);
+    assert.equals(Prime.Document.queryFirst('#one-checkbox-special-char').getSelectedValues(), ['one', 'three']);
     assert.equals(Prime.Document.queryFirst('#one-radio').getSelectedValues(), ['one']);
     assert.equals(Prime.Document.queryFirst('#select').getSelectedValues(), ['one', 'three']);
     assert.isNull(Prime.Document.queryFirst('#text').getSelectedValues());
