@@ -71,15 +71,15 @@ Prime.Widgets.DateTimePicker = function(element) {
       '  </table>' +
       '  <div class="inputs">' +
       '    <div class="date">' +
-      '      <input size="2" maxlength="2" type="text" name="month">' + dateSeparator +
-      '      <input size="2" maxlength="2" type="text" name="day">' + dateSeparator +
-      '      <input size="4" maxlength="4" type="text" name="year">' +
+      '      <input size="2" maxlength="2" type="text" name="month" autocomplete="off"/>' + dateSeparator +
+      '      <input size="2" maxlength="2" type="text" name="day" autocomplete="off"/>' + dateSeparator +
+      '      <input size="4" maxlength="4" type="text" name="year" autocomplete="off"/>' +
       '    </div>' +
       '    <div class="time">' +
-      '      <input size="2" maxlength="2" type="text" name="hour">' + timeSeparator +
-      '      <input size="2" maxlength="2" type="text" name="minute">' + timeSeparator +
-      '      <input size="2" maxlength="2" type="text" name="second">' +
-      '      <input size="2" maxlength="2" type="text" name="am_pm">' +
+      '      <input size="2" maxlength="2" type="text" name="hour" autocomplete="off"/>' + timeSeparator +
+      '      <input size="2" maxlength="2" type="text" name="minute" autocomplete="off"/>' + timeSeparator +
+      '      <input size="2" maxlength="2" type="text" name="second" autocomplete="off"/>' +
+      '      <input size="2" maxlength="2" type="text" name="am_pm" autocomplete="off"/>' +
       '    </div>' +
       '  </div>' +
       '</div>';
@@ -105,6 +105,9 @@ Prime.Widgets.DateTimePicker = function(element) {
 
   this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth, this);
   this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth, this);
+
+  this.callback = null;
+  this.callbackContext = null;
 
   Prime.Document.addEventListener('click', this._handleGlobalClick, this);
   Prime.Document.addEventListener('keydown', this._handleGlobalKey, this);
@@ -310,6 +313,11 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.element.setValue(newDate.toISOString());
     }
     this.render();
+
+    if (this.callback !== null) {
+      this.callback.call(this.callbackContext, [this]);
+    }
+
     return this;
   },
 
@@ -356,6 +364,19 @@ Prime.Widgets.DateTimePicker.prototype = {
     this.datepicker.setLeft(this.element.getLeft());
     this.datepicker.setTop(this.element.getAbsoluteTop() + this.element.getHeight() + 8);
     new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
+    return this;
+  },
+
+  /**
+   * Sets the callback handler that is called with the DateTimePicker's value is changed.
+   *
+   * @param callback {Function} The callback function.
+   * @param context {*} The context for the callback.
+   * @return {Prime.Widgets.DateTimePicker} This.
+   */
+  withCallback: function(callback, context) {
+    this.callback = callback;
+    this.callbackContext = context;
     return this;
   },
 
@@ -573,6 +594,8 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.setDate(this.date);
       this.dayInput.domElement.setSelectionRange(0, this.dayInput.getValue().length);
       return false;
+    } else if (event.keyCode === Prime.Events.Keys.ENTER) {
+      this.date.setDate(parseInt(this.dayInput.getValue()));
     }
 
     return true;
@@ -653,6 +676,8 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.setDate(this.date);
       this.hourInput.domElement.setSelectionRange(0, this.hourInput.getValue().length);
       return false;
+    } else if (event.keyCode === Prime.Events.Keys.ENTER) {
+      this.date.setHours(parseInt(this.hourInput.getValue()));
     }
     return true;
   },
@@ -714,6 +739,8 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.setDate(this.date);
       this.minuteInput.domElement.setSelectionRange(0, this.minuteInput.getValue().length);
       return false;
+    } else if (event.keyCode === Prime.Events.Keys.ENTER) {
+      this.date.setMinutes(parseInt(this.minuteInput.getValue()));
     }
     return true;
   },
@@ -758,6 +785,8 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.setDate(this.date);
       this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
       return false;
+    } else if (event.keyCode === Prime.Events.Keys.ENTER) {
+      this.date.setMonth(parseInt(this.monthInput.getValue()) - 1);
     }
     return true;
   },
@@ -802,6 +831,8 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.setDate(this.date);
       this.secondInput.domElement.setSelectionRange(0, this.secondInput.getValue().length);
       return false;
+    } else if (event.keyCode === Prime.Events.Keys.ENTER) {
+      this.date.setSeconds(parseInt(this.secondInput.getValue()));
     }
     return true;
   },
@@ -844,6 +875,8 @@ Prime.Widgets.DateTimePicker.prototype = {
         this.monthInput.focus();
       }
       return false;
+    } else if (event.keyCode === Prime.Events.Keys.ENTER) {
+      this.date.setFullYear(parseInt(this.yearInput.getValue()));
     }
     return true;
   },
