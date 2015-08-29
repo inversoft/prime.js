@@ -24,13 +24,13 @@ Prime.Widgets = Prime.Widgets || {};
  */
 Prime.Widgets.SideMenu = function(element) {
 
-  // Setup initial options
-  this._setInitialOptions();
-
   // Add the Open Button to the element
   this.element = element;
   this.element.addClass('prime-side-menu');
   this.element.insertHTMLAfterBegin('<div class="prime-side-menu-button prime-menu-open">' + Prime.Widgets.SideMenu.MENU_CHARACTER + '</div>');
+
+  // Setup initial options
+  this._setInitialOptions();
 
   // Wrap the ul and then move to the end of the body.
   var menu = this.element.queryFirst('ul');
