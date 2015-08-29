@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
     <script type="text/javascript" src="../../main/js/Browser.js"></script>
     <script type="text/javascript" src="../../main/js/Date.js"></script>
@@ -44,6 +45,7 @@
     <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
       var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
@@ -109,6 +111,8 @@
         new Prime.Widgets.DateTimePicker(Prime.Document.queryByID('datepicker2'))
             .render();
 
+        new Prime.Widgets.SideMenu(Prime.Document.queryByID('side-menu'));
+
         Prime.Window.addEventListener('beforeunload', function(event) {
           console.log('Beforeunload');
         });
@@ -121,6 +125,13 @@
     </style>
   </head>
   <body>
+    <div id="side-menu">
+      <ul>
+        <li><strong>foo</strong></li>
+        <li><a href="#">bar</a></li>
+        <li><a href="#">baz</a></li>
+      </ul>
+    </div>
     <div class="datepicker" style="margin-bottom: 50px;">
       <form>
         <input id="datepicker1" type="text" name="datepicker" size="40">
@@ -210,4 +221,76 @@
     </div>
     <div id="draggable" style="right: 50px; width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br><button id="destroy-draggable">Destroy</button></div>
   </body>
+  <style>
+    .collapsible-container {
+      background-color: lightblue;
+      height: 300px;
+      overflow:hidden;
+    }
+  </style>
+  <table id="collapse">
+    <tbody>
+    <tr>
+      <td>
+        <span>foo</span>
+        <table>
+          <tbody>
+          <tr><td>r1 c1</td><td>r1 c2</td></tr>
+          <tr><td>r2 c1</td><td>r2 c2</td></tr>
+          <tr><td>r3 c1</td><td>r3 c2</td></tr>
+          <tr><td>r4 c1</td><td>r4 c2</td></tr>
+          <tr><td>r5 c1</td><td>r5 c2</td></tr>
+          <tr><td>r6 c1</td><td>r6 c2</td></tr>
+          <tr><td>r7 c1</td><td>r7 c2</td></tr>
+          <tr><td>r8 c1</td><td>r8 c2</td></tr>
+          </tbody>
+        </table>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+  <script>
+    var table = Prime.Document.queryByID('collapse');
+    var td = table.queryFirst('td');
+
+    td.wrapInnerHTML('<div>', {'class': 'collapsible-container'});
+
+    var container = null;
+    var originalHeight = null;
+    var lastHeight = null;
+
+    td.addEventListener('click', function(event) {
+
+      if (container === null) {
+        container = td.queryFirst('div');
+        originalHeight = container.getHeight();
+        lastHeight = container.getHeight();
+        console.info(originalHeight);
+      }
+
+      console.info('last: ' + lastHeight);
+      console.info('originalHeight: ' + originalHeight);
+      var timerId = setInterval(function() {
+
+
+        if (lastHeight < 25) {
+
+          if ((container.getHeight() + 3) > originalHeight) {
+            container.setHeight(originalHeight);
+            lastHeight = container.getHeight();
+            clearInterval(timerId);
+          }
+          container.setHeight(container.getHeight() + 3);
+
+        } else {
+          if ((container.getHeight() - 3) < 20) {
+            lastHeight = container.getHeight();
+            clearInterval(timerId);
+          }
+          container.setHeight(container.getHeight() - 3);
+        }
+
+      }, 1);
+    }, this);
+  </script>
 </html>
