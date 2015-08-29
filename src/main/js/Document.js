@@ -140,6 +140,27 @@ Prime.Document.appendHTML = function(html) {
 };
 
 /**
+ * Moves the given element by appending it to the element provided by the second argument.
+ *
+ * @param {Element|Prime.Document.Element} element The element to move.
+ * @param {Element|Prime.Document.Element} appendToElement [appendToElement=body] The element to append to, defaults to the body if not provided.
+ * @returns {Prime.Document.Element} The element that has been moved.
+ */
+Prime.Document.move = function(element, appendToElement) {
+  element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
+
+  if (typeof appendToElement === 'undefined' || appendToElement === null) {
+    appendToElement = new Prime.Document.Element(document.body);
+  } else {
+    appendToElement = (appendToElement instanceof Prime.Document.Element) ? appendToElement : new Prime.Document.Element(appendToElement);
+  }
+
+  appendToElement.appendHTML(element.getOuterHTML());
+  element.removeFromDOM();
+  return appendToElement.getLastChild();
+};
+
+/**
  * Queries the DOM using the given selector starting at the given element and returns all the matched elements.
  *
  * @param {string} selector The selector.

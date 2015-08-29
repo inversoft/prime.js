@@ -380,6 +380,14 @@ buster.testCase('Element class tests', {
     assert.equals(options[2].getValue(), 'three');
   },
 
+  'getOuterHTML': function() {
+    var element = Prime.Document.queryByID('html');
+    element.setHTML('these pretzels are making me thirsty.');
+
+    assert.equals(element.getOuterHTML(), '<div id="html">these pretzels are making me thirsty.</div>');
+    assert.equals(element.getOuterHTML(), element.domElement.outerHTML);
+  },
+
   'getPreviousSibling': function() {
     assert.isNull(Prime.Document.queryFirst('#queryOne').getPreviousSibling());
     assert.equals(Prime.Document.queryFirst('#queryTwo').getPreviousSibling().getID(), 'queryOne');

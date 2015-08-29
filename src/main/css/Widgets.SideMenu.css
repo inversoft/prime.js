@@ -1,0 +1,117 @@
+/*
+ * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *   http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing,
+ * software distributed under the License is distributed on an
+ * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific
+ * language governing permissions and limitations under the License.
+ */
+
+.prime-side-menu {
+  display: inline-block;
+  float: left;
+  margin-right: 2%;
+  margin-top: -14px;
+}
+
+.prime-side-menu-button {
+  font-size: 3.5rem;
+  font-weight: 300;
+  width: auto;
+  color: #818181;
+
+  padding: 0px 10px 0px 10px;
+  align-content: center;
+}
+
+.prime-side-menu-button.prime-menu-close {
+  margin-top: 6px;
+  float: right;
+}
+
+.prime-side-menu-button span {
+  vertical-align: middle;
+  text-align: center;
+  height: 40px;
+  width: 40px;
+}
+
+.prime-side-menu-list {
+  position: fixed;
+  width: 0px;
+  height: 100%;
+  top: 0px;
+  z-index: 1000;
+  font-size: 1rem;
+  font-weight: 300;
+  transition-property: width;
+  transition-duration: 0.35s;
+  overflow: scroll;
+  white-space: nowrap;
+  background: #FFFFFF;
+}
+
+.prime-side-menu-list ul {
+  list-style: none;
+  padding-top: 2em;
+  font-size: 1.5em;
+  line-height: 1.6;
+}
+
+.prime-side-menu-list ul li strong {
+  display: block;
+  font-weight: 400;
+  font-size: 1.0em;
+  margin-top: 1.5em;
+  padding-left: 0em;
+}
+
+.prime-side-menu-list ul li {
+  margin-bottom: 0px;
+  margin-left: 10px;
+}
+
+.prime-side-menu-list ul li a {
+  display: block;
+  font-weight: 300;
+  font-size: 0.9em;
+  color: #4C4C4C;
+  margin-bottom: 0px;
+  padding: 0.5em;
+}
+
+.prime-side-menu-list ul li a:hover {
+  background-image:
+  linear-gradient(
+      to right,
+      #FDFDFD, rgba(229, 0, 65, 0.3)
+  );
+}
+
+.prime-side-menu-list.prime-menu-open {
+  width: 240px;
+  list-style: none;
+
+  -webkit-box-shadow: 6px 0px 15px -7px rgba(0,0,0,0.75);
+  -moz-box-shadow: 6px 0px 15px -7px rgba(0,0,0,0.75);
+  box-shadow: 6px 0px 15px -7px rgba(0,0,0,0.75);
+
+  -webkit-transition: width 0.35s ease-out;
+  -moz-transition:    width 0.35s ease-out;
+  -ms-transition:     width 0.35s ease-out;
+  -o-transition:      width 0.35s ease-out;
+  transition:         width 0.35s ease-out;
+}
+
+@media(min-width: 820px) {
+  .prime-side-menu-list ul {
+    padding-left: 15px;
+  }
+}

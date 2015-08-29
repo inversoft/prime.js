@@ -487,6 +487,15 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Gets the outer HTML content of the Element.
+   *
+   * @returns {string} The outer HTML content.
+   */
+  getOuterHTML: function() {
+    return this.domElement.outerHTML;
+  },
+
+  /**
    * Gets the outer width of the element, including the margins. This does not include the padding or borders.
    *
    * @returns {number} The outer width of the element.
@@ -732,6 +741,17 @@ Prime.Document.Element.prototype = {
    */
   insertHTMLAfter: function(html) {
     this.domElement.insertAdjacentHTML('afterend', html);
+    return this;
+  },
+
+  /**
+   * Inserts the given HTML snippet inside this element, before its first child.
+   *
+   * @param {string} html The HTML string.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  insertHTMLAfterBegin: function(html) {
+    this.domElement.insertAdjacentHTML('afterbegin', html);
     return this;
   },
 
@@ -1366,6 +1386,20 @@ Prime.Document.Element.prototype = {
       this.domElement.style.display = displayValue;
     }
 
+    return this;
+  },
+
+  /**
+   * Builds a new element using the given HTML snippet (currently this only supports the tag).
+   *
+   * @param {string} elementString The element string.
+   * @param {Object} [properties={}] The properties for the new element.
+   * @returns {Prime.Document.Element} A new Prime.Document.Element.
+   */
+  wrapInnerHTML: function(elementString, properties) {
+    var element = Prime.Document.newElement(elementString, properties);
+    element.setHTML(this.getOuterHTML());
+    this.domElement.outerHTML = element.domElement.outerHTML;
     return this;
   },
 

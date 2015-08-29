@@ -93,7 +93,11 @@
             render();
 
         new Prime.Widgets.Tabs(Prime.Document.queryByID('tabs'));
-        var draggable = new Prime.Widgets.Draggable(Prime.Document.queryByID('draggable'));
+        var dragElement = Prime.Document.queryByID('draggable');
+        dragElement.setLeft(document.body.clientWidth - 300);
+        dragElement.setTop(50);
+        var draggable = new Prime.Widgets.Draggable(dragElement);
+
         var destroy = Prime.Document.queryByID('destroy-draggable').addEventListener('click', function() {
           draggable.destroy();
           return false;
