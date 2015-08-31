@@ -265,3 +265,10 @@
 .prime-date-picker .inputs input:focus {
   outline: none;
 }
+
+/* Set font-size on mobile to 16px to prevent Safari from zooming */
+@media (max-width: 750px) {
+  .prime-date-picker .inputs input {
+    font-size: 16px;
+  }
+}
