@@ -16,6 +16,9 @@
 
 ul.prime-tabs {
   border-bottom: 1px solid #AAA;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   display: inline-block;
   line-height: 27px;
   list-style: none;
@@ -73,7 +76,11 @@ ul.prime-tabs li:last-child a {
   border-bottom: 1px solid #aaa;
   border-left: 1px solid #aaa;
   border-right: 1px solid #aaa;
-  margin: -3px 0 0 0;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  /*margin: -3px 0 0 0;*/
+  margin: 0;
   padding: 10px;
   display: none;
 }

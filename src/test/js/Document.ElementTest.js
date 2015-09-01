@@ -478,6 +478,25 @@ buster.testCase('Element class tests', {
   },
 
   /**
+   * Tests the isInside function.
+   */
+  'isInside': function() {
+    var outer = Prime.Document.queryByID('query');
+    var inner1 = Prime.Document.queryByID('queryOne');
+    var inner2 = Prime.Document.queryByID('queryTwo');
+    var inner3 = Prime.Document.queryByID('queryThree');
+    assert.isTrue(inner1.isInside(outer));
+    assert.isTrue(inner2.isInside(outer));
+    assert.isTrue(inner3.isInside(outer));
+    assert.isFalse(inner1.isInside(inner2));
+    assert.isFalse(inner1.isInside(inner3));
+    assert.isFalse(inner2.isInside(inner1));
+    assert.isFalse(inner2.isInside(inner3));
+    assert.isFalse(inner3.isInside(inner1));
+    assert.isFalse(inner3.isInside(inner2));
+  },
+
+  /**
    * Tests inserting a new Element into the DOM after other elements.
    */
   'insertBefore': {

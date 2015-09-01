@@ -539,13 +539,6 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * @returns {boolean} True if the element is an option or radio and is selected, otherwise undefined.
-   */
-  isSelected: function() {
-    return this.domElement.selected;
-  },
-
-  /**
    * Retrieves the selected texts of this Element, if the element is a select. If it is anything else this returns
    * null.
    *
@@ -836,6 +829,28 @@ Prime.Document.Element.prototype = {
    */
   isFocused: function() {
     return document.activeElement === this.domElement;
+  },
+
+  /**
+   * Determines if the this element is inside the given element
+   *
+   * @param target {Prime.Document.Element} The target element.
+   * @returns {boolean} True if this element is inside the given element.
+   */
+  isInside: function(target) {
+    if (this.domElement === document.body || this.domElement === document.documentElement || this.domElement === document) {
+      return false;
+    }
+
+    var parent = this.parent();
+    while (parent.domElement !== document.body) {
+      if (parent.domElement === target.domElement) {
+        return true;
+      }
+      parent = parent.parent();
+    }
+
+    return false;
   },
 
   /**
