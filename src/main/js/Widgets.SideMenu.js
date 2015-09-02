@@ -26,24 +26,10 @@ Prime.Widgets.SideMenu = function(element) {
 
   // Add the Open Button to the element
   this.element = element;
-  this.element.addClass('prime-side-menu');
-  this.element.insertHTMLAfterBegin('<div class="prime-side-menu-button prime-menu-open">' + Prime.Widgets.SideMenu.MENU_CHARACTER + '</div>');
-
-  // Setup initial options
   this._setInitialOptions();
 
-  // Wrap the ul and then move to the end of the body.
-  var menu = this.element.queryFirst('ul');
-  this.menu = Prime.Document.move(menu, document.body);
-  this.menu.wrapInnerHTML('<div>', {'class': 'prime-side-menu-list'});
-  // Update the reference to the menu
-  this.menu = Prime.Document.queryLast('.prime-side-menu-list');
-  this.menu.insertHTMLAfterBegin('<div class="prime-side-menu-button prime-menu-close">' + Prime.Widgets.SideMenu.MENU_CHARACTER + '</div>');
-  this.menu.addClass('prime-side-menu-list');
-
-  // Set references and add click handlers
-  this.openButton = this.element.queryFirst('.prime-side-menu-button.prime-menu-open').addEventListener('click', this._handleOpenClick, this);
-  this.closeButton = this.menu.queryFirst('.prime-side-menu-button.prime-menu-close').addEventListener('click', this._handleCloseClick, this);
+  this.body = new Prime.Document.Element(document.body);
+  this.body.queryFirst('.prime-side-menu-button').addEventListener('click', this._handleClick, this);
 };
 
 Prime.Widgets.SideMenu.MENU_CHARACTER = '&#9776;';
@@ -53,11 +39,11 @@ Prime.Widgets.SideMenu.constructor = Prime.Widgets.SideMenu;
 Prime.Widgets.SideMenu.prototype = {
 
   /**
-   * Close the menu
+   * Open the menu
    * @returns {Prime.Widgets.SideMenu}
    */
   close: function() {
-    this.menu.removeClass('prime-menu-open');
+    this.body.removeClass('prime-side-menu-active');
     return this;
   },
 
@@ -66,8 +52,7 @@ Prime.Widgets.SideMenu.prototype = {
    * @returns {Prime.Widgets.SideMenu}
    */
   open: function() {
-    this.menu.setLeft(this.openButton.getLeft());
-    this.menu.addClass('prime-menu-open');
+    this.body.addClass('prime-side-menu-active');
     return this;
   },
 
@@ -96,22 +81,16 @@ Prime.Widgets.SideMenu.prototype = {
    * ===================================================================================================================*/
 
   /**
-   * Handle the close click event.
-   *
-   * @private
-   */
-  _handleCloseClick: function() {
-    this.close();
-    return false;
-  },
-
-  /**
    * Handle the open click event.
    *
    * @private
    */
-  _handleOpenClick: function() {
-    this.open();
+  _handleClick: function() {
+    if (this.body.hasClass('prime-side-menu-active')) {
+      this.close();
+    } else {
+      this.open();
+    }
     return false;
   },
 

@@ -1,39 +1,54 @@
 /*
  * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *   http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
- * either express or implied. See the License for the specific
- * language governing permissions and limitations under the License.
  */
 
 .prime-side-menu {
-  display: inline-block;
-  float: left;
-  margin-right: 2%;
-  margin-top: -14px;
+  top: 0px;
+  position: fixed;
+  width: 240px;
+  height: 100%;
+  overflow-y: scroll;
+  transition: transform 0.3s;
+  -webkit-transform: translateX(-260px);
+  -ms-transform: translateX(-240px);
+  transform: translateX(-240px);
 }
 
+body.prime-side-menu-active .prime-side-menu {
+  list-style: none;
+  z-index: 1000;
+
+  -webkit-transform: translateX(0);
+  -ms-transform: translateX(0);
+  transform: translateX(0);
+}
+
+div.main {
+  -webkit-transition: -webkit-transform 0.3s;
+  transition: transform 0.3s;
+}
+
+body.prime-side-menu-active div.main {
+  transform: translateX(240px);
+
+  overflow-x: hidden;
+  height: 100%;
+  position: fixed;
+}
+
+/* Menu Button */
 .prime-side-menu-button {
   font-size: 3.5rem;
   font-weight: 300;
   width: auto;
   color: #818181;
-
   padding: 0px 10px 0px 10px;
   align-content: center;
-}
-
-.prime-side-menu-button.prime-menu-close {
-  margin-top: 6px;
-  float: right;
+  float: left;
+  position: absolute;
+  left: 10px;
+  margin-top: -20px;
+  z-index: 2000;
 }
 
 .prime-side-menu-button span {
@@ -43,19 +58,16 @@
   width: 40px;
 }
 
+/* Menu Items */
 .prime-side-menu-list {
-  position: fixed;
-  width: 0px;
   height: 100%;
   top: 0px;
-  z-index: 1000;
   font-size: 1rem;
   font-weight: 300;
-  transition-property: width;
-  transition-duration: 0.35s;
+  color: #0388ba;
   overflow: scroll;
   white-space: nowrap;
-  background: #FFFFFF;
+  background: rgb(48, 47, 47);
 }
 
 .prime-side-menu-list ul {
@@ -63,55 +75,68 @@
   padding-top: 2em;
   font-size: 1.5em;
   line-height: 1.6;
+  display: inline-block;
+  width: 100%;
 }
 
 .prime-side-menu-list ul li strong {
   display: block;
   font-weight: 400;
-  font-size: 1.0em;
+  font-size: 1.8rem;
   margin-top: 1.5em;
-  padding-left: 0em;
+  padding-left: 0.5em;
 }
 
 .prime-side-menu-list ul li {
   margin-bottom: 0px;
-  margin-left: 10px;
+  margin-left: 0px;
+  padding-left: 0px;
 }
 
 .prime-side-menu-list ul li a {
   display: block;
   font-weight: 300;
-  font-size: 0.9em;
-  color: #4C4C4C;
+  font-size: 1.6rem;
+  color: #747474;
   margin-bottom: 0px;
-  padding: 0.5em;
+  padding: 0.5em 0.5em 0.5em 1.0em;
 }
 
 .prime-side-menu-list ul li a:hover {
+  color: #FFFFFF;
   background-image:
   linear-gradient(
       to right,
-      #FDFDFD, rgba(229, 0, 65, 0.3)
+      rgb(106, 103, 103), rgb(48, 47, 47)
   );
 }
 
-.prime-side-menu-list.prime-menu-open {
-  width: 240px;
-  list-style: none;
+@media all {
+  .prime-side-menu form {
+    margin-bottom: 0px;
+  }
 
-  -webkit-box-shadow: 6px 0px 15px -7px rgba(0,0,0,0.75);
-  -moz-box-shadow: 6px 0px 15px -7px rgba(0,0,0,0.75);
-  box-shadow: 6px 0px 15px -7px rgba(0,0,0,0.75);
+  .prime-side-menu form input {
+    border-radius: 0px;
+    border: none;
+    margin-bottom: 0px;
+  }
+}
 
-  -webkit-transition: width 0.35s ease-out;
-  -moz-transition:    width 0.35s ease-out;
-  -ms-transition:     width 0.35s ease-out;
-  -o-transition:      width 0.35s ease-out;
-  transition:         width 0.35s ease-out;
+@media(max-width: 820px) {
+  .prime-side-menu form {
+    width: 241px;
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+  .prime-side-menu form input {
+    border-radius: 0px;
+    border: none;
+  }
 }
 
 @media(min-width: 820px) {
-  .prime-side-menu-list ul {
-    padding-left: 15px;
+  .prime-side-menu form {
+    width: 200px;
   }
 }

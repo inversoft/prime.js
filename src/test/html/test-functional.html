@@ -126,171 +126,106 @@
   </head>
   <body>
     <div id="side-menu">
-      <ul>
-        <li><strong>foo</strong></li>
-        <li><a href="#">bar</a></li>
-        <li><a href="#">baz</a></li>
+      <div class="prime-side-menu">
+        <ul>
+          <li><strong>foo</strong></li>
+          <li><a href="#">bar</a></li>
+          <li><a href="#">baz</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="main">
+      <div class="prime-side-menu-button"><span>&#9776;</span></div>
+      <br>
+
+      <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">
+        <form>
+          <input id="datepicker1" type="text" name="datepicker" size="40">
+          <input id="datepicker2" type="text" name="datepicker" size="40" data-date-only="true">
+        </form>
+      </div>
+
+      <ul id="tabs">
+        <li><a href="#fooTab">Foo</a></li>
+        <li><a href="#barTab">Bar</a></li>
       </ul>
-    </div>
-    <div class="datepicker" style="margin-bottom: 50px;">
-      <form>
-        <input id="datepicker1" type="text" name="datepicker" size="40">
-        <input id="datepicker2" type="text" name="datepicker" size="40" data-date-only="true">
-      </form>
-    </div>
+      <div id="fooTab">
+        Foo Tab
+      </div>
+      <div id="barTab">
+        Bar Tab
+      </div>
+      <div style="height:25px;"></div>
 
-    <ul id="tabs">
-      <li><a href="#fooTab">Foo</a></li>
-      <li><a href="#barTab">Bar</a></li>
-    </ul>
-    <div id="fooTab">
-      Foo Tab
-    </div>
-    <div id="barTab">
-      Bar Tab
-    </div>
-    <div style="height:25px;"></div>
+      <div id="fade" style="border: 1px solid black;">
+        Some content in the div.
+        <p>
+          Some more content.
+      </div>
+      After
+      <div id="appear" style="border: 1px solid green; display: none;">
+        Some content in the div.
+        <p>
+          Some more content.
+      </div>
+      <button id="appearButton">Appear</button>
+      <div>
+        <form action="http://www.google.com" method="GET">
+          <label for="multiple-select-test">Multiple Select Test</label><br/>
+          <select id="multiple-select-test" multiple="multiple" name="mst">
+            <option value="one" selected="selected">One</option>
+            <option value="two">Two</option>
+            <option value="three" selected="selected">Three</option>
+          </select>
+          <label for="multiple-select-custom-add-disabled-test">Multiple Select Test (custom add disabled)</label><br/>
+          <select id="multiple-select-custom-add-disabled-test" multiple="multiple" name="mscadt">
+            <option value="one" selected="selected">One</option>
+            <option value="two">Two</option>
+            <option value="three" selected="selected">Three</option>
+          </select>
+          <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
+          <select id="multiple-select-lots-of-options" multiple="multiple" name="msloo">
+            <option value="one">One</option>
+            <option value="two">Two</option>
+            <option value="three">Three</option>
+            <option value="four">Four</option>
+            <option value="five">Five</option>
+            <option value="six">Six</option>
+            <option value="seven">Seven</option>
+            <option value="eight">Eight</option>
+            <option value="nine">Nine</option>
+            <option value="ten">Ten</option>
+            <option value="eleven">Eleven</option>
+            <option value="twelve">Twelve</option>
+            <option value="thirteen">Thirteen</option>
+            <option value="fourteen">Fourteen</option>
+            <option value="fifteen">Fifteen</option>
+            <option value="sixteen">Sixteen</option>
+            <option value="seventeen">Seventeen</option>
+            <option value="eighteen">Eighteen</option>
+            <option value="nineteen">Nineteen</option>
+            <option value="Twenty">Twenty</option>
+          </select>
+          <input type="submit" value="Submit"/>
+          <br/>
+          <br/>
+          <div class="prime-searcher-container">
+            <label for="searcher">Searcher</label>
+            <input type="text" id="searcher"/>
+            <div id="searcher-results">
 
-    <div id="fade" style="border: 1px solid black;">
-      Some content in the div.
-      <p>
-      Some more content.
-    </div>
-    After
-    <div id="appear" style="border: 1px solid green; display: none;">
-      Some content in the div.
-      <p>
-      Some more content.
-    </div>
-    <button id="appearButton">Appear</button>
-    <div>
-      <form action="http://www.google.com" method="GET">
-        <label for="multiple-select-test">Multiple Select Test</label><br/>
-        <select id="multiple-select-test" multiple="multiple" name="mst">
-          <option value="one" selected="selected">One</option>
-          <option value="two">Two</option>
-          <option value="three" selected="selected">Three</option>
-        </select>
-        <label for="multiple-select-custom-add-disabled-test">Multiple Select Test (custom add disabled)</label><br/>
-        <select id="multiple-select-custom-add-disabled-test" multiple="multiple" name="mscadt">
-          <option value="one" selected="selected">One</option>
-          <option value="two">Two</option>
-          <option value="three" selected="selected">Three</option>
-        </select>
-        <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
-        <select id="multiple-select-lots-of-options" multiple="multiple" name="msloo">
-          <option value="one">One</option>
-          <option value="two">Two</option>
-          <option value="three">Three</option>
-          <option value="four">Four</option>
-          <option value="five">Five</option>
-          <option value="six">Six</option>
-          <option value="seven">Seven</option>
-          <option value="eight">Eight</option>
-          <option value="nine">Nine</option>
-          <option value="ten">Ten</option>
-          <option value="eleven">Eleven</option>
-          <option value="twelve">Twelve</option>
-          <option value="thirteen">Thirteen</option>
-          <option value="fourteen">Fourteen</option>
-          <option value="fifteen">Fifteen</option>
-          <option value="sixteen">Sixteen</option>
-          <option value="seventeen">Seventeen</option>
-          <option value="eighteen">Eighteen</option>
-          <option value="nineteen">Nineteen</option>
-          <option value="Twenty">Twenty</option>
-        </select>
-        <input type="submit" value="Submit"/>
-        <br/>
-        <br/>
-        <div class="prime-searcher-container">
-          <label for="searcher">Searcher</label>
-          <input type="text" id="searcher"/>
-          <div id="searcher-results">
-
+            </div>
           </div>
-        </div>
-        <br/>
-        <br/>
-        <label for="phrase-builder">Phrase Builder</label>
-        <select id="phrase-builder" multiple="multiple">
-          <option value="one">one</option>
-          <option value="ten">ten</option>
-        </select>
-      </form>
+          <br/>
+          <br/>
+          <label for="phrase-builder">Phrase Builder</label>
+          <select id="phrase-builder" multiple="multiple">
+            <option value="one">one</option>
+            <option value="ten">ten</option>
+          </select>
+        </form>
+      </div>
+      <div id="draggable" style="right: 50px; width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br><button id="destroy-draggable">Destroy</button></div>
     </div>
-    <div id="draggable" style="right: 50px; width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br><button id="destroy-draggable">Destroy</button></div>
   </body>
-  <style>
-    .collapsible-container {
-      background-color: lightblue;
-      height: 300px;
-      overflow:hidden;
-    }
-  </style>
-  <table id="collapse">
-    <tbody>
-    <tr>
-      <td>
-        <span>foo</span>
-        <table>
-          <tbody>
-          <tr><td>r1 c1</td><td>r1 c2</td></tr>
-          <tr><td>r2 c1</td><td>r2 c2</td></tr>
-          <tr><td>r3 c1</td><td>r3 c2</td></tr>
-          <tr><td>r4 c1</td><td>r4 c2</td></tr>
-          <tr><td>r5 c1</td><td>r5 c2</td></tr>
-          <tr><td>r6 c1</td><td>r6 c2</td></tr>
-          <tr><td>r7 c1</td><td>r7 c2</td></tr>
-          <tr><td>r8 c1</td><td>r8 c2</td></tr>
-          </tbody>
-        </table>
-      </td>
-    </tr>
-    </tbody>
-  </table>
-  <script>
-    var table = Prime.Document.queryByID('collapse');
-    var td = table.queryFirst('td');
-
-    td.wrapInnerHTML('<div>', {'class': 'collapsible-container'});
-
-    var container = null;
-    var originalHeight = null;
-    var lastHeight = null;
-
-    td.addEventListener('click', function(event) {
-
-      if (container === null) {
-        container = td.queryFirst('div');
-        originalHeight = container.getHeight();
-        lastHeight = container.getHeight();
-        console.info(originalHeight);
-      }
-
-      console.info('last: ' + lastHeight);
-      console.info('originalHeight: ' + originalHeight);
-      var timerId = setInterval(function() {
-
-
-        if (lastHeight < 25) {
-
-          if ((container.getHeight() + 3) > originalHeight) {
-            container.setHeight(originalHeight);
-            lastHeight = container.getHeight();
-            clearInterval(timerId);
-          }
-          container.setHeight(container.getHeight() + 3);
-
-        } else {
-          if ((container.getHeight() - 3) < 20) {
-            lastHeight = container.getHeight();
-            clearInterval(timerId);
-          }
-          container.setHeight(container.getHeight() - 3);
-        }
-
-      }, 1);
-    }, this);
-  </script>
 </html>
