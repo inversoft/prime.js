@@ -381,10 +381,14 @@ buster.testCase('Element class tests', {
   },
 
   'getOuterHTML': function() {
-    var element = Prime.Document.queryByID('html');
+    var element = Prime.Document.newElement('<div>').setID('getOuterHTML');
+    var body = new Prime.Document.Element(document.body);
+    body.appendElement(element);
+
+    element = Prime.Document.queryByID('getOuterHTML');
     element.setHTML('these pretzels are making me thirsty.');
 
-    assert.equals(element.getOuterHTML(), '<div id="html">these pretzels are making me thirsty.</div>');
+    assert.equals(element.getOuterHTML(), '<div id="getOuterHTML">these pretzels are making me thirsty.</div>');
     assert.equals(element.getOuterHTML(), element.domElement.outerHTML);
   },
 
