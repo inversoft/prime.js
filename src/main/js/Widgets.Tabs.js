@@ -50,7 +50,7 @@ Prime.Widgets.Tabs = function(element) {
   this.tabs = {};
 
   var firstTabId = null;
-  this.tabsContainer.query('li').each(function(tab) {
+  this.tabsContainer.query('li:not(prime-disabled)').each(function(tab) {
     var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
     var contentId = a.getAttribute('href').substring(1);
     var content = Prime.Document.queryByID(contentId);
@@ -60,17 +60,19 @@ Prime.Widgets.Tabs = function(element) {
 
     content.hide();
 
-    if (!tab.hasClass('prime-disabled')) {
-      content.addClass('prime-tab-content');
+    //if (!tab.hasClass('prime-disabled')) {
       content.addClass('prime-tab-content');
       this.tabContents[contentId] = content;
       this.tabs[contentId] = tab;
 
       if (firstTabId === null) {
         firstTabId = contentId;
+        tab.addClass('first-child');
       }
-    }
+    //}
   }, this);
+
+  this.tabsContainer.queryLast('li:not("prime-disabled")').addClass('last-child');
 
   this.selectTab(firstTabId);
   this.tabsContainer.addClass('prime-initialized');
