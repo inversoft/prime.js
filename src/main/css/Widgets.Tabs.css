@@ -60,7 +60,7 @@ ul.prime-tabs li.prime-active a {
   pointer-events: none;
 }
 
-ul.prime-tabs li:first-child a {
+ul.prime-tabs li:first-child:not(:hidden) a {
   border-left: 1px solid #aaa;
   border-radius: 3px 0 0 0;
   margin-left: 10px;

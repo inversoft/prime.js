@@ -94,7 +94,13 @@
         new Prime.Widgets.PhraseBuilder(Prime.Document.queryByID('phrase-builder'), searcherCallback.search, searcherCallback).
             render();
 
-        new Prime.Widgets.Tabs(Prime.Document.queryByID('tabs'));
+        var tabs = new Prime.Widgets.Tabs(Prime.Document.queryByID('tabs'));
+        Prime.Document.queryByID('hide-foo').addEventListener('click', function() {
+          tabs.hideTab('fooTab');
+        });
+        Prime.Document.queryByID('show-foo').addEventListener('click', function() {
+          tabs.showTab('fooTab');
+        });
         var dragElement = Prime.Document.queryByID('draggable');
         dragElement.setLeft(document.body.clientWidth - 300);
         dragElement.setTop(50);
@@ -147,12 +153,18 @@
       <ul id="tabs">
         <li><a href="#fooTab">Foo</a></li>
         <li><a href="#barTab">Bar</a></li>
+        <li><a href="#bazTab">Baz</a></li>
       </ul>
       <div id="fooTab">
         Foo Tab
       </div>
       <div id="barTab">
         Bar Tab
+      </div>
+      <div id="bazTab">
+        Baz Tab
+        <a href="#" id="hide-foo">Hide Foo Tab</a>
+        <a href="#" id="show-foo">Show Foo Tab</a>
       </div>
       <div style="height:25px;"></div>
 

@@ -29,101 +29,132 @@ Prime.Widgets = Prime.Widgets || {};
  * @constructor
  */
 Prime.Widgets.Tabs = function(element) {
-
-  this.activeTab = 0;
   this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
+
   if (this.element.getTagName().toLowerCase() === 'ul') {
-    this.tabs = this.element;
+    this.tabsContainer = this.element;
   } else {
-    this.tabs = Prime.Document.queryFirst('ul', this.element);
+    this.tabsContainer = this.element.queryFirst('ul');
   }
 
-  if (this.tabs === null) {
+  if (this.tabsContainer === null) {
     throw new TypeError('Tabs requires a ul element. The passed element does not contain a ul element');
   }
 
-  if (this.tabs.hasClass('prime-initialized')) {
+  if (this.tabsContainer.hasClass('prime-initialized')) {
     throw new Error('This element has already been initialized. Call destroy before initializing again.');
   }
 
-  this.tabs.hide().addClass('prime-tabs');
+  this.tabsContainer.hide().addClass('prime-tabs');
   this.tabContents = {};
+  this.tabs = {};
 
-  var index = 0;
-  this.tabs.getChildren().each(function(tab) {
-    var a = Prime.Document.queryFirst('a', tab);
-    var contentId = a.getAttribute('href');
-    var content = Prime.Document.queryByID(contentId.substring(1));
+  var firstTabId = null;
+  this.tabsContainer.query('li').each(function(tab) {
+    var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
+    var contentId = a.getAttribute('href').substring(1);
+    var content = Prime.Document.queryByID(contentId);
     if (content === null) {
       throw new Error('A div is required with the following ID [' + a.getAttribute('href') + ']');
     }
+
     content.hide();
-    a.addEventListener('click', this._handleClick, this);
+
     if (!tab.hasClass('prime-disabled')) {
-      tab.setAttribute("data-tab-id", index++);
+      content.addClass('prime-tab-content');
       content.addClass('prime-tab-content');
       this.tabContents[contentId] = content;
+      this.tabs[contentId] = tab;
+
+      if (firstTabId === null) {
+        firstTabId = contentId;
+      }
     }
   }, this);
-  this.selectTab(this.activeTab);
-  this.tabs.addClass('prime-initialized');
-  this.tabs.show();
+
+  this.selectTab(firstTabId);
+  this.tabsContainer.addClass('prime-initialized');
+  this.tabsContainer.show();
 };
 
 Prime.Widgets.Tabs.prototype = {
-
   /**
    * Destroys the Tabs widget
    */
   destroy: function() {
-    this.tabs.getChildren().each(function(tab) {
-      tab.removeAttribute('data-tab-id').removeClass('prime-active');
+    this.tabsContainer.getChildren().each(function(tab) {
       var a = Prime.Document.queryFirst('a', tab);
       a.removeEventListener('click', this._handleClick);
     }, this);
     for (var id in this.tabContents) {
       this.tabContents[id].removeClass('prime-tab-content').show();
     }
-    this.tabs.removeClass('prime-tabs prime-initialized').show();
+    this.tabsContainer.removeClass('prime-tabs prime-initialized').show();
+  },
+
+  /**
+   * Hides the tab for the given Id.
+   *
+   * @param id The Id of the tab to hide.
+   */
+  hideTab: function(id) {
+    this.tabs[id].hide();
+    if (this.tabs[id].hasClass('prime-active')) {
+      for (var tabId in this.tabs) {
+        if (this.tabs.hasOwnProperty(tabId) && this.tabs[tabId].isVisible()) {
+          this.selectTab(tabId);
+        }
+      }
+    }
   },
 
   /**
    * Select the active tab. Sets the prime-active class on the li and shows only the corresponding tab content.
-   * @param index the index of the tab to activate
+   *
+   * @param id The Id of the tab to select.
    */
-  selectTab: function(index) {
-    this.tabs.getChildren().each(function(tab) {
-      tab.removeClass('prime-active');
-    }, this);
-    var tab = Prime.Document.queryFirst('li[data-tab-id="' + index + '"]', this.tabs);
-    tab.addClass('prime-active');
-    var contentId = Prime.Document.queryFirst('a', tab).getAttribute('href');
-
-    for (var id in this.tabContents) {
-      if (id === contentId) {
-        this.tabContents[id].show();
-      } else {
-        this.tabContents[id].hide();
+  selectTab: function(id) {
+    for (var tabId in this.tabs) {
+      if (this.tabs.hasOwnProperty(tabId)) {
+        this.tabs[tabId].removeClass('prime-active');
       }
     }
-    this.activeTab = index;
+
+    this.tabs[id].addClass('prime-active');
+    for (var tabId in this.tabContents) {
+      if (this.tabContents.hasOwnProperty(tabId) && tabId === id) {
+        this.tabContents[tabId].show();
+      } else {
+        this.tabContents[tabId].hide();
+      }
+    }
+  },
+
+  /**
+   * Shows the tab for the given Id.
+   *
+   * @param id The Id of the tab to hide.
+   */
+  showTab: function(id) {
+    this.tabs[id].show();
+    this.selectTab(id);
   },
 
   /* ===================================================================================================================
    * Private methods
    * ===================================================================================================================*/
 
-   /**
+  /**
    * Handle the tab click by showing the corresponding panel and hiding the others.
    * @param event
    * @private
    */
   _handleClick: function(event) {
-    var tab = new Prime.Document.Element(event.currentTarget).parent();
-    if (!tab.hasClass('prime-disabled')) {
-      var tabId = parseInt(tab.getAttribute("data-tab-id"));
-      this.selectTab(tabId);
+    var a = new Prime.Document.Element(event.currentTarget);
+    if (!a.hasClass('prime-disabled')) {
+      this.selectTab(a.getAttribute('href').substring(1));
     }
+
     return false;
   }
 };
