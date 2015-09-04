@@ -15,19 +15,28 @@
  */
 
 ul.prime-tabs {
-  border-bottom: 1px solid #AAA;
+  border-bottom: 1px solid #aaa;
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  display: inline-block;
-  line-height: 27px;
+  display: block;
+  line-height: 1.5em;
   list-style: none;
   margin: 0;
-  padding: 0;
+  padding: 0 0 1px 0;
   width: 100%;
 }
 
+ul.prime-tabs::after {
+  clear: both;
+  content: "";
+  display: table;
+}
+
 ul.prime-tabs li {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
   display: block;
   float: left;
   margin: 0;
@@ -42,12 +51,13 @@ ul.prime-tabs li a {
   border-top: 1px solid #aaa;
   border-right: 1px solid #aaa;
   color: #000;
+  cursor: pointer;
   font-size: 11px;
   font-weight: bold;
+  margin: 0;
   padding: 7px 10px 7px 10px;
   text-decoration: none;
   text-transform: uppercase;
-  cursor: pointer;
 }
 
 ul.prime-tabs li a:hover {
@@ -79,8 +89,9 @@ ul.prime-tabs li.last-child a {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
-  /*margin: -3px 0 0 0;*/
+  clear: both;
+  display: none;
   margin: 0;
   padding: 10px;
-  display: none;
+  width: 100%;
 }

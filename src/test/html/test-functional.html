@@ -19,6 +19,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Prime Functional Tests</title>
+    <link rel="stylesheet" href="../css/normalize-3.0.2.css"/>
     <link rel="stylesheet" href="../js/buster-test.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
@@ -127,6 +128,9 @@
       #multiple-select-lots-of-options-display {
         width: 300px;
       }
+      body {
+        margin: 10px;
+      }
     </style>
   </head>
   <body>
@@ -150,6 +154,8 @@
         </form>
       </div>
 
+      <a href="#" id="hide-foo">Hide Foo Tab</a>
+      <a href="#" id="show-foo">Show Foo Tab</a>
       <ul id="tabs">
         <li><a href="#fooTab">Foo</a></li>
         <li><a href="#barTab">Bar</a></li>
@@ -163,8 +169,6 @@
       </div>
       <div id="bazTab">
         Baz Tab
-        <a href="#" id="hide-foo">Hide Foo Tab</a>
-        <a href="#" id="show-foo">Show Foo Tab</a>
       </div>
       <div style="height:25px;"></div>
 

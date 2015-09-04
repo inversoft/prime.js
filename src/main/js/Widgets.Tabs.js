@@ -48,35 +48,28 @@ Prime.Widgets.Tabs = function(element) {
   this.tabsContainer.hide().addClass('prime-tabs');
   this.tabContents = {};
   this.tabs = {};
+  this.tabArray = [];
 
-  var firstTabId = null;
-  this.tabsContainer.query('li:not(prime-disabled)').each(function(tab) {
+  this.tabsContainer.query('li:not(.prime-disabled)').each(function(tab) {
     var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
-    var contentId = a.getAttribute('href').substring(1);
-    var content = Prime.Document.queryByID(contentId);
+    var dataSet = tab.getDataSet();
+    dataSet.tabId = a.getAttribute('href').substring(1);
+    var content = Prime.Document.queryByID(dataSet.tabId);
     if (content === null) {
-      throw new Error('A div is required with the following ID [' + a.getAttribute('href') + ']');
+      throw new Error('A div is required with the following ID [' + dataSet.tabId + ']');
     }
 
     content.hide();
 
-    //if (!tab.hasClass('prime-disabled')) {
-      content.addClass('prime-tab-content');
-      this.tabContents[contentId] = content;
-      this.tabs[contentId] = tab;
-
-      if (firstTabId === null) {
-        firstTabId = contentId;
-        tab.addClass('first-child');
-      }
-    //}
+    content.addClass('prime-tab-content');
+    this.tabContents[dataSet.tabId] = content;
+    this.tabs[dataSet.tabId] = tab;
+    this.tabArray.push(tab);
   }, this);
 
-  this.tabsContainer.queryLast('li:not("prime-disabled")').addClass('last-child');
-
-  this.selectTab(firstTabId);
   this.tabsContainer.addClass('prime-initialized');
   this.tabsContainer.show();
+  this.redraw();
 };
 
 Prime.Widgets.Tabs.prototype = {
@@ -88,10 +81,12 @@ Prime.Widgets.Tabs.prototype = {
       var a = Prime.Document.queryFirst('a', tab);
       a.removeEventListener('click', this._handleClick);
     }, this);
-    for (var id in this.tabContents) {
-      this.tabContents[id].removeClass('prime-tab-content').show();
+
+    for (var i = 0; i < this.tabs.length; i++) {
+      this.tabs[i].removeClass('prime-tab-content');
     }
-    this.tabsContainer.removeClass('prime-tabs prime-initialized').show();
+
+    this.tabsContainer.removeClass('prime-tabs prime-initialized');
   },
 
   /**
@@ -100,13 +95,43 @@ Prime.Widgets.Tabs.prototype = {
    * @param id The Id of the tab to hide.
    */
   hideTab: function(id) {
-    this.tabs[id].hide();
-    if (this.tabs[id].hasClass('prime-active')) {
-      for (var tabId in this.tabs) {
-        if (this.tabs.hasOwnProperty(tabId) && this.tabs[tabId].isVisible()) {
-          this.selectTab(tabId);
+    var tab = this.tabs[id];
+    tab.hide();
+    this.redraw();
+  },
+
+  /**
+   * Re-applies the first-child, last-child, and prime-active classes based on the current state of the tabs. If there
+   * is no tab that is active, this also selects the first tab that is visible.
+   */
+  redraw: function() {
+    var firstVisible = null;
+    var lastVisible = null;
+    var selectNew = false;
+    var noneActive = true;
+    for (var i = 0; i < this.tabArray.length; i++) {
+      if (this.tabArray[i].isVisible()) {
+        if (firstVisible === null) {
+          firstVisible = this.tabArray[i];
         }
+
+        lastVisible = this.tabArray[i];
+
+        if (this.tabArray[i].hasClass('prime-active')) {
+          noneActive = false;
+        }
+      } else if (this.tabArray[i].hasClass('prime-active')) {
+        selectNew = true;
       }
+
+      this.tabArray[i].removeClass('first-child last-child');
+    }
+
+    firstVisible.addClass('first-child');
+    lastVisible.addClass('last-child');
+
+    if (selectNew || noneActive) {
+      this.selectTab(firstVisible.getDataSet().tabId);
     }
   },
 
@@ -123,7 +148,7 @@ Prime.Widgets.Tabs.prototype = {
     }
 
     this.tabs[id].addClass('prime-active');
-    for (var tabId in this.tabContents) {
+    for (tabId in this.tabContents) {
       if (this.tabContents.hasOwnProperty(tabId) && tabId === id) {
         this.tabContents[tabId].show();
       } else {
@@ -139,7 +164,7 @@ Prime.Widgets.Tabs.prototype = {
    */
   showTab: function(id) {
     this.tabs[id].show();
-    this.selectTab(id);
+    this.redraw();
   },
 
   /* ===================================================================================================================
