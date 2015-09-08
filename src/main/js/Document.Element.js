@@ -1265,7 +1265,7 @@ Prime.Document.Element.prototype = {
     if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
       var name = this.domElement.name;
       var form = Prime.Document.queryUp('form', this.domElement);
-      Prime.Document.query('input[name=' + name + ']', form).each(function(element) {
+      Prime.Document.query('input[name="' + name + '"]', form).each(function(element) {
         element.setChecked(values.indexOf(element.getValue()) !== -1);
       });
     } else if (this.domElement.tagName === 'SELECT') {

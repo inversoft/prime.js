@@ -15,49 +15,24 @@
  */
 
 ul.prime-tabs {
-  border-bottom: 1px solid #aaa;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  display: block;
-  /*line-height: 1;*/
   list-style: none;
-  /*height: 23px;*/
   margin: 0;
-  padding: 0 0 1px 0;
-  width: 100%;
-}
-
-ul.prime-tabs::after {
-  clear: both;
-  content: "";
-  display: table;
+  padding: 0;
 }
 
 ul.prime-tabs li {
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  display: block;
+  border: solid #aaa;
+  border-width: 1px 1px 0 1px;
+  margin-right: -1px;
   float: left;
-  height: 23px;
-  margin: 0;
-  padding: 0;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  user-select: none;
 }
 
 ul.prime-tabs li a {
   background: #eee;
-  border-top: 1px solid #aaa;
-  border-right: 1px solid #aaa;
-  color: #000;
-  cursor: pointer;
-  font-size: 11px;
-  font-weight: bold;
-  height: 27px;
-  margin: 0;
+  color: black;
+  display: block;
+  font-size: 12px;
+  font-weight: 500;
   padding: 7px 10px 7px 10px;
   text-decoration: none;
   text-transform: uppercase;
@@ -69,32 +44,23 @@ ul.prime-tabs li a:hover {
 
 ul.prime-tabs li.prime-active a {
   background: #fff;
-  border-bottom: 1px solid #fff;
+  position: relative;
+  top: 1px;
   pointer-events: none;
 }
 
-ul.prime-tabs li.first-child a {
-  border-left: 1px solid #aaa;
+ul.prime-tabs li.first-child {
   border-radius: 3px 0 0 0;
   margin-left: 10px;
-  position: relative;
 }
 
-ul.prime-tabs li.last-child a {
+ul.prime-tabs li.last-child {
   border-radius: 0 3px 0 0;
 }
 
 .prime-tab-content {
-  background: #FFFFFF; /* old browsers */
-  border-bottom: 1px solid #aaa;
-  border-left: 1px solid #aaa;
-  border-right: 1px solid #aaa;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
+  border: 1px solid #aaa;
   clear: both;
   display: none;
-  margin: 0;
   padding: 10px;
-  width: 100%;
 }
