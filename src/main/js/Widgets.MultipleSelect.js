@@ -513,7 +513,7 @@ Prime.Widgets.MultipleSelect.prototype = {
   /**
    * Sets whether or not this MultipleSelect allows custom options to be added.
    *
-   * @param {string} enabled The flag.
+   * @param {boolean} enabled The flag.
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   withCustomAddEnabled: function(enabled) {
