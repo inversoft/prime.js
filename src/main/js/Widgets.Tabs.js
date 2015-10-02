@@ -45,6 +45,7 @@ Prime.Widgets.Tabs = function(element) {
     throw new Error('This element has already been initialized. Call destroy before initializing again.');
   }
 
+  this._setInitialOptions();
   this.tabsContainer.hide().addClass('prime-tabs');
   this.tabContents = {};
   this.tabs = {};
@@ -68,8 +69,6 @@ Prime.Widgets.Tabs = function(element) {
   }, this);
 
   this.tabsContainer.addClass('prime-initialized');
-  this.tabsContainer.show();
-  this.redraw();
 };
 
 Prime.Widgets.Tabs.prototype = {
@@ -133,6 +132,28 @@ Prime.Widgets.Tabs.prototype = {
     if (selectNew || noneActive) {
       this.selectTab(firstVisible.getDataSet().tabId);
     }
+
+    // If error class handling was enabled, add the error class to the tab and set focus
+    if (this.options.errorClass) {
+      for (var tabId in this.tabContents) {
+        var errorElement = this.tabContents[tabId].queryFirst('.' + this.options.errorClass);
+        if (errorElement !== null) {
+          this.tabs[tabId].queryFirst('a').addClass(this.options.errorClass);
+          this.selectTab(tabId);
+        }
+      }
+    }
+  },
+
+  /**
+   * Render the Tabs widget. Call this after you have set all the initial options.
+   *
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  render: function() {
+    this.tabsContainer.show();
+    this.redraw();
+    return this;
   },
 
   /**
@@ -167,6 +188,37 @@ Prime.Widgets.Tabs.prototype = {
     this.redraw();
   },
 
+  /**
+   * Enable error class handling. When this option is used, if the specified error class is found on any element
+   * in the tab content the same error class will be added to the tab to identify the tab contains errors.
+   *
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  withErrorClassHandling: function(errorClass) {
+    this.options['errorClass'] = errorClass;
+    return this;
+  },
+
+  /**
+   * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
+   * method to set options on the widget. The caller needs to know what properties are valid in the options object.
+   *
+   * @param {Object} options Key value pair of configuration options.
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  withOptions: function(options) {
+    if (typeof options === 'undefined' || options === null) {
+      return this;
+    }
+
+    for (var option in options) {
+      if (options.hasOwnProperty(option)) {
+        this.options[option] = options[option];
+      }
+    }
+    return this;
+  },
+
   /* ===================================================================================================================
    * Private methods
    * ===================================================================================================================*/
@@ -183,5 +235,23 @@ Prime.Widgets.Tabs.prototype = {
     }
 
     return false;
+  },
+
+  /**
+   * Set the initial options for this widget.
+   * @private
+   */
+  _setInitialOptions: function() {
+    // Defaults
+    this.options = {
+      'errorClass': null
+    };
+
+    var userOptions = Prime.Utils.dataSetToOptions(this.element);
+    for (var option in userOptions) {
+      if (userOptions.hasOwnProperty(option)) {
+        this.options[option] = userOptions[option];
+      }
+    }
   }
 };
