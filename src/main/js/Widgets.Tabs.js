@@ -50,22 +50,36 @@ Prime.Widgets.Tabs = function(element) {
   this.tabContents = {};
   this.tabs = {};
   this.tabArray = [];
+  this.selectedTab = null;
 
   this.tabsContainer.query('li:not(.prime-disabled)').each(function(tab) {
     var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
     var dataSet = tab.getDataSet();
-    dataSet.tabId = a.getAttribute('href').substring(1);
+
+    var href = a.getAttribute('href');
+    var isAnchor = href.charAt(0) === '#';
+    if (isAnchor) {
+      dataSet.tabId = href.substring(1);
+      dataSet.tabURL = '';
+    } else {
+      dataSet.tabId = href;
+      dataSet.tabURL = href;
+    }
+
+    this.tabs[dataSet.tabId] = tab;
+    this.tabArray.push(tab);
+
     var content = Prime.Document.queryByID(dataSet.tabId);
-    if (content === null) {
+    if (content === null && isAnchor) {
       throw new Error('A div is required with the following ID [' + dataSet.tabId + ']');
+    } else if (content === null) {
+      content = Prime.Document.newElement('<div>').insertAfter(this.element).setAttribute('id', href);
     }
 
     content.hide();
 
     content.addClass('prime-tab-content');
     this.tabContents[dataSet.tabId] = content;
-    this.tabs[dataSet.tabId] = tab;
-    this.tabArray.push(tab);
   }, this);
 
   this.tabsContainer.addClass('prime-initialized');
@@ -136,10 +150,12 @@ Prime.Widgets.Tabs.prototype = {
     // If error class handling was enabled, add the error class to the tab and set focus
     if (this.options.errorClass) {
       for (var tabId in this.tabContents) {
-        var errorElement = this.tabContents[tabId].queryFirst('.' + this.options.errorClass);
-        if (errorElement !== null) {
-          this.tabs[tabId].queryFirst('a').addClass(this.options.errorClass);
-          this.selectTab(tabId);
+        if (this.tabContents.hasOwnProperty(tabId)) {
+          var errorElement = this.tabContents[tabId].queryFirst('.' + this.options.errorClass);
+          if (errorElement !== null) {
+            this.tabs[tabId].queryFirst('a').addClass(this.options.errorClass);
+            this.selectTab(tabId);
+          }
         }
       }
     }
@@ -162,6 +178,10 @@ Prime.Widgets.Tabs.prototype = {
    * @param id The Id of the tab to select.
    */
   selectTab: function(id) {
+    if (this.selectedTab !== null && this.selectedTab.getDataSet().tabId === id) {
+      return;
+    }
+
     for (var tabId in this.tabs) {
       if (this.tabs.hasOwnProperty(tabId)) {
         this.tabs[tabId].removeClass('prime-active');
@@ -169,12 +189,25 @@ Prime.Widgets.Tabs.prototype = {
     }
 
     this.tabs[id].addClass('prime-active');
+    this.selectedTab = this.tabs[id];
     for (tabId in this.tabContents) {
       if (this.tabContents.hasOwnProperty(tabId) && tabId === id) {
         this.tabContents[tabId].show();
       } else {
         this.tabContents[tabId].hide();
       }
+    }
+
+    var ajaxURL = this.selectedTab.getDataSet().tabURL;
+    if (ajaxURL !== '') {
+      this.selectedTab.addClass('prime-loading');
+      this.tabContents[id].setHTML('');
+      this.tabContents[id].addClass('prime-loading');
+      new Prime.Ajax.Request(ajaxURL, 'GET')
+          .withSuccessHandler(this._handleAJAXResponse)
+          .withErrorHandler(this._handleAJAXResponse)
+          .withContext(this)
+          .go();
     }
   },
 
@@ -186,6 +219,17 @@ Prime.Widgets.Tabs.prototype = {
   showTab: function(id) {
     this.tabs[id].show();
     this.redraw();
+  },
+
+  /**
+   * Adds a callback for AJAX calls. This is invoked after the AJAX load completes and the HTML is inserted into the
+   * DOM. The function is passed the container for the tab that was selected.
+   *
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  withAJAXCallback: function(callback) {
+    this.options['ajaxCallback'] = callback;
+    return this;
   },
 
   /**
@@ -224,14 +268,37 @@ Prime.Widgets.Tabs.prototype = {
    * ===================================================================================================================*/
 
   /**
+   * Handles the AJAX response.
+   *
+   * @param {XMLHttpRequest} xhr The AJAX response.
+   * @private
+   */
+  _handleAJAXResponse: function(xhr) {
+    this.selectedTab.removeClass('prime-loading');
+    var container = this.tabContents[this.selectedTab.getDataSet().tabId];
+    container.removeClass('prime-loading');
+    container.setHTML(xhr.responseText);
+
+    if (this.options['ajaxCallback'] !== null) {
+      this.options['ajaxCallback'](container);
+    }
+  },
+
+  /**
    * Handle the tab click by showing the corresponding panel and hiding the others.
-   * @param event
+   *
+   * @param event The click event on the anchor tag.
    * @private
    */
   _handleClick: function(event) {
     var a = new Prime.Document.Element(event.currentTarget);
     if (!a.hasClass('prime-disabled')) {
-      this.selectTab(a.getAttribute('href').substring(1));
+      var href = a.getAttribute('href');
+      if (href.charAt(0) === '#') {
+        this.selectTab(href.substring(1));
+      } else {
+        this.selectTab(href);
+      }
     }
 
     return false;
@@ -244,6 +311,7 @@ Prime.Widgets.Tabs.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
+      'ajaxCallback': null,
       'errorClass': null
     };
 
