@@ -832,6 +832,14 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @return {boolean} True if this element is an INPUT, SELECT or TEXTAREA.
+   */
+  isInput: function() {
+    var tagName = this.getTagName();
+    return tagName === 'SELECT' || tagName === 'INPUT' || tagName === 'TEXTAREA';
+  },
+
+  /**
    * Determines if the this element is inside the given element
    *
    * @param target {Prime.Document.Element} The target element.

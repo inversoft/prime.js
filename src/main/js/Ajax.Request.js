@@ -243,7 +243,7 @@ Prime.Ajax.Request.prototype = {
 
     for (var i = 0; i < domElement.elements.length; i++) {
       var primeElement = new Prime.Document.Element(domElement.elements[i]);
-      if (primeElement.isDisabled()) {
+      if (primeElement.isDisabled() || !primeElement.isInput()) {
         continue;
       }
 
@@ -253,8 +253,10 @@ Prime.Ajax.Request.prototype = {
       }
 
       var values;
-      if (primeElement.getTagName() === 'SELECT' || type === 'radio' || type === 'checkbox') {
+      if (primeElement.getTagName() === 'SELECT' || type === 'checkbox') {
         values = primeElement.getSelectedValues();
+      } else if (type === 'radio' && !primeElement.isChecked()) {
+        continue;
       } else {
         values = primeElement.getValue();
       }
