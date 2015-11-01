@@ -1413,6 +1413,22 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Removes this element from the DOM while preserving the inner HTML.
+   *
+   * Example, call unwrap on the italic element:
+   *   <strong>Hello</strong><italic> World </italic> --> <strong>Hello</string> World
+   *   @returns {Prime.Document.Element} This Element.
+   */
+  unwrap: function() {
+    var parent = this.parent().domElement;
+    while (this.domElement.firstChild) {
+      parent.insertBefore(this.domElement.firstChild, this.domElement);
+    }
+
+    this.removeFromDOM();
+  },
+
+  /**
    * Builds a new element using the given HTML snippet (currently this only supports the tag).
    *
    * @param {string} elementString The element string.

@@ -1381,5 +1381,13 @@ buster.testCase('Element class tests', {
     var child = Prime.Document.queryByID('query').queryLast('.test');
     refute.isNull(child);
     assert.equals(child.getID(), 'queryThree')
+  },
+
+  'unwrap': function() {
+    var element = Prime.Document.queryByID('unwrap');
+    assert.equals(element.getHTML(), '<span>Unwrap</span> Me');
+    var span = element.queryFirst('span');
+    span.unwrap();
+    assert.equals(element.getHTML(), 'Unwrap Me');
   }
 });
