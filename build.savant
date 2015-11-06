@@ -3,7 +3,7 @@
  */
 savantVersion = "0.4.4"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "0.34.2", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "0.34.3", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -15,6 +15,7 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "0.34.2", licen
   publications {
     main {
       publication(name: "prime", type: "js", file: "build/js/prime.js", source: "build/js/prime.js")
+      publication(name: "prime-min", type: "js", file: "build/js/prime-min.js", source: "build/js/prime.js")
       publication(name: "prime", type: "css", file: "build/css/prime.css", source: "build/css/prime.css")
       /* Publish each stylesheet */
       new File("src/main/css").eachFile { file ->
@@ -40,6 +41,9 @@ target(name: "int", description: "Releases a local integration build of the proj
   file.append(to: "build/js/prime.js") {
     fileSet(dir: "src/main/js", includePatterns: [~/.+\.js/], excludePatterns: [~/.+\/.+/])
   }
+
+  def process = "uglifyjs build/js/prime.js".execute()
+  new File("build/js/prime-min.js") << process.text
 
   /* Build a monolithic stylesheet */
   file.prune(dir: "build/css")
