@@ -253,9 +253,9 @@ Prime.Ajax.Request.prototype = {
       }
 
       var values;
-      if (primeElement.getTagName() === 'SELECT' || type === 'checkbox') {
+      if (primeElement.getTagName() === 'SELECT') {
         values = primeElement.getSelectedValues();
-      } else if (type === 'radio' && !primeElement.isChecked()) {
+      } else if ((type === 'radio' || type === 'checkbox') && !primeElement.isChecked()) {
         continue;
       } else {
         values = primeElement.getValue();
