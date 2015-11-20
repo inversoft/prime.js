@@ -35,6 +35,8 @@ Prime.Document.ElementList = function(elements) {
   }
 };
 
+Prime.Document.ElementList.proxiedMethods = ['addClass', 'addEventListener', 'removeAttribute', 'removeClass', 'removeFromDOM'];
+
 Prime.Document.ElementList.prototype = {
   /**
    * Iterates over each of the Prime.Document.Element objects in this ElementList and calls the given function for each one.
@@ -88,3 +90,21 @@ Prime.Document.ElementList.prototype = {
     return this;
   }
 };
+
+/**
+ * Extend the prototype to proxy functions to Prime.Document.ElementList.
+ */
+(function() {
+  for (var i = 0; i < Prime.Document.ElementList.proxiedMethods.length; i++) {
+    var method = Prime.Document.ElementList.proxiedMethods[i];
+    // To capture the method pass the method name to a function that returns a function.
+    Prime.Document.ElementList.prototype[method] = (function(method) {
+      return function() {
+        for (var j=0; j < this.length; j++) {
+          // Use Function.prototype.apply() because it accepts an arguments array.
+          this[j][method].apply(this[j], arguments);
+        }
+      };
+    })(method);
+  }
+})();

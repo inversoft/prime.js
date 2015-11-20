@@ -98,5 +98,18 @@ buster.testCase('ElementList class tests', {
     assert.equals(list.indexOf(two.domElement), 1);
     assert.equals(list.indexOf(outside), -1);
     assert.equals(list.indexOf(outside.domElement), -1);
+  },
+
+  'addClass': function() {
+    var container = Prime.Document.queryByID("query");
+    var list = Prime.Document.query("p", container);
+
+    var one = Prime.Document.queryByID("queryOne");
+    var two = Prime.Document.queryByID("queryTwo");
+
+    list.addClass('foobar');
+
+    assert.isTrue(one.hasClass('foobar'));
+    assert.isTrue(two.hasClass('foobar'));
   }
 });
