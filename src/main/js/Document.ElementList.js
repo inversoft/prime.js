@@ -35,9 +35,35 @@ Prime.Document.ElementList = function(elements) {
   }
 };
 
-Prime.Document.ElementList.proxiedMethods = ['addClass', 'addEventListener', 'removeAttribute', 'removeClass', 'removeFromDOM'];
-
 Prime.Document.ElementList.prototype = {
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.addClass} on each Element in the ElementList.
+   *
+   * Adds the given class (or list of space separated classes) to all Elements in this ElementList.
+   *
+   * @param {string} classNames The class name(s) separated by a space.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  addClass: function(classNames) {
+    return this._proxyToElement('addClass', classNames);
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.addEventListener} on each Element in the ElementList.
+   *
+   * Attaches an event listener to all Elements in this ElementList.
+   *
+   * @param {string} event The name of the event.
+   * @param {Function} listener The event listener function.
+   * @param {Object} [context=this] The context to use when invoking the handler (this sets the 'this' variable for the
+   *        function call). Defaults to this Element.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  addEventListener: function(event, listener, context) {
+    return this._proxyToElement('addEventListener', event, listener, context);
+  },
+
   /**
    * Iterates over each of the Prime.Document.Element objects in this ElementList and calls the given function for each one.
    * The 'this' variable inside the function will be the current Prime.Document.Element unless a context value is provided
@@ -88,23 +114,38 @@ Prime.Document.ElementList.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.removeClass} on each Element in the ElementList.
+   *
+   * Removes the given class (or list of space separated classes) from all Elements in this ElementList.
+   *
+   * @param {string} classNames The class name(s) separated by a space.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  removeClass: function(classNames) {
+    return this._proxyToElement('removeClass', classNames);
+  },
+
+  /* ===================================================================================================================
+   * Private methods
+   * ===================================================================================================================*/
+
+  /**
+   * Proxy function calls to each Element in the ElementList.
+   * The first parameter is function name, followed by a variable length of arguments.
+   *
+   * Example usage: this._proxyToElement('addClass', classNames);
+   *
+   * @returns {Prime.Document.ElementList}
+   * @private
+   */
+  _proxyToElement: function() {
+    var args = Array.prototype.slice.apply(arguments);
+    for (var i = 0; i < this.length; i++) {
+      this[i][args[0]].apply(this[i], args.slice(1));
+    }
+    return this;
   }
 };
-
-/**
- * Extend the prototype to proxy functions to Prime.Document.ElementList.
- */
-(function() {
-  for (var i = 0; i < Prime.Document.ElementList.proxiedMethods.length; i++) {
-    var method = Prime.Document.ElementList.proxiedMethods[i];
-    // To capture the method pass the method name to a function that returns a function.
-    Prime.Document.ElementList.prototype[method] = (function(method) {
-      return function() {
-        for (var j=0; j < this.length; j++) {
-          // Use Function.prototype.apply() because it accepts an arguments array.
-          this[j][method].apply(this[j], arguments);
-        }
-      };
-    })(method);
-  }
-})();

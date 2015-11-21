@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -100,7 +100,7 @@ buster.testCase('ElementList class tests', {
     assert.equals(list.indexOf(outside.domElement), -1);
   },
 
-  'addClass': function() {
+  'addClass and removeClass': function() {
     var container = Prime.Document.queryByID("query");
     var list = Prime.Document.query("p", container);
 
@@ -111,5 +111,10 @@ buster.testCase('ElementList class tests', {
 
     assert.isTrue(one.hasClass('foobar'));
     assert.isTrue(two.hasClass('foobar'));
+
+    list.removeClass('foobar');
+
+    assert.isFalse(one.hasClass('foobar'));
+    assert.isFalse(two.hasClass('foobar'));
   }
 });

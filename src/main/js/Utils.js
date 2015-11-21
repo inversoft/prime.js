@@ -247,6 +247,30 @@ Prime.Utils = {
     }
   },
 
+  /**
+   * Helper function for setInterval that provides context.
+   *
+   * @param {Function} func The function to call.
+   * @param {number} delay The delay
+   * @param {Object} context The "this" variable when the function is called.
+   * @returns {number} The timer id.
+   */
+  setInterval: function(func, delay, context) {
+    return setInterval(this.proxy(func, context), delay);
+  },
+
+  /**
+   * Helper function for setTimeout that provides context.
+   *
+   * @param {Function} func The function to call.
+   * @param {number} delay The delay
+   * @param {Object} context The "this" variable when the function is called.
+   * @returns {number} The timer id.
+   */
+  setTimeout: function(func, delay, context) {
+    return setTimeout(this.proxy(func, context), delay);
+  },
+
   type: function(object) {
     return Object.prototype.toString(object).match(Prime.Utils.typeRegex)[1];
   }

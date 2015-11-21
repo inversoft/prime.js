@@ -48,7 +48,7 @@ Prime.Document.Element.prototype = {
   /**
    * Adds the given class (or list of space separated classes) to this Element.
    *
-   * @param {string} classNames The class name(s).
+   * @param {string} classNames The class name(s) separated by a space.
    * @returns {Prime.Document.Element} This Element.
    */
   addClass: function(classNames) {
@@ -1413,11 +1413,28 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Toggle the class on this element.
+   *
+   * @param {string} className The class name.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  toggleClass: function(className) {
+    if (this.hasClass(className)) {
+      this.removeClass(className);
+    } else {
+      this.addClass(className);
+    }
+
+    return this;
+  },
+
+  /**
    * Removes this element from the DOM while preserving the inner HTML.
    *
    * Example, call unwrap on the italic element:
    *   <strong>Hello</strong><italic> World </italic> --> <strong>Hello</string> World
-   *   @returns {Prime.Document.Element} This Element.
+   *
+   * @returns {Prime.Document.Element} This Element.
    */
   unwrap: function() {
     var parent = this.parent().domElement;
