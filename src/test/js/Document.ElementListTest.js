@@ -116,5 +116,31 @@ buster.testCase('ElementList class tests', {
 
     assert.isFalse(one.hasClass('foobar'));
     assert.isFalse(two.hasClass('foobar'));
+  },
+
+  'setChecked and setDisabled': function() {
+    var container = Prime.Document.queryByID("element-list-test");
+    var checkboxes =container.query('input[type="checkbox"]');
+
+    checkboxes.setChecked(true);
+    checkboxes.each(function(checkbox) {
+      assert.isTrue(checkbox.isChecked());
+    }, this);
+
+    checkboxes.setChecked(false);
+    checkboxes.each(function(checkbox) {
+      assert.isFalse(checkbox.isChecked());
+    }, this);
+
+    checkboxes.setDisabled(true);
+    checkboxes.each(function(checkbox) {
+      assert.isTrue(checkbox.isDisabled());
+    }, this);
+
+    checkboxes.setDisabled(false);
+    checkboxes.each(function(checkbox) {
+      assert.isFalse(checkbox.isDisabled());
+    }, this);
   }
+
 });

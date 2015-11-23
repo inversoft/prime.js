@@ -128,6 +128,31 @@ Prime.Document.ElementList.prototype = {
     return this._proxyToElement('removeClass', classNames);
   },
 
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.setChecked} on each Element in the ElementList.
+   *
+   * If this element is a checkbox or radio button, this sets the checked field on the DOM object equal to the given
+   * value.
+   *
+   * @param {boolean} value The value to set the checked state of this element to.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  setChecked: function(value) {
+    return this._proxyToElement('setChecked', value);
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.setDisabled} on each Element in the ElementList.
+   *
+   * Sets if this element is disabled or not. This works with any element that responds to the disabled property.
+   *
+   * @param {boolean} value The value to set the disabled state of this element to.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  setDisabled: function(value) {
+    return this._proxyToElement('setDisabled', value);
+  },
+
   /* ===================================================================================================================
    * Private methods
    * ===================================================================================================================*/
