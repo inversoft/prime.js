@@ -52,12 +52,8 @@ Prime.Widgets.Tabs = function(element) {
   this.tabArray = [];
   this.selectedTab = null;
 
-  // Key: URI + [tabs name] (if defined) --> Example: /admin/application/__tabs
-  this.localStorageSupported = typeof(Storage) !== 'undefined';
-  if (this.localStorageSupported) {
-    var tabsName = this.element.getDataAttribute('name') || 'tabs';
-    this.localStorageKey = window.location.pathname + '__' + tabsName;
-  }
+  // Check if local storage is enabled to save selected tab
+  this.localStorageSupported = typeof(Storage) !== 'undefined' && this.options.localStorageKey !== null;
 
   this.tabsContainer.query('li:not(.prime-disabled)').each(function(tab) {
     var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
@@ -150,17 +146,17 @@ Prime.Widgets.Tabs.prototype = {
     firstVisible.addClass('first-child');
     lastVisible.addClass('last-child');
 
+    var tabId = null;
     if (selectNew || noneActive) {
-      var tabId = null;
       if (this.localStorageSupported) {
-        var item = sessionStorage.getItem(this.localStorageKey);
+        var item = sessionStorage.getItem(this.options.localStorageKey);
         if (item !== null) {
           tabId = JSON.parse(item).tabId;
         }
       }
 
       // If no tabId was found or the tab is not currently visible, select the first visible
-      if (tabId === null || !this.tabs[tabId].isVisible()) {
+      if (tabId === null || !this.tabs[tabId] || !this.tabs[tabId].isVisible()) {
         tabId = firstVisible.getDataSet().tabId;
       }
       this.selectTab(tabId);
@@ -168,7 +164,7 @@ Prime.Widgets.Tabs.prototype = {
 
     // If error class handling was enabled, add the error class to the tab and set focus
     if (this.options.errorClass) {
-      for (var tabId in this.tabContents) {
+      for (tabId in this.tabContents) {
         if (this.tabContents.hasOwnProperty(tabId)) {
           var errorElement = this.tabContents[tabId].queryFirst('.' + this.options.errorClass);
           if (errorElement !== null) {
@@ -223,7 +219,7 @@ Prime.Widgets.Tabs.prototype = {
       var data = {
         'tabId': id
       };
-      sessionStorage.setItem(this.localStorageKey, JSON.stringify(data));
+      sessionStorage.setItem(this.options.localStorageKey, JSON.stringify(data));
     }
 
     var ajaxURL = this.selectedTab.getDataSet().tabURL;
@@ -242,7 +238,7 @@ Prime.Widgets.Tabs.prototype = {
   /**
    * Shows the tab for the given Id.
    *
-   * @param id The Id of the tab to hide.
+   * @param {String} id The Id of the tab to hide.
    */
   showTab: function(id) {
     this.tabs[id].show();
@@ -268,6 +264,19 @@ Prime.Widgets.Tabs.prototype = {
    */
   withErrorClassHandling: function(errorClass) {
     this.options['errorClass'] = errorClass;
+    return this;
+  },
+
+  /**
+   * Enables local storage of the currently selected tab. If the user navigates away from the page and back, the same
+   * tab will be selected. This key is how the selected tab is stored in local storage and by setting a key you also
+   * enable this feature.
+   *
+   * @param {String} key The local storage key.
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  withLocalStorageKey: function(key) {
+    this.options['localStorageKey'] = key;
     return this;
   },
 
@@ -340,7 +349,8 @@ Prime.Widgets.Tabs.prototype = {
     // Defaults
     this.options = {
       'ajaxCallback': null,
-      'errorClass': null
+      'errorClass': null,
+      'localStorageKey': null
     };
 
     var userOptions = Prime.Utils.dataSetToOptions(this.element);
