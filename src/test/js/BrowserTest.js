@@ -28,7 +28,7 @@ buster.testCase('Safari Browser tests', {
 
   'safari_mac': function() {
     assert.equals(Prime.Browser.name, 'Safari');
-    assert.equals(Prime.Browser.version, '8');
+    assert.equals(Prime.Browser.version, '9');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });
@@ -45,7 +45,7 @@ buster.testCase('Chrome Browser tests', {
 
   'chrome': function() {
     assert.equals(Prime.Browser.name, 'Chrome');
-    assert.equals(Prime.Browser.version, '46');
+    assert.equals(Prime.Browser.version, '47');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });

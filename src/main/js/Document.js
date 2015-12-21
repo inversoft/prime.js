@@ -75,6 +75,16 @@ Prime.Document.getWidth = function() {
 };
 
 /**
+ * Builds a new document using the given HTML document.
+ *
+ * @param {string} documentString The HTML string to build the document.
+ * @returns {Document} A new document.
+ */
+Prime.Document.newDocument = function(documentString) {
+  return new DOMParser().parseFromString(documentString, "text/html");
+};
+
+/**
  * Builds a new element using the given HTML snippet (currently this only supports the tag).
  *
  * @param {string} elementString The element string.
@@ -312,3 +322,38 @@ Prime.Document._callReadyListeners = function() {
     document.detachEvent('onreadystatechange', Prime.Document._callReadyListeners);
   }
 };
+
+/* ===================================================================================================================
+ * Polyfill
+ * ===================================================================================================================*/
+
+/* https://developer.mozilla.org/en-US/docs/Web/API/DOMParser */
+(function(DOMParser) {
+  "use strict";
+
+  var proto = DOMParser.prototype;
+  var nativeParse = proto.parseFromString;
+
+  // Firefox/Opera/IE throw errors on unsupported types
+  try {
+    // WebKit returns null on unsupported types
+    if ((new DOMParser()).parseFromString("", "text/html")) {
+      // text/html parsing is natively supported
+      return;
+    }
+  } catch (ex) {}
+
+  proto.parseFromString = function(markup, type) {
+    if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
+      var doc = document.implementation.createHTMLDocument("");
+      if (markup.toLowerCase().indexOf('<!doctype') > -1) {
+        doc.documentElement.innerHTML = markup;
+      } else {
+        doc.body.innerHTML = markup;
+      }
+      return doc;
+    } else {
+      return nativeParse.apply(this, arguments);
+    }
+  };
+}(DOMParser));
