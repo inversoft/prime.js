@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,9 +63,9 @@ Prime.Document.getHeight = function() {
 };
 
 /**
- * Returns the height of the document.
+ * Returns the width of the document.
  *
- * @returns {number} The height of the document in pixels.
+ * @returns {number} The width of the document in pixels.
  */
 Prime.Document.getWidth = function() {
   var body = document.body;
