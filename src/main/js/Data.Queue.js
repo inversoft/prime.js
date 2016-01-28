@@ -23,7 +23,7 @@ var Prime = Prime || {};
 Prime.Data = Prime.Data || {};
 
 /**
- * Queue implementation modeled after java.util.Deque interface.
+ * First-In-First-Out Queue implementation modeled after java.util.Deque interface.
  * @constructor
  */
 Prime.Data.Queue = function() {
@@ -37,7 +37,7 @@ Prime.Data.Queue.constructor = Prime.Data.Queue;
 Prime.Data.Queue.prototype = {
 
   /**
-   * Add the element to the tail of the queue.
+   * Add the element to the head of the queue.
    *
    * @param {Object} element An object to store in the queue.
    * @returns {Prime.Data.Queue} This Element.
@@ -60,7 +60,8 @@ Prime.Data.Queue.prototype = {
 
   /**
    * Return the index of the cursor position in the queue.
-   * @returns {Number}
+   *
+   * @returns {Number} The index position of the cursor.
    */
   getCursor: function() {
     return this._cursor;
@@ -77,6 +78,7 @@ Prime.Data.Queue.prototype = {
 
   /**
    * Return the tail index of the queue.
+   *
    * @returns {Number} The index position of the tail.
    */
   getTailIndex: function() {
@@ -102,7 +104,7 @@ Prime.Data.Queue.prototype = {
   },
 
   /**
-   * Return but do not remove the head of the queue.
+   * Return but do not remove the tail of the queue. This is the oldest element in the queue.
    *
    * @returns {Object} The object at the head of the queue, or null if empty.
    */
@@ -133,9 +135,9 @@ Prime.Data.Queue.prototype = {
   },
 
   /**
-   * Return and remove the head of the queue.
+   * Return and remove the tail of the queue. This is the oldest element in the queue.
    *
-   * @returns {Object} the object at the head of the queue, or null if empty.
+   * @returns {Object} the object at the tail of the queue, or null if the queue is empty.
    */
   poll: function() {
     if (this.isEmpty()) {
