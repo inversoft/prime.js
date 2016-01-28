@@ -46,6 +46,7 @@ buster.testCase('Data.Queue Tests', {
 
     assert.equals(queue.peek(), "foo");
     assert.equals(queue.poll(), "foo");
+    assert.equals(queue.peek(), "bar");
     assert.equals(queue.poll(), "bar");
     assert.equals(queue.poll(), "baz");
     assert.isTrue(queue.isEmpty());
