@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2013-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -329,7 +329,9 @@ Prime.Document.Element.prototype = {
     var attrs = this.getAttributes();
     for (var prop in attrs) {
       if (attrs.hasOwnProperty(prop) && prop.indexOf('data-') === 0) {
-        var dataName = prop.substring(5).replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+        var dataName = prop.substring(5).replace(/-([a-z])/g, function(g) {
+          return g[1].toUpperCase();
+        });
         this.domElement.dataset[dataName] = attrs[prop];
       }
     }
@@ -361,7 +363,7 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the height of the Element as an integer value. This does not the border but does include any scroll bars. This
+   * Gets the height of the Element as an integer value. This does not include the border but does include any scroll bars. This
    * is often called the innerHeight of the element.
    *
    * @returns {number} The height as pixels (number) or a string.
@@ -532,10 +534,30 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @returns {number} The scroll height of this element.
+   */
+  getScrollHeight: function() {
+    return this.domElement.scrollHeight;
+  },
+  /**
+   * @returns {number} The scroll left position of this element.
+   */
+  getScrollLeft: function() {
+    return this.domElement.scrollLeft;
+  },
+
+  /**
    * @returns {number} The scroll top position of this element.
    */
   getScrollTop: function() {
     return this.domElement.scrollTop;
+  },
+
+  /**
+   * @returns {number} The scroll width of this element.
+   */
+  getScrollWidth: function() {
+    return this.domElement.scrollWidth;
   },
 
   /**
@@ -1066,7 +1088,28 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Scrolls this element to the given position.
+   * Scrolls this Element into the visible area of the browser window.
+   *
+   * @returns {Prime.Document.Element} This Element.
+   */
+  scrollIntoView: function() {
+    this.domElement.scrollIntoView();
+    return this;
+  },
+
+  /**
+   * Scrolls this element to the given horizontal position.
+   *
+   * @param {number} position The position to scroll the element to.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  scrollLeftTo: function(position) {
+    this.domElement.scrollLeft = position;
+    return this;
+  },
+
+  /**
+   * Scrolls this element to the given vertical position.
    *
    * @param {number} position The position to scroll the element to.
    * @returns {Prime.Document.Element} This Element.
