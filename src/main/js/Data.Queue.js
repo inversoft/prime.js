@@ -119,6 +119,15 @@ Prime.Data.Queue.prototype = {
   /**
    * Return but do not remove the element at the position of the cursor.
    *
+   * @returns {Object} the object at the current position in the queue as determined by cursor. Null if the cursor is not in bounds.
+   */
+  peekAtCursorPosition: function() {
+    return this.peekAtPosition(this._cursor);
+  },
+
+  /**
+   * Return but do not remove the element at the position of the cursor.
+   *
    * @param {Number} index The index to peek.
    * @returns {Object} the object at the current position in the queue as determined by the provided index. Null if the cursor is not in bounds.
    */
