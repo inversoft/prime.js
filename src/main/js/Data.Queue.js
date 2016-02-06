@@ -106,7 +106,7 @@ Prime.Data.Queue.prototype = {
   /**
    * Return but do not remove the tail of the queue. This is the oldest element in the queue.
    *
-   * @returns {Object} The object at the head of the queue, or null if empty.
+   * @returns {Object} The object at the tail of the queue, or null if empty.
    */
   peek: function() {
     if (this.isEmpty()) {
@@ -126,10 +126,10 @@ Prime.Data.Queue.prototype = {
   },
 
   /**
-   * Return but do not remove the element at the position of the cursor.
+   * Return but do not remove the element at the position of the provided index.
    *
    * @param {Number} index The index to peek.
-   * @returns {Object} the object at the current position in the queue as determined by the provided index. Null if the cursor is not in bounds.
+   * @returns {Object} the object at the current position in the queue as determined by the provided index. Null if the index is not in bounds.
    */
   peekAtPosition: function(index) {
     if (this.isEmpty()) {
