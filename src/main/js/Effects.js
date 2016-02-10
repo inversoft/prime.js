@@ -210,7 +210,7 @@ Prime.Effects.ScrollTo.constructor = Prime.Effects.ScrollTo;
  * @param {string} axis The axis to scroll.
  * @returns {Prime.Effects.ScrollTo}
  */
-Prime.Effects.ScrollTo.prototype.withAxix = function(axis) {
+Prime.Effects.ScrollTo.prototype.withAxis = function(axis) {
   this.axis = axis || 'vertical';
   return this;
 };
