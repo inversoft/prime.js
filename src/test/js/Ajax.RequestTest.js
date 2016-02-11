@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -101,6 +101,23 @@ buster.testCase('AJAX tests', {
 
     assert.equals(req.xhr.url, 'invalid.html?name=value&nameWith%3D=value&valueWith%3D=value%3D');
     assert.equals(req.xhr.method, 'GET');
+  },
+
+  'headers': function() {
+    var req = new Prime.Ajax.Request('invalid.html')
+        .withHeader('foo', 'bar')
+        .withHeaders({
+          'bar': 'baz',
+          'jim': 'bob'
+        })
+        .withHeader('foo', 'bar')
+        .go();
+
+    // all I can really do is assert we stored them correctly to be set on the request
+    assert.equals(req.headers['foo'], 'bar');
+    assert.equals(req.headers['bar'], 'baz');
+    assert.equals(req.headers['jim'], 'bob');
+    assert.equals(req.headers['xyz'], undefined);
   },
 
   'reset':function () {

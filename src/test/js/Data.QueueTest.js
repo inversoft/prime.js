@@ -30,9 +30,6 @@ buster.testCase('Data.Queue Tests', {
     assert.equals(queue.size(), 1);
     var headObject = queue.peek();
 
-    console.info(object);
-    console.info(headObject);
-
     assert.equals(object, headObject);
     assert.equals(queue.size(), 1);
 

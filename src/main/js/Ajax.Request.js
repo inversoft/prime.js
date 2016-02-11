@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -37,6 +37,7 @@ Prime.Ajax.Request = function(url, method) {
   this.contentType = null;
   this.context = this;
   this.errorHandler = this.onError;
+  this.headers = {};
   this.loadingHandler = this.onLoading;
   this.method = method || 'GET';
   this.openHandler = this.onOpen;
@@ -84,6 +85,14 @@ Prime.Ajax.Request.prototype = {
     }
 
     this.xhr.open(this.method, requestUrl, this.async, this.username, this.password);
+
+    if (Object.keys(this.headers).length > 0) {
+      for (var key in this.headers) {
+        if (this.headers.hasOwnProperty(key)) {
+          this.xhr.setRequestHeader(key, this.headers[key]);
+        }
+      }
+    }
 
     if (this.contentType) {
       this.xhr.setRequestHeader('Content-Type', this.contentType);
@@ -309,6 +318,33 @@ Prime.Ajax.Request.prototype = {
    */
   withLoadingHandler: function(func) {
     this.loadingHandler = func;
+    return this;
+  },
+
+  /**
+   * Set the request headers using the key and value.
+   *
+   * @param {String} key The key name.
+   * @param {String} value The value.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withHeader: function(key, value) {
+    this.headers[key] = value;
+    return this;
+  },
+
+  /**
+   * Set the key value pairs provided as request headers.
+   *
+   * @param {Object} headers A map of key value pairs.
+   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
+   */
+  withHeaders: function(headers) {
+    for (var key in headers) {
+      if (headers.hasOwnProperty(key)) {
+        this.headers[key] = headers[key];
+      }
+    }
     return this;
   },
 
