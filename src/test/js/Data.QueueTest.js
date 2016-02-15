@@ -47,5 +47,15 @@ buster.testCase('Data.Queue Tests', {
     assert.equals(queue.poll(), "bar");
     assert.equals(queue.poll(), "baz");
     assert.isTrue(queue.isEmpty());
+
+    queue.add("foo").add("bar").add("baz");
+    assert.equals(queue.size(), 3);
+
+    var tailIndex = queue.getTailIndex();
+    assert.equals(queue.size(), 3);
+    assert.isFalse(queue.isIndexOutOfBounds(tailIndex));
+    assert.isFalse(queue.isIndexOutOfBounds(tailIndex + 1));
+    assert.isFalse(queue.isIndexOutOfBounds(tailIndex + 2));
+    assert.isTrue(queue.isIndexOutOfBounds(tailIndex + 3));
   }
 });

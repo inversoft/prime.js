@@ -95,6 +95,15 @@ Prime.Data.Queue.prototype = {
   },
 
   /**
+   * Return true if the provided index is out of bounds.
+   * @param {Numbere} index The index position to test.
+   * @returns {boolean} True if the index is bounds of the queue.
+   */
+  isIndexOutOfBounds: function(index) {
+    return  index < this._tail || index > (this._head - 1);
+  },
+
+  /**
    * Return true if the queue is empty.
    *
    * @returns {boolean} True if the queue is empty, false if not.
