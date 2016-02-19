@@ -30,7 +30,6 @@ Prime.Data.Queue = function() {
   this._elements = {};
   this._head = 0;
   this._tail = 0;
-  this._cursor = 0;
 };
 
 Prime.Data.Queue.constructor = Prime.Data.Queue;
@@ -47,60 +46,6 @@ Prime.Data.Queue.prototype = {
     this._head++;
 
     return this;
-  },
-
-  /**
-   * Move the cursor back by one.
-   *
-   * @returns {Number} The value of the cursor after it has been decremented;
-   */
-  decrementCursor: function() {
-    return --this._cursor;
-  },
-
-  /**
-   * Return the index of the cursor position in the queue.
-   *
-   * @returns {Number} The index position of the cursor.
-   */
-  getCursor: function() {
-    return this._cursor;
-  },
-
-  /**
-   * Return the head index of the queue.
-   *
-   * @returns {Number} The index position of the head.
-   */
-  getHeadIndex: function() {
-    return this._head;
-  },
-
-  /**
-   * Return the tail index of the queue.
-   *
-   * @returns {Number} The index position of the tail.
-   */
-  getTailIndex: function() {
-    return this._tail;
-  },
-
-  /**
-   * Advance the cursor by one.
-   *
-   * @returns {Number} The value of the cursor after it has been incremented.
-   */
-  incrementCursor: function() {
-    return ++this._cursor;
-  },
-
-  /**
-   * Return true if the provided index is out of bounds.
-   * @param {Number} index The index position to test.
-   * @returns {boolean} True if the index is bounds of the queue.
-   */
-  isIndexOutOfBounds: function(index) {
-    return  index < this._tail || index > (this._head - 1);
   },
 
   /**
@@ -126,33 +71,6 @@ Prime.Data.Queue.prototype = {
   },
 
   /**
-   * Return but do not remove the element at the position of the cursor.
-   *
-   * @returns {Object} the object at the current position in the queue as determined by cursor. Null if the cursor is not in bounds.
-   */
-  peekAtCursorPosition: function() {
-    return this.peekAtPosition(this._cursor);
-  },
-
-  /**
-   * Return but do not remove the element at the position of the provided index.
-   *
-   * @param {Number} index The index to peek.
-   * @returns {Object} the object at the current position in the queue as determined by the provided index. Null if the index is not in bounds.
-   */
-  peekAtPosition: function(index) {
-    if (this.isEmpty()) {
-      return null;
-    }
-
-    if (index < this._tail || index > (this._head - 1)) {
-      throw new Error('The cursor is out of bounds.');
-    }
-
-    return this._elements[index];
-  },
-
-  /**
    * Return and remove the tail of the queue. This is the oldest element in the queue.
    *
    * @returns {Object} the object at the tail of the queue, or null if the queue is empty.
@@ -172,21 +90,6 @@ Prime.Data.Queue.prototype = {
     }
 
     return object;
-  },
-
-  /**
-   * Set the cursor position.
-   *
-   * @param {Number} index The index to set the cursor position.
-   * @returns {Prime.Data.Queue} This Element.
-   */
-  setCursor: function(index) {
-    if (index < this._tail || index > (this._head - 1)) {
-      throw new Error('The cursor is out of bounds.');
-    }
-
-    this._cursor = index;
-    return this;
   },
 
   /**
