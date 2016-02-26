@@ -19,12 +19,26 @@ var Prime = Prime || {};
 Prime.Date = {
   DAYS_IN_MONTH: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 
+  /**
+   * Return the number of days in the month.
+   * @param year The year, the days in the month may change during a leap year.
+   * @param month The month.
+   * @returns {Number} The number of days in the month.
+   */
   numberOfDaysInMonth: function(year, month) {
-    if (month === 1 && new Date(year, 1, 29).getMonth() == 1) {
+    if (month === 1 && this.isLeapYear(year)) {
       return 29;
     } else {
       return Prime.Date.DAYS_IN_MONTH[month];
     }
+  },
+
+  /**
+   * @param year The year.
+   * @returns {boolean} True if this is a leap year, otherwise false.
+   */
+  isLeapYear: function(year) {
+    return !((year % 4) || (!(year % 100) && (year % 400)));
   },
 
   /**

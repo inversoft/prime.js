@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,6 +17,49 @@ var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
 
 buster.testCase('Prime.Date namespace tests', {
+  'numberOfDaysInMonth': function() {
+    assert.equals(Prime.Date.numberOfDaysInMonth(2012, 1), 29); // Feb 2012 - leap year
+    assert.equals(Prime.Date.numberOfDaysInMonth(2013, 1), 28); // Feb 2013
+    assert.equals(Prime.Date.numberOfDaysInMonth(2014, 1), 28); // Feb 2014
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 1), 28); // Feb 2015
+    assert.equals(Prime.Date.numberOfDaysInMonth(2016, 1), 29); // Feb 2016 - leap year
+    assert.equals(Prime.Date.numberOfDaysInMonth(2019, 1), 28); // Feb 2019
+    assert.equals(Prime.Date.numberOfDaysInMonth(2020, 1), 29); // Feb 2020 - leap year
+
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 0), 31);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 1), 28);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 2), 31);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 3), 30);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 4), 31);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 5), 30);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 6), 31);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 7), 31);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 8), 30);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 9), 31);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 10), 30);
+    assert.equals(Prime.Date.numberOfDaysInMonth(2015, 11), 31);
+  },
+
+  'isLeapYear': function() {
+    // exceptions to the divided by 100 rule - divided by 400
+    assert.isFalse(Prime.Date.isLeapYear(1800));
+    assert.isFalse(Prime.Date.isLeapYear(1900));
+    assert.isFalse(Prime.Date.isLeapYear(2100));
+    assert.isFalse(Prime.Date.isLeapYear(2200));
+    assert.isFalse(Prime.Date.isLeapYear(2300));
+    assert.isFalse(Prime.Date.isLeapYear(2500));
+
+    assert.isTrue(Prime.Date.isLeapYear(2000));
+    assert.isTrue(Prime.Date.isLeapYear(2400));
+
+    assert.isTrue(Prime.Date.isLeapYear(2012));
+    assert.isFalse(Prime.Date.isLeapYear(2013));
+    assert.isFalse(Prime.Date.isLeapYear(2014));
+    assert.isFalse(Prime.Date.isLeapYear(2015));
+    assert.isTrue(Prime.Date.isLeapYear(2016));
+    assert.isFalse(Prime.Date.isLeapYear(2017));
+  },
+
   'plusDays': function() {
     var date = new Date(2015, 8, 1); // September 1
     Prime.Date.plusDays(date, 1); // September 2
@@ -40,11 +83,11 @@ buster.testCase('Prime.Date namespace tests', {
 
     date = new Date(2015, 8, 20); // September 20
     Prime.Date.plusDays(date, 365); // September 20
-    assert.equals(date, new Date(2016, 8, 20));
+    assert.equals(date, new Date(2016, 8, 19)); // leap year - so subtract a day
 
     date = new Date(2015, 8, 20); // September 20
     Prime.Date.plusDays(date, 365 + 11 + 31 + 30 + 31 + 15); // September 20
-    assert.equals(date, new Date(2017, 0, 16));
+      assert.equals(date, new Date(2017, 0, 15)); // leap year - so subtract a day
 
     date = new Date(2015, 8, 20); // September 20
     Prime.Date.plusDays(date, -1); // September 19
