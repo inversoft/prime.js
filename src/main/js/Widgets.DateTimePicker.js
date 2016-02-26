@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,7 +146,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     var year = date.getFullYear();
     var firstDay = new Date(year, month, 1);
     var firstDayOfMonth = firstDay.getDay();
-    var daysInMonth = Prime.Date.numberOfDaysInMonth(month);
+    var daysInMonth = Prime.Date.numberOfDaysInMonth(year, month);
     var used = firstDayOfMonth + daysInMonth;
     var weeksInMonth = Math.ceil(used / 7);
 
@@ -221,13 +221,12 @@ Prime.Widgets.DateTimePicker.prototype = {
 
     new Prime.Effects.Appear(this.months).withDuration(100).go();
     this.months.setLeft(this.monthDisplay.getLeft() - 10);
-    this.months.setTop(this.monthDisplay.getOffsetTop());
+    this.months.setTop(this.monthDisplay.getAbsoluteTop());
     var currentMonth = this.months.queryFirst('[data-month="' + this.date.getMonth() + '"]');
     this.months.getChildren().each(function(month) {
       month.removeClass('prime-selected');
     }, this);
     currentMonth.addClass('prime-selected');
-    currentMonth.domElement.scrollIntoView();
   },
 
   /**
@@ -259,13 +258,12 @@ Prime.Widgets.DateTimePicker.prototype = {
 
     new Prime.Effects.Appear(this.years).withDuration(100).go();
     this.years.setLeft(this.yearDisplay.getLeft() - 10);
-    this.years.setTop(this.yearDisplay.getOffsetTop());
+    this.years.setTop(this.yearDisplay.getAbsoluteTop());
     var currentYear = this.years.queryFirst('[data-year="' + this.date.getFullYear() + '"]');
     this.years.getChildren().each(function(year) {
       year.removeClass('prime-selected');
     }, this);
     currentYear.addClass('prime-selected');
-    currentYear.domElement.scrollIntoView();
   },
 
   /**
@@ -880,7 +878,6 @@ Prime.Widgets.DateTimePicker.prototype = {
     }
     return true;
   },
-
   /**
    * Refresh the time inputs.
    *

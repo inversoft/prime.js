@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,12 @@ var Prime = Prime || {};
 Prime.Date = {
   DAYS_IN_MONTH: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 
-  numberOfDaysInMonth: function(month) {
-    return Prime.Date.DAYS_IN_MONTH[month];
+  numberOfDaysInMonth: function(year, month) {
+    if (month === 1 && new Date(year, 1, 29).getMonth() == 1) {
+      return 29;
+    } else {
+      return Prime.Date.DAYS_IN_MONTH[month];
+    }
   },
 
   /**
@@ -35,20 +39,20 @@ Prime.Date = {
     }
 
     var newDate = date.getDate() + number;
-    var numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
+    var numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
 
     if (newDate > 0) {
       while (newDate > numberOfDaysInMonth) {
         Prime.Date.plusMonths(date, 1);
         newDate = newDate - numberOfDaysInMonth;
-        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
+        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
       }
 
       date.setDate(newDate);
     } else {
       while (newDate <= 0) {
         Prime.Date.plusMonths(date, -1);
-        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
+        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
         newDate = newDate + numberOfDaysInMonth;
       }
 
