@@ -457,6 +457,19 @@ Prime.Widgets.DateTimePicker.prototype = {
   },
 
   /**
+   * Clamp the value between the minimum and maximum values.
+   *
+   * @param {Number} min the minimum number value.
+   * @param {Number} max The maximum number value.
+   * @param {Number} value The value to clamp.
+   * @returns {Number} The resulting value, either the min, max or actual value if not out of bounds.
+   * @private
+   */
+  _clamp: function(min, max, value) {
+    return Math.max(min, Math.min(value, max));
+  },
+
+/**
    * Handles when the AM/PM element is selected and the user hits a key. If the user hits A, this changes to AM. If the
    * user hits P, this changes to PM. If the use hits the up or down arrows, this toggles between AM and PM.
    *
@@ -535,11 +548,13 @@ Prime.Widgets.DateTimePicker.prototype = {
       }
     }
 
-    var minutes = parseInt(this.minuteInput.getValue());
-    if (minutes < 1 || minutes > 59) {
-      minutes = 1;
-      this.minuteInput.setValue(minutes);
-    }
+    var seconds = this._clamp(0, 59, parseInt(this.secondInput.getValue()));
+    this.secondInput.setValue(seconds);
+
+    var minutes = this._clamp(0, 59, parseInt(this.minuteInput.getValue()));
+    this.minuteInput.setValue(minutes);
+
+    newDate.setSeconds(seconds);
     newDate.setMinutes(minutes);
     newDate.setDate(1); // Set to 1 until month has been set
     newDate.setMonth(parseInt(this.monthInput.getValue()) - 1);
@@ -893,9 +908,6 @@ Prime.Widgets.DateTimePicker.prototype = {
       hours = hours - 12;
       this.hourInput.setValue(hours);
       this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
-    } else {
-      this.hourInput.setValue(hours);
-      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
     }
 
     var minutes = this.date.getMinutes();
