@@ -494,23 +494,19 @@ Prime.Widgets.DateTimePicker.prototype = {
     if (event.keyCode === 65) {
       // User hit A
       if (current === Prime.Widgets.DateTimePicker.AM_PM[1]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
-        this.date.setHours(this.date.getHours() - 12);
+        Prime.Date.plusHours(this.date, -12);
       }
     } else if (event.keyCode === 80) {
       // User hit P
       if (current === Prime.Widgets.DateTimePicker.AM_PM[0]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
-        this.date.setHours(this.date.getHours() + 12);
+        Prime.Date.plusHours(this.date, 12);
       }
     } else if (event.keyCode === Prime.Events.Keys.UP_ARROW || event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       // User hit up or down arrow
       if (current === Prime.Widgets.DateTimePicker.AM_PM[0]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
-        this.date.setHours(this.date.getHours() + 12);
+        Prime.Date.plusHours(this.date, 12);
       } else if (current === Prime.Widgets.DateTimePicker.AM_PM[1]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
-        this.date.setHours(this.date.getHours() - 12);
+        Prime.Date.plusHours(this.date, -12);
       }
     } else if (event.keyCode === Prime.Events.Keys.ENTER || event.keyCode === Prime.Events.Keys.ESCAPE) {
       return true;
@@ -529,11 +525,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   _handleDateTimeChange: function() {
     var newDate = new Date();
-    var hours = parseInt(this.hourInput.getValue());
-    if (hours < 1 || hours > 12) {
-      hours = 1;
-      this.hourInput.setValue(hours);
-    }
+    var hours = this._clamp(1, 12, parseInt(this.hourInput.getValue()));
     if (this.ampmInput.getValue() === Prime.Widgets.DateTimePicker.AM_PM[0]) {
       if (hours === 12) {
         newDate.setHours(0);
@@ -549,10 +541,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     }
 
     var seconds = this._clamp(0, 59, parseInt(this.secondInput.getValue()));
-    this.secondInput.setValue(seconds);
-
     var minutes = this._clamp(0, 59, parseInt(this.minuteInput.getValue()));
-    this.minuteInput.setValue(minutes);
 
     newDate.setSeconds(seconds);
     newDate.setMinutes(minutes);
@@ -900,21 +889,20 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   _refreshInputs: function() {
     // Set Time -- assuming 12-hour time for the input fields and ISO 24-hour time for the field
-    var hours = this.date.getHours();
-    if (hours == 0) {
-      this.hourInput.setValue("12");
-      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
-    } else if (hours > 12) {
-      hours = hours - 12;
-      this.hourInput.setValue(hours);
-      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
-    }
+    var hours = Prime.Date.getHourOfDay(this.date);
+    this.hourInput.setValue(hours);
 
     var minutes = this.date.getMinutes();
     this.minuteInput.setValue(("00" + minutes).slice(-2));
 
     var seconds = this.date.getSeconds();
     this.secondInput.setValue(("00" + seconds).slice(-2));
+
+    if (this.date.getHours() >= 12) {
+      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
+    } else {
+      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
+    }
 
     this.monthInput.setValue(this.date.getMonth() + 1);
     this.dayInput.setValue(this.date.getDate());

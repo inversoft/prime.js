@@ -17,6 +17,33 @@ var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
 
 buster.testCase('Prime.Date namespace tests', {
+  'getHourOfDay': function() {
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 0, 0, 0)), 12);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 1, 0, 0)), 1);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 2, 0, 0)), 2);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 3, 0, 0)), 3);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 4, 0, 0)), 4);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 5, 0, 0)), 5);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 6, 0, 0)), 6);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 7, 0, 0)), 7);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 8, 0, 0)), 8);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 9, 0, 0)), 9);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 10, 0, 0)), 10);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 11, 0, 0)), 11);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 12, 0, 0)), 12);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 13, 0, 0)), 1);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 14, 0, 0)), 2);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 15, 0, 0)), 3);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 16, 0, 0)), 4);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 17, 0, 0)), 5);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 18, 0, 0)), 6);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 19, 0, 0)), 7);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 20, 0, 0)), 8);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 21, 0, 0)), 9);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 22, 0, 0)), 10);
+    assert.equals(Prime.Date.getHourOfDay(new Date(2015, 8, 1, 23, 0, 0)), 11);
+  },
+
   'numberOfDaysInMonth': function() {
     assert.equals(Prime.Date.numberOfDaysInMonth(2012, 1), 29); // Feb 2012 - leap year
     assert.equals(Prime.Date.numberOfDaysInMonth(2013, 1), 28); // Feb 2013
