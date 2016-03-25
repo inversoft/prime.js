@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
+  ~ Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -47,6 +47,7 @@
     <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
       var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
@@ -135,6 +136,35 @@
               .go();
         }, this);
 
+        var touchable = new Prime.Widgets.Touchable(Prime.Document.queryByID('touchable'))
+            .withLongPressHandler(function() {
+              this.element.setHTML('long press');
+            })
+            .withSwipeUpHandler(function() {
+              this.element.setHTML('swipe-up');
+            })
+            .withSwipeDownHandler(function() {
+              this.element.setHTML('swipe-down');
+            })
+            .withSwipeLeftHandler(function() {
+              this.element.setHTML('swipe-left');
+            })
+            .withSwipeRightHandler(function() {
+              this.element.setHTML('swipe-right');
+            })
+            .withMoveHandler(function(event) {
+              var touchPoints = event.changedTouches.length;
+              if (touchPoints > 1) {
+                return true;
+              }
+
+              clearTimeout(this.timer);
+              var delta = (event.touches[0].clientX - this.touchStartX) * 0.5;
+              this.element.setStyle('margin-left', delta + 'px');
+              this.timer = setTimeout((function() {
+                this.element.setStyle('margin-left', '0px');
+              }).bind(this), 50);
+            });
       });
     </script>
     <style>
@@ -165,6 +195,10 @@
           <input id="datepicker1" type="text" name="datepicker" size="40">
           <input id="datepicker2" type="text" name="datepicker" size="40" data-date-only="true">
         </form>
+      </div>
+
+      <div id="touchable" style="width: 400px; height: 150px; background-color: gray;">
+        Swipe left or right...give it a shot!
       </div>
 
       <a href="#" id="hide-foo">Hide Foo Tab</a>
