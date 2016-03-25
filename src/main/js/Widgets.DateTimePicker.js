@@ -188,6 +188,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   nextMonth: function() {
     var newDate = new Date(this.date);
+    newDate.setDate(1); // Set the day to 1 to keep us from wrapping months on the 30 and 31st.
     newDate.setMonth(parseInt(this.monthDisplay.getDataAttribute('month')));
     newDate.setFullYear(parseInt(this.yearDisplay.getDataAttribute('year')));
     Prime.Date.plusMonths(newDate, 1);
