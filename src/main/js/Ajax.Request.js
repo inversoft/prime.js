@@ -81,7 +81,7 @@ Prime.Ajax.Request.prototype = {
     }
 
     if (this.async) {
-      this.xhr.onreadystatechange = Prime.Utils.proxy(this._handler, this);
+      this.xhr.onreadystatechange = this._handler.bind(this);
     }
 
     this.xhr.open(this.method, requestUrl, this.async, this.username, this.password);

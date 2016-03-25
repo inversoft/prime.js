@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -638,11 +638,11 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @private
    */
   _handleBlurEvent: function() {
-    window.setTimeout(Prime.Utils.proxy(function() {
+    window.setTimeout((function() {
       if (document.activeElement !== this.input.domElement) {
         this.searcher.closeSearchResults();
       }
-    }, this), 300);
+    }).bind(this), 300);
   },
 
   /**

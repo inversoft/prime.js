@@ -91,7 +91,7 @@ Prime.Widgets.SideMenu.prototype = {
     } else {
       this.open();
     }
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**

@@ -82,7 +82,7 @@ Prime.Document.Element.prototype = {
    */
   addEventListener: function(event, listener, context) {
     var theContext = (arguments.length < 3) ? this : context;
-    listener.primeProxy = Prime.Utils.proxy(listener, theContext);
+    listener.primeProxy = listener.bind(theContext);
     this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || [];
     this.domElement.eventListeners[event].push(listener.primeProxy);
 
@@ -201,7 +201,7 @@ Prime.Document.Element.prototype = {
       // Custom event
       this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
       evt = {'event': event, 'memo': memo, 'target': target};
-      for (index in this.domElement.customEventListeners[event]) {
+      for (var index in this.domElement.customEventListeners[event]) {
         if (this.domElement.customEventListeners[event].hasOwnProperty(index)) {
           this.domElement.customEventListeners[event][index](evt);
         }
@@ -987,7 +987,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   removeAllEventListeners: function() {
-    for (event in this.domElement.eventListeners) {
+    for (var event in this.domElement.eventListeners) {
       if (this.domElement.eventListeners.hasOwnProperty(event)) {
         for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
           var listener = this.domElement.eventListeners[event][i];
@@ -1475,7 +1475,7 @@ Prime.Document.Element.prototype = {
    * Removes this element from the DOM while preserving the inner HTML.
    *
    * Example, call unwrap on the italic element:
-   *   <strong>Hello</strong><italic> World </italic> --> <strong>Hello</string> World
+   *   <strong>Hello</strong><italic> World </italic> --> <strong>Hello</strong> World
    *
    * @returns {Prime.Document.Element} This Element.
    */

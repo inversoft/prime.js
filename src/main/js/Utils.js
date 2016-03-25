@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -195,29 +195,14 @@ Prime.Utils = {
   /**
    * Proxies calls to a function through an anonymous function and sets the "this" variable to the object given.
    *
+   * This call is only available for backward compatibility. It is recommended you just use .bind() directly.
+   *
    * @param {Function} func The function to call.
    * @param {Object} context The "this" variable when the function is called.
    * @returns {Function} An anonymous function.
    */
   proxy: function(func, context) {
-    return function() {
-      // DOM level 2 event handlers behave differently than DOM 0 event handlers. We are unifying the event handlers
-      // here by checking if the handler returns false and then preventing the default even behavior. This is only used
-      // when the arguments are an event
-      var result = func.apply(context, arguments);
-      if (result === false && arguments[0] instanceof Event) {
-        var event = arguments[0];
-        event.cancelBubble = true;
-        if (event.stopPropagation) {
-          event.stopPropagation();
-        }
-        if (event.preventDefault) {
-          event.preventDefault();
-        }
-      }
-
-      return result;
-    }
+    return func.bind(context);
   },
 
   /**
@@ -256,7 +241,7 @@ Prime.Utils = {
    * @returns {number} The timer id.
    */
   setInterval: function(func, delay, context) {
-    return setInterval(this.proxy(func, context), delay);
+    return setInterval(func.bind(context), delay);
   },
 
   /**
@@ -268,7 +253,24 @@ Prime.Utils = {
    * @returns {number} The timer id.
    */
   setTimeout: function(func, delay, context) {
-    return setTimeout(this.proxy(func, context), delay);
+    return setTimeout(func.bind(context), delay);
+  },
+
+  /**
+   * Helper function to provide a one liner to behave as if you returned 'false' from a legacy version of Prime.js.
+   *
+   * Calling this method is equivalent to calling event.preventDefault and event.stopPropagation.
+   * @param event
+   */
+  stopEvent: function(event) {
+    // Compatibility with older versions of IE
+    event.cancelBubble = true;
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    }
+    if (event.preventDefault) {
+      event.preventDefault();
+    }
   },
 
   type: function(object) {

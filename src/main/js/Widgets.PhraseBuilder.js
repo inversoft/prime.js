@@ -80,7 +80,7 @@ Prime.Widgets.PhraseBuilder = function(element, searchCallback, callbackContext)
   this.element.hide();
 
   var theContext = (arguments.length < 3) ? this : callbackContext;
-  this.searchCallback = Prime.Utils.proxy(searchCallback, theContext);
+  this.searchCallback = searchCallback.bind(theContext);
 
   var id = this.element.getID();
   if (id === null || id === '') {
@@ -323,18 +323,18 @@ Prime.Widgets.PhraseBuilder.prototype = {
   /**
    * Sets whether or not this Searcher allows custom options to be added and, optionally, a callback function.
    *
-   * @param {function} callback The function to call that will return true if the custom option can be added. Default: function(abc){return true;}
+   * @param {function} callback The function to call that will return true if the custom option can be added.
    * @param {object} theContext The context of the callback method, MUST be supplied if callback is supplied
    * @returns {Prime.Widgets.PhraseBuilder} This PhraseBuilder.
    */
   withCustomAdd: function(callback, theContext) {
     this.customAddEnabled = true;
-    if (callback === 'undefined') {
-      this.customAddCallback = function(abc) {
+    if (callback === undefined) {
+      this.customAddCallback = function() {
         return true;
       };
     } else {
-      this.customAddCallback = Prime.Utils.proxy(callback, theContext);
+      this.customAddCallback = callback.bind(theContext);
     }
     return this;
   },
@@ -453,7 +453,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
 
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**

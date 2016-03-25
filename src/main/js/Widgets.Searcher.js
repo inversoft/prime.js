@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -396,11 +396,11 @@ Prime.Widgets.Searcher.prototype = {
    * @private
    */
   _handleBlurEvent: function() {
-    window.setTimeout(Prime.Utils.proxy(function() {
+    window.setTimeout((function() {
       if (document.activeElement !== this.inputElement.domElement) {
         this.closeSearchResults();
       }
-    }, this), 300);
+    }).bind(this), 300);
   },
 
   /**
@@ -434,8 +434,7 @@ Prime.Widgets.Searcher.prototype = {
   /**
    * Handles the key down events that should not be propagated.
    *
-   * @param {Event} event The browser event object.
-   * @returns {boolean} True if the event is not an arrow key.
+   * @param {KeyboardEvent} event The keyboard event object.
    * @private
    */
   _handleKeyDownEvent: function(event) {
@@ -444,7 +443,7 @@ Prime.Widgets.Searcher.prototype = {
       this.previousSearchString = this.inputElement.getValue();
     } else if (key === Prime.Events.Keys.UP_ARROW) {
       this.highlightPreviousSearchResult();
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (key === Prime.Events.Keys.DOWN_ARROW) {
       if (this.isSearchResultsVisible()) {
         this.highlightNextSearchResult();
@@ -452,19 +451,16 @@ Prime.Widgets.Searcher.prototype = {
         this.search();
       }
 
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (key === Prime.Events.Keys.ENTER) {
-      return false; // Don't bubble enter otherwise the form submits
+      Prime.Utils.stopEvent(event); // Don't bubble enter otherwise the form submits
     }
-
-    return true;
   },
 
   /**
    * Handles all key up events sent to the search results container.
    *
-   * @param {Event} event The browser event object.
-   * @returns {boolean} True if the search display is not open, false otherwise. This will prevent the event from continuing.
+   * @param {KeyboardEvent} event The keyboard event object.
    *  @private
    */
   _handleKeyUpEvent: function(event) {
@@ -483,15 +479,13 @@ Prime.Widgets.Searcher.prototype = {
         this.selectHighlightedSearchResult();
       }
 
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (key === Prime.Events.Keys.ESCAPE) {
       this.searchResultsContainer.hide();
     } else if (key === Prime.Events.Keys.SPACE || key === Prime.Events.Keys.DELETE ||
         (key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
       this.search();
     }
-
-    return true;
   },
 
   /**

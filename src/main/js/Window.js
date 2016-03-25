@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,7 +27,7 @@ Prime.Window = {
    */
   addEventListener: function(event, handler, context) {
     var theContext = (arguments.length < 3) ? this : context;
-    handler.primeProxy = Prime.Utils.proxy(handler, theContext);
+    handler.primeProxy = handler.bind(theContext);
 
     if (window.addEventListener) {
       window.addEventListener(event, handler.primeProxy, false);

@@ -324,7 +324,7 @@ Prime.Widgets.Tabs.prototype = {
   /**
    * Handle the tab click by showing the corresponding panel and hiding the others.
    *
-   * @param event The click event on the anchor tag.
+   * @param {MouseEvent} event The click event on the anchor tag.
    * @private
    */
   _handleClick: function(event) {
@@ -338,7 +338,7 @@ Prime.Widgets.Tabs.prototype = {
       }
     }
 
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**

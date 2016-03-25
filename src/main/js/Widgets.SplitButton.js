@@ -112,18 +112,20 @@ Prime.Widgets.SplitButton.prototype = {
 
   /**
    * Handle the default button click
+   * @param {MouseEvent} event the click event.
    * @private
    */
-  _handleDefaultButton: function() {
-    this.defaultAction.fireEvent('click', null, null, false, null);
-    return false;
+  _handleDefaultButton: function(event) {
+    this.defaultAction.fireEvent('click', null, null, false, true);
+    Prime.Utils.stopEvent(event);
   },
 
   /**
    * Handle the split button click to expand the action list.
+   * @param {MouseEvent} event the click event.
    * @private
    */
-  _handleDropDownClick: function() {
+  _handleDropDownClick: function(event) {
     this._clearActiveMarker();
     this._setActiveMarker();
     this._hideAllButtons();
@@ -142,7 +144,7 @@ Prime.Widgets.SplitButton.prototype = {
       this.splitButton.removeClass('prime-inactive')
     }
 
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**

@@ -37,7 +37,7 @@ Prime.Document.tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
  */
 Prime.Document.addEventListener = function(event, handler, context) {
   var theContext = (arguments.length < 3) ? this : context;
-  handler.primeProxy = Prime.Utils.proxy(handler, theContext);
+  handler.primeProxy = handler.bind(theContext);
 
   if (document.addEventListener) {
     document.addEventListener(event, handler.primeProxy, false);
@@ -136,7 +136,7 @@ Prime.Document.onReady = function(callback, context) {
     }
 
     // Add the callback
-    this.readyFunctions.push(Prime.Utils.proxy(callback, theContext));
+    this.readyFunctions.push(callback.bind(theContext));
   }
 };
 

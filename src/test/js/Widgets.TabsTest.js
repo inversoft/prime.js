@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -52,8 +52,8 @@ buster.testCase('Tabs class tests', {
     assert.isFalse(inactiveTab.hasClass('prime-active'));
     Prime.Document.queryFirst('a', inactiveTab).fireEvent('click');
 
-    setTimeout(Prime.Utils.proxy(done(function() {
+    setTimeout(done(function() {
       assert.isTrue(inactiveTab.hasClass('prime-active'));
-    }), this), 10);
+    }), 10);
   }
 });
