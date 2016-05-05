@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,8 +19,36 @@ var Prime = Prime || {};
 Prime.Date = {
   DAYS_IN_MONTH: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 
-  numberOfDaysInMonth: function(month) {
-    return Prime.Date.DAYS_IN_MONTH[month];
+  /**
+   * Return the hour in a 12-hour format. AM and PM are not communicated by the returned hour.
+   *
+   * @param date {Date} The date object to retrieve the hour from.
+   * @returns {Number} The hour of the day between 1 and 12.
+   */
+  getHourOfDay: function(date) {
+    return (date.getHours() + 24) % 12 || 12;
+  },
+
+  /**
+   * @param year The year.
+   * @returns {boolean} True if this is a leap year, otherwise false.
+   */
+  isLeapYear: function(year) {
+    return !((year % 4) || (!(year % 100) && (year % 400)));
+  },
+
+  /**
+   * Return the number of days in the month.
+   * @param year The year, the days in the month may change during a leap year.
+   * @param month The month.
+   * @returns {Number} The number of days in the month.
+   */
+  numberOfDaysInMonth: function(year, month) {
+    if (month === 1 && this.isLeapYear(year)) {
+      return 29;
+    } else {
+      return Prime.Date.DAYS_IN_MONTH[month];
+    }
   },
 
   /**
@@ -35,20 +63,20 @@ Prime.Date = {
     }
 
     var newDate = date.getDate() + number;
-    var numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
+    var numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
 
     if (newDate > 0) {
       while (newDate > numberOfDaysInMonth) {
         Prime.Date.plusMonths(date, 1);
         newDate = newDate - numberOfDaysInMonth;
-        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
+        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
       }
 
       date.setDate(newDate);
     } else {
       while (newDate <= 0) {
         Prime.Date.plusMonths(date, -1);
-        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getMonth());
+        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
         newDate = newDate + numberOfDaysInMonth;
       }
 

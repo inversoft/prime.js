@@ -36,6 +36,34 @@ Prime.Document.ElementList = function(elements) {
 };
 
 Prime.Document.ElementList.prototype = {
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.addClass} on each Element in the ElementList.
+   *
+   * Adds the given class (or list of space separated classes) to all Elements in this ElementList.
+   *
+   * @param {string} classNames The class name(s) separated by a space.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  addClass: function(classNames) {
+    return this._proxyToElement('addClass', classNames);
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.addEventListener} on each Element in the ElementList.
+   *
+   * Attaches an event listener to all Elements in this ElementList.
+   *
+   * @param {string} event The name of the event.
+   * @param {Function} listener The event listener function.
+   * @param {Object} [context=this] The context to use when invoking the handler (this sets the 'this' variable for the
+   *        function call). Defaults to this Element.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  addEventListener: function(event, listener, context) {
+    return this._proxyToElement('addEventListener', event, listener, context);
+  },
+
   /**
    * Iterates over each of the Prime.Document.Element objects in this ElementList and calls the given function for each one.
    * The 'this' variable inside the function will be the current Prime.Document.Element unless a context value is provided
@@ -85,6 +113,64 @@ Prime.Document.ElementList.prototype = {
       this[i].removeFromDOM();
     }
 
+    return this;
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.removeClass} on each Element in the ElementList.
+   *
+   * Removes the given class (or list of space separated classes) from all Elements in this ElementList.
+   *
+   * @param {string} classNames The class name(s) separated by a space.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  removeClass: function(classNames) {
+    return this._proxyToElement('removeClass', classNames);
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.setChecked} on each Element in the ElementList.
+   *
+   * If this element is a checkbox or radio button, this sets the checked field on the DOM object equal to the given
+   * value.
+   *
+   * @param {boolean} value The value to set the checked state of this element to.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  setChecked: function(value) {
+    return this._proxyToElement('setChecked', value);
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.setDisabled} on each Element in the ElementList.
+   *
+   * Sets if this element is disabled or not. This works with any element that responds to the disabled property.
+   *
+   * @param {boolean} value The value to set the disabled state of this element to.
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  setDisabled: function(value) {
+    return this._proxyToElement('setDisabled', value);
+  },
+
+  /* ===================================================================================================================
+   * Private methods
+   * ===================================================================================================================*/
+
+  /**
+   * Proxy function calls to each Element in the ElementList.
+   * The first parameter is function name, followed by a variable length of arguments.
+   *
+   * Example usage: this._proxyToElement('addClass', classNames);
+   *
+   * @returns {Prime.Document.ElementList}
+   * @private
+   */
+  _proxyToElement: function() {
+    var args = Array.prototype.slice.apply(arguments);
+    for (var i = 0; i < this.length; i++) {
+      this[i][args[0]].apply(this[i], args.slice(1));
+    }
     return this;
   }
 };

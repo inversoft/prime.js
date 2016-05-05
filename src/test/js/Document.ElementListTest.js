@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -98,5 +98,49 @@ buster.testCase('ElementList class tests', {
     assert.equals(list.indexOf(two.domElement), 1);
     assert.equals(list.indexOf(outside), -1);
     assert.equals(list.indexOf(outside.domElement), -1);
+  },
+
+  'addClass and removeClass': function() {
+    var container = Prime.Document.queryByID("query");
+    var list = Prime.Document.query("p", container);
+
+    var one = Prime.Document.queryByID("queryOne");
+    var two = Prime.Document.queryByID("queryTwo");
+
+    list.addClass('foobar');
+
+    assert.isTrue(one.hasClass('foobar'));
+    assert.isTrue(two.hasClass('foobar'));
+
+    list.removeClass('foobar');
+
+    assert.isFalse(one.hasClass('foobar'));
+    assert.isFalse(two.hasClass('foobar'));
+  },
+
+  'setChecked and setDisabled': function() {
+    var container = Prime.Document.queryByID("element-list-test");
+    var checkboxes =container.query('input[type="checkbox"]');
+
+    checkboxes.setChecked(true);
+    checkboxes.each(function(checkbox) {
+      assert.isTrue(checkbox.isChecked());
+    }, this);
+
+    checkboxes.setChecked(false);
+    checkboxes.each(function(checkbox) {
+      assert.isFalse(checkbox.isChecked());
+    }, this);
+
+    checkboxes.setDisabled(true);
+    checkboxes.each(function(checkbox) {
+      assert.isTrue(checkbox.isDisabled());
+    }, this);
+
+    checkboxes.setDisabled(false);
+    checkboxes.each(function(checkbox) {
+      assert.isFalse(checkbox.isDisabled());
+    }, this);
   }
+
 });

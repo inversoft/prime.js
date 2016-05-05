@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2013-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -48,7 +48,7 @@ Prime.Document.Element.prototype = {
   /**
    * Adds the given class (or list of space separated classes) to this Element.
    *
-   * @param {string} classNames The class name(s).
+   * @param {string} classNames The class name(s) separated by a space.
    * @returns {Prime.Document.Element} This Element.
    */
   addClass: function(classNames) {
@@ -329,7 +329,9 @@ Prime.Document.Element.prototype = {
     var attrs = this.getAttributes();
     for (var prop in attrs) {
       if (attrs.hasOwnProperty(prop) && prop.indexOf('data-') === 0) {
-        var dataName = prop.substring(5).replace(/-([a-z])/g, function (g) { return g[1].toUpperCase(); });
+        var dataName = prop.substring(5).replace(/-([a-z])/g, function(g) {
+          return g[1].toUpperCase();
+        });
         this.domElement.dataset[dataName] = attrs[prop];
       }
     }
@@ -361,8 +363,8 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the height of the Element as an integer value. This does not the border but does include any scroll bars. This
-   * is often called the innerHeight of the element.
+   * Gets the viewable height of the Element as an integer value in pixels. This height includes padding and scroll bar but excludes the margin and borders.
+   * This is often called the innerHeight of the element.
    *
    * @returns {number} The height as pixels (number) or a string.
    */
@@ -474,7 +476,7 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the outer height of the element, including the margins and the border.
+   * Gets the outer height of the element, including the margins. This does not include the padding or borders.
    *
    * @returns {number} The outer height of the element.
    */
@@ -532,10 +534,30 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @returns {number} The scroll height of this element.
+   */
+  getScrollHeight: function() {
+    return this.domElement.scrollHeight;
+  },
+  /**
+   * @returns {number} The scroll left position of this element.
+   */
+  getScrollLeft: function() {
+    return this.domElement.scrollLeft;
+  },
+
+  /**
    * @returns {number} The scroll top position of this element.
    */
   getScrollTop: function() {
     return this.domElement.scrollTop;
+  },
+
+  /**
+   * @returns {number} The scroll width of this element.
+   */
+  getScrollWidth: function() {
+    return this.domElement.scrollWidth;
   },
 
   /**
@@ -625,8 +647,8 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the width of the Element as an integer value. This does not include the borders but does including any scroll
-   * bars. This is often called the innerWidth of the element.
+   * Gets the width of the Element as an integer value. This width includes padding and scroll bar but excludes the margin and borders.
+   * This is often called the innerWidth of the element.
    *
    * @returns {number} The height in pixels.
    */
@@ -829,6 +851,14 @@ Prime.Document.Element.prototype = {
    */
   isFocused: function() {
     return document.activeElement === this.domElement;
+  },
+
+  /**
+   * @return {boolean} True if this element is an INPUT, SELECT or TEXTAREA.
+   */
+  isInput: function() {
+    var tagName = this.getTagName();
+    return tagName === 'SELECT' || tagName === 'INPUT' || tagName === 'TEXTAREA';
   },
 
   /**
@@ -1058,7 +1088,28 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Scrolls this element to the given position.
+   * Scrolls this Element into the visible area of the browser window.
+   *
+   * @returns {Prime.Document.Element} This Element.
+   */
+  scrollIntoView: function() {
+    this.domElement.scrollIntoView();
+    return this;
+  },
+
+  /**
+   * Scrolls this element to the given horizontal position.
+   *
+   * @param {number} position The position to scroll the element to.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  scrollLeftTo: function(position) {
+    this.domElement.scrollLeft = position;
+    return this;
+  },
+
+  /**
+   * Scrolls this element to the given vertical position.
    *
    * @param {number} position The position to scroll the element to.
    * @returns {Prime.Document.Element} This Element.
@@ -1402,6 +1453,39 @@ Prime.Document.Element.prototype = {
     }
 
     return this;
+  },
+
+  /**
+   * Toggle the class on this element.
+   *
+   * @param {string} className The class name.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  toggleClass: function(className) {
+    if (this.hasClass(className)) {
+      this.removeClass(className);
+    } else {
+      this.addClass(className);
+    }
+
+    return this;
+  },
+
+  /**
+   * Removes this element from the DOM while preserving the inner HTML.
+   *
+   * Example, call unwrap on the italic element:
+   *   <strong>Hello</strong><italic> World </italic> --> <strong>Hello</string> World
+   *
+   * @returns {Prime.Document.Element} This Element.
+   */
+  unwrap: function() {
+    var parent = this.parent().domElement;
+    while (this.domElement.firstChild) {
+      parent.insertBefore(this.domElement.firstChild, this.domElement);
+    }
+
+    this.removeFromDOM();
   },
 
   /**

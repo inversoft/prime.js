@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -63,15 +63,25 @@ Prime.Document.getHeight = function() {
 };
 
 /**
- * Returns the height of the document.
+ * Returns the width of the document.
  *
- * @returns {number} The height of the document in pixels.
+ * @returns {number} The width of the document in pixels.
  */
 Prime.Document.getWidth = function() {
   var body = document.body;
   var html = document.documentElement;
 
   return Math.max(body.scrollWidth, body.offsetWidth, html.clientWidth, html.scrollWidth, html.offsetWidth);
+};
+
+/**
+ * Builds a new document using the given HTML document.
+ *
+ * @param {string} documentString The HTML string to build the document.
+ * @returns {Document} A new document.
+ */
+Prime.Document.newDocument = function(documentString) {
+  return new DOMParser().parseFromString(documentString, "text/html");
 };
 
 /**
@@ -312,3 +322,38 @@ Prime.Document._callReadyListeners = function() {
     document.detachEvent('onreadystatechange', Prime.Document._callReadyListeners);
   }
 };
+
+/* ===================================================================================================================
+ * Polyfill
+ * ===================================================================================================================*/
+
+/* https://developer.mozilla.org/en-US/docs/Web/API/DOMParser */
+(function(DOMParser) {
+  "use strict";
+
+  var proto = DOMParser.prototype;
+  var nativeParse = proto.parseFromString;
+
+  // Firefox/Opera/IE throw errors on unsupported types
+  try {
+    // WebKit returns null on unsupported types
+    if ((new DOMParser()).parseFromString("", "text/html")) {
+      // text/html parsing is natively supported
+      return;
+    }
+  } catch (ex) {}
+
+  proto.parseFromString = function(markup, type) {
+    if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
+      var doc = document.implementation.createHTMLDocument("");
+      if (markup.toLowerCase().indexOf('<!doctype') > -1) {
+        doc.documentElement.innerHTML = markup;
+      } else {
+        doc.body.innerHTML = markup;
+      }
+      return doc;
+    } else {
+      return nativeParse.apply(this, arguments);
+    }
+  };
+}(DOMParser));

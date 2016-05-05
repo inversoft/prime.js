@@ -219,5 +219,14 @@ buster.testCase('Prime.Document namespace tests', {
     assert.isFalse(instance.called);
     assert.isNull(instance.event);
     assert.isNull(instance.memo);
+  },
+
+  'newDocument': function() {
+    var newDocument = Prime.Document.newDocument('<html><head><title>foo</title></head><body>body</body></html>');
+    refute.isNull(newDocument);
+    assert.equals(newDocument.documentElement.outerHTML, '<html><head><title>foo</title></head><body>body</body></html>');
+    assert.equals(newDocument.documentElement.innerHTML, '<head><title>foo</title></head><body>body</body>');
+    assert.equals(Prime.Document.queryFirst('body', newDocument).getHTML(), 'body');
+    assert.equals(Prime.Document.queryFirst('body', newDocument).getOuterHTML(), '<body>body</body>');
   }
 });

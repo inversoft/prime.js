@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -28,7 +28,7 @@ buster.testCase('Safari Browser tests', {
 
   'safari_mac': function() {
     assert.equals(Prime.Browser.name, 'Safari');
-    assert.equals(Prime.Browser.version, '8');
+    assert.equals(Prime.Browser.version, '9');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });
@@ -45,7 +45,7 @@ buster.testCase('Chrome Browser tests', {
 
   'chrome': function() {
     assert.equals(Prime.Browser.name, 'Chrome');
-    assert.equals(Prime.Browser.version, '44');
+    assert.equals(Prime.Browser.version, '48');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });

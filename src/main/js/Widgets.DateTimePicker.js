@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -146,7 +146,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     var year = date.getFullYear();
     var firstDay = new Date(year, month, 1);
     var firstDayOfMonth = firstDay.getDay();
-    var daysInMonth = Prime.Date.numberOfDaysInMonth(month);
+    var daysInMonth = Prime.Date.numberOfDaysInMonth(year, month);
     var used = firstDayOfMonth + daysInMonth;
     var weeksInMonth = Math.ceil(used / 7);
 
@@ -188,6 +188,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   nextMonth: function() {
     var newDate = new Date(this.date);
+    newDate.setDate(1); // Set the day to 1 to keep us from wrapping months on the 30 and 31st.
     newDate.setMonth(parseInt(this.monthDisplay.getDataAttribute('month')));
     newDate.setFullYear(parseInt(this.yearDisplay.getDataAttribute('year')));
     Prime.Date.plusMonths(newDate, 1);
@@ -221,13 +222,12 @@ Prime.Widgets.DateTimePicker.prototype = {
 
     new Prime.Effects.Appear(this.months).withDuration(100).go();
     this.months.setLeft(this.monthDisplay.getLeft() - 10);
-    this.months.setTop(this.monthDisplay.getOffsetTop());
+    this.months.setTop(this.monthDisplay.getAbsoluteTop());
     var currentMonth = this.months.queryFirst('[data-month="' + this.date.getMonth() + '"]');
     this.months.getChildren().each(function(month) {
       month.removeClass('prime-selected');
     }, this);
     currentMonth.addClass('prime-selected');
-    currentMonth.domElement.scrollIntoView();
   },
 
   /**
@@ -259,13 +259,12 @@ Prime.Widgets.DateTimePicker.prototype = {
 
     new Prime.Effects.Appear(this.years).withDuration(100).go();
     this.years.setLeft(this.yearDisplay.getLeft() - 10);
-    this.years.setTop(this.yearDisplay.getOffsetTop());
+    this.years.setTop(this.yearDisplay.getAbsoluteTop());
     var currentYear = this.years.queryFirst('[data-year="' + this.date.getFullYear() + '"]');
     this.years.getChildren().each(function(year) {
       year.removeClass('prime-selected');
     }, this);
     currentYear.addClass('prime-selected');
-    currentYear.domElement.scrollIntoView();
   },
 
   /**
@@ -459,6 +458,19 @@ Prime.Widgets.DateTimePicker.prototype = {
   },
 
   /**
+   * Clamp the value between the minimum and maximum values.
+   *
+   * @param {Number} min the minimum number value.
+   * @param {Number} max The maximum number value.
+   * @param {Number} value The value to clamp.
+   * @returns {Number} The resulting value, either the min, max or actual value if not out of bounds.
+   * @private
+   */
+  _clamp: function(min, max, value) {
+    return Math.max(min, Math.min(value, max));
+  },
+
+/**
    * Handles when the AM/PM element is selected and the user hits a key. If the user hits A, this changes to AM. If the
    * user hits P, this changes to PM. If the use hits the up or down arrows, this toggles between AM and PM.
    *
@@ -483,23 +495,19 @@ Prime.Widgets.DateTimePicker.prototype = {
     if (event.keyCode === 65) {
       // User hit A
       if (current === Prime.Widgets.DateTimePicker.AM_PM[1]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
-        this.date.setHours(this.date.getHours() - 12);
+        Prime.Date.plusHours(this.date, -12);
       }
     } else if (event.keyCode === 80) {
       // User hit P
       if (current === Prime.Widgets.DateTimePicker.AM_PM[0]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
-        this.date.setHours(this.date.getHours() + 12);
+        Prime.Date.plusHours(this.date, 12);
       }
     } else if (event.keyCode === Prime.Events.Keys.UP_ARROW || event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       // User hit up or down arrow
       if (current === Prime.Widgets.DateTimePicker.AM_PM[0]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
-        this.date.setHours(this.date.getHours() + 12);
+        Prime.Date.plusHours(this.date, 12);
       } else if (current === Prime.Widgets.DateTimePicker.AM_PM[1]) {
-        this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
-        this.date.setHours(this.date.getHours() - 12);
+        Prime.Date.plusHours(this.date, -12);
       }
     } else if (event.keyCode === Prime.Events.Keys.ENTER || event.keyCode === Prime.Events.Keys.ESCAPE) {
       return true;
@@ -518,11 +526,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   _handleDateTimeChange: function() {
     var newDate = new Date();
-    var hours = parseInt(this.hourInput.getValue());
-    if (hours < 1 || hours > 12) {
-      hours = 1;
-      this.hourInput.setValue(hours);
-    }
+    var hours = this._clamp(1, 12, parseInt(this.hourInput.getValue()));
     if (this.ampmInput.getValue() === Prime.Widgets.DateTimePicker.AM_PM[0]) {
       if (hours === 12) {
         newDate.setHours(0);
@@ -537,11 +541,10 @@ Prime.Widgets.DateTimePicker.prototype = {
       }
     }
 
-    var minutes = parseInt(this.minuteInput.getValue());
-    if (minutes < 1 || minutes > 59) {
-      minutes = 1;
-      this.minuteInput.setValue(minutes);
-    }
+    var seconds = this._clamp(0, 59, parseInt(this.secondInput.getValue()));
+    var minutes = this._clamp(0, 59, parseInt(this.minuteInput.getValue()));
+
+    newDate.setSeconds(seconds);
     newDate.setMinutes(minutes);
     newDate.setDate(1); // Set to 1 until month has been set
     newDate.setMonth(parseInt(this.monthInput.getValue()) - 1);
@@ -880,7 +883,6 @@ Prime.Widgets.DateTimePicker.prototype = {
     }
     return true;
   },
-
   /**
    * Refresh the time inputs.
    *
@@ -888,24 +890,20 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   _refreshInputs: function() {
     // Set Time -- assuming 12-hour time for the input fields and ISO 24-hour time for the field
-    var hours = this.date.getHours();
-    if (hours == 0) {
-      this.hourInput.setValue("12");
-      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
-    } else if (hours > 12) {
-      hours = hours - 12;
-      this.hourInput.setValue(hours);
-      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
-    } else {
-      this.hourInput.setValue(hours);
-      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
-    }
+    var hours = Prime.Date.getHourOfDay(this.date);
+    this.hourInput.setValue(hours);
 
     var minutes = this.date.getMinutes();
     this.minuteInput.setValue(("00" + minutes).slice(-2));
 
     var seconds = this.date.getSeconds();
     this.secondInput.setValue(("00" + seconds).slice(-2));
+
+    if (this.date.getHours() >= 12) {
+      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[1]);
+    } else {
+      this.ampmInput.setValue(Prime.Widgets.DateTimePicker.AM_PM[0]);
+    }
 
     this.monthInput.setValue(this.date.getMonth() + 1);
     this.dayInput.setValue(this.date.getDate());

@@ -188,3 +188,44 @@ Prime.Effects.Appear.prototype.go = function() {
   this.element.show();
   this.changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
 };
+
+/**
+ * Constructs a new ScrollTo for the given element. The duration defaults to 1000 milliseconds (1 second).
+ *
+ * @param {Prime.Document.Element} element The Prime Element to scroll.
+ * @param {number} position The position to scroll the element to.
+ * @constructor
+ */
+Prime.Effects.ScrollTo = function(element, position) {
+  this.axis = 'vertical';
+  Prime.Effects.BaseTransition.call(this, element, position);
+};
+
+Prime.Effects.ScrollTo.prototype = Object.create(Prime.Effects.BaseTransition.prototype);
+Prime.Effects.ScrollTo.constructor = Prime.Effects.ScrollTo;
+
+/**
+ * Set the scroll axis, either 'horizontal' or 'vertical'. Default is 'vertical'.
+ *
+ * @param {string} axis The axis to scroll.
+ * @returns {Prime.Effects.ScrollTo}
+ */
+Prime.Effects.ScrollTo.prototype.withAxis = function(axis) {
+  this.axis = axis || 'vertical';
+  return this;
+};
+
+Prime.Effects.ScrollTo.prototype._subclassEndFunction = function() {
+  // Nothing;
+};
+
+/**
+ * Executes the scroll effect on the element.
+ */
+Prime.Effects.ScrollTo.prototype.go = function() {
+  if (this.axis === 'vertical') {
+    this.changeNumberStyleIteratively(this.element.getScrollTop, this.element.scrollTo);
+  } else {
+    this.changeNumberStyleIteratively(this.element.getScrollLeft, this.element.scrollLeftTo);
+  }
+};

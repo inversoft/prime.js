@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -89,6 +89,7 @@ Prime.Widgets.PhraseBuilder = function(element, searchCallback, callbackContext)
   }
 
   this.placeholder = 'Type Words for Phrase Here';
+  this.customAddLabel = null;
 
   this.displayContainer = Prime.Document.queryByID(id + '-display');
   this.input = null;
@@ -275,6 +276,9 @@ Prime.Widgets.PhraseBuilder.prototype = {
     if (this.customAddEnabled) {
       this.searcher.withCustomAddCallback(this.customAddCallback);
     }
+    if (this.customAddLabel !== null) {
+      this.searcher.withCustomAddLabel(this.customAddLabel);
+    }
 
     // Add the selected options
     for (var i = 0; i < this.element.domElement.length; i++) {
@@ -336,6 +340,16 @@ Prime.Widgets.PhraseBuilder.prototype = {
     return this;
   },
 
+  /**
+   * Sets the label used when custom options are added.
+   *
+   * @param {string} customAddLabel The label.
+   * @returns {Prime.Widgets.PhraseBuilder} This PhraseBuilder.
+   */
+  withCustomAddLabel: function(customAddLabel) {
+    this.customAddLabel = customAddLabel;
+    return this;
+  },
 
   /* ===================================================================================================================
    * Searcher's callback interface methods.

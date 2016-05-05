@@ -24,7 +24,7 @@ buster.testCase('Tabs class tests', {
   setUp: function() {
     this.container = Prime.Document.queryByID('tab-test1');
     this.tabs = Prime.Document.queryFirst('ul', this.container);
-    this.tabsWidget = new Prime.Widgets.Tabs(this.tabs);
+    this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).render();
     this.tabContents = Prime.Document.query('div.prime-tab-content', this.container);
   },
 
@@ -42,10 +42,8 @@ buster.testCase('Tabs class tests', {
     assert.equals(activeTabs.length, 1);
 
     // assert data-tab-id attributes are set correctly
-    var index = 0;
     Prime.Document.query('li', this.tabs).each(function(li) {
-      assert.equals(li.getAttribute('data-tab-id'), index + '');
-      index++;
+      assert.equals(li.getAttribute('data-tab-id'), li.queryFirst('a').getAttribute('href').substring(1));
     }, this);
   },
 
