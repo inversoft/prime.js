@@ -142,6 +142,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
         setValue(word).
         setHTML(word).
         setAttribute('selected', 'selected').
+        setDataAttribute('display-id', '' + Math.random() + 1).
         appendTo(this.element);
 
     this._addSelectedOptionToDisplay(option);
@@ -491,6 +492,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * @private
    */
   _makeOptionID: function(option) {
-    return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
+    var id = option.getDataAttribute('displayId');
+    return id !== null ? id : this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
   }
 };
