@@ -143,7 +143,6 @@ Prime.Widgets.PhraseBuilder.prototype = {
         setValue(word).
         setHTML(word).
         setAttribute('selected', 'selected').
-        setDataAttribute('display-id', '' + Math.random() + 1).
         appendTo(this.element);
 
     this._addSelectedOptionToDisplay(option);
@@ -282,8 +281,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
 
     // Add the selected options
     for (var i = 0; i < this.element.domElement.length; i++) {
-      var option = new Prime.Document.Element(this.element.domElement.options[i]).
-          setAttribute('selected', 'selected');
+      var option = this._createOption(this.element.domElement.options[i]);
       this._addSelectedOptionToDisplay(option);
     }
 
@@ -296,6 +294,15 @@ Prime.Widgets.PhraseBuilder.prototype = {
     this.searcher.closeSearchResults();
 
     return this;
+  },
+
+  /**
+   * Create a new Prime Element for the option and set attributes.
+   * Added so that subclasses can define how this should work.
+   */
+  _createOption: function(option) {
+    return new Prime.Document.Element(option).
+    setAttribute('selected', 'selected');
   },
 
   /**
@@ -506,7 +513,58 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * @private
    */
   _makeOptionID: function(option) {
-    var id = option.getDataAttribute('displayId');
-    return id !== null ? id : this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
+    return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
   }
+};
+
+/**
+ * A Prime.Widgets.PhraseBuilder that supports using the same word multiple times
+ */
+Prime.Widgets.PhraseBuilderSupportsDupes = function(element, searchCallback, callbackContext) {
+  Prime.Widgets.PhraseBuilder.call(this, element, searchCallback, callbackContext);
+};
+
+Prime.Widgets.PhraseBuilderSupportsDupes.prototype = Object.create(Prime.Widgets.PhraseBuilder.prototype);
+Prime.Widgets.PhraseBuilderSupportsDupes.constructor = Prime.Widgets.PhraseBuilderSupportsDupes;
+
+/**
+ * The difference is that the created option element will have a data attribute that hold
+ * the display element's ID, and there is no check to see if the word is already in the option set
+ */
+Prime.Widgets.PhraseBuilderSupportsDupes.prototype.addWord = function(word) {
+  var option = Prime.Document.newElement('<option/>')
+      .setValue(word)
+      .setHTML(word)
+      .setAttribute('selected', 'selected')
+      .setDataAttribute('display-id', '' + Math.random() + 1)
+      .appendTo(this.element);
+
+  this._addSelectedOptionToDisplay(option);
+
+  // Remove the placeholder attribute on the input
+  this.input.removeAttribute('placeholder');
+
+  // Close the search results
+  this.searcher.closeSearchResults();
+
+  // Scroll the display to the bottom
+  this.displayContainerSelectedOptionList.scrollToBottom();
+
+  return this;
+};
+
+/**
+ * This is now based on a data attribute on the option, not based on the name
+ */
+Prime.Widgets.PhraseBuilderSupportsDupes.prototype._makeOptionID = function(option) {
+  return option.getDataAttribute('displayId');
+};
+
+/**
+ * Override to add the data attribute
+ */
+Prime.Widgets.PhraseBuilderSupportsDupes.prototype._createOption = function(option) {
+  return new Prime.Document.Element(option)
+      .setAttribute('selected', 'selected')
+      .setDataAttribute('display-id', '' + Math.random() + 1);
 };
