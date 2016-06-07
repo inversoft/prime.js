@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -51,9 +51,6 @@ Prime.Widgets.Tabs = function(element) {
   this.tabs = {};
   this.tabArray = [];
   this.selectedTab = null;
-
-  // Check if local storage is enabled to save selected tab
-  this.localStorageSupported = typeof(Storage) !== 'undefined' && this.options.localStorageKey !== null;
 
   this.tabsContainer.query('li:not(.prime-disabled)').each(function(tab) {
     var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
@@ -148,8 +145,8 @@ Prime.Widgets.Tabs.prototype = {
 
     var tabId = null;
     if (selectNew || noneActive) {
-      if (this.localStorageSupported) {
-        var item = sessionStorage.getItem(this.options.localStorageKey);
+      if (this.localStorageSupported && this.options['localStorageKey'] !== null) {
+        var item = sessionStorage.getItem(this.options['localStorageKey']);
         if (item !== null) {
           tabId = JSON.parse(item).tabId;
         }
@@ -182,6 +179,9 @@ Prime.Widgets.Tabs.prototype = {
    * @returns {Prime.Widgets.Tabs} This Tabs.
    */
   render: function() {
+    // Check if local storage is enabled to save selected tab
+    this.localStorageSupported = typeof(Storage) !== 'undefined' && this.options['localStorageKey'] !== null;
+
     this.tabsContainer.show();
     this.redraw();
     return this;
@@ -219,7 +219,7 @@ Prime.Widgets.Tabs.prototype = {
       var data = {
         'tabId': id
       };
-      sessionStorage.setItem(this.options.localStorageKey, JSON.stringify(data));
+      sessionStorage.setItem(this.options['localStorageKey'], JSON.stringify(data));
     }
 
     var ajaxURL = this.selectedTab.getDataSet().tabURL;
