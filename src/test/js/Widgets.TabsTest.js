@@ -22,9 +22,14 @@ var refute = buster.assertions.refute;
 
 buster.testCase('Tabs class tests', {
   setUp: function() {
+    this.handlerCalled = false;
+    var handler = function() {
+      this.handlerCalled = true;
+    };
+
     this.container = Prime.Document.queryByID('tab-test1');
     this.tabs = Prime.Document.queryFirst('ul', this.container);
-    this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).render();
+    this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).withSelectHandler(handler.bind(this)).render();
     this.tabContents = Prime.Document.query('div.prime-tab-content', this.container);
   },
 
@@ -54,6 +59,7 @@ buster.testCase('Tabs class tests', {
 
     setTimeout(Prime.Utils.proxy(done(function() {
       assert.isTrue(inactiveTab.hasClass('prime-active'));
+      assert.isTrue(this.handlerCalled);
     }), this), 10);
   }
 });

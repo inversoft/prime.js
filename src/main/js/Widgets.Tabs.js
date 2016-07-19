@@ -51,6 +51,7 @@ Prime.Widgets.Tabs = function(element) {
   this.tabs = {};
   this.tabArray = [];
   this.selectedTab = null;
+  this.selectHandler = null;
 
   this.tabsContainer.query('li:not(.prime-disabled)').each(function(tab) {
     var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
@@ -208,6 +209,9 @@ Prime.Widgets.Tabs.prototype = {
     for (tabId in this.tabContents) {
       if (this.tabContents.hasOwnProperty(tabId) && tabId === id) {
         this.tabContents[tabId].show();
+        if (this.selectHandler) {
+          this.selectHandler(this.tabs[tabId], this.tabContents[tabId]);
+        }
       } else {
         this.tabContents[tabId].hide();
       }
@@ -277,6 +281,17 @@ Prime.Widgets.Tabs.prototype = {
    */
   withLocalStorageKey: function(key) {
     this.options['localStorageKey'] = key;
+    return this;
+  },
+
+  /**
+   * Specifies a handler function that is called whenever tabs are changed.
+   *
+   * @param {Function} func The handler function.
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  withSelectHandler: function(func) {
+    this.selectHandler = func;
     return this;
   },
 
