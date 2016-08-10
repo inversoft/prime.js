@@ -13,19 +13,22 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 Prime.Widgets = Prime.Widgets || {};
 
 /**
  * Constructs a new SideMenu widget.
  *
- * @param element {Prime.Document.Element} The menu element
+ * @param element {Prime.Document.Element|Element|EventTarget} The menu element
  * @constructor
  */
 Prime.Widgets.SideMenu = function(element) {
+  Prime.Utils.bindAll(this);
 
   // Add the Open Button to the element
-  this.element = element;
+  this.element = Prime.Document.Element.wrap(element);
   this._setInitialOptions();
 
   this.body = new Prime.Document.Element(document.body);
@@ -91,7 +94,7 @@ Prime.Widgets.SideMenu.prototype = {
     } else {
       this.open();
     }
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**

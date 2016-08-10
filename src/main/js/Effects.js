@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -26,14 +28,14 @@ Prime.Effects = Prime.Effects || {};
 /**
  * Constructs a BaseTransition for the given element.
  *
- * @param {Prime.Document.Element} element The Prime Element the effect will be applied to.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element the effect will be applied to.
  * @param {number} endValue The end value for the transition.
  * @constructor
  */
 Prime.Effects.BaseTransition = function(element, endValue) {
-  this.context = null;
+  Prime.Utils.bindAll(this);
+  this.element = Prime.Document.Element.wrap(element);
   this.duration = 1000;
-  this.element = element;
   this.endFunction = null;
   this.endValue = endValue;
   this.iterations = 20;
@@ -44,12 +46,10 @@ Prime.Effects.BaseTransition.prototype = {
    * Sets the function that is called when the effect has completed.
    *
    * @param {Function} endFunction The function that is called when the effect is completed.
-   * @param {Object} [context] The context for the function call (sets the 'this' parameter). Defaults to the Element.
    * @returns {Prime.Effects.BaseTransition} This Effect.
    */
-  withEndFunction: function(endFunction, context) {
+  withEndFunction: function(endFunction) {
     this.endFunction = endFunction;
-    this.context = context;
     return this;
   },
 
@@ -68,7 +68,6 @@ Prime.Effects.BaseTransition.prototype = {
     return this;
   },
 
-
   /*
    * Protected functions
    */
@@ -81,7 +80,7 @@ Prime.Effects.BaseTransition.prototype = {
    * @param {Function} getFunction The function on the element to call to get the current value for the transition.
    * @param {Function} setFunction The function on the element to call to set the new value for the transition.
    */
-  changeNumberStyleIteratively: function(getFunction, setFunction) {
+  _changeNumberStyleIteratively: function(getFunction, setFunction) {
     var currentValue = getFunction.call(this.element);
     var step = Math.abs(this.endValue - currentValue) / this.iterations;
 
@@ -101,7 +100,7 @@ Prime.Effects.BaseTransition.prototype = {
       setFunction.call(self.element, currentValue);
     };
 
-    Prime.Utils.callIteratively(this.duration, this.iterations, stepFunction, this._internalEndFunction, this);
+    Prime.Utils.callIteratively(this.duration, this.iterations, stepFunction, this._internalEndFunction);
   },
 
   /* ===================================================================================================================
@@ -114,10 +113,12 @@ Prime.Effects.BaseTransition.prototype = {
    * @private
    */
   _internalEndFunction: function() {
-    this._subclassEndFunction();
-    var context = this.context || this.element;
-    if (this.endFunction !== null) {
-      this.endFunction.call(context);
+    if (this._subclassEndFunction) {
+      this._subclassEndFunction(this);
+    }
+
+    if (this.endFunction) {
+      this.endFunction(this);
     }
   }
 };
@@ -128,7 +129,7 @@ Prime.Effects.BaseTransition.prototype = {
  * 0.0. At the end, this hides the element so that it doesn't take up any space.
  *
  * @constructor
- * @param {Prime.Document.Element} element The Prime Element to fade out.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element to fade out.
  */
 Prime.Effects.Fade = function(element) {
   Prime.Effects.BaseTransition.call(this, element, 0.0);
@@ -149,7 +150,7 @@ Prime.Effects.Fade.prototype._subclassEndFunction = function() {
  * Executes the fade effect on the element using the opacity style.
  */
 Prime.Effects.Fade.prototype.go = function() {
-  this.changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
+  this._changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
 };
 
 
@@ -159,7 +160,7 @@ Prime.Effects.Fade.prototype.go = function() {
  * the element and finally it raises the opacity.
  *
  * @constructor
- * @param {Prime.Document.Element} element The Prime Element to appear.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element to appear.
  * @param {number} [opacity=1.0] The final opacity to reach when the effect is complete. Defaults to 1.0.
  */
 Prime.Effects.Appear = function(element, opacity) {
@@ -172,27 +173,18 @@ Prime.Effects.Appear.prototype = Object.create(Prime.Effects.BaseTransition.prot
 Prime.Effects.Appear.constructor = Prime.Effects.Appear;
 
 /**
- * Internal call back at the end of the transition. This does nothing since the Appear has no change at the end.
- *
- * @private
- */
-Prime.Effects.Appear.prototype._subclassEndFunction = function() {
-  // Nothing.
-};
-
-/**
  * Executes the appear effect on the element using the opacity style.
  */
 Prime.Effects.Appear.prototype.go = function() {
   this.element.setOpacity(0.0);
   this.element.show();
-  this.changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
+  this._changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
 };
 
 /**
  * Constructs a new ScrollTo for the given element. The duration defaults to 1000 milliseconds (1 second).
  *
- * @param {Prime.Document.Element} element The Prime Element to scroll.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element to scroll.
  * @param {number} position The position to scroll the element to.
  * @constructor
  */
@@ -215,17 +207,13 @@ Prime.Effects.ScrollTo.prototype.withAxis = function(axis) {
   return this;
 };
 
-Prime.Effects.ScrollTo.prototype._subclassEndFunction = function() {
-  // Nothing;
-};
-
 /**
  * Executes the scroll effect on the element.
  */
 Prime.Effects.ScrollTo.prototype.go = function() {
   if (this.axis === 'vertical') {
-    this.changeNumberStyleIteratively(this.element.getScrollTop, this.element.scrollTo);
+    this._changeNumberStyleIteratively(this.element.getScrollTop, this.element.scrollTo);
   } else {
-    this.changeNumberStyleIteratively(this.element.getScrollLeft, this.element.scrollLeftTo);
+    this._changeNumberStyleIteratively(this.element.getScrollLeft, this.element.scrollLeftTo);
   }
 };

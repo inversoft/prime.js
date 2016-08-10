@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -46,12 +48,11 @@ Prime.Widgets = Prime.Widgets || {};
  *   &lt;/ul&gt;
  * </pre>
  *
- * @param button {Prime.Document.Element} The ul element to transform into a split button.
+ * @param element {Prime.Document.Element|Element|EventTarget} The ul element to transform into a split button.
  * @constructor
  */
 Prime.Widgets.SplitButton = function(element) {
-
-  this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
+  this.element = Prime.Document.Element.wrap(element);
   var nodeName = this.element.domElement.nodeName.toLowerCase();
   if (nodeName !== 'ul') {
     throw new TypeError('SplitButton requires a ul element. The passed element type is <' + nodeName + '>');
@@ -60,6 +61,9 @@ Prime.Widgets.SplitButton = function(element) {
   if (this.element.hasClass('prime-initialized')) {
     throw new Error('This element has already been initialized. Call destroy before initializing again.');
   }
+
+  Prime.Utils.bindAll(this);
+
   this.element.hide().addClass('prime-split-button');
   this.container = Prime.Document.queryUp('div,td', this.element);
 
@@ -71,17 +75,17 @@ Prime.Widgets.SplitButton = function(element) {
 
   // Build the split button markup and add listeners
   this._buildSplitButton();
-  this.splitButton.addEventListener('mouseover', this._handleMouseOver, this);
-  this.splitButton.addEventListener('mouseout', this._handleMouseOut, this);
-  this.element.addEventListener('mouseout', this._handleMouseOut, this);
-  this.dropDown.addEventListener('click', this._handleDropDownClick, this);
-  this.dropDownDiv.addEventListener('click', this._handleDropDownClick, this);
-  this.defaultButton.addEventListener('click', this._handleDefaultButton, this);
+  this.splitButton.addEventListener('mouseover', this._handleMouseOver);
+  this.splitButton.addEventListener('mouseout', this._handleMouseOut);
+  this.element.addEventListener('mouseout', this._handleMouseOut);
+  this.dropDown.addEventListener('click', this._handleDropDownClick);
+  this.dropDownDiv.addEventListener('click', this._handleDropDownClick);
+  this.defaultButton.addEventListener('click', this._handleDefaultButton);
 
   // Register a single global listener to handle closing buttons
   var body = new Prime.Document.Element(document.body);
   if (!body.getAttribute('data-prime-split-button-handler')) {
-    body.addEventListener('click', this._hideAllButtons, this);
+    body.addEventListener('click', this._hideAllButtons);
     body.setAttribute('data-prime-split-button-handler', 'true');
   }
   this.element.addClass('prime-initialized');
@@ -112,18 +116,20 @@ Prime.Widgets.SplitButton.prototype = {
 
   /**
    * Handle the default button click
+   * @param {MouseEvent} event the click event.
    * @private
    */
-  _handleDefaultButton: function() {
-    this.defaultAction.fireEvent('click', null, null, false, null);
-    return false;
+  _handleDefaultButton: function(event) {
+    this.defaultAction.fireEvent('click', null, null, false, true);
+    Prime.Utils.stopEvent(event);
   },
 
   /**
    * Handle the split button click to expand the action list.
+   * @param {MouseEvent} event the click event.
    * @private
    */
-  _handleDropDownClick: function() {
+  _handleDropDownClick: function(event) {
     this._clearActiveMarker();
     this._setActiveMarker();
     this._hideAllButtons();
@@ -137,12 +143,12 @@ Prime.Widgets.SplitButton.prototype = {
       var width = 1;
       this.splitButton.getChildren('div').each(function(element) {
         width += element.getWidth();
-      }, this);
+      });
       this.element.setWidth(width);
       this.splitButton.removeClass('prime-inactive')
     }
 
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**
@@ -186,7 +192,7 @@ Prime.Widgets.SplitButton.prototype = {
     button.setHTML(this.defaultAction.getHTML());
     // Setting href to '#' will expand the button and remove it from the expanded list
     if (button.getAttribute('href') === '#') {
-      button.addEventListener('click', this._handleDropDownClick, this);
+      button.addEventListener('click', this._handleDropDownClick);
       this.defaultAction.parent().hide();
     }
 
@@ -217,7 +223,7 @@ Prime.Widgets.SplitButton.prototype = {
   _clearActiveMarker: function() {
     Prime.Document.query('ul.prime-split-button.prime-initialized[data-prime-active]').each(function(element) {
       element.removeAttribute('data-prime-active');
-    }, this);
+    });
   },
 
   /**
@@ -227,7 +233,7 @@ Prime.Widgets.SplitButton.prototype = {
    */
   _hideAllButtons: function(event) {
     Prime.Document.query('ul.prime-split-button.prime-initialized').each(function(element) {
-      if (typeof event === 'undefined') {
+      if (typeof(event) === 'undefined') {
         if (!element.domElement.hasAttribute('data-prime-active') && element.isVisible()) {
           element.hide();
         }
@@ -237,11 +243,11 @@ Prime.Widgets.SplitButton.prototype = {
         }
       }
 
-    }, this);
+    });
 
     Prime.Document.query('div.prime-split-button:not(.prime-inactive)').each(function(element) {
       element.addClass('prime-inactive');
-    }, this);
+    });
   },
 
   /**
@@ -251,4 +257,4 @@ Prime.Widgets.SplitButton.prototype = {
   _setActiveMarker: function() {
     this.element.setAttribute('data-prime-active', 'true');
   }
-}
+};

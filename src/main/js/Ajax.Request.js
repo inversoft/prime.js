@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -30,12 +32,12 @@ Prime.Ajax = Prime.Ajax || {};
  * @param {string} [method=GET] The HTTP method to use. You can specify GET, POST, PUT, DELETE, HEAD, SEARCH, etc.
  */
 Prime.Ajax.Request = function(url, method) {
+  Prime.Utils.bindAll(this);
   this.xhr = new XMLHttpRequest();
   this.async = true;
   this.body = null;
   this.queryParams = null;
   this.contentType = null;
-  this.context = this;
   this.errorHandler = this.onError;
   this.headers = {};
   this.loadingHandler = this.onLoading;
@@ -81,7 +83,7 @@ Prime.Ajax.Request.prototype = {
     }
 
     if (this.async) {
-      this.xhr.onreadystatechange = Prime.Utils.proxy(this._handler, this);
+      this.xhr.onreadystatechange = this._handler.bind(this);
     }
 
     this.xhr.open(this.method, requestUrl, this.async, this.username, this.password);
@@ -201,18 +203,6 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
-   * Sets the context for the AJAX handler functions. The object set here will be the "this" reference inside the handler
-   * functions.
-   *
-   * @param {Object} context The context object.
-   * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
-   */
-  withContext: function(context) {
-    this.context = context;
-    return this;
-  },
-
-  /**
    * Sets the data object for the request. Will store the values for query parameters or post data depending on the
    * method that is set.  If the method is a post or put, will also set content-type to x-www-form-urlencoded.
    *
@@ -305,7 +295,7 @@ Prime.Ajax.Request.prototype = {
    * @returns {Prime.Ajax.Request} This Prime.Ajax.Request.
    */
   withJSON: function(json) {
-    this.body = typeof json === String ? json : JSON.stringify(json);
+    this.body = typeof(json) === String ? json : JSON.stringify(json);
     this.contentType = 'application/json';
     return this;
   },
@@ -427,18 +417,18 @@ Prime.Ajax.Request.prototype = {
    */
   _handler: function() {
     if (this.xhr.readyState === 0) {
-      this.unsetHandler.call(this.context, this.xhr);
+      this.unsetHandler(this.xhr);
     } else if (this.xhr.readyState === 1) {
-      this.openHandler.call(this.context, this.xhr);
+      this.openHandler(this.xhr);
     } else if (this.xhr.readyState === 2) {
-      this.sendHandler.call(this.context, this.xhr);
+      this.sendHandler(this.xhr);
     } else if (this.xhr.readyState === 3) {
-      this.loadingHandler.call(this.context, this.xhr);
+      this.loadingHandler(this.xhr);
     } else if (this.xhr.readyState === 4) {
       if (this.xhr.status >= 200 && this.xhr.status <= 299) {
-        this.successHandler.call(this.context, this.xhr);
+        this.successHandler(this.xhr);
       } else {
-        this.errorHandler.call(this.context, this.xhr);
+        this.errorHandler(this.xhr);
       }
     }
   },

@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 Prime.Document = Prime.Document || {};
 
@@ -24,6 +26,8 @@ Prime.Document = Prime.Document || {};
  * @param {Array|NodeList} elements An array containing DOMElement or Prime.Document.Element objects, or a NodeList containing Node objects.
  */
 Prime.Document.ElementList = function(elements) {
+  Prime.Utils.bindAll(this);
+
   // NodeList does not inherit from Array so do not assume object type.
   this.length = elements.length;
   for (var i = 0; i < elements.length; i++) {
@@ -56,30 +60,26 @@ Prime.Document.ElementList.prototype = {
    *
    * @param {string} event The name of the event.
    * @param {Function} listener The event listener function.
-   * @param {Object} [context=this] The context to use when invoking the handler (this sets the 'this' variable for the
-   *        function call). Defaults to this Element.
    * @returns {Prime.Document.Element} This Element.
    */
-  addEventListener: function(event, listener, context) {
-    return this._proxyToElement('addEventListener', event, listener, context);
+  addEventListener: function(event, listener) {
+    return this._proxyToElement('addEventListener', event, listener);
   },
 
   /**
    * Iterates over each of the Prime.Document.Element objects in this ElementList and calls the given function for each one.
-   * The 'this' variable inside the function will be the current Prime.Document.Element unless a context value is provided
-   * when calling this function.
+   * The <code>this</code> variable inside the function will be managed by the caller of this method. You should use the
+   * <code>bind</code> method on the Function object if you want to manage the <code>this</code> reference.
    *
    * The function can optionally take two parameters. The first parameter is the current element. The second parameter
    * is the current index.
    *
    * @param {Function} iterationFunction The function to call.
-   * @param {Object} [context=the-current-element] The context for the function call (sets the this variable).
    * @returns {Prime.Document.ElementList} This ElementList.
    */
-  each: function(iterationFunction, context) {
+  each: function(iterationFunction) {
     for (var i = 0; i < this.length; i++) {
-      var theContext = (arguments.length < 2) ? this[i] : context;
-      iterationFunction.call(theContext, this[i], i);
+      iterationFunction(this[i], i);
     }
 
     return this;

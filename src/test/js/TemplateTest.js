@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 buster.testCase('Prime.Template', {
   'generate with no replaces': function() {

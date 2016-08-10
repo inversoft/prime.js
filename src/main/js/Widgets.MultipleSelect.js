@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -61,10 +63,10 @@ Prime.Widgets = Prime.Widgets || {};
  * </ul>
  *
  * @constructor
- * @param {Prime.Document.Element} element The Prime Element for the MultipleSelect.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the MultipleSelect.
  */
 Prime.Widgets.MultipleSelect = function(element) {
-  this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
+  this.element = Prime.Document.Element.wrap(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widgets.MultipleSelect with select elements');
   }
@@ -72,6 +74,8 @@ Prime.Widgets.MultipleSelect = function(element) {
   if (this.element.getAttribute('multiple') !== 'multiple') {
     throw new TypeError('The select box you are attempting to convert to a Prime.Widgets.MultipleSelect must have the multiple="multiple" attribute set');
   }
+
+  Prime.Utils.bindAll(this);
 
   this.element.hide();
   this.placeholder = 'Choose';
@@ -91,8 +95,8 @@ Prime.Widgets.MultipleSelect = function(element) {
     this.displayContainer = Prime.Document.newElement('<div/>').
         setID(id + '-display').
         addClass('prime-multiple-select-display').
-        addEventListener('click', this._handleClickEvent, this).
-        addEventListener('keyup', this._handleKeyUpEvent, this).
+        addEventListener('click', this._handleClickEvent).
+        addEventListener('keyup', this._handleKeyUpEvent).
         insertAfter(this.element);
 
     this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>').
@@ -106,13 +110,13 @@ Prime.Widgets.MultipleSelect = function(element) {
   } else {
     this.displayContainer.
         removeAllEventListeners().
-        addEventListener('click', this._handleClickEvent, this).
-        addEventListener('keyup', this._handleKeyUpEvent, this);
+        addEventListener('click', this._handleClickEvent).
+        addEventListener('keyup', this._handleKeyUpEvent);
     this.displayContainerSelectedOptionList = Prime.Document.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Document.queryFirst('.prime-multiple-select-search-result-list', this.displayContainer);
   }
 
-  Prime.Document.queryFirst('html').addEventListener('click', this._handleGlobalClickEvent, this);
+  Prime.Document.queryFirst('html').addEventListener('click', this._handleGlobalClickEvent);
 };
 
 /*
@@ -133,11 +137,10 @@ Prime.Widgets.MultipleSelect.prototype = {
    *
    * @param {string} event The name of the event.
    * @param {Function} listener The listener function.
-   * @param {*} [context] The context.
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
-  addEventListener: function(event, listener, context) {
-    this.element.addEventListener(event, listener, context);
+  addEventListener: function(event, listener) {
+    this.element.addEventListener(event, listener);
     return this;
   },
 
@@ -383,8 +386,8 @@ Prime.Widgets.MultipleSelect.prototype = {
         appendTo(this.displayContainerSelectedOptionList);
     this.input = Prime.Document.newElement('<input/>').
         addClass('prime-multiple-select-input').
-        addEventListener('click', this._handleClickEvent, this).
-        addEventListener('blur', this._handleBlurEvent, this).
+        addEventListener('click', this._handleClickEvent).
+        addEventListener('blur', this._handleBlurEvent).
         setAttribute('type', 'text').
         appendTo(this.inputOption);
     this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this).
@@ -446,7 +449,7 @@ Prime.Widgets.MultipleSelect.prototype = {
           setAttribute('value', option.getValue()).
           addClass('prime-multiple-select-remove-option').
           setHTML('X').
-          addEventListener('click', this._handleClickEvent, this).
+          addEventListener('click', this._handleClickEvent).
           appendTo(li);
     }
 
@@ -586,7 +589,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * Called when the Searcher is executing a search. This executes a search via the callback and returns the results.
    *
    * @param {string} [searchText] The text to search for.
-   * @returns The SearchResults.
+   * @returns {Object} The SearchResults.
    */
   search: function(searchText) {
     this.unhighlightOptionForUnselect();
@@ -638,11 +641,11 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @private
    */
   _handleBlurEvent: function() {
-    window.setTimeout(Prime.Utils.proxy(function() {
+    window.setTimeout((function() {
       if (document.activeElement !== this.input.domElement) {
         this.searcher.closeSearchResults();
       }
-    }, this), 300);
+    }).bind(this), 300);
   },
 
   /**

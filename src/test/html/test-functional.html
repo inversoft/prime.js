@@ -72,6 +72,29 @@
         }
       };
 
+      function one(foo, bar) {
+        console.log('Arguments ' + arguments.length);
+        console.log('bar ' + bar);
+      }
+
+      function two(foo, bar) {
+        one(foo, bar);
+      }
+
+      console.log('Calling single param');
+      two('two');
+      console.log('Calling undefined param');
+      two('two', undefined);
+      console.log('Calling two params');
+      two('two', 'two');
+
+      console.log('Calling direct single param');
+      one('one');
+      console.log('Calling direct undefined param');
+      one('one', undefined);
+      console.log('Calling direct two params');
+      one('one', 'one');
+
       Prime.Document.onReady(function() {
         Prime.Document.queryFirst('#fade').
           addEventListener('click', function() {
@@ -136,21 +159,22 @@
               .go();
         }, this);
 
-        var touchable = new Prime.Widgets.Touchable(Prime.Document.queryByID('touchable'))
+        var touchableElement = Prime.Document.queryByID('touchable');
+        var touchable = new Prime.Widgets.Touchable(touchableElement)
             .withLongPressHandler(function() {
-              this.element.setHTML('long press');
+              touchableElement.setHTML('long press');
             })
             .withSwipeUpHandler(function() {
-              this.element.setHTML('swipe-up');
+              touchableElement.setHTML('swipe-up');
             })
             .withSwipeDownHandler(function() {
-              this.element.setHTML('swipe-down');
+              touchableElement.setHTML('swipe-down');
             })
             .withSwipeLeftHandler(function() {
-              this.element.setHTML('swipe-left');
+              touchableElement.setHTML('swipe-left');
             })
             .withSwipeRightHandler(function() {
-              this.element.setHTML('swipe-right');
+              touchableElement.setHTML('swipe-right');
             })
             .withMoveHandler(function(event) {
               var touchPoints = event.changedTouches.length;
@@ -160,9 +184,9 @@
 
               clearTimeout(this.timer);
               var delta = (event.touches[0].clientX - this.touchStartX) * 0.5;
-              this.element.setStyle('margin-left', delta + 'px');
+              touchableElement.setStyle('margin-left', delta + 'px');
               this.timer = setTimeout((function() {
-                this.element.setStyle('margin-left', '0px');
+                touchableElement.setStyle('margin-left', '0px');
               }).bind(this), 50);
             });
       });

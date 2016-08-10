@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<!--
+  ~ Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~   http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing,
+  ~ software distributed under the License is distributed on an
+  ~ "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,
+  ~ either express or implied. See the License for the specific
+  ~ language governing permissions and limitations under the License.
+  -->
+
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prime Mobile Functional Tests</title>
+    <link rel="stylesheet" href="../css/normalize-3.0.2.css"/>
+    <link rel="stylesheet" href="../js/buster-test.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.PhraseBuilder.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.Searcher.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
+    <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
+    <script type="text/javascript" src="../../main/js/Browser.js"></script>
+    <script type="text/javascript" src="../../main/js/Date.js"></script>
+    <script type="text/javascript" src="../../main/js/Document.js"></script>
+    <script type="text/javascript" src="../../main/js/Document.Element.js"></script>
+    <script type="text/javascript" src="../../main/js/Document.ElementList.js"></script>
+    <script type="text/javascript" src="../../main/js/Effects.js"></script>
+    <script type="text/javascript" src="../../main/js/Events.js"></script>
+    <script type="text/javascript" src="../../main/js/Template.js"></script>
+    <script type="text/javascript" src="../../main/js/Utils.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
+    <script type="text/javascript" src="../../main/js/Window.js"></script>
+    <script type="text/javascript">
+      Prime.Document.onReady(function() {
+        // Basic JavaScript DOM events test. This is trying to figure out how the browser manages event listeners for a
+        // single element and event type.
+        function EventObjectOne() {
+          this.e = document.getElementById('event-test');
+          this._handlerBound = this._handler.bind(this);
+          this.e.addEventListener('click', this._handlerBound);
+          this.e.addEventListener('click', this._handlerBound);
+          this.e.addEventListener('click', this._handlerBound);
+          this.e.addEventListener('click', this._handlerBound);
+        }
+        EventObjectOne.prototype = {
+          _handler: function(e) {
+            console.log('EventObjectOne');
+            console.log(this);
+          }
+        };
+        new EventObjectOne();
+
+        function EventObjectTwo() {
+          this.e = document.getElementById('event-test');
+          this._handler = this._handler.bind(this);
+          this.e.addEventListener('click', this._handler);
+          this.e.addEventListener('click', this._handler);
+          this.e.addEventListener('click', this._handler);
+          this.e.addEventListener('click', this._handler);
+        }
+        EventObjectTwo.prototype = {
+          _handler: function(e) {
+            console.log('EventObjectTwo');
+            console.log(this);
+          }
+        };
+        new EventObjectTwo();
+
+        function BindAll() {
+          Prime.Utils.bindAll(this);
+//          Prime.Utils.bindSome(this, '_handler');
+          this.e = document.getElementById('event-test');
+          this.e.addEventListener('click', this._handler);
+        }
+        BindAll.prototype = {
+          _handler: function(e) {
+            console.log('BindAll');
+            console.log(this);
+          }
+        };
+        new BindAll();
+      });
+    </script>
+    <style>
+      body {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="main">
+      <a id="event-test" href="#">Click Me to Test Event Handlers, Multiple Listener Bindings, Function Bindings, etc!</a>
+    </div>
+  </body>
+</html>

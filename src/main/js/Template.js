@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 
@@ -23,6 +25,7 @@ var Prime = Prime || {};
  * @param {string} template The String that defines the source of the template.
  */
 Prime.Template = function(template) {
+  Prime.Utils.bindAll(this);
   this.init(template);
 };
 
@@ -45,16 +48,16 @@ Prime.Template.prototype = {
   generate: function(parameters) {
     parameters = typeof parameters !== 'undefined' ? parameters : {};
     var templateCopy = new String(this.template);
-    var key;
-    for (key in parameters) {
+    for (var key in parameters) {
       if (parameters.hasOwnProperty(key)) {
         var value = parameters[key];
         var expressedValue;
-        if (typeof value === 'function') {
+        if (typeof(value) === 'function') {
           expressedValue = value();
         } else {
           expressedValue = value;
         }
+
         if (key.indexOf('/') === 0 && key.lastIndexOf('/') === key.length - 1) {
           templateCopy = templateCopy.replace(new RegExp(key.substring(1, key.length - 1), "g"), expressedValue);
         } else {
@@ -65,6 +68,7 @@ Prime.Template.prototype = {
         }
       }
     }
+
     return templateCopy;
   },
 

@@ -13,13 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
-
 
 buster.testCase('Prime.Document namespace tests', {
   'addEventListener': function() {
     var MyEventListener = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
       this.memo = null;
     };
@@ -33,7 +35,7 @@ buster.testCase('Prime.Document namespace tests', {
     };
 
     var instance = new MyEventListener();
-    Prime.Document.addEventListener('click', instance.handle, instance);
+    Prime.Document.addEventListener('click', instance.handle);
 
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
     assert(instance.called);
@@ -167,29 +169,30 @@ buster.testCase('Prime.Document namespace tests', {
     },
 
     'find parent by id': function() {
-      assert.equals(Prime.Document.queryUp('#parent', this.child), this.parent);
+      assert.equals(Prime.Document.queryUp('#parent', this.child).domElement, this.parent.domElement);
     },
 
     'find parent by type + id': function() {
-      assert.equals(Prime.Document.queryUp('div#parent', this.child), this.parent);
+      assert.equals(Prime.Document.queryUp('div#parent', this.child).domElement, this.parent.domElement);
     },
 
     'find parent by type only': function() {
-      assert.equals(Prime.Document.queryUp('div', this.child), this.parent);
+      assert.equals(Prime.Document.queryUp('div', this.child).domElement, this.parent.domElement);
     },
 
     'find ancestor': function() {
-      assert.equals(Prime.Document.queryUp('.ancestor', this.child), this.ancestor);
+      assert.equals(Prime.Document.queryUp('.ancestor', this.child).domElement, this.ancestor.domElement);
     },
 
     'find parent with a space in the selector': function() {
-      assert.equals(Prime.Document.queryUp('div #parent', this.child), this.parent);
-      assert.equals(Prime.Document.queryUp('body .ancestor', this.child), this.ancestor);
+      assert.equals(Prime.Document.queryUp('div #parent', this.child).domElement, this.parent.domElement);
+      assert.equals(Prime.Document.queryUp('body .ancestor', this.child).domElement, this.ancestor.domElement);
     }
   },
 
   'removeEventListener': function() {
     var MyEventListener = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
       this.memo = null;
       this.event = null;
@@ -203,7 +206,7 @@ buster.testCase('Prime.Document namespace tests', {
     };
 
     var instance = new MyEventListener();
-    var proxy = Prime.Document.addEventListener('click', instance.handle, instance);
+    Prime.Document.addEventListener('click', instance.handle);
 
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
     assert.isTrue(instance.called);
@@ -214,7 +217,7 @@ buster.testCase('Prime.Document namespace tests', {
     instance.memo = null;
     instance.event = null;
 
-    Prime.Document.removeEventListener('click', proxy);
+    Prime.Document.removeEventListener('click', instance.handle);
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
     assert.isFalse(instance.called);
     assert.isNull(instance.event);

@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
 
@@ -76,10 +78,9 @@ buster.testCase('ElementList class tests', {
     var count = 0;
     Prime.Document.query('p.test').each(function(element, index) {
       assert.equals(index, count++);
-      assert.isTrue(this instanceof Array);
       assert.isTrue(element instanceof Prime.Document.Element);
       assert.equals(element.domElement.tagName, 'P');
-    }, []);
+    });
 
     assert.equals(count, 3);
   },
@@ -125,22 +126,22 @@ buster.testCase('ElementList class tests', {
     checkboxes.setChecked(true);
     checkboxes.each(function(checkbox) {
       assert.isTrue(checkbox.isChecked());
-    }, this);
+    });
 
     checkboxes.setChecked(false);
     checkboxes.each(function(checkbox) {
       assert.isFalse(checkbox.isChecked());
-    }, this);
+    });
 
     checkboxes.setDisabled(true);
     checkboxes.each(function(checkbox) {
       assert.isTrue(checkbox.isDisabled());
-    }, this);
+    });
 
     checkboxes.setDisabled(false);
     checkboxes.each(function(checkbox) {
       assert.isFalse(checkbox.isDisabled());
-    }, this);
+    });
   }
 
 });

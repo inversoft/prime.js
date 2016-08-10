@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 var assert = buster.assertions.assert;
 
@@ -24,6 +25,7 @@ buster.testCase('AJAX tests', {
    */
   'context': function(done) {
     var MyClass = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
     };
 
@@ -36,7 +38,6 @@ buster.testCase('AJAX tests', {
     var handler = new MyClass();
     new Prime.Ajax.Request('ajax-response.html').
       withSuccessHandler(handler.handleFunction).
-      withContext(handler).
       go();
 
     setTimeout(function() {
@@ -235,14 +236,13 @@ buster.testCase('AJAX tests', {
     }
 
     // Extend and override the success handler
-    MyAjaxRequest.prototype = new Prime.Ajax.Request();
+    MyAjaxRequest.prototype = Object.create(Prime.Ajax.Request.prototype);
     MyAjaxRequest.prototype.constructor = MyAjaxRequest;
     MyAjaxRequest.prototype.onSuccess = function() {
       this.called = true;
     };
 
-    var ajax = new MyAjaxRequest('ajax-response.html').
-      go();
+    var ajax = new MyAjaxRequest('ajax-response.html').go();
 
     setTimeout(function() {
       assert(ajax.called);

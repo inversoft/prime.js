@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -24,9 +26,11 @@ Prime.Data = Prime.Data || {};
 
 /**
  * First-In-First-Out Queue implementation modeled after java.util.Deque interface.
+ *
  * @constructor
  */
 Prime.Data.Queue = function() {
+  Prime.Utils.bindAll(this);
   this._elements = {};
   this._head = 0;
   this._tail = 0;

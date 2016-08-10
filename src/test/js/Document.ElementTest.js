@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
 
@@ -479,6 +481,36 @@ buster.testCase('Element class tests', {
     assert.isTrue(Prime.Document.queryFirst('#is-test div.display-none').is('div'));
     assert.isFalse(Prime.Document.queryFirst('#is-test div.display-none').is('div.bar'));
     assert.isFalse(Prime.Document.queryFirst('#is-test div.display-none').is('td'));
+
+    var element1 = Prime.Document.queryFirst('div');
+    assert.isTrue(element1.is('div'));
+
+    var element2 = Prime.Document.queryFirst('a');
+    assert.isTrue(element2.is('a'));
+
+    var element3 = Prime.Document.queryFirst('div.foo.bar');
+    assert.isTrue(element3.is('.foo'));
+    assert.isTrue(element3.is('.bar'));
+    assert.isTrue(element3.is('.foo.bar'));
+    assert.isTrue(element3.is('.bar.foo'));
+
+    assert.isFalse(element3.is('.div'));
+    assert.isFalse(element3.is('.baz'));
+    assert.isFalse(element3.is('a'));
+    assert.isFalse(element3.is('span'));
+
+    var element4 = Prime.Document.queryFirst('#is-test textarea', element4);
+    assert.isTrue(element4.is('textarea'));
+    assert.isTrue(element4.is('td textarea'));
+    assert.isTrue(element4.is('tr td textarea'));
+    assert.isTrue(element4.is('table tr td textarea'));
+    assert.isTrue(element4.is('#is-test table tr td textarea'));
+    assert.isTrue(element4.is('#is-test > table tr td textarea'));
+    assert.isFalse(element4.is('div > textarea'));
+    assert.isFalse(element4.is('a > textarea'));
+    assert.isFalse(element4.is('body > textarea'));
+    assert.isFalse(element4.is('input'));
+    assert.isFalse(element4.is('a'));
   },
 
   /**
@@ -1231,6 +1263,7 @@ buster.testCase('Element class tests', {
 
   'eventsUsingObject': function() {
     var MyEventListener = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
       this.memo = null;
     };
@@ -1242,18 +1275,19 @@ buster.testCase('Element class tests', {
     };
 
     var instance = new MyEventListener();
-    Prime.Document.queryFirst('#event').
-        addEventListener('click', instance.handle, instance).
-        fireEvent('click', 'memo');
+    Prime.Document.queryFirst('#event')
+        .addEventListener('click', instance.handle)
+        .fireEvent('click', 'memo');
 
     assert.isTrue(instance.called);
     assert.equals(instance.memo, 'memo');
 
+    // Unbind the listener and click it again
     instance.called = false;
     instance.memo = null;
-    Prime.Document.queryFirst('#event').
-        removeEventListener('click', instance.handle).
-        fireEvent('click', 'memo');
+    Prime.Document.queryFirst('#event')
+        .removeEventListener('click', instance.handle)
+        .fireEvent('click', 'memo');
 
     assert.isFalse(instance.called);
     assert.isNull(instance.memo);
@@ -1261,6 +1295,7 @@ buster.testCase('Element class tests', {
 
   'customEvents': function() {
     var MyEventListener = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
       this.memo = null;
       this.event = null;
@@ -1274,19 +1309,20 @@ buster.testCase('Element class tests', {
     };
 
     var instance = new MyEventListener();
-    Prime.Document.queryFirst('#event').
-        addEventListener('custom:pop', instance.handle, instance).
-        fireEvent('custom:pop', 'foo');
+    Prime.Document.queryFirst('#event')
+        .addEventListener('custom:pop', instance.handle)
+        .fireEvent('custom:pop', 'foo');
 
     assert.isTrue(instance.called);
     assert.equals(instance.event, 'custom:pop');
     assert.equals(instance.memo, 'foo');
 
+    // Bind the function to itself so the object fields aren't set
     instance.called = false;
     instance.memo = null;
     instance.event = null;
     Prime.Document.queryFirst('#event').
-        removeEventListener('custom:pop', instance.handle).
+        removeEventListener('custom:pop', instance.handle.bind(instance.handle)).
         fireEvent('custom:pop', 'foo');
 
     assert.isFalse(instance.called);
@@ -1300,38 +1336,6 @@ buster.testCase('Element class tests', {
 
     element.setOpacity(0.5);
     assert.equals(element.getOpacity(), 0.5);
-  },
-
-  'is': function() {
-    var element1 = Prime.Document.queryFirst('div');
-    assert.isTrue(element1.is('div'));
-
-    var element2 = Prime.Document.queryFirst('a');
-    assert.isTrue(element2.is('a'));
-
-    var element3 = Prime.Document.queryFirst('div.foo.bar');
-    assert.isTrue(element3.is('.foo'));
-    assert.isTrue(element3.is('.bar'));
-    assert.isTrue(element3.is('.foo.bar'));
-    assert.isTrue(element3.is('.bar.foo'));
-
-    assert.isFalse(element3.is('.div'));
-    assert.isFalse(element3.is('.baz'));
-    assert.isFalse(element3.is('a'));
-    assert.isFalse(element3.is('span'));
-
-    var element4 = Prime.Document.queryFirst('#is-test textarea', element4);
-    assert.isTrue(element4.is('textarea'));
-    assert.isTrue(element4.is('td textarea'));
-    assert.isTrue(element4.is('tr td textarea'));
-    assert.isTrue(element4.is('table tr td textarea'));
-    assert.isTrue(element4.is('#is-test table tr td textarea'));
-    assert.isTrue(element4.is('#is-test > table tr td textarea'));
-    assert.isFalse(element4.is('div > textarea'));
-    assert.isFalse(element4.is('a > textarea'));
-    assert.isFalse(element4.is('body > textarea'));
-    assert.isFalse(element4.is('input'));
-    assert.isFalse(element4.is('a'));
   },
 
   'query': function() {
@@ -1350,24 +1354,24 @@ buster.testCase('Element class tests', {
     },
 
     'find parent by id': function() {
-      assert.equals(this.child.queryUp('#parent'), this.parent);
+      assert.equals(this.child.queryUp('#parent').domElement, this.parent.domElement);
     },
 
     'find parent by type + id': function() {
-      assert.equals(this.child.queryUp('div#parent'), this.parent);
+      assert.equals(this.child.queryUp('div#parent').domElement, this.parent.domElement);
     },
 
     'find parent by type only': function() {
-      assert.equals(this.child.queryUp('div'), this.parent);
+      assert.equals(this.child.queryUp('div').domElement, this.parent.domElement);
     },
 
     'find ancestor': function() {
-      assert.equals(this.child.queryUp('.ancestor'), this.ancestor);
+      assert.equals(this.child.queryUp('.ancestor').domElement, this.ancestor.domElement);
     },
 
     'find parent with a space in the selector': function() {
-      assert.equals(this.child.queryUp('div #parent'), this.parent);
-      assert.equals(this.child.queryUp('body .ancestor'), this.ancestor);
+      assert.equals(this.child.queryUp('div #parent').domElement, this.parent.domElement);
+      assert.equals(this.child.queryUp('body .ancestor').domElement, this.ancestor.domElement);
     }
   },
 
