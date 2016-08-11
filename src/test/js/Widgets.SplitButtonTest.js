@@ -23,8 +23,8 @@ var refute = buster.assertions.refute;
 
 buster.testCase('SplitButton class tests', {
   setUp: function() {
-    this.container1 = Prime.Document.queryByID('split-button-test1');
-    this.container2 = Prime.Document.queryByID('split-button-test2');
+    this.container1 = Prime.Document.queryById('split-button-test1');
+    this.container2 = Prime.Document.queryById('split-button-test2');
 
     this.splitButton1 = Prime.Document.queryFirst('ul', this.container1);
     this.splitButton2 = Prime.Document.queryFirst('ul', this.container2);

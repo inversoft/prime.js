@@ -26,7 +26,7 @@ Prime.Document = Prime.Document || {};
  * @param {Element|EventTarget} element The element
  */
 Prime.Document.Element = function(element) {
-  if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
+  if (!Prime.Utils.isDefined(element.nodeType) || element.nodeType !== 1) {
     throw new TypeError('You can only pass in DOM element Node objects to the Prime.Document.Element constructor');
   }
 
@@ -177,10 +177,10 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   fireEvent: function(event, memo, target, bubbling, cancelable) {
-    memo = typeof(memo) !== 'undefined' ? memo : {};
-    target = typeof(target) !== 'undefined' ? target : this;
-    bubbling = typeof(bubbling) !== 'undefined' ? bubbling : true;
-    cancelable = typeof(cancelable) !== 'undefined' ? cancelable : true;
+    memo = Prime.Utils.isDefined(memo) ? memo : {};
+    target = Prime.Utils.isDefined(target) ? target : this;
+    bubbling = Prime.Utils.isDefined(bubbling) ? bubbling : true;
+    cancelable = Prime.Utils.isDefined(cancelable) ? cancelable : true;
 
     var evt;
     if (event.indexOf(':') === -1) {
@@ -231,7 +231,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   fireCustomEvent: function(event, eventObj) {
-    eventObj = typeof(eventObj) !== 'undefined' ? eventObj : {};
+    eventObj = Prime.Utils.isDefined(eventObj) ? eventObj : {};
     if (event.indexOf(':') === -1) {
       throw new TypeError('This method can only be used for custom events');
     }
@@ -318,7 +318,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.ElementList} The children.
    */
   getChildren: function(selector) {
-    if (typeof selector === 'undefined' || selector === null) {
+    if (!Prime.Utils.isDefined(selector)) {
       return new Prime.Document.ElementList(this.domElement.children);
     }
 
@@ -392,7 +392,7 @@ Prime.Document.Element.prototype = {
    */
   getFirstChild: function(selector) {
     var lastChild = this.getChildren(selector)[0];
-    if (typeof lastChild === 'undefined') {
+    if (!Prime.Utils.isDefined(lastChild)) {
       return null;
     }
     return lastChild;
@@ -544,6 +544,19 @@ Prime.Document.Element.prototype = {
     var marginLeft = computedStyle['marginLeft'];
     var marginRight = computedStyle['marginRight'];
     return offsetWidth + Prime.Utils.parseCSSMeasure(marginLeft) + Prime.Utils.parseCSSMeasure(marginRight);
+  },
+
+  /**
+   * Returns this element's parent as a Prime.Document.Element.
+   *
+   * @returns {Prime.Document.Element} This element's parent or null if there is no parent
+   */
+  getParent: function() {
+    if (Prime.Utils.isDefined(this.domElement.parentNode)) {
+      return new Prime.Document.Element(this.domElement.parentNode);
+    } else {
+      return null;
+    }
   },
 
   /**
@@ -908,12 +921,12 @@ Prime.Document.Element.prototype = {
       return false;
     }
 
-    var parent = this.parent();
+    var parent = this.getParent();
     while (parent.domElement !== document.body) {
       if (parent.domElement === target.domElement) {
         return true;
       }
-      parent = parent.parent();
+      parent = parent.getParent();
     }
 
     return false;
@@ -937,19 +950,6 @@ Prime.Document.Element.prototype = {
   isVisible: function() {
     var computedStyle = this.getComputedStyle();
     return computedStyle['display'] !== 'none' && computedStyle['visibility'] !== 'hidden';
-  },
-
-  /**
-   * Returns this element's parent as  Prime.Document.Element.
-   *
-   * @returns {Prime.Document.Element} this element's parent or null if there is no parent
-   */
-  parent: function() {
-    if (this.domElement.parentNode !== null) {
-      return new Prime.Document.Element(this.domElement.parentNode);
-    } else {
-      return null;
-    }
   },
 
   /**
@@ -1467,7 +1467,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   show: function(displayValue) {
-    if (typeof(displayValue) !== 'undefined') {
+    if (Prime.Utils.isDefined(displayValue)) {
       this.domElement.style.display = displayValue;
       return this;
     }
@@ -1476,7 +1476,7 @@ Prime.Document.Element.prototype = {
 
     var computedDisplay = this.getComputedStyle()['display'];
     if (computedDisplay === 'none') {
-      if (typeof(displayValue) === 'undefined') {
+      if (!Prime.Utils.isDefined(displayValue)) {
         displayValue = (Prime.Document.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
       }
 
@@ -1511,7 +1511,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   unwrap: function() {
-    var parent = this.parent().domElement;
+    var parent = this.getParent().domElement;
     while (this.domElement.firstChild) {
       parent.insertBefore(this.domElement.firstChild, this.domElement);
     }

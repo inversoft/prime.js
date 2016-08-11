@@ -52,7 +52,7 @@
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
       Prime.Document.onReady(function() {
-        var touchableElement = Prime.Document.queryByID('touchable');
+        var touchableElement = Prime.Document.queryById('touchable');
         var touchable = new Prime.Widgets.Touchable(touchableElement)
             .withLongPressHandler(function() {
               touchableElement.setHTML('long press');

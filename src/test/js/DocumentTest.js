@@ -95,7 +95,7 @@ buster.testCase('Prime.Document namespace tests', {
     assert.equals(list[1].getID(), 'queryTwo');
     assert.equals(list[2].getID(), 'queryThree');
 
-    var parent = Prime.Document.queryByID('query');
+    var parent = Prime.Document.queryById('query');
     list = Prime.Document.query('p.test', parent);
     assert.equals(list[0].getID(), 'queryOne');
     assert.equals(list[1].getID(), 'queryTwo');
@@ -107,8 +107,8 @@ buster.testCase('Prime.Document namespace tests', {
     assert.equals(list[2].getID(), 'queryThree');
   },
 
-  'queryByID': function() {
-    var element = Prime.Document.queryByID('queryOne');
+  'queryById': function() {
+    var element = Prime.Document.queryById('queryOne');
     refute.isNull(element);
     assert.equals(element.getID(), 'queryOne');
 
@@ -134,7 +134,7 @@ buster.testCase('Prime.Document namespace tests', {
   },
 
   'queryFirst with Element': function() {
-    var child = Prime.Document.queryFirst('.test', Prime.Document.queryByID('query'));
+    var child = Prime.Document.queryFirst('.test', Prime.Document.queryById('query'));
     refute.isNull(child);
     assert.equals(child.getID(), 'queryOne')
   },
@@ -156,15 +156,15 @@ buster.testCase('Prime.Document namespace tests', {
   },
 
   'queryLast with Element': function() {
-    var child = Prime.Document.queryLast('.test', Prime.Document.queryByID('query'));
+    var child = Prime.Document.queryLast('.test', Prime.Document.queryById('query'));
     refute.isNull(child);
     assert.equals(child.getID(), 'queryThree')
   },
 
   'queryUp': {
     setUp: function() {
-      this.child = Prime.Document.queryByID('child');
-      this.parent = Prime.Document.queryByID('parent');
+      this.child = Prime.Document.queryById('child');
+      this.parent = Prime.Document.queryById('parent');
       this.ancestor = Prime.Document.queryFirst('div.ancestor');
     },
 

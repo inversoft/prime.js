@@ -203,7 +203,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   openMonthSelect: function() {
     this.months = this.datepicker.queryFirst('.months');
-    if (typeof this.years !== 'undefined') {
+    if (Prime.Utils.isDefined(this.years)) {
       this.years.hide();
     }
     if (this.months === null) {
@@ -237,7 +237,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   openYearSelect: function() {
     this.years = this.datepicker.queryFirst('.years');
-    if (typeof this.months !== 'undefined') {
+    if (Prime.Utils.isDefined(this.months)) {
       this.months.hide();
     }
 
@@ -398,7 +398,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
    */
   withOptions: function(options) {
-    if (typeof options === 'undefined' || options === null) {
+    if (!Prime.Utils.isDefined(options)) {
       return this;
     }
 
@@ -618,10 +618,10 @@ Prime.Widgets.DateTimePicker.prototype = {
     var left = this.datepicker.getLeft();
     var right = this.datepicker.getRight();
     if (this.datepicker.isVisible() && (event.x < left || event.x > right || event.y < top || event.y > bottom)) {
-      if (typeof this.years !== 'undefined') {
+      if (Prime.Utils.isDefined(this.years)) {
         this.years.hide();
       }
-      if (typeof this.months !== 'undefined') {
+      if (Prime.Utils.isDefined(this.months)) {
         this.months.hide();
       }
       this.hide();
@@ -689,7 +689,6 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
       this.monthInput.focus();
     }
-    return true;
   },
 
   /**

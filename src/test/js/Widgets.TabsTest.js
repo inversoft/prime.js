@@ -28,7 +28,7 @@ buster.testCase('Tabs class tests', {
       this.handlerCalled = true;
     };
 
-    this.container = Prime.Document.queryByID('tab-test1');
+    this.container = Prime.Document.queryById('tab-test1');
     this.tabs = Prime.Document.queryFirst('ul', this.container);
     this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).withSelectHandler(handler.bind(this)).render();
     this.tabContents = Prime.Document.query('div.prime-tab-content', this.container);

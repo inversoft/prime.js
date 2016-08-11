@@ -67,7 +67,7 @@ Prime.Widgets.SideMenu.prototype = {
    * @returns {Prime.Widgets.SideMenu}
    */
   withOptions: function(options) {
-    if (typeof options === 'undefined' || options === null) {
+    if (!Prime.Utils.isDefined(options)) {
       return this;
     }
 

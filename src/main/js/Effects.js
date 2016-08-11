@@ -164,7 +164,7 @@ Prime.Effects.Fade.prototype.go = function() {
  * @param {number} [opacity=1.0] The final opacity to reach when the effect is complete. Defaults to 1.0.
  */
 Prime.Effects.Appear = function(element, opacity) {
-  if (typeof opacity === 'undefined' || opacity === null) {
+  if (!Prime.Utils.isDefined(opacity)) {
     opacity = 1.0;
   }
   Prime.Effects.BaseTransition.call(this, element, opacity);

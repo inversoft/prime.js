@@ -180,14 +180,14 @@ buster.testCase('Element class tests', {
     },
 
     tearDown: function() {
-      Prime.Document.queryByID('appendElementNew').removeFromDOM();
+      Prime.Document.queryById('appendElementNew').removeFromDOM();
     },
 
     'appendElementPrimeElement': function() {
-      var newElement = Prime.Document.queryByID('appendElementNew');
-      Prime.Document.queryByID('insertSingle').appendElement(newElement);
+      var newElement = Prime.Document.queryById('appendElementNew');
+      Prime.Document.queryById('insertSingle').appendElement(newElement);
 
-      var element = Prime.Document.queryByID('insertSingle');
+      var element = Prime.Document.queryById('insertSingle');
       assert.equals(element.getTagName(), 'DIV');
       assert.equals(element.getChildren().length, 2);
       assert.equals(element.getChildren()[0].getID(), 'insertSingleElement');
@@ -201,9 +201,9 @@ buster.testCase('Element class tests', {
     },
 
     'appendElementNode': function() {
-      Prime.Document.queryByID('insertSingle').appendElement(document.getElementById('appendElementNew'));
+      Prime.Document.queryById('insertSingle').appendElement(document.getElementById('appendElementNew'));
 
-      var element = Prime.Document.queryByID('insertSingle');
+      var element = Prime.Document.queryById('insertSingle');
       assert.equals(element.getTagName(), 'DIV');
       assert.equals(element.getChildren().length, 2);
       assert.equals(element.getChildren()[0].getID(), 'insertSingleElement');
@@ -223,9 +223,9 @@ buster.testCase('Element class tests', {
     },
 
     'appendHTML': function() {
-      Prime.Document.queryByID('insertSingle').appendHTML('<p id="appendHTMLNew">Hello world<strong>!</strong></p>');
+      Prime.Document.queryById('insertSingle').appendHTML('<p id="appendHTMLNew">Hello world<strong>!</strong></p>');
 
-      var element = Prime.Document.queryByID('insertSingle');
+      var element = Prime.Document.queryById('insertSingle');
       assert.equals(element.getTagName(), 'DIV');
       assert.equals(element.getChildren().length, 2);
       assert.equals(element.getChildren()[0].getID(), 'insertSingleElement');
@@ -292,7 +292,7 @@ buster.testCase('Element class tests', {
   },
 
   'getAbsoluteElement': function() {
-    assert(Prime.Document.queryByID('absolute-top-element').getAbsoluteTop() > 0);
+    assert(Prime.Document.queryById('absolute-top-element').getAbsoluteTop() > 0);
   },
 
   'getAttribute': function() {
@@ -329,7 +329,7 @@ buster.testCase('Element class tests', {
   },
 
   'getClass': function() {
-    var element = Prime.Document.queryByID('getClass');
+    var element = Prime.Document.queryById('getClass');
     assert.equals(element.getClass(), 'class1 class2');
   },
 
@@ -375,7 +375,7 @@ buster.testCase('Element class tests', {
   },
 
   'getOptions': function() {
-    var options = Prime.Document.queryByID('select-single-select').getOptions();
+    var options = Prime.Document.queryById('select-single-select').getOptions();
     assert.equals(options.length, 3);
     assert.equals(options[0].getValue(), 'one');
     assert.equals(options[1].getValue(), 'two');
@@ -387,7 +387,7 @@ buster.testCase('Element class tests', {
     var body = new Prime.Document.Element(document.body);
     body.appendElement(element);
 
-    element = Prime.Document.queryByID('getOuterHTML');
+    element = Prime.Document.queryById('getOuterHTML');
     element.setHTML('these pretzels are making me thirsty.');
 
     assert.equals(element.getOuterHTML(), '<div id="getOuterHTML">these pretzels are making me thirsty.</div>');
@@ -517,10 +517,10 @@ buster.testCase('Element class tests', {
    * Tests the isInside function.
    */
   'isInside': function() {
-    var outer = Prime.Document.queryByID('query');
-    var inner1 = Prime.Document.queryByID('queryOne');
-    var inner2 = Prime.Document.queryByID('queryTwo');
-    var inner3 = Prime.Document.queryByID('queryThree');
+    var outer = Prime.Document.queryById('query');
+    var inner1 = Prime.Document.queryById('queryOne');
+    var inner2 = Prime.Document.queryById('queryTwo');
+    var inner3 = Prime.Document.queryById('queryThree');
     assert.isTrue(inner1.isInside(outer));
     assert.isTrue(inner2.isInside(outer));
     assert.isTrue(inner3.isInside(outer));
@@ -634,8 +634,8 @@ buster.testCase('Element class tests', {
     },
 
     'insertBeforeExisting': function() {
-      var target = Prime.Document.queryByID('insertBefore');
-      var mover = Prime.Document.queryByID('insertBeforeMove');
+      var target = Prime.Document.queryById('insertBefore');
+      var mover = Prime.Document.queryById('insertBeforeMove');
 
       mover.insertBefore(target);
       var parent = document.getElementById('insertBeforeExisting');
@@ -746,8 +746,8 @@ buster.testCase('Element class tests', {
     },
 
     'insertAfterExisting': function() {
-      var target = Prime.Document.queryByID('insertAfter');
-      var mover = Prime.Document.queryByID('insertAfterMove');
+      var target = Prime.Document.queryById('insertAfter');
+      var mover = Prime.Document.queryById('insertAfterMove');
 
       mover.insertAfter(target);
       var parent = document.getElementById('insertAfterExisting');
@@ -771,35 +771,35 @@ buster.testCase('Element class tests', {
   },
 
   'isChildOf': function() {
-    var nested1 = Prime.Document.queryByID('nested1');
-    assert.isFalse(Prime.Document.queryByID('nested1').isChildOf(nested1));
-    assert.isTrue(Prime.Document.queryByID('nested2').isChildOf(nested1));
-    assert.isTrue(Prime.Document.queryByID('nested3').isChildOf(nested1));
-    assert.isTrue(Prime.Document.queryByID('nested4').isChildOf(nested1));
+    var nested1 = Prime.Document.queryById('nested1');
+    assert.isFalse(Prime.Document.queryById('nested1').isChildOf(nested1));
+    assert.isTrue(Prime.Document.queryById('nested2').isChildOf(nested1));
+    assert.isTrue(Prime.Document.queryById('nested3').isChildOf(nested1));
+    assert.isTrue(Prime.Document.queryById('nested4').isChildOf(nested1));
 
-    var nested2 = Prime.Document.queryByID('nested2');
-    assert.isFalse(Prime.Document.queryByID('nested1').isChildOf(nested2));
-    assert.isFalse(Prime.Document.queryByID('nested2').isChildOf(nested2));
-    assert.isTrue(Prime.Document.queryByID('nested3').isChildOf(nested2));
-    assert.isTrue(Prime.Document.queryByID('nested4').isChildOf(nested2));
+    var nested2 = Prime.Document.queryById('nested2');
+    assert.isFalse(Prime.Document.queryById('nested1').isChildOf(nested2));
+    assert.isFalse(Prime.Document.queryById('nested2').isChildOf(nested2));
+    assert.isTrue(Prime.Document.queryById('nested3').isChildOf(nested2));
+    assert.isTrue(Prime.Document.queryById('nested4').isChildOf(nested2));
 
-    var nested3 = Prime.Document.queryByID('nested3');
-    assert.isFalse(Prime.Document.queryByID('nested1').isChildOf(nested3));
-    assert.isFalse(Prime.Document.queryByID('nested2').isChildOf(nested3));
-    assert.isFalse(Prime.Document.queryByID('nested3').isChildOf(nested3));
-    assert.isTrue(Prime.Document.queryByID('nested4').isChildOf(nested3));
+    var nested3 = Prime.Document.queryById('nested3');
+    assert.isFalse(Prime.Document.queryById('nested1').isChildOf(nested3));
+    assert.isFalse(Prime.Document.queryById('nested2').isChildOf(nested3));
+    assert.isFalse(Prime.Document.queryById('nested3').isChildOf(nested3));
+    assert.isTrue(Prime.Document.queryById('nested4').isChildOf(nested3));
 
-    var nested4 = Prime.Document.queryByID('nested4');
-    assert.isFalse(Prime.Document.queryByID('nested1').isChildOf(nested4));
-    assert.isFalse(Prime.Document.queryByID('nested2').isChildOf(nested4));
-    assert.isFalse(Prime.Document.queryByID('nested3').isChildOf(nested4));
-    assert.isFalse(Prime.Document.queryByID('nested4').isChildOf(nested4));
+    var nested4 = Prime.Document.queryById('nested4');
+    assert.isFalse(Prime.Document.queryById('nested1').isChildOf(nested4));
+    assert.isFalse(Prime.Document.queryById('nested2').isChildOf(nested4));
+    assert.isFalse(Prime.Document.queryById('nested3').isChildOf(nested4));
+    assert.isFalse(Prime.Document.queryById('nested4').isChildOf(nested4));
   },
 
   'isVisible': function() {
-    assert.isFalse(Prime.Document.queryByID('hidden').isVisible());
-    assert.isFalse(Prime.Document.queryByID('display-none').isVisible());
-    assert.isTrue(Prime.Document.queryByID('query').isVisible());
+    assert.isFalse(Prime.Document.queryById('hidden').isVisible());
+    assert.isFalse(Prime.Document.queryById('display-none').isVisible());
+    assert.isTrue(Prime.Document.queryById('query').isVisible());
   },
 
   'prependTo': {
@@ -960,32 +960,32 @@ buster.testCase('Element class tests', {
   },
 
   'setChecked': function() {
-    Prime.Document.queryByID('two-checkbox-checked').setChecked(true);
-    assert.isTrue(Prime.Document.queryByID('one-checkbox-checked').isChecked());
-    assert.isTrue(Prime.Document.queryByID('two-checkbox-checked').isChecked());
-    assert.isTrue(Prime.Document.queryByID('three-checkbox-checked').isChecked());
+    Prime.Document.queryById('two-checkbox-checked').setChecked(true);
+    assert.isTrue(Prime.Document.queryById('one-checkbox-checked').isChecked());
+    assert.isTrue(Prime.Document.queryById('two-checkbox-checked').isChecked());
+    assert.isTrue(Prime.Document.queryById('three-checkbox-checked').isChecked());
 
-    Prime.Document.queryByID('two-checkbox-checked').setChecked(false);
-    assert.isTrue(Prime.Document.queryByID('one-checkbox-checked').isChecked());
-    assert.isFalse(Prime.Document.queryByID('two-checkbox-checked').isChecked());
-    assert.isTrue(Prime.Document.queryByID('three-checkbox-checked').isChecked());
+    Prime.Document.queryById('two-checkbox-checked').setChecked(false);
+    assert.isTrue(Prime.Document.queryById('one-checkbox-checked').isChecked());
+    assert.isFalse(Prime.Document.queryById('two-checkbox-checked').isChecked());
+    assert.isTrue(Prime.Document.queryById('three-checkbox-checked').isChecked());
 
-    Prime.Document.queryByID('two-radio-checked').setChecked(true);
-    assert.isFalse(Prime.Document.queryByID('one-radio-checked').isChecked());
-    assert.isTrue(Prime.Document.queryByID('two-radio-checked').isChecked());
-    assert.isFalse(Prime.Document.queryByID('three-radio-checked').isChecked());
+    Prime.Document.queryById('two-radio-checked').setChecked(true);
+    assert.isFalse(Prime.Document.queryById('one-radio-checked').isChecked());
+    assert.isTrue(Prime.Document.queryById('two-radio-checked').isChecked());
+    assert.isFalse(Prime.Document.queryById('three-radio-checked').isChecked());
 
-    Prime.Document.queryByID('two-radio-checked').setChecked(false);
-    assert.isFalse(Prime.Document.queryByID('one-radio-checked').isChecked());
-    assert.isFalse(Prime.Document.queryByID('two-radio-checked').isChecked());
-    assert.isFalse(Prime.Document.queryByID('three-radio-checked').isChecked());
+    Prime.Document.queryById('two-radio-checked').setChecked(false);
+    assert.isFalse(Prime.Document.queryById('one-radio-checked').isChecked());
+    assert.isFalse(Prime.Document.queryById('two-radio-checked').isChecked());
+    assert.isFalse(Prime.Document.queryById('three-radio-checked').isChecked());
   },
 
   'setDisabled': function() {
-    Prime.Document.queryByID('checkbox-disabled').setDisabled(true);
-    assert.isTrue(Prime.Document.queryByID('checkbox-disabled').isDisabled());
+    Prime.Document.queryById('checkbox-disabled').setDisabled(true);
+    assert.isTrue(Prime.Document.queryById('checkbox-disabled').isDisabled());
 
-    var select = Prime.Document.queryByID('select-disabled');
+    var select = Prime.Document.queryById('select-disabled');
     select.getChildren().each(function(option) {
       option.setDisabled(true);
     });
@@ -995,7 +995,7 @@ buster.testCase('Element class tests', {
   },
 
   'setAttributes': function() {
-    Prime.Document.queryByID('set-attributes').setAttributes({'rel': 'foo', 'width': '10%'});
+    Prime.Document.queryById('set-attributes').setAttributes({'rel': 'foo', 'width': '10%'});
 
     var element = document.getElementById('set-attributes');
     refute.isNull(element);
@@ -1018,7 +1018,7 @@ buster.testCase('Element class tests', {
   },
 
   'setHeight': function() {
-    var element = Prime.Document.queryByID('set-styles').setHeight(10);
+    var element = Prime.Document.queryById('set-styles').setHeight(10);
     assert.equals(element.getStyle('height'), '10px');
     assert.equals(element.getHeight(), 10);
 
@@ -1028,14 +1028,14 @@ buster.testCase('Element class tests', {
   },
 
   'setHTMLByElement': function() {
-    Prime.Document.queryFirst('#htmlByElement').setHTML(Prime.Document.queryByID('htmlByElementTarget'));
+    Prime.Document.queryFirst('#htmlByElement').setHTML(Prime.Document.queryById('htmlByElementTarget'));
 
     var element = document.getElementById('htmlByElement');
     assert.equals(element.innerHTML, 'By Element Target');
   },
 
   'setLeft': function() {
-    var element = Prime.Document.queryByID('set-styles').setLeft(10);
+    var element = Prime.Document.queryById('set-styles').setLeft(10);
     assert.equals(element.getStyle('left'), '10px');
 
     element.setLeft('10em');
@@ -1043,46 +1043,46 @@ buster.testCase('Element class tests', {
   },
 
   'setSelectedValues': function() {
-    Prime.Document.queryByID('two-checkbox-select').setSelectedValues('three');
-    assert.isFalse(Prime.Document.queryByID('one-checkbox-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('two-checkbox-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('three-checkbox-select').isChecked());
+    Prime.Document.queryById('two-checkbox-select').setSelectedValues('three');
+    assert.isFalse(Prime.Document.queryById('one-checkbox-select').isChecked());
+    assert.isFalse(Prime.Document.queryById('two-checkbox-select').isChecked());
+    assert.isTrue(Prime.Document.queryById('three-checkbox-select').isChecked());
 
-    Prime.Document.queryByID('three-checkbox-select').setSelectedValues('one', 'two');
-    assert.isTrue(Prime.Document.queryByID('one-checkbox-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('two-checkbox-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('three-checkbox-select').isChecked());
+    Prime.Document.queryById('three-checkbox-select').setSelectedValues('one', 'two');
+    assert.isTrue(Prime.Document.queryById('one-checkbox-select').isChecked());
+    assert.isTrue(Prime.Document.queryById('two-checkbox-select').isChecked());
+    assert.isFalse(Prime.Document.queryById('three-checkbox-select').isChecked());
 
-    Prime.Document.queryByID('three-checkbox-select').setSelectedValues(['one', 'three']);
-    assert.isTrue(Prime.Document.queryByID('one-checkbox-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('two-checkbox-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('three-checkbox-select').isChecked());
+    Prime.Document.queryById('three-checkbox-select').setSelectedValues(['one', 'three']);
+    assert.isTrue(Prime.Document.queryById('one-checkbox-select').isChecked());
+    assert.isFalse(Prime.Document.queryById('two-checkbox-select').isChecked());
+    assert.isTrue(Prime.Document.queryById('three-checkbox-select').isChecked());
 
-    Prime.Document.queryByID('two-radio-select').setSelectedValues('two');
-    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('two-radio-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('three-radio-select').isChecked());
+    Prime.Document.queryById('two-radio-select').setSelectedValues('two');
+    assert.isFalse(Prime.Document.queryById('one-radio-select').isChecked());
+    assert.isTrue(Prime.Document.queryById('two-radio-select').isChecked());
+    assert.isFalse(Prime.Document.queryById('three-radio-select').isChecked());
 
-    Prime.Document.queryByID('two-radio-select').setSelectedValues('three');
-    assert.isFalse(Prime.Document.queryByID('one-radio-select').isChecked());
-    assert.isFalse(Prime.Document.queryByID('two-radio-select').isChecked());
-    assert.isTrue(Prime.Document.queryByID('three-radio-select').isChecked());
+    Prime.Document.queryById('two-radio-select').setSelectedValues('three');
+    assert.isFalse(Prime.Document.queryById('one-radio-select').isChecked());
+    assert.isFalse(Prime.Document.queryById('two-radio-select').isChecked());
+    assert.isTrue(Prime.Document.queryById('three-radio-select').isChecked());
 
-    Prime.Document.queryByID('select-single-select').setSelectedValues('three');
-    assert.equals(Prime.Document.queryByID('select-single-select').getSelectedValues(), ['three']);
+    Prime.Document.queryById('select-single-select').setSelectedValues('three');
+    assert.equals(Prime.Document.queryById('select-single-select').getSelectedValues(), ['three']);
 
-    Prime.Document.queryByID('select-multiple-select').setSelectedValues('two');
-    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['two']);
+    Prime.Document.queryById('select-multiple-select').setSelectedValues('two');
+    assert.equals(Prime.Document.queryById('select-multiple-select').getSelectedValues(), ['two']);
 
-    Prime.Document.queryByID('select-multiple-select').setSelectedValues('one', 'three');
-    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['one', 'three']);
+    Prime.Document.queryById('select-multiple-select').setSelectedValues('one', 'three');
+    assert.equals(Prime.Document.queryById('select-multiple-select').getSelectedValues(), ['one', 'three']);
 
-    Prime.Document.queryByID('select-multiple-select').setSelectedValues(['one', 'two']);
-    assert.equals(Prime.Document.queryByID('select-multiple-select').getSelectedValues(), ['one', 'two']);
+    Prime.Document.queryById('select-multiple-select').setSelectedValues(['one', 'two']);
+    assert.equals(Prime.Document.queryById('select-multiple-select').getSelectedValues(), ['one', 'two']);
   },
 
   'setStyles': function() {
-    Prime.Document.queryByID('set-styles').setStyles({'text-align': 'right', 'width': '10%'});
+    Prime.Document.queryById('set-styles').setStyles({'text-align': 'right', 'width': '10%'});
 
     var element = document.getElementById('set-styles');
     refute.isNull(element);
@@ -1091,7 +1091,7 @@ buster.testCase('Element class tests', {
   },
 
   'setTop': function() {
-    var element = Prime.Document.queryByID('set-styles').setTop(10);
+    var element = Prime.Document.queryById('set-styles').setTop(10);
     assert.equals(element.getStyle('top'), '10px');
 
     element = element.setTop('10em');
@@ -1099,20 +1099,20 @@ buster.testCase('Element class tests', {
   },
 
   'setValue': function() {
-    assert.equals(Prime.Document.queryByID('one-checkbox-set').setValue('one-changed').getValue(), 'one-changed');
-    assert.isTrue(Prime.Document.queryByID('one-checkbox-set').isChecked());
-    assert.equals(Prime.Document.queryByID('two-checkbox-set').setValue('two-changed').getValue(), 'two-changed');
-    assert.isFalse(Prime.Document.queryByID('two-checkbox-set').isChecked());
-    assert.equals(Prime.Document.queryByID('one-radio-set').setValue('one-changed').getValue(), 'one-changed');
-    assert.isTrue(Prime.Document.queryByID('one-radio-set').isChecked());
-    assert.equals(Prime.Document.queryByID('two-radio-set').setValue('two-changed').getValue(), 'two-changed');
-    assert.isFalse(Prime.Document.queryByID('two-radio-set').isChecked());
-    assert.equals(Prime.Document.queryByID('text-set').setValue('text-set-changed').getValue(), 'text-set-changed');
-    assert.equals(Prime.Document.queryByID('textarea-set').setValue('textarea-set-changed').getValue(), 'textarea-set-changed');
+    assert.equals(Prime.Document.queryById('one-checkbox-set').setValue('one-changed').getValue(), 'one-changed');
+    assert.isTrue(Prime.Document.queryById('one-checkbox-set').isChecked());
+    assert.equals(Prime.Document.queryById('two-checkbox-set').setValue('two-changed').getValue(), 'two-changed');
+    assert.isFalse(Prime.Document.queryById('two-checkbox-set').isChecked());
+    assert.equals(Prime.Document.queryById('one-radio-set').setValue('one-changed').getValue(), 'one-changed');
+    assert.isTrue(Prime.Document.queryById('one-radio-set').isChecked());
+    assert.equals(Prime.Document.queryById('two-radio-set').setValue('two-changed').getValue(), 'two-changed');
+    assert.isFalse(Prime.Document.queryById('two-radio-set').isChecked());
+    assert.equals(Prime.Document.queryById('text-set').setValue('text-set-changed').getValue(), 'text-set-changed');
+    assert.equals(Prime.Document.queryById('textarea-set').setValue('textarea-set-changed').getValue(), 'textarea-set-changed');
   },
 
   'setWidth': function() {
-    var element = Prime.Document.queryByID('set-styles').setWidth(10);
+    var element = Prime.Document.queryById('set-styles').setWidth(10);
     assert.equals(element.getStyle('width'), '10px');
     assert.equals(element.getWidth(), 10);
 
@@ -1339,7 +1339,7 @@ buster.testCase('Element class tests', {
   },
 
   'query': function() {
-    var list = Prime.Document.queryByID('query').query('p.test');
+    var list = Prime.Document.queryById('query').query('p.test');
     assert.equals(list.length, 3);
     assert.equals(list[0].getID(), 'queryOne');
     assert.equals(list[1].getID(), 'queryTwo');
@@ -1348,8 +1348,8 @@ buster.testCase('Element class tests', {
 
   'queryUp': {
     setUp: function() {
-      this.child = Prime.Document.queryByID('child');
-      this.parent = Prime.Document.queryByID('parent');
+      this.child = Prime.Document.queryById('child');
+      this.parent = Prime.Document.queryById('parent');
       this.ancestor = Prime.Document.queryFirst('div.ancestor');
     },
 
@@ -1376,19 +1376,19 @@ buster.testCase('Element class tests', {
   },
 
   'queryFirst': function() {
-    var child = Prime.Document.queryByID('query').queryFirst('.test');
+    var child = Prime.Document.queryById('query').queryFirst('.test');
     refute.isNull(child);
     assert.equals(child.getID(), 'queryOne')
   },
 
   'queryLast': function() {
-    var child = Prime.Document.queryByID('query').queryLast('.test');
+    var child = Prime.Document.queryById('query').queryLast('.test');
     refute.isNull(child);
     assert.equals(child.getID(), 'queryThree')
   },
 
   'unwrap': function() {
-    var element = Prime.Document.queryByID('unwrap');
+    var element = Prime.Document.queryById('unwrap');
     assert.equals(element.getHTML(), '<span>Unwrap</span> Me');
     var span = element.queryFirst('span');
     span.unwrap();

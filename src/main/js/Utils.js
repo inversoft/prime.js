@@ -89,7 +89,7 @@ Prime.Utils = {
     if (arguments.length > 1) {
       for (var i = 1; i < arguments.length; i++) {
         var func = object[arguments[i]];
-        if (typeof(func) === 'undefined' || !(func instanceof Function)) {
+        if (!Prime.Utils.isDefined(func) || !(func instanceof Function)) {
           throw new TypeError('The object does not contain a function named [' + arguments[i] + ']');
         }
 
@@ -111,11 +111,11 @@ Prime.Utils = {
    * @returns {Function} Either <code>func</code> or the newly bound function.
    */
   bindSafe: function(func, context) {
-    if (typeof(func) === 'undefined') {
+    if (!Prime.Utils.isDefined(func)) {
       throw new Error('Invalid arguments');
     }
 
-    if (typeof(context) === 'undefined') {
+    if (!Prime.Utils.isDefined(context)) {
       return func;
     }
 
@@ -131,7 +131,7 @@ Prime.Utils = {
    */
   calculateTextLength: function(element, text) {
     var computedStyle = element.getComputedStyle();
-    var textCalculator = Prime.Document.queryByID('prime-text-calculator');
+    var textCalculator = Prime.Document.queryById('prime-text-calculator');
     if (textCalculator === null) {
       textCalculator = Prime.Document.newElement('<span/>').
           setStyles({
@@ -173,7 +173,7 @@ Prime.Utils = {
       if (last) {
         clearInterval(id);
 
-        if (typeof endFunction !== 'undefined' && endFunction !== null) {
+        if (Prime.Utils.isDefined(endFunction)) {
           endFunction();
         }
       }
@@ -261,6 +261,16 @@ Prime.Utils = {
    */
   isArray: function(o) {
     return Object.prototype.toString.call(o) === '[object Array]';
+  },
+
+  /**
+   * Tests whether or not the value is not null and not 'undefined'.
+   *
+   * @param {*} value The value to test.
+   * @returns {boolean} True if the value is defined (not null or undefined).
+   */
+  isDefined: function(value) {
+    return value !== null && typeof(value) !== 'undefined';
   },
 
   /**

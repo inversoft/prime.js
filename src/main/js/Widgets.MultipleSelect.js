@@ -89,7 +89,7 @@ Prime.Widgets.MultipleSelect = function(element) {
     this.element.setID(id);
   }
 
-  this.displayContainer = Prime.Document.queryByID(id + '-display');
+  this.displayContainer = Prime.Document.queryById(id + '-display');
   this.input = null;
   if (this.displayContainer === null) {
     this.displayContainer = Prime.Document.newElement('<div/>').
@@ -187,7 +187,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     option.setSelected(false);
 
     var id = this._makeOptionID(option);
-    var displayOption = Prime.Document.queryByID(id);
+    var displayOption = Prime.Document.queryById(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
     }
@@ -336,7 +336,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     option.removeFromDOM();
 
     var id = this._makeOptionID(option);
-    var displayOption = Prime.Document.queryByID(id);
+    var displayOption = Prime.Document.queryById(id);
 
     // Check if the option has already been selected
     if (displayOption !== null) {
@@ -432,7 +432,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     var id = this._makeOptionID(option);
 
     // Check if the option has already been selected
-    if (Prime.Document.queryByID(id) === null) {
+    if (Prime.Document.queryById(id) === null) {
       option.setSelected(true);
 
       var li = Prime.Document.newElement('<li/>').
@@ -663,8 +663,6 @@ Prime.Widgets.MultipleSelect.prototype = {
     } else if (this.input.domElement !== target.currentTarget) {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
-
-    return true;
   },
 
   /**
@@ -680,8 +678,6 @@ Prime.Widgets.MultipleSelect.prototype = {
     if (this.displayContainer.domElement !== target.domElement && !target.isChildOf(this.displayContainer)) {
       this.searcher.closeSearchResults();
     }
-
-    return true;
   },
 
   /**
@@ -696,8 +692,6 @@ Prime.Widgets.MultipleSelect.prototype = {
     if (key === Prime.Events.Keys.ESCAPE) {
       this.unhighlightOptionForUnselect();
     }
-
-    return true;
   },
 
   /**

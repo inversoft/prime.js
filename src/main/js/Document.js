@@ -99,7 +99,7 @@ Prime.Document.newDocument = function(documentString) {
  * @returns {Prime.Document.Element} A new Prime.Document.Element.
  */
 Prime.Document.newElement = function(elementString, properties) {
-  properties = typeof properties !== 'undefined' ? properties : {};
+  properties = Prime.Utils.isDefined(properties) ? properties : {};
   var result = Prime.Document.tagRegexp.exec(elementString);
   if (result === null) {
     throw new TypeError('Invalid string to create a new element [' + elementString + ']. It should look like <a/>');
@@ -164,7 +164,7 @@ Prime.Document.appendHTML = function(html) {
 Prime.Document.move = function(element, appendToElement) {
   element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
 
-  if (typeof appendToElement === 'undefined' || appendToElement === null) {
+  if (!Prime.Utils.isDefined(appendToElement)) {
     appendToElement = new Prime.Document.Element(document.body);
   } else {
     appendToElement = (appendToElement instanceof Prime.Document.Element) ? appendToElement : new Prime.Document.Element(appendToElement);
@@ -184,7 +184,7 @@ Prime.Document.move = function(element, appendToElement) {
  */
 Prime.Document.query = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     domElement = document;
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -200,7 +200,7 @@ Prime.Document.query = function(selector, element) {
  * @param {string} id The ID.
  * @returns {Prime.Document.Element} The element or null.
  */
-Prime.Document.queryByID = function(id) {
+Prime.Document.queryById = function(id) {
   var element = document.getElementById(id);
   if (!element) {
     return null;
@@ -219,7 +219,7 @@ Prime.Document.queryByID = function(id) {
  */
 Prime.Document.queryFirst = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     domElement = document;
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -243,7 +243,7 @@ Prime.Document.queryFirst = function(selector, element) {
  */
 Prime.Document.queryLast = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     domElement = document;
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -266,7 +266,7 @@ Prime.Document.queryLast = function(selector, element) {
  */
 Prime.Document.queryUp = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     throw new SyntaxError('Missing required parameter. The element is required.');
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;

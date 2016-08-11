@@ -93,7 +93,7 @@ Prime.Widgets.PhraseBuilder = function(element, searchCallback) {
   this.placeholder = 'Type Words for Phrase Here';
   this.customAddLabel = null;
 
-  this.displayContainer = Prime.Document.queryByID(id + '-display');
+  this.displayContainer = Prime.Document.queryById(id + '-display');
   this.input = null;
   if (this.displayContainer === null) {
     this.displayContainer = Prime.Document.newElement('<div/>').
@@ -238,7 +238,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
     option.removeFromDOM();
 
     var id = this._makeOptionID(option);
-    var displayOption = Prime.Document.queryByID(id);
+    var displayOption = Prime.Document.queryById(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
     }
@@ -408,7 +408,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
     var id = this._makeOptionID(option);
 
     // Check if the option has already been selected
-    if (Prime.Document.queryByID(id) === null) {
+    if (Prime.Document.queryById(id) === null) {
       var li = Prime.Document.newElement('<li/>').
           addClass('prime-phrase-builder-option').
           setAttribute('value', option.getValue()).
@@ -487,8 +487,6 @@ Prime.Widgets.PhraseBuilder.prototype = {
     if (this.displayContainer.domElement !== target.domElement && !target.isChildOf(this.displayContainer)) {
       this.searcher.closeSearchResults();
     }
-
-    return true;
   },
 
   /**
@@ -503,8 +501,6 @@ Prime.Widgets.PhraseBuilder.prototype = {
     if (key === Prime.Events.Keys.ESCAPE) {
       this.unhighlightWordForRemoval();
     }
-
-    return true;
   },
 
   /**

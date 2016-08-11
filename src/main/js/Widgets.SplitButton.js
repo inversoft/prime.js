@@ -193,7 +193,7 @@ Prime.Widgets.SplitButton.prototype = {
     // Setting href to '#' will expand the button and remove it from the expanded list
     if (button.getAttribute('href') === '#') {
       button.addEventListener('click', this._handleDropDownClick);
-      this.defaultAction.parent().hide();
+      this.defaultAction.getParent().hide();
     }
 
     var dropDownDiv = Prime.Document.newElement('<div>');
@@ -233,7 +233,7 @@ Prime.Widgets.SplitButton.prototype = {
    */
   _hideAllButtons: function(event) {
     Prime.Document.query('ul.prime-split-button.prime-initialized').each(function(element) {
-      if (typeof(event) === 'undefined') {
+      if (!Prime.Utils.isDefined(event)) {
         if (!element.domElement.hasAttribute('data-prime-active') && element.isVisible()) {
           element.hide();
         }

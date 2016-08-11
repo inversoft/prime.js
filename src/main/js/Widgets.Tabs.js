@@ -74,7 +74,7 @@ Prime.Widgets.Tabs = function(element) {
     this.tabs[dataSet.tabId] = tab;
     this.tabArray.push(tab);
 
-    var content = Prime.Document.queryByID(dataSet.tabId);
+    var content = Prime.Document.queryById(dataSet.tabId);
     if (content === null && isAnchor) {
       throw new Error('A div is required with the following ID [' + dataSet.tabId + ']');
     } else if (content === null) {
@@ -185,7 +185,7 @@ Prime.Widgets.Tabs.prototype = {
    */
   render: function() {
     // Check if local storage is enabled to save selected tab
-    this.localStorageSupported = typeof(Storage) !== 'undefined' && this.options['localStorageKey'] !== null;
+    this.localStorageSupported = Prime.Utils.isDefined(Storage) && this.options['localStorageKey'] !== null;
 
     this.tabsContainer.show();
     this.redraw();
@@ -306,7 +306,7 @@ Prime.Widgets.Tabs.prototype = {
    * @returns {Prime.Widgets.Tabs} This Tabs.
    */
   withOptions: function(options) {
-    if (typeof options === 'undefined' || options === null) {
+    if (!Prime.Utils.isDefined(options)) {
       return this;
     }
 

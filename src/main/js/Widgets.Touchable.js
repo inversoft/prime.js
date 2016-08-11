@@ -46,7 +46,8 @@ Prime.Widgets.Touchable.prototype = {
    * Destroys the Touchable Widget
    */
   destroy: function() {
-    this.element.removeEventListener('touchstart', this._handleTouchStart)
+    this.element
+        .removeEventListener('touchstart', this._handleTouchStart)
         .removeEventListener('touchcancel', this._handleTouchCancel)
         .removeEventListener('touchend', this._handleTouchEnd);
   },
@@ -190,45 +191,39 @@ Prime.Widgets.Touchable.prototype = {
    * Handle the touch cancel event.
    *
    * @param {TouchEvent} event The touch event.
-   * @returns {boolean} True.
    * @private
    */
   _handleTouchCancel: function(event) {
     this._collectTouchData(event);
     this._finished(event);
-    return true;
   },
 
   /**
    * Handle the touch end event.
    *
    * @param {TouchEvent} event The touch event.
-   * @returns {boolean} True.
    * @private
    */
   _handleTouchEnd: function(event) {
     this._collectTouchData(event);
     this._finished(event);
-    return true;
   },
 
   /**
    * Handle the touch start event.
    *
    * @param {TouchEvent} event The touch event.
-   * @returns {boolean} True.
    * @private
    */
   _handleTouchStart: function(event) {
     var touchPoints = event.changedTouches.length;
     if (touchPoints > 1) {
-      return true;
+      return;
     }
 
     var touch = event.changedTouches[0];
     this.touchStarted = new Date().getTime();
     this.touchStartX = touch.pageX;
     this.touchStartY = touch.pageY;
-    return true;
   }
 };

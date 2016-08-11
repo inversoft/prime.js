@@ -35,7 +35,7 @@ Prime.Widgets.Draggable = function(element, gripSelector) {
   Prime.Utils.bindAll(this);
 
   this.element = Prime.Document.Element.wrap(element);
-  if (typeof gripSelector === 'undefined' || gripSelector === null) {
+  if (!Prime.Utils.isDefined(gripSelector)) {
     this.grip = this.element;
   } else {
     this.grip = this.element.queryFirst(gripSelector);
@@ -125,5 +125,4 @@ Prime.Widgets.Draggable.prototype = {
     this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
     this.element.removeClass('prime-draggable-active');
   }
-
 };

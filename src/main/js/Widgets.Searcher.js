@@ -227,11 +227,11 @@ Prime.Widgets.Searcher.prototype = {
    */
   search: function(searchText) {
     // Set the search text into the input box if it is different and then lowercase it
-    if (typeof(searchText) !== 'undefined' && this.inputElement.getValue() !== searchText) {
+    if (Prime.Utils.isDefined(searchText) && this.inputElement.getValue() !== searchText) {
       this.inputElement.setValue(searchText);
     }
 
-    searchText = typeof(searchText) !== 'undefined' ? searchText.toLowerCase() : this.inputElement.getValue();
+    searchText = Prime.Utils.isDefined(searchText) ? searchText.toLowerCase() : this.inputElement.getValue();
     this.resizeInput();
 
     // Clear the search results (if there are any)
@@ -423,8 +423,6 @@ Prime.Widgets.Searcher.prototype = {
     } else {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
-
-    return true;
   },
 
   /**
