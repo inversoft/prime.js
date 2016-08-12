@@ -97,13 +97,17 @@ Prime.Document.Element.prototype = {
       // Traditional event
       this.domElement.eventListeners = this.domElement.eventListeners || {};
       this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || [];
-      this.domElement.eventListeners[event].push(listener);
+      if (this.domElement.eventListeners[event].indexOf(listener) === -1) {
+        this.domElement.eventListeners[event].push(listener);
+      }
       this.domElement.addEventListener(event, listener, false);
     } else {
       // Custom event
       this.domElement.customEventListeners = this.domElement.customEventListeners || {};
       this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
-      this.domElement.customEventListeners[event].push(listener);
+      if (this.domElement.customEventListeners[event].indexOf(listener) === -1) {
+        this.domElement.customEventListeners[event].push(listener);
+      }
     }
 
     return this;

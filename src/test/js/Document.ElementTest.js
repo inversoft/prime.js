@@ -1297,37 +1297,99 @@ buster.testCase('Element class tests', {
     var MyEventListener = function() {
       Prime.Utils.bindAll(this);
       this.called = false;
+      this.count = 0;
+      this.called2 = false;
+      this.count2 = 0;
       this.memo = null;
       this.event = null;
     };
     MyEventListener.prototype = {
       handle: function(evt) {
+        console.log('handle');
         this.called = true;
+        this.count++;
         this.memo = evt.memo;
         this.event = evt.event;
+      },
+
+      handle2: function(evt) {
+        console.log('handle2');
+        this.called2 = true;
+        this.count2++;
       }
     };
 
     var instance = new MyEventListener();
     Prime.Document.queryFirst('#event')
         .addEventListener('custom:pop', instance.handle)
+        .addEventListener('custom:pop', instance.handle)
+        .addEventListener('custom:pop', instance.handle)
         .fireEvent('custom:pop', 'foo');
 
     assert.isTrue(instance.called);
+    assert.equals(instance.count, 1);
     assert.equals(instance.event, 'custom:pop');
     assert.equals(instance.memo, 'foo');
 
-    // Bind the function to itself so the object fields aren't set
+    // Remove the event listener and re-test
     instance.called = false;
+    instance.count = 0;
     instance.memo = null;
     instance.event = null;
-    Prime.Document.queryFirst('#event').
-        removeEventListener('custom:pop', instance.handle.bind(instance.handle)).
-        fireEvent('custom:pop', 'foo');
+    Prime.Document.queryFirst('#event')
+        .removeEventListener('custom:pop', instance.handle)
+        .fireEvent('custom:pop', 'foo');
 
     assert.isFalse(instance.called);
+    assert.equals(instance.count, 0);
     assert.isNull(instance.event);
     assert.isNull(instance.memo);
+
+    // Add multiple listeners for a single event and then remove them all
+    Prime.Document.queryFirst('#event')
+        .addEventListener('custom:pop', instance.handle)
+        .addEventListener('custom:pop', instance.handle2)
+        .fireEvent('custom:pop', 'foo');
+    assert.isTrue(instance.called);
+    assert.equals(instance.count, 1);
+    assert.isTrue(instance.called2);
+    assert.equals(instance.count2, 1);
+
+    instance.called = false;
+    instance.count = 0;
+    instance.called2 = false;
+    instance.count2 = 0;
+    Prime.Document.queryFirst('#event')
+        .removeEventListeners('custom:pop')
+        .fireEvent('custom:pop', 'foo');
+
+    assert.isFalse(instance.called);
+    assert.equals(instance.count, 0);
+    assert.isFalse(instance.called2);
+    assert.equals(instance.count2, 0);
+
+    // Add multiple listeners for a single event and then remove them all using the global function
+    Prime.Document.queryFirst('#event')
+        .addEventListener('custom:pop', instance.handle)
+        .addEventListener('custom:pop', instance.handle2)
+        .fireEvent('custom:pop', 'foo');
+    assert.isTrue(instance.called);
+    assert.equals(instance.count, 1);
+    assert.isTrue(instance.called2);
+    assert.equals(instance.count2, 1);
+
+    instance.called = false;
+    instance.count = 0;
+    instance.called2 = false;
+    instance.count2 = 0;
+    Prime.Document.queryFirst('#event')
+        .removeAllEventListeners()
+        .fireEvent('custom:pop', 'foo');
+
+    assert.isFalse(instance.called);
+    assert.equals(instance.count, 0);
+    assert.isFalse(instance.called2);
+    assert.equals(instance.count2, 0);
   },
 
   'opacity': function() {
