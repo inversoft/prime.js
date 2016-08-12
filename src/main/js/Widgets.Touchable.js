@@ -28,16 +28,20 @@ Prime.Widgets = Prime.Widgets || {};
  * Constructs a new Touchable object for the given element.
  *
  * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the Touchable widget.
+ * @param {Function} [eventPropagationHandler] A Function that handles how the event is handled for the touchstart,
+ * touchend, touchmove, and touchcancel events. This Function takes the event object as its only parameter.
  * @constructor
  */
-Prime.Widgets.Touchable = function(element) {
+Prime.Widgets.Touchable = function(element, eventPropagationHandler) {
   Prime.Utils.bindAll(this);
 
+  this.eventPropagationHandler = eventPropagationHandler;
   this.element = Prime.Document.Element.wrap(element);
   this.element
-      .addEventListener('touchstart', this._handleTouchStart, this)
-      .addEventListener('touchcancel', this._handleTouchCancel, this)
-      .addEventListener('touchend', this._handleTouchEnd, this);
+      .addEventListener('touchstart', this._handleTouchStart)
+      .addEventListener('touchmove', this._handleTouchMove)
+      .addEventListener('touchcancel', this._handleTouchCancel)
+      .addEventListener('touchend', this._handleTouchEnd);
 };
 
 Prime.Widgets.Touchable.constructor = Prime.Widgets.Touchable;
@@ -48,6 +52,7 @@ Prime.Widgets.Touchable.prototype = {
   destroy: function() {
     this.element
         .removeEventListener('touchstart', this._handleTouchStart)
+        .removeEventListener('touchmove', this._handleTouchMove)
         .removeEventListener('touchcancel', this._handleTouchCancel)
         .removeEventListener('touchend', this._handleTouchEnd);
   },
@@ -70,7 +75,7 @@ Prime.Widgets.Touchable.prototype = {
    * @returns {Prime.Widgets.Touchable} This
    */
   withMoveHandler: function(handler) {
-    this.element.addEventListener('touchmove', handler);
+    this.element.addEventListener('touch:move', handler);
     return this;
   },
 
@@ -196,6 +201,9 @@ Prime.Widgets.Touchable.prototype = {
   _handleTouchCancel: function(event) {
     this._collectTouchData(event);
     this._finished(event);
+    if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
+      this.eventPropagationHandler(event);
+    }
   },
 
   /**
@@ -207,6 +215,22 @@ Prime.Widgets.Touchable.prototype = {
   _handleTouchEnd: function(event) {
     this._collectTouchData(event);
     this._finished(event);
+    if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
+      this.eventPropagationHandler(event);
+    }
+  },
+
+  /**
+   * Handle the touch move event.
+   *
+   * @param {TouchEvent} event The touch event.
+   * @private
+   */
+  _handleTouchMove: function(event) {
+    this.element.fireEvent('touch:move', event);
+    if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
+      this.eventPropagationHandler(event);
+    }
   },
 
   /**
@@ -218,6 +242,10 @@ Prime.Widgets.Touchable.prototype = {
   _handleTouchStart: function(event) {
     var touchPoints = event.changedTouches.length;
     if (touchPoints > 1) {
+      if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
+        this.eventPropagationHandler(event);
+      }
+
       return;
     }
 
@@ -225,5 +253,8 @@ Prime.Widgets.Touchable.prototype = {
     this.touchStarted = new Date().getTime();
     this.touchStartX = touch.pageX;
     this.touchStartY = touch.pageY;
+    if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
+      this.eventPropagationHandler(event);
+    }
   }
 };

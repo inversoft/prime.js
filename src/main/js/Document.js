@@ -36,17 +36,12 @@ Prime.Document.tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
  * @returns {Prime.Document} The Prime.Document object so you can chain method calls together.
  */
 Prime.Document.addEventListener = function(event, listener) {
-  // Traditional event
   if (event.indexOf(':') === -1) {
+    // Traditional event
     document.eventListeners = document.eventListeners || {};
     document.eventListeners[event] = document.eventListeners[event] || [];
-    if (document.addEventListener) {
-      document.addEventListener(event, listener, false);
-    } else if (document.attachEvent) {
-      document.attachEvent('on' + event, listener);
-    } else {
-      throw new TypeError('Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available');
-    }
+    document.eventListeners[event].push(listener);
+    document.addEventListener(event, listener, false);
   } else {
     // Custom event
     document.customEventListeners = document.customEventListeners || {};

@@ -93,18 +93,12 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   addEventListener: function(event, listener) {
-    // Traditional event
     if (event.indexOf(':') === -1) {
+      // Traditional event
       this.domElement.eventListeners = this.domElement.eventListeners || {};
       this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || [];
       this.domElement.eventListeners[event].push(listener);
-      if (this.domElement.addEventListener) {
-        this.domElement.addEventListener(event, listener, false);
-      } else if (this.domElement.attachEvent) {
-        this.domElement.attachEvent('on' + event, listener);
-      } else {
-        throw new TypeError('Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available');
-      }
+      this.domElement.addEventListener(event, listener, false);
     } else {
       // Custom event
       this.domElement.customEventListeners = this.domElement.customEventListeners || {};
