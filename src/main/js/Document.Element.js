@@ -1026,6 +1026,7 @@ Prime.Document.Element.prototype = {
     }
 
     this.domElement.eventListeners = {};
+    this.domElement.customEventListeners = {};
 
     return this;
   },
@@ -1071,12 +1072,17 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   removeEventListener: function(event, listener) {
-    var listeners = this.domElement.eventListeners[event];
+    var listeners;
+    if (event.indexOf(':') === -1) {
+      this._internalRemoveEventListener(event, listener);
+      listeners = this.domElement.eventListeners[event];
+    } else {
+      listeners = this.domElement.customEventListeners[event];
+    }
+
     if (listeners) {
       Prime.Utils.removeFromArray(listeners, listener);
     }
-
-    this._internalRemoveEventListener(event, listener);
 
     return this;
   },
@@ -1088,12 +1094,18 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   removeEventListeners: function(event) {
-    if (this.domElement.eventListeners[event]) {
-      for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
-        this._internalRemoveEventListener(event, this.domElement.eventListeners[event][i]);
-      }
+    if (event.indexOf(':') === -1) {
+      if (this.domElement.eventListeners[event]) {
+        for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
+          this._internalRemoveEventListener(event, this.domElement.eventListeners[event][i]);
+        }
 
-      delete this.domElement.eventListeners[event];
+        delete this.domElement.eventListeners[event];
+      }
+    } else {
+      if (this.domElement.customEventListeners[event]) {
+        delete this.domElement.customEventListeners[event];
+      }
     }
 
     return this;

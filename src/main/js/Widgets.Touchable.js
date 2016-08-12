@@ -150,44 +150,35 @@ Prime.Widgets.Touchable.prototype = {
   /**
    * Called when all processing is finished and the handlers are called based on direction and time of the touches.
    *
-   * @param {TouchEvent} event The TouchEvent.
    * @private
    */
-  _finished: function(event) {
+  _finished: function() {
     // Make sure this was a swipe
-    var swipe = Math.abs(this.touchX) > 50 || Math.abs(this.touchY) > 50;
-    var swipeX = swipe && Math.abs(this.touchX) > Math.abs(this.touchY);
-    var swipeY = swipe && !swipeX;
-    var longPress = !swipe && this.elapsedTime > 500;
-    // this.element.setHTML('touchStartX:' + this.touchStartX +
-    //     'touchStartY:' + this.touchStartY + '<br/>' +
-    //     'touchEndX:' + this.touchEndX + '<br/>' +
-    //     'touchEndY:' + this.touchEndY + '<br/>' +
-    //     'touchX:' + this.touchX + '<br/>' +
-    //     'touchY:' + this.touchY + '<br/>' +
-    //     'elapsedTime:' + this.elapsedTime + '<br/>' +
-    //     'swipe:' + swipe + '<br/>' +
-    //     'longPress:' + longPress
-    // );
-    // console.log('touchStartX:' + this.touchStartX);
-    // console.log('touchStartY:' + this.touchStartY);
-    // console.log('touchEndX:' + this.touchEndX);
-    // console.log('touchEndY:' + this.touchEndY);
-    // console.log('touchX:' + this.touchX);
-    // console.log('touchY:' + this.touchY);
-    // console.log('elapsedTime:' + this.elapsedTime);
-    // console.log('swipe:' + swipe);
-    // console.log('longPress:' + longPress);
+    var event = {
+      'elapsedTime': this.elapsedTime,
+      'touchStartX': this.touchStartX,
+      'touchStartY': this.touchStartY,
+      'touchEndX': this.touchEndX,
+      'touchEndY': this.touchEndY,
+      'touchX': this.touchX,
+      'touchY': this.touchY,
+      'element': this.element,
+      'target': this.element.domElement
+    };
+    event.swipe = Math.abs(event.touchX) > 50 || Math.abs(event.touchY) > 50;
+    event.swipeX = event.swipe && Math.abs(event.touchX) > Math.abs(event.touchY);
+    event.swipeY = event.swipe && !event.swipeX;
+    event.longPress = !event.swipe && event.elapsedTime > 500;
 
-    if (longPress) {
+    if (event.longPress) {
       this.element.fireCustomEvent('touch:longPress', event);
-    } else if (swipeX && this.touchX > 0) {
+    } else if (event.swipeX && event.touchX > 0) {
       this.element.fireCustomEvent('touch:swipeLeft', event);
-    } else if (swipeX) {
+    } else if (event.swipeX) {
       this.element.fireCustomEvent('touch:swipeRight', event);
-    } else if (swipeY && this.touchY > 0) {
+    } else if (event.swipeY && event.touchY > 0) {
       this.element.fireCustomEvent('touch:swipeUp', event);
-    } else if (swipeY) {
+    } else if (event.swipeY) {
       this.element.fireCustomEvent('touch:swipeDown', event);
     }
   },
@@ -200,7 +191,7 @@ Prime.Widgets.Touchable.prototype = {
    */
   _handleTouchCancel: function(event) {
     this._collectTouchData(event);
-    this._finished(event);
+    this._finished();
     if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
       this.eventPropagationHandler(event);
     }
@@ -214,7 +205,7 @@ Prime.Widgets.Touchable.prototype = {
    */
   _handleTouchEnd: function(event) {
     this._collectTouchData(event);
-    this._finished(event);
+    this._finished();
     if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
       this.eventPropagationHandler(event);
     }

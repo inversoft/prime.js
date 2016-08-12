@@ -24,29 +24,11 @@ many other frameworks have become, here are the rules:
 
 Testing --
 
-  Running the tests require some kind of web server to correctly serve some of the test files up.  Typically for Macs,
-  we can use the system Apache server to do this.
+  You can run all of the tests using the IntelliJ embedded HTTP server. Just open the test.html file and then click the
+  Safari, Chrome and Firefox icons inside IntelliJ.
 
-  1) Make your ~/Sites directory
-  2) Create the file /etc/apache2/users/<username>.conf
-  3) Copy this in there and edit it to suit your needs
+  If you want to do mobile testing, install the Node http-server module and use that to create an externally accessible
+  web server that your phone can connect to. Follow these instructions to install and run the server for testing.
 
-    <Directory "/Users/username/Sites/">
-      Options Indexes MultiViews FollowSymLinks
-      AllowOverride All
-      Order allow,deny
-      Allow from all
-    </Directory>
-
-  4) Run the command 'sudo apachectl start'
-  5) Go to ~/Sites
-  6) Execute 'ln -s ~/dev/os/inversoft/prime.js prime-tests'
-  7) Open http://localhost/~<username>/prime-tests/src/test/html/test.html
-  8) Reward yourself with some coffee, though the tests don't take that long.
-
-Testing Mountain Lion --
-
-  Apple removed the handy Web Sharing preference pane option in Mountain Lion, so you'll need an alternate route.  The
-  following blog posts help sort that out:
-  http://reviews.cnet.com/8301-13727_7-57481978-263/how-to-enable-web-sharing-in-os-x-mountain-lion/
-  http://tlrobinson.net/blog/2008/06/mac-os-x-web-sharing-apache-and-symlinks/
+  1) Run `npm install http-server -g`
+  2) Run `http-server src` from the project directory
