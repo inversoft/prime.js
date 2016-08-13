@@ -104,7 +104,7 @@ Prime.Document.newElement = function(elementString, properties) {
   for (var key in properties) {
     if (properties.hasOwnProperty(key)) {
       if (key === 'id') {
-        element.setID(properties[key]);
+        element.setId(properties[key]);
       } else {
         element.setAttribute(key, properties[key]);
       }

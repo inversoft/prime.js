@@ -75,12 +75,12 @@ buster.testCase('Prime.Document namespace tests', {
     assert.equals(element.domElement.tagName, 'SPAN');
 
     element = Prime.Document.newElement('<div/>', {'id': '1'});
-    assert.equals(element.getID(), '1');
-    assert.equals(element.getID(), '1');
+    assert.equals(element.getId(), '1');
+    assert.equals(element.getId(), '1');
 
     element = Prime.Document.newElement('<div/>', {'id': 'id', 'style': 'width:200px;float:left'});
-    assert.equals(element.getID(), 'id');
-    assert.equals(element.getID(), 'id');
+    assert.equals(element.getId(), 'id');
+    assert.equals(element.getId(), 'id');
     assert.equals(element.domElement.style['width'], '200px');
     assert.equals(element.domElement.style['cssFloat'], 'left');
   },
@@ -91,26 +91,26 @@ buster.testCase('Prime.Document namespace tests', {
   'query': function() {
     var list = Prime.Document.query('p.test');
     assert.equals(list.length, 3);
-    assert.equals(list[0].getID(), 'queryOne');
-    assert.equals(list[1].getID(), 'queryTwo');
-    assert.equals(list[2].getID(), 'queryThree');
+    assert.equals(list[0].getId(), 'queryOne');
+    assert.equals(list[1].getId(), 'queryTwo');
+    assert.equals(list[2].getId(), 'queryThree');
 
     var parent = Prime.Document.queryById('query');
     list = Prime.Document.query('p.test', parent);
-    assert.equals(list[0].getID(), 'queryOne');
-    assert.equals(list[1].getID(), 'queryTwo');
-    assert.equals(list[2].getID(), 'queryThree');
+    assert.equals(list[0].getId(), 'queryOne');
+    assert.equals(list[1].getId(), 'queryTwo');
+    assert.equals(list[2].getId(), 'queryThree');
 
     list = Prime.Document.query('p.test', parent.domElement);
-    assert.equals(list[0].getID(), 'queryOne');
-    assert.equals(list[1].getID(), 'queryTwo');
-    assert.equals(list[2].getID(), 'queryThree');
+    assert.equals(list[0].getId(), 'queryOne');
+    assert.equals(list[1].getId(), 'queryTwo');
+    assert.equals(list[2].getId(), 'queryThree');
   },
 
   'queryById': function() {
     var element = Prime.Document.queryById('queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('invalid');
     assert.isNull(element);
@@ -119,15 +119,15 @@ buster.testCase('Prime.Document namespace tests', {
   'queryFirst': function() {
     var element = Prime.Document.queryFirst('p');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('p#queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('#queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('#invalid');
     assert.isNull(element);
@@ -136,17 +136,17 @@ buster.testCase('Prime.Document namespace tests', {
   'queryFirst with Element': function() {
     var child = Prime.Document.queryFirst('.test', Prime.Document.queryById('query'));
     refute.isNull(child);
-    assert.equals(child.getID(), 'queryOne')
+    assert.equals(child.getId(), 'queryOne')
   },
 
   'queryLast': function() {
     var element = Prime.Document.queryLast('p.test');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryThree');
+    assert.equals(element.getId(), 'queryThree');
 
     element = Prime.Document.queryLast('#queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryLast('#invalid');
     assert.isNull(element);
@@ -158,7 +158,7 @@ buster.testCase('Prime.Document namespace tests', {
   'queryLast with Element': function() {
     var child = Prime.Document.queryLast('.test', Prime.Document.queryById('query'));
     refute.isNull(child);
-    assert.equals(child.getID(), 'queryThree')
+    assert.equals(child.getId(), 'queryThree')
   },
 
   'queryUp': {

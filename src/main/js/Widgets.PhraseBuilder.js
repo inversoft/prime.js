@@ -84,10 +84,10 @@ Prime.Widgets.PhraseBuilder = function(element, searchCallback) {
 
   this.searchCallback = searchCallback;
 
-  var id = this.element.getID();
+  var id = this.element.getId();
   if (id === null || id === '') {
     id = 'prime-phrase-builder' + Prime.Widgets.PhraseBuilder.count++;
-    this.element.setID(id);
+    this.element.setId(id);
   }
 
   this.placeholder = 'Type Words for Phrase Here';
@@ -96,26 +96,13 @@ Prime.Widgets.PhraseBuilder = function(element, searchCallback) {
   this.displayContainer = Prime.Document.queryById(id + '-display');
   this.input = null;
   if (this.displayContainer === null) {
-    this.displayContainer = Prime.Document.newElement('<div/>').
-        setID(id + '-display').
-        addClass('prime-phrase-builder-display').
-        addEventListener('click', this._handleClickEvent).
-        addEventListener('keyup', this._handleKeyUpEvent).
-        insertAfter(this.element);
+    this.displayContainer = Prime.Document.newElement('<div/>').setId(id + '-display').addClass('prime-phrase-builder-display').addEventListener('click', this._handleClickEvent).addEventListener('keyup', this._handleKeyUpEvent).insertAfter(this.element);
 
-    this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>').
-        addClass('prime-phrase-builder-option-list').
-        appendTo(this.displayContainer);
+    this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>').addClass('prime-phrase-builder-option-list').appendTo(this.displayContainer);
 
-    this.searchResultsContainer = Prime.Document.newElement('<ul/>').
-        addClass('prime-phrase-builder-search-result-list').
-        hide().
-        appendTo(this.displayContainer);
+    this.searchResultsContainer = Prime.Document.newElement('<ul/>').addClass('prime-phrase-builder-search-result-list').hide().appendTo(this.displayContainer);
   } else {
-    this.displayContainer.
-        removeAllEventListeners().
-        addEventListener('click', this._handleClickEvent).
-        addEventListener('keyup', this._handleKeyUpEvent);
+    this.displayContainer.removeAllEventListeners().addEventListener('click', this._handleClickEvent).addEventListener('keyup', this._handleKeyUpEvent);
     this.displayContainerSelectedOptionList = Prime.Document.queryFirst('.prime-phrase-builder-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Document.queryFirst('.prime-phrase-builder-search-result-list', this.displayContainer);
   }
@@ -141,11 +128,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
       return this;
     }
 
-    var option = Prime.Document.newElement('<option/>').
-        setValue(word).
-        setHTML(word).
-        setAttribute('selected', 'selected').
-        appendTo(this.element);
+    var option = Prime.Document.newElement('<option/>').setValue(word).setHTML(word).setAttribute('selected', 'selected').appendTo(this.element);
 
     this._addSelectedOptionToDisplay(option);
 
@@ -265,13 +248,8 @@ Prime.Widgets.PhraseBuilder.prototype = {
     });
 
     // Add the input option since the select options are inserted before it
-    this.inputOption = Prime.Document.newElement('<li/>').
-        addClass('prime-phrase-builder-input-option').
-        appendTo(this.displayContainerSelectedOptionList);
-    this.input = Prime.Document.newElement('<input/>').
-        addClass('prime-phrase-builder-input').
-        setAttribute('type', 'text').
-        appendTo(this.inputOption);
+    this.inputOption = Prime.Document.newElement('<li/>').addClass('prime-phrase-builder-input-option').appendTo(this.displayContainerSelectedOptionList);
+    this.input = Prime.Document.newElement('<input/>').addClass('prime-phrase-builder-input').setAttribute('type', 'text').appendTo(this.inputOption);
     this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this)
         .withCustomAddEnabled(this.customAddEnabled);
     if (this.customAddEnabled) {
@@ -303,8 +281,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * Added so that subclasses can define how this should work.
    */
   _createOption: function(option) {
-    return new Prime.Document.Element(option).
-    setAttribute('selected', 'selected');
+    return new Prime.Document.Element(option).setAttribute('selected', 'selected');
   },
 
   /**
@@ -409,22 +386,22 @@ Prime.Widgets.PhraseBuilder.prototype = {
 
     // Check if the option has already been selected
     if (Prime.Document.queryById(id) === null) {
-      var li = Prime.Document.newElement('<li/>').
-          addClass('prime-phrase-builder-option').
-          setAttribute('value', option.getValue()).
-          setID(id).
-          insertBefore(this.inputOption);
-      Prime.Document.newElement('<span/>').
-          setHTML(option.getHTML()).
-          setAttribute('value', option.getValue()).
-          appendTo(li);
-      Prime.Document.newElement('<a/>').
-          setAttribute('href', '#').
-          setAttribute('value', option.getValue()).
-          addClass('prime-phrase-builder-remove-option').
-          setHTML('X').
-          addEventListener('click', this._handleClickEvent).
-          appendTo(li);
+      var li = Prime.Document.newElement('<li/>')
+          .addClass('prime-phrase-builder-option')
+          .setAttribute('value', option.getValue())
+          .setId(id)
+          .insertBefore(this.inputOption);
+      Prime.Document.newElement('<span/>')
+          .setHTML(option.getHTML())
+          .setAttribute('value', option.getValue())
+          .appendTo(li);
+      Prime.Document.newElement('<a/>')
+          .setAttribute('href', '#')
+          .setAttribute('value', option.getValue())
+          .addClass('prime-phrase-builder-remove-option')
+          .setHTML('X')
+          .addEventListener('click', this._handleClickEvent)
+          .appendTo(li);
     }
   },
 
@@ -510,7 +487,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * @private
    */
   _makeOptionID: function(option) {
-    return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
+    return this.element.getId() + '-option-' + option.getValue().replace(' ', '-');
   }
 };
 

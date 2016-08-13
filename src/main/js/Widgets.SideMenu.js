@@ -32,7 +32,7 @@ Prime.Widgets.SideMenu = function(element) {
   this._setInitialOptions();
 
   this.body = new Prime.Document.Element(document.body);
-  this.body.queryFirst('.prime-side-menu-button').addEventListener('click', this._handleClick, this);
+  this.body.queryFirst('.prime-side-menu-button').addEventListener('click', this._handleClick);
 };
 
 Prime.Widgets.SideMenu.MENU_CHARACTER = '&#9776;';

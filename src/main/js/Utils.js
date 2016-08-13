@@ -133,8 +133,8 @@ Prime.Utils = {
     var computedStyle = element.getComputedStyle();
     var textCalculator = Prime.Document.queryById('prime-text-calculator');
     if (textCalculator === null) {
-      textCalculator = Prime.Document.newElement('<span/>').
-          setStyles({
+      textCalculator = Prime.Document.newElement('<span/>')
+          .setStyles({
             position: 'absolute',
             width: 'auto',
             fontSize: computedStyle['fontSize'],
@@ -142,11 +142,11 @@ Prime.Utils = {
             fontWeight: computedStyle['fontWeight'],
             letterSpacing: computedStyle['letterSpacing'],
             whiteSpace: 'nowrap'
-          }).
-          setID('prime-text-calculator').
-          setTop(-9999).
-          setLeft(-9999).
-          appendTo(document.body);
+          })
+          .setId('prime-text-calculator')
+          .setTop(-9999)
+          .setLeft(-9999)
+          .appendTo(document.body);
     }
 
     textCalculator.setHTML(text);

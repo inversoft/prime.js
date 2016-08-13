@@ -424,7 +424,7 @@ Prime.Document.Element.prototype = {
    *
    * @returns {string} ID The id of the domElement if it exists.
    */
-  getID: function() {
+  getId: function() {
     return this.domElement.id;
   },
 
@@ -1116,6 +1116,32 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Removes all of the event listeners for the given pattern from this element.
+   *
+   * @param {RegExp} pattern The regular expression that matches the names of the events to remove the listeners for.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  removeEventListenersByPattern: function(pattern) {
+    for (var event in this.domElement.eventListeners) {
+      if (this.domElement.eventListeners.hasOwnProperty(event) && pattern.test(event)) {
+        for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
+          this._internalRemoveEventListener(event, this.domElement.eventListeners[event][i]);
+        }
+
+        delete this.domElement.eventListeners[event];
+      }
+    }
+
+    for (event in this.domElement.customEventListeners) {
+      if (this.domElement.customEventListeners.hasOwnProperty(event) && pattern.test(event)) {
+        delete this.domElement.customEventListeners[event];
+      }
+    }
+
+    return this;
+  },
+
+  /**
    * Removes this Element from the DOM. If the Element isn't in the DOM this does nothing.
    *
    * @returns {Prime.Document.Element} This Element.
@@ -1293,7 +1319,7 @@ Prime.Document.Element.prototype = {
    * @param {string} id The ID.
    * @returns {Prime.Document.Element} This Element.
    */
-  setID: function(id) {
+  setId: function(id) {
     this.domElement.id = id;
     return this;
   },

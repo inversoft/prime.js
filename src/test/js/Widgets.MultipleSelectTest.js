@@ -24,11 +24,11 @@ var refute = buster.assertions.refute;
 
 buster.testCase('MultipleSelect class tests', {
   setUp: function() {
-    this.multipleSelect = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select')).
-        withPlaceholder('Select One').
-        withCustomAddEnabled(true).
-        withCustomAddLabel('Add New Value: ').
-        render();
+    this.multipleSelect = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select'))
+        .withPlaceholder('Select One')
+        .withCustomAddEnabled(true)
+        .withCustomAddLabel('Add New Value: ')
+        .render();
     this.multipleSelect.removeAllOptions();
     this.multipleSelect.addOption('one', 'One');
     this.multipleSelect.addOption('two', 'Two');
@@ -37,10 +37,10 @@ buster.testCase('MultipleSelect class tests', {
     this.multipleSelect.selectOptionWithValue('three');
     this.multipleSelect.searcher.closeSearchResults();
 
-    this.multipleSelectCustomAddDisabled = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-custom-add-disabled')).
-        withPlaceholder('Choose:').
-        withCustomAddEnabled(false).
-        render();
+    this.multipleSelectCustomAddDisabled = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-custom-add-disabled'))
+        .withPlaceholder('Choose:')
+        .withCustomAddEnabled(false)
+        .render();
     this.multipleSelectCustomAddDisabled.removeAllOptions();
     this.multipleSelectCustomAddDisabled.addOption('one', 'One');
     this.multipleSelectCustomAddDisabled.addOption('two', 'Two');
@@ -59,11 +59,11 @@ buster.testCase('MultipleSelect class tests', {
     assert.equals(children.length, 2);
     assert.equals(children[0].getTagName(), 'UL');
     assert.equals(children[0].getChildren().length, 3);
-    assert.equals(children[0].getChildren()[0].getID(), 'multiple-select-option-one');
+    assert.equals(children[0].getChildren()[0].getId(), 'multiple-select-option-one');
     assert.equals(children[0].getChildren()[0].getChildren()[0].getHTML(), 'One');
     assert.equals(children[0].getChildren()[0].getChildren()[1].getAttribute('value'), 'one');
     assert.equals(children[0].getChildren()[0].getChildren()[1].getHTML(), 'X');
-    assert.equals(children[0].getChildren()[1].getID(), 'multiple-select-option-three');
+    assert.equals(children[0].getChildren()[1].getId(), 'multiple-select-option-three');
     assert.equals(children[0].getChildren()[1].getChildren()[0].getHTML(), 'Three');
     assert.equals(children[0].getChildren()[1].getChildren()[1].getAttribute('value'), 'three');
     assert.equals(children[0].getChildren()[1].getChildren()[1].getHTML(), 'X');
@@ -105,9 +105,9 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option didn't get added to the display
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.equals(displayOptions[0].getAttribute('value'), 'one');
-    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getId(), 'multiple-select-option-three');
     assert.equals(displayOptions[1].getAttribute('value'), 'three');
     assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   },
@@ -146,7 +146,7 @@ buster.testCase('MultipleSelect class tests', {
 
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 2);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-three');
     assert.equals(displayOptions[0].getAttribute('value'), 'three');
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
   },
@@ -180,9 +180,9 @@ buster.testCase('MultipleSelect class tests', {
 
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.isFalse(displayOptions[0].hasClass('prime-multiple-select-option-highlighted'));
-    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getId(), 'multiple-select-option-three');
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-option-highlighted'));
     assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   },
@@ -204,7 +204,7 @@ buster.testCase('MultipleSelect class tests', {
 
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 2);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.isFalse(displayOptions[0].hasClass('prime-multiple-select-option-highlighted'));
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
   },
@@ -221,7 +221,7 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option gets removed from the display
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 2);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-three');
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
   },
 
@@ -358,11 +358,11 @@ buster.testCase('MultipleSelect class tests', {
     // Verify the display is updated
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 4);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.equals(displayOptions[0].getAttribute('value'), 'one');
-    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getId(), 'multiple-select-option-three');
     assert.equals(displayOptions[1].getAttribute('value'), 'three');
-    assert.equals(displayOptions[2].getID(), 'multiple-select-option-t');
+    assert.equals(displayOptions[2].getId(), 'multiple-select-option-t');
     assert.equals(displayOptions[2].getAttribute('value'), 't');
     assert.isTrue(displayOptions[3].hasClass('prime-multiple-select-input-option'));
 
@@ -385,13 +385,13 @@ buster.testCase('MultipleSelect class tests', {
     // Verify the display is updated
     displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 5);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.equals(displayOptions[0].getAttribute('value'), 'one');
-    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getId(), 'multiple-select-option-three');
     assert.equals(displayOptions[1].getAttribute('value'), 'three');
-    assert.equals(displayOptions[2].getID(), 'multiple-select-option-t');
+    assert.equals(displayOptions[2].getId(), 'multiple-select-option-t');
     assert.equals(displayOptions[2].getAttribute('value'), 't');
-    assert.equals(displayOptions[3].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[3].getId(), 'multiple-select-option-two');
     assert.equals(displayOptions[3].getAttribute('value'), 'two');
     assert.isTrue(displayOptions[4].hasClass('prime-multiple-select-input-option'));
   },
@@ -424,11 +424,11 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option is added to the display
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 4);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.equals(displayOptions[0].getAttribute('value'), 'one');
-    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getId(), 'multiple-select-option-three');
     assert.equals(displayOptions[1].getAttribute('value'), 'three');
-    assert.equals(displayOptions[2].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[2].getId(), 'multiple-select-option-two');
     assert.equals(displayOptions[2].getAttribute('value'), 'two');
     assert.isTrue(displayOptions[3].hasClass('prime-multiple-select-input-option'));
   },
@@ -450,7 +450,7 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option is added to the display
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 2);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-two');
     assert.equals(displayOptions[0].getAttribute('value'), 'two');
     assert.isTrue(displayOptions[1].hasClass('prime-multiple-select-input-option'));
 
@@ -470,9 +470,9 @@ buster.testCase('MultipleSelect class tests', {
     // Ensure that the option is added to the display
     displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.equals(displayOptions[0].getAttribute('value'), 'one');
-    assert.equals(displayOptions[1].getID(), 'multiple-select-option-two');
+    assert.equals(displayOptions[1].getId(), 'multiple-select-option-two');
     assert.equals(displayOptions[1].getAttribute('value'), 'two');
     assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   },
@@ -495,9 +495,9 @@ buster.testCase('MultipleSelect class tests', {
 
     var displayOptions = Prime.Document.query('#multiple-select-display ul.prime-multiple-select-option-list li');
     assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'multiple-select-option-one');
+    assert.equals(displayOptions[0].getId(), 'multiple-select-option-one');
     assert.isFalse(displayOptions[0].hasClass('prime-multiple-select-option-highlighted'));
-    assert.equals(displayOptions[1].getID(), 'multiple-select-option-three');
+    assert.equals(displayOptions[1].getId(), 'multiple-select-option-three');
     assert.isFalse(displayOptions[1].hasClass('prime-multiple-select-option-highlighted'));
     assert.isTrue(displayOptions[2].hasClass('prime-multiple-select-input-option'));
   }

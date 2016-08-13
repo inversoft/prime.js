@@ -83,17 +83,17 @@ Prime.Widgets.MultipleSelect = function(element) {
   this.customAddEnabled = true;
   this.customAddLabel = 'Add Custom Value: ';
 
-  var id = this.element.getID();
+  var id = this.element.getId();
   if (id === null || id === '') {
     id = 'prime-multiple-select' + Prime.Widgets.MultipleSelect.count++;
-    this.element.setID(id);
+    this.element.setId(id);
   }
 
   this.displayContainer = Prime.Document.queryById(id + '-display');
   this.input = null;
   if (this.displayContainer === null) {
     this.displayContainer = Prime.Document.newElement('<div/>').
-        setID(id + '-display').
+        setId(id + '-display').
         addClass('prime-multiple-select-display').
         addEventListener('click', this._handleClickEvent).
         addEventListener('keyup', this._handleKeyUpEvent).
@@ -381,19 +381,19 @@ Prime.Widgets.MultipleSelect.prototype = {
     });
 
     // Add the input option since the select options are inserted before it
-    this.inputOption = Prime.Document.newElement('<li/>').
-        addClass('prime-multiple-select-input-option').
-        appendTo(this.displayContainerSelectedOptionList);
-    this.input = Prime.Document.newElement('<input/>').
-        addClass('prime-multiple-select-input').
-        addEventListener('click', this._handleClickEvent).
-        addEventListener('blur', this._handleBlurEvent).
-        setAttribute('type', 'text').
-        appendTo(this.inputOption);
-    this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this).
-        withCustomAddEnabled(this.customAddEnabled).
-        withCustomAddLabel(this.customAddLabel).
-        withNoSearchResultsLabel(this.noSearchResultsLabel);
+    this.inputOption = Prime.Document.newElement('<li/>')
+        .addClass('prime-multiple-select-input-option')
+        .appendTo(this.displayContainerSelectedOptionList);
+    this.input = Prime.Document.newElement('<input/>')
+        .addClass('prime-multiple-select-input')
+        .addEventListener('click', this._handleClickEvent)
+        .addEventListener('blur', this._handleBlurEvent)
+        .setAttribute('type', 'text')
+        .appendTo(this.inputOption);
+    this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this)
+        .withCustomAddEnabled(this.customAddEnabled)
+        .withCustomAddLabel(this.customAddLabel)
+        .withNoSearchResultsLabel(this.noSearchResultsLabel);
 
     // Add the selected options
     var hasSelectedOptions = false;
@@ -435,22 +435,22 @@ Prime.Widgets.MultipleSelect.prototype = {
     if (Prime.Document.queryById(id) === null) {
       option.setSelected(true);
 
-      var li = Prime.Document.newElement('<li/>').
-          addClass('prime-multiple-select-option').
-          setAttribute('value', option.getValue()).
-          setID(id).
-          insertBefore(this.inputOption);
-      Prime.Document.newElement('<span/>').
-          setHTML(option.getHTML()).
-          setAttribute('value', option.getValue()).
-          appendTo(li);
-      Prime.Document.newElement('<a/>').
-          setAttribute('href', '#').
-          setAttribute('value', option.getValue()).
-          addClass('prime-multiple-select-remove-option').
-          setHTML('X').
-          addEventListener('click', this._handleClickEvent).
-          appendTo(li);
+      var li = Prime.Document.newElement('<li/>')
+          .addClass('prime-multiple-select-option')
+          .setAttribute('value', option.getValue())
+          .setId(id)
+          .insertBefore(this.inputOption);
+      Prime.Document.newElement('<span/>')
+          .setHTML(option.getHTML())
+          .setAttribute('value', option.getValue())
+          .appendTo(li);
+      Prime.Document.newElement('<a/>')
+          .setAttribute('href', '#')
+          .setAttribute('value', option.getValue())
+          .addClass('prime-multiple-select-remove-option')
+          .setHTML('X')
+          .addEventListener('click', this._handleClickEvent)
+          .appendTo(li);
     }
 
     // Remove the placeholder attribute on the input and resize it
@@ -701,6 +701,6 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @private
    */
   _makeOptionID: function(option) {
-    return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
+    return this.element.getId() + '-option-' + option.getValue().replace(' ', '-');
   }
 };

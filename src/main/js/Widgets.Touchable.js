@@ -54,7 +54,8 @@ Prime.Widgets.Touchable.prototype = {
         .removeEventListener('touchstart', this._handleTouchStart)
         .removeEventListener('touchmove', this._handleTouchMove)
         .removeEventListener('touchcancel', this._handleTouchCancel)
-        .removeEventListener('touchend', this._handleTouchEnd);
+        .removeEventListener('touchend', this._handleTouchEnd)
+        .removeEventListenersByPattern(/Prime\.Widgets\.Touchable:.+/)
   },
 
   /**
@@ -64,7 +65,7 @@ Prime.Widgets.Touchable.prototype = {
    * @returns {Prime.Widgets.Touchable} This
    */
   withLongPressHandler: function(handler) {
-    this.element.addEventListener('touch:longPress', handler);
+    this.element.addEventListener('Prime.Widgets.Touchable:longPress', handler);
     return this;
   },
 
@@ -75,7 +76,7 @@ Prime.Widgets.Touchable.prototype = {
    * @returns {Prime.Widgets.Touchable} This
    */
   withMoveHandler: function(handler) {
-    this.element.addEventListener('touch:move', handler);
+    this.element.addEventListener('Prime.Widgets.Touchable:move', handler);
     return this;
   },
 
@@ -86,7 +87,7 @@ Prime.Widgets.Touchable.prototype = {
    * @returns {Prime.Widgets.Touchable} This
    */
   withSwipeDownHandler: function(handler) {
-    this.element.addEventListener('touch:swipeDown', handler);
+    this.element.addEventListener('Prime.Widgets.Touchable:swipeDown', handler);
     return this;
   },
 
@@ -97,7 +98,7 @@ Prime.Widgets.Touchable.prototype = {
    * @returns {Prime.Widgets.Touchable} This
    */
   withSwipeLeftHandler: function(handler) {
-    this.element.addEventListener('touch:swipeLeft', handler);
+    this.element.addEventListener('Prime.Widgets.Touchable:swipeLeft', handler);
     return this;
   },
 
@@ -108,7 +109,7 @@ Prime.Widgets.Touchable.prototype = {
    * @returns {Prime.Widgets.Touchable} This
    */
   withSwipeRightHandler: function(handler) {
-    this.element.addEventListener('touch:swipeRight', handler);
+    this.element.addEventListener('Prime.Widgets.Touchable:swipeRight', handler);
     return this;
   },
 
@@ -119,7 +120,7 @@ Prime.Widgets.Touchable.prototype = {
    * @returns {Prime.Widgets.Touchable} This
    */
   withSwipeUpHandler: function(handler) {
-    this.element.addEventListener('touch:swipeUp', handler);
+    this.element.addEventListener('Prime.Widgets.Touchable:swipeUp', handler);
     return this;
   },
 
@@ -171,15 +172,15 @@ Prime.Widgets.Touchable.prototype = {
     event.longPress = !event.swipe && event.elapsedTime > 500;
 
     if (event.longPress) {
-      this.element.fireCustomEvent('touch:longPress', event);
+      this.element.fireCustomEvent('Prime.Widgets.Touchable:longPress', event);
     } else if (event.swipeX && event.touchX > 0) {
-      this.element.fireCustomEvent('touch:swipeLeft', event);
+      this.element.fireCustomEvent('Prime.Widgets.Touchable:swipeLeft', event);
     } else if (event.swipeX) {
-      this.element.fireCustomEvent('touch:swipeRight', event);
+      this.element.fireCustomEvent('Prime.Widgets.Touchable:swipeRight', event);
     } else if (event.swipeY && event.touchY > 0) {
-      this.element.fireCustomEvent('touch:swipeUp', event);
+      this.element.fireCustomEvent('Prime.Widgets.Touchable:swipeUp', event);
     } else if (event.swipeY) {
-      this.element.fireCustomEvent('touch:swipeDown', event);
+      this.element.fireCustomEvent('Prime.Widgets.Touchable:swipeDown', event);
     }
   },
 
@@ -218,7 +219,7 @@ Prime.Widgets.Touchable.prototype = {
    * @private
    */
   _handleTouchMove: function(event) {
-    this.element.fireEvent('touch:move', event);
+    this.element.fireEvent('Prime.Widgets.Touchable:move', event);
     if (Prime.Utils.isDefined(this.eventPropagationHandler)) {
       this.eventPropagationHandler(event);
     }
