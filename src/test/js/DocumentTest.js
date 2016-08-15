@@ -43,6 +43,11 @@ buster.testCase('Prime.Document namespace tests', {
     assert.equals(instance.memo, 'foo');
   },
 
+  'body': function() {
+    assert.isTrue(Prime.Document.bodyElement !== null);
+    assert.isTrue(Prime.Document.bodyElement.queryFirst('.body-test') !== null);
+  },
+
   'onReady': function() {
     assert.equals(documentReadyCount, 1);
     assert.equals(drc.count, 1);

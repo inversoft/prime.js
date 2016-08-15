@@ -116,7 +116,7 @@
         new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options')).
             render();
         new Prime.Widgets.Searcher(Prime.Document.queryById('searcher'), Prime.Document.queryById('searcher-results'), searcherCallback);
-        new Prime.Widgets.PhraseBuilder(Prime.Document.queryById('phrase-builder'), searcherCallback.search, searcherCallback).
+        new Prime.Widgets.PhraseBuilder(Prime.Document.queryById('phrase-builder'), searcherCallback.search).
             render();
 
         var tabs = new Prime.Widgets.Tabs(Prime.Document.queryById('tabs')).render();
@@ -143,7 +143,7 @@
             .render();
 
         new Prime.Widgets.SideMenu(Prime.Document.queryById('side-menu'));
-        Prime.Window.addEventListener('beforeunload', function(event) {
+        Prime.Window.addEventListener('beforeunload', function() {
           console.log('Beforeunload');
         });
 

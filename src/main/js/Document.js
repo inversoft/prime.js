@@ -27,6 +27,7 @@ Prime.Document = Prime.Document || {};
 
 Prime.Document.readyFunctions = [];
 Prime.Document.tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
+Prime.Document.bodyElement = null;
 
 /**
  * Attaches an event listener to the document, returning the handler proxy.
@@ -321,6 +322,17 @@ Prime.Document._callReadyListeners = function() {
     document.detachEvent('onreadystatechange', Prime.Document._callReadyListeners);
   }
 };
+
+/* ===================================================================================================================
+ * Globals
+ * ===================================================================================================================*/
+
+/**
+ * Setup the body static.
+ */
+Prime.Document.onReady(function() {
+  Prime.Document.bodyElement = new Prime.Document.Element(document.body);
+});
 
 /* ===================================================================================================================
  * Polyfill

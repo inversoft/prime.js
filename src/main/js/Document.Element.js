@@ -45,7 +45,7 @@ Prime.Document.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|B
 Prime.Document.Element.mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup|mouseover|mousemove|mouseout)$/;
 Prime.Document.Element.htmlEventsRegexp = /^(?:abort|blur|change|error|focus|load|reset|resize|scroll|select|submit|unload)$/;
 Prime.Document.Element.anonymousId = 1;
-Prime.Document.Element.ieAlpaRegexp = /alpha\(opacity=(.+)\)/;
+Prime.Document.Element.ieAlphaRegexp = /alpha\(opacity=(.+)\)/;
 
 /**
  * Static method that wraps an element in a Prime.Document.Element unless it is already wrapped. In that case, it simply
@@ -485,7 +485,7 @@ Prime.Document.Element.prototype = {
     if (Prime.Browser.name === 'Explorer' && Prime.Browser.version < 9) {
       var filter = computedStyle['filter'];
       if (filter !== undefined && filter !== '') {
-        var matches = Prime.Document.Element.ieAlpaRegexp.match(filter);
+        var matches = Prime.Document.Element.ieAlphaRegexp.match(filter);
         if (matches.length > 0) {
           opacity = parseFloat(matches[0]);
         }
