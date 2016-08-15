@@ -1,142 +1,96 @@
-/*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
- */
-
-.prime-side-menu {
-  top: 0px;
-  position: fixed;
-  width: 240px;
-  height: 100%;
-  overflow-y: scroll;
-  transition: transform 0.3s;
-  -webkit-transform: translateX(-260px);
-  -ms-transform: translateX(-240px);
-  transform: translateX(-240px);
+body.prime-side-menu-open {
+  overflow: hidden;
 }
 
-body.prime-side-menu-active .prime-side-menu {
-  list-style: none;
-  z-index: 1000;
+.prime-side-menu-body {
+  -webkit-transform: translateX(0px);
+  -ms-transform: translateX(0px);
+  transform: translateX(0px);
+  -webkit-transition: -webkit-transform .3s;
+  transition: transform .3s;
+}
 
+body.prime-side-menu-open .prime-side-menu-body {
+  overflow: hidden;
+  -webkit-transform: translateX(270px);
+  -ms-transform: translateX(270px);
+  transform: translateX(270px);
+}
+
+/* Mobile Nav
+====================================================*/
+.prime-side-menu {
+  background: #222222;
+  color: white;
+  display: block;
+  height: 100%;
+  left: 0;
+  -webkit-overflow-scrolling: touch;
+  overflow-y: scroll;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  -webkit-transform: translateX(-270px);
+  -ms-transform: translateX(-270px);
+  transform: translateX(-270px);
+  -webkit-transition: -webkit-transform .3s;
+  transition: transform .3s;
+  width: 270px;
+}
+
+.prime-side-menu h2 {
+  font-size: 1.6rem;
+  margin: 0;
+  padding: 10px;
+}
+
+.prime-side-menu ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.prime-side-menu ul li strong {
+  border-bottom: 1px solid #353434;
+  color: white;
+  display: block;
+  padding: 10px;
+}
+
+.prime-side-menu ul li a {
+  border-bottom: 1px solid #353434;
+  color: white;
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.prime-side-menu ul a {
+  padding-left: 10px;
+}
+
+.prime-side-menu ul ul a {
+  padding-left: 20px;
+}
+
+.prime-side-menu ul ul ul a {
+  padding-left: 30px;
+}
+
+.prime-side-menu ul ul ul ul a {
+  padding-left: 40px;
+}
+
+.prime-side-menu ul ul ul ul ul a {
+  padding-left: 50px;
+}
+
+.prime-side-menu ul li a:hover {
+  background: #111111;
+}
+
+body.prime-side-menu-open .prime-side-menu {
   -webkit-transform: translateX(0);
   -ms-transform: translateX(0);
   transform: translateX(0);
-}
-
-div.main {
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-}
-
-body.prime-side-menu-active div.main {
-  transform: translateX(240px);
-
-  overflow-x: hidden;
-  height: 100%;
-  position: fixed;
-}
-
-/* Menu Button */
-.prime-side-menu-button {
-  font-size: 3.5rem;
-  font-weight: 300;
-  width: auto;
-  color: #818181;
-  padding: 0px 10px 0px 10px;
-  align-content: center;
-  float: left;
-  position: absolute;
-  left: 10px;
-  margin-top: -20px;
-  z-index: 2000;
-}
-
-.prime-side-menu-button span {
-  vertical-align: middle;
-  text-align: center;
-  height: 40px;
-  width: 40px;
-}
-
-/* Menu Items */
-.prime-side-menu-list {
-  height: 100%;
-  top: 0px;
-  font-size: 1rem;
-  font-weight: 300;
-  color: #0388ba;
-  overflow: scroll;
-  white-space: nowrap;
-  background: rgb(48, 47, 47);
-}
-
-.prime-side-menu-list ul {
-  list-style: none;
-  padding-top: 2em;
-  font-size: 1.5em;
-  line-height: 1.6;
-  display: inline-block;
-  width: 100%;
-}
-
-.prime-side-menu-list ul li strong {
-  display: block;
-  font-weight: 400;
-  font-size: 1.8rem;
-  margin-top: 1.5em;
-  padding-left: 0.5em;
-}
-
-.prime-side-menu-list ul li {
-  margin-bottom: 0px;
-  margin-left: 0px;
-  padding-left: 0px;
-}
-
-.prime-side-menu-list ul li a {
-  display: block;
-  font-weight: 300;
-  font-size: 1.6rem;
-  color: #747474;
-  margin-bottom: 0px;
-  padding: 0.5em 0.5em 0.5em 1.0em;
-}
-
-.prime-side-menu-list ul li a:hover {
-  color: #FFFFFF;
-  background-image:
-  linear-gradient(
-      to right,
-      rgb(106, 103, 103), rgb(48, 47, 47)
-  );
-}
-
-@media all {
-  .prime-side-menu form {
-    margin-bottom: 0px;
-  }
-
-  .prime-side-menu form input {
-    border-radius: 0px;
-    border: none;
-    margin-bottom: 0px;
-  }
-}
-
-@media(max-width: 820px) {
-  .prime-side-menu form {
-    width: 241px;
-    padding-right: 0px;
-    padding-left: 0px;
-  }
-  .prime-side-menu form input {
-    border-radius: 0px;
-    border: none;
-  }
-}
-
-@media(min-width: 820px) {
-  .prime-side-menu form {
-    width: 200px;
-  }
 }

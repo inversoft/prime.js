@@ -142,7 +142,10 @@
         new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker2'))
             .render();
 
-        new Prime.Widgets.SideMenu(Prime.Document.queryById('side-menu'));
+        // Side menu
+        new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryFirst('.main'))
+            .usingSideMenuElement(Prime.Document.queryById('prime-side-menu'));
+
         Prime.Window.addEventListener('beforeunload', function() {
           console.log('Beforeunload');
         });
@@ -152,12 +155,12 @@
           new Prime.Effects.ScrollTo(scrollMe, 0)
               .withDuration(400)
               .go();
-        }, this);
+        });
         Prime.Document.queryById('scroll-down').addEventListener('click', function() {
           new Prime.Effects.ScrollTo(scrollMe, (scrollMe.getScrollHeight() - scrollMe.getHeight()))
               .withDuration(400)
               .go();
-        }, this);
+        });
 
         var touchableElement = Prime.Document.queryById('touchable');
         var touchable = new Prime.Widgets.Touchable(touchableElement)
@@ -201,17 +204,26 @@
     </style>
   </head>
   <body>
-    <div id="side-menu">
-      <div class="prime-side-menu">
-        <ul>
-          <li><strong>foo</strong></li>
-          <li><a href="#">bar</a></li>
-          <li><a href="#">baz</a></li>
-        </ul>
-      </div>
-    </div>
+    <nav id="prime-side-menu" class="prime-side-menu">
+      <ul>
+        <li>
+          <strong>foo</strong>
+          <ul>
+            <li><a href="#">bar</a></li>
+            <li><a href="#">baz</a></li>
+            <li>
+              <a href="#">fred</a>
+              <ul>
+                <li><a href="#">fred 1</a></li>
+                <li><a href="#">fred 2</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
     <div class="main">
-      <div class="prime-side-menu-button"><span>&#9776;</span></div>
+      <div id="prime-side-menu-button"><span>&#9776;</span></div>
       <br>
 
       <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">
