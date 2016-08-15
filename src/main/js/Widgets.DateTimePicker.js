@@ -487,6 +487,7 @@ Prime.Widgets.DateTimePicker.prototype = {
         this.monthInput.focus();
       }
       Prime.Utils.stopEvent(event);
+      return;
     }
 
     // Decode the key event
@@ -598,7 +599,6 @@ Prime.Widgets.DateTimePicker.prototype = {
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setDate(parseInt(this.dayInput.getValue()));
     }
-
   },
 
   /**
@@ -673,7 +673,6 @@ Prime.Widgets.DateTimePicker.prototype = {
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setHours(parseInt(this.hourInput.getValue()));
     }
-    Prime.Utils.stopEvent(event);
   },
 
   /**
@@ -760,6 +759,7 @@ Prime.Widgets.DateTimePicker.prototype = {
         this.ampmInput.focus();
       }
       Prime.Utils.stopEvent(event);
+      return;
     }
 
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
