@@ -17,8 +17,6 @@ body.prime-side-menu-open .prime-side-menu-body {
   transform: translateX(270px);
 }
 
-/* Mobile Nav
-====================================================*/
 .prime-side-menu {
   background: #222222;
   color: white;

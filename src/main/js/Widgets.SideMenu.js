@@ -47,7 +47,6 @@ Prime.Widgets.SideMenu.prototype = {
   copyFromElement: function(element) {
     var sideMenu = Prime.Document.newElement('<nav/>')
         .prependTo(this.body)
-        .setId('prime-side-menu')
         .addClass('prime-side-menu')
         .setHTML(element.getHTML());
     sideMenu.query('a').each(function(e) {
