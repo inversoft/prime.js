@@ -13,13 +13,15 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
-
 
 buster.testCase('Prime.Document namespace tests', {
   'addEventListener': function() {
     var MyEventListener = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
       this.memo = null;
     };
@@ -33,12 +35,17 @@ buster.testCase('Prime.Document namespace tests', {
     };
 
     var instance = new MyEventListener();
-    Prime.Document.addEventListener('click', instance.handle, instance);
+    Prime.Document.addEventListener('click', instance.handle);
 
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
     assert(instance.called);
     assert.equals(instance.event, 'click');
     assert.equals(instance.memo, 'foo');
+  },
+
+  'body': function() {
+    assert.isTrue(Prime.Document.bodyElement !== null);
+    assert.isTrue(Prime.Document.bodyElement.queryFirst('.body-test') !== null);
   },
 
   'onReady': function() {
@@ -73,12 +80,12 @@ buster.testCase('Prime.Document namespace tests', {
     assert.equals(element.domElement.tagName, 'SPAN');
 
     element = Prime.Document.newElement('<div/>', {'id': '1'});
-    assert.equals(element.getID(), '1');
-    assert.equals(element.getID(), '1');
+    assert.equals(element.getId(), '1');
+    assert.equals(element.getId(), '1');
 
     element = Prime.Document.newElement('<div/>', {'id': 'id', 'style': 'width:200px;float:left'});
-    assert.equals(element.getID(), 'id');
-    assert.equals(element.getID(), 'id');
+    assert.equals(element.getId(), 'id');
+    assert.equals(element.getId(), 'id');
     assert.equals(element.domElement.style['width'], '200px');
     assert.equals(element.domElement.style['cssFloat'], 'left');
   },
@@ -89,26 +96,26 @@ buster.testCase('Prime.Document namespace tests', {
   'query': function() {
     var list = Prime.Document.query('p.test');
     assert.equals(list.length, 3);
-    assert.equals(list[0].getID(), 'queryOne');
-    assert.equals(list[1].getID(), 'queryTwo');
-    assert.equals(list[2].getID(), 'queryThree');
+    assert.equals(list[0].getId(), 'queryOne');
+    assert.equals(list[1].getId(), 'queryTwo');
+    assert.equals(list[2].getId(), 'queryThree');
 
-    var parent = Prime.Document.queryByID('query');
+    var parent = Prime.Document.queryById('query');
     list = Prime.Document.query('p.test', parent);
-    assert.equals(list[0].getID(), 'queryOne');
-    assert.equals(list[1].getID(), 'queryTwo');
-    assert.equals(list[2].getID(), 'queryThree');
+    assert.equals(list[0].getId(), 'queryOne');
+    assert.equals(list[1].getId(), 'queryTwo');
+    assert.equals(list[2].getId(), 'queryThree');
 
     list = Prime.Document.query('p.test', parent.domElement);
-    assert.equals(list[0].getID(), 'queryOne');
-    assert.equals(list[1].getID(), 'queryTwo');
-    assert.equals(list[2].getID(), 'queryThree');
+    assert.equals(list[0].getId(), 'queryOne');
+    assert.equals(list[1].getId(), 'queryTwo');
+    assert.equals(list[2].getId(), 'queryThree');
   },
 
-  'queryByID': function() {
-    var element = Prime.Document.queryByID('queryOne');
+  'queryById': function() {
+    var element = Prime.Document.queryById('queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('invalid');
     assert.isNull(element);
@@ -117,34 +124,34 @@ buster.testCase('Prime.Document namespace tests', {
   'queryFirst': function() {
     var element = Prime.Document.queryFirst('p');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('p#queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('#queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('#invalid');
     assert.isNull(element);
   },
 
   'queryFirst with Element': function() {
-    var child = Prime.Document.queryFirst('.test', Prime.Document.queryByID('query'));
+    var child = Prime.Document.queryFirst('.test', Prime.Document.queryById('query'));
     refute.isNull(child);
-    assert.equals(child.getID(), 'queryOne')
+    assert.equals(child.getId(), 'queryOne')
   },
 
   'queryLast': function() {
     var element = Prime.Document.queryLast('p.test');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryThree');
+    assert.equals(element.getId(), 'queryThree');
 
     element = Prime.Document.queryLast('#queryOne');
     refute.isNull(element);
-    assert.equals(element.getID(), 'queryOne');
+    assert.equals(element.getId(), 'queryOne');
 
     element = Prime.Document.queryLast('#invalid');
     assert.isNull(element);
@@ -154,42 +161,43 @@ buster.testCase('Prime.Document namespace tests', {
   },
 
   'queryLast with Element': function() {
-    var child = Prime.Document.queryLast('.test', Prime.Document.queryByID('query'));
+    var child = Prime.Document.queryLast('.test', Prime.Document.queryById('query'));
     refute.isNull(child);
-    assert.equals(child.getID(), 'queryThree')
+    assert.equals(child.getId(), 'queryThree')
   },
 
   'queryUp': {
     setUp: function() {
-      this.child = Prime.Document.queryByID('child');
-      this.parent = Prime.Document.queryByID('parent');
+      this.child = Prime.Document.queryById('child');
+      this.parent = Prime.Document.queryById('parent');
       this.ancestor = Prime.Document.queryFirst('div.ancestor');
     },
 
     'find parent by id': function() {
-      assert.equals(Prime.Document.queryUp('#parent', this.child), this.parent);
+      assert.equals(Prime.Document.queryUp('#parent', this.child).domElement, this.parent.domElement);
     },
 
     'find parent by type + id': function() {
-      assert.equals(Prime.Document.queryUp('div#parent', this.child), this.parent);
+      assert.equals(Prime.Document.queryUp('div#parent', this.child).domElement, this.parent.domElement);
     },
 
     'find parent by type only': function() {
-      assert.equals(Prime.Document.queryUp('div', this.child), this.parent);
+      assert.equals(Prime.Document.queryUp('div', this.child).domElement, this.parent.domElement);
     },
 
     'find ancestor': function() {
-      assert.equals(Prime.Document.queryUp('.ancestor', this.child), this.ancestor);
+      assert.equals(Prime.Document.queryUp('.ancestor', this.child).domElement, this.ancestor.domElement);
     },
 
     'find parent with a space in the selector': function() {
-      assert.equals(Prime.Document.queryUp('div #parent', this.child), this.parent);
-      assert.equals(Prime.Document.queryUp('body .ancestor', this.child), this.ancestor);
+      assert.equals(Prime.Document.queryUp('div #parent', this.child).domElement, this.parent.domElement);
+      assert.equals(Prime.Document.queryUp('body .ancestor', this.child).domElement, this.ancestor.domElement);
     }
   },
 
   'removeEventListener': function() {
     var MyEventListener = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
       this.memo = null;
       this.event = null;
@@ -203,7 +211,7 @@ buster.testCase('Prime.Document namespace tests', {
     };
 
     var instance = new MyEventListener();
-    var proxy = Prime.Document.addEventListener('click', instance.handle, instance);
+    Prime.Document.addEventListener('click', instance.handle);
 
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
     assert.isTrue(instance.called);
@@ -214,7 +222,7 @@ buster.testCase('Prime.Document namespace tests', {
     instance.memo = null;
     instance.event = null;
 
-    Prime.Document.removeEventListener('click', proxy);
+    Prime.Document.removeEventListener('click', instance.handle);
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
     assert.isFalse(instance.called);
     assert.isNull(instance.event);

@@ -13,11 +13,11 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 var assert = buster.assertions.assert;
 
 buster.testCase('Data.Queue Tests', {
-
   'queue': function() {
     var queue = new Prime.Data.Queue();
 

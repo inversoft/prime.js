@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -25,6 +27,102 @@ Prime.Utils = {
   typeRegex: /^\[object\s(.*)\]$/,
 
   /**
+   * Binds all of the functions inside the object so that <code>this</code> is the object. This is extremely useful for
+   * objects that have functions that will be used as event listeners. Rather than having to manage binding and function
+   * references manually you can instead bind all of the functions in the object and then use them directly for event
+   * listeners.
+   *
+   * Here's an example:
+   *
+   * <pre>
+   *   function Foo() {
+   *     Prime.Utils.bindAll(this);
+   *
+   *     // This function is bound to this (i.e. this.handleClick = this.handleClick.bind(this)).
+   *     Prime.Document.queryFirst('a').addEventListener('click', this.handleClick);
+   *   }
+   *
+   *   Foo.prototype = {
+   *     handleClick: function(event) {
+   *       ...
+   *     }
+   *   };
+   * </pre>
+   *
+   * @param {*} object The object to bind all the functions for.
+   */
+  bindAll: function(object) {
+    for (var property in object) {
+      if (object[property] instanceof Function) {
+        object[property] = object[property].bind(object);
+      }
+    }
+  },
+
+  /**
+   * Binds all of the functions inside the object so that <code>this</code> is the object. This is extremely useful for
+   * objects that have functions that will be used as event listeners. Rather than having to manage binding and function
+   * references manually you can instead bind all of the functions in the object and then use them directly for event
+   * listeners.
+   *
+   * Here's an example:
+   *
+   * <pre>
+   *   function Foo() {
+   *     Prime.Utils.bindAll(this);
+   *
+   *     // This function is bound to this (i.e. this.handleClick = this.handleClick.bind(this)).
+   *     Prime.Document.queryFirst('a').addEventListener('click', this.handleClick);
+   *   }
+   *
+   *   Foo.prototype = {
+   *     handleClick: function(event) {
+   *       ...
+   *     }
+   *   };
+   * </pre>
+   *
+   * @param {*} object The object to bind all the functions for.
+   * @param {String} arguments A varargs list of function names to bind.
+   */
+  bindSome: function(object) {
+    if (arguments.length > 1) {
+      for (var i = 1; i < arguments.length; i++) {
+        var func = object[arguments[i]];
+        if (!Prime.Utils.isDefined(func) || !(func instanceof Function)) {
+          throw new TypeError('The object does not contain a function named [' + arguments[i] + ']');
+        }
+
+        object[arguments[i]] = func.bind(object);
+      }
+    }
+    for (var property in object) {
+      if (object[property] instanceof Function) {
+        object[property] = object[property].bind(object);
+      }
+    }
+  },
+
+  /**
+   * Safely binds a function to a context.
+   *
+   * @param {Function} func The function to bind.
+   * @param {Object} [context] An optional context to bind the function to.
+   * @returns {Function} Either <code>func</code> or the newly bound function.
+   */
+  bindSafe: function(func, context) {
+    if (!Prime.Utils.isDefined(func)) {
+      throw new Error('Invalid arguments');
+    }
+
+    if (!Prime.Utils.isDefined(context)) {
+      return func;
+    }
+
+    return func.bind(context);
+  },
+
+  /**
    * Calculates the length of the given text using the style of the given element.
    *
    * @param {Prime.Document.Element} element The element to use the style of.
@@ -33,10 +131,10 @@ Prime.Utils = {
    */
   calculateTextLength: function(element, text) {
     var computedStyle = element.getComputedStyle();
-    var textCalculator = Prime.Document.queryByID('prime-text-calculator');
+    var textCalculator = Prime.Document.queryById('prime-text-calculator');
     if (textCalculator === null) {
-      textCalculator = Prime.Document.newElement('<span/>').
-          setStyles({
+      textCalculator = Prime.Document.newElement('<span/>')
+          .setStyles({
             position: 'absolute',
             width: 'auto',
             fontSize: computedStyle['fontSize'],
@@ -44,11 +142,11 @@ Prime.Utils = {
             fontWeight: computedStyle['fontWeight'],
             letterSpacing: computedStyle['letterSpacing'],
             whiteSpace: 'nowrap'
-          }).
-          setID('prime-text-calculator').
-          setTop(-9999).
-          setLeft(-9999).
-          appendTo(document.body);
+          })
+          .setId('prime-text-calculator')
+          .setTop(-9999)
+          .setLeft(-9999)
+          .appendTo(document.body);
     }
 
     textCalculator.setHTML(text);
@@ -64,21 +162,19 @@ Prime.Utils = {
    * @param {number} timesToCall The number of times to call the function.
    * @param {Function} stepFunction The step function to call each iteration.
    * @param {Function} [endFunction] The function to invoke at the end.
-   * @param {Object} [context] The context for the function calls (sets the 'this' parameter).
    */
-  callIteratively: function(totalDuration, timesToCall, stepFunction, endFunction, context) {
-    var theContext = (arguments.length < 5) ? this : context;
+  callIteratively: function(totalDuration, timesToCall, stepFunction, endFunction) {
     var step = totalDuration / timesToCall;
     var count = 0;
     var id = setInterval(function() {
       count++;
       var last = (count >= timesToCall);
-      stepFunction.call(theContext, last);
+      stepFunction(last);
       if (last) {
         clearInterval(id);
 
-        if (typeof endFunction !== 'undefined' && endFunction !== null) {
-          endFunction.call(theContext);
+        if (Prime.Utils.isDefined(endFunction)) {
+          endFunction();
         }
       }
     }, step - 1);
@@ -168,6 +264,16 @@ Prime.Utils = {
   },
 
   /**
+   * Tests whether or not the value is not null and not 'undefined'.
+   *
+   * @param {*} value The value to test.
+   * @returns {boolean} True if the value is defined (not null or undefined).
+   */
+  isDefined: function(value) {
+    return value !== null && typeof(value) !== 'undefined';
+  },
+
+  /**
    * Parses a CSS measure value (12px) as an integer.
    *
    * @param {string} measure The CSS measure
@@ -190,34 +296,6 @@ Prime.Utils = {
    */
   parseJSON: function(json) {
     return JSON.parse(json);
-  },
-
-  /**
-   * Proxies calls to a function through an anonymous function and sets the "this" variable to the object given.
-   *
-   * @param {Function} func The function to call.
-   * @param {Object} context The "this" variable when the function is called.
-   * @returns {Function} An anonymous function.
-   */
-  proxy: function(func, context) {
-    return function() {
-      // DOM level 2 event handlers behave differently than DOM 0 event handlers. We are unifying the event handlers
-      // here by checking if the handler returns false and then preventing the default even behavior. This is only used
-      // when the arguments are an event
-      var result = func.apply(context, arguments);
-      if (result === false && arguments[0] instanceof Event) {
-        var event = arguments[0];
-        event.cancelBubble = true;
-        if (event.stopPropagation) {
-          event.stopPropagation();
-        }
-        if (event.preventDefault) {
-          event.preventDefault();
-        }
-      }
-
-      return result;
-    }
   },
 
   /**
@@ -248,27 +326,20 @@ Prime.Utils = {
   },
 
   /**
-   * Helper function for setInterval that provides context.
+   * Helper function to provide a one liner to behave as if you returned 'false' from a legacy version of Prime.js.
    *
-   * @param {Function} func The function to call.
-   * @param {number} delay The delay
-   * @param {Object} context The "this" variable when the function is called.
-   * @returns {number} The timer id.
+   * Calling this method is equivalent to calling event.preventDefault and event.stopPropagation.
+   * @param event
    */
-  setInterval: function(func, delay, context) {
-    return setInterval(this.proxy(func, context), delay);
-  },
-
-  /**
-   * Helper function for setTimeout that provides context.
-   *
-   * @param {Function} func The function to call.
-   * @param {number} delay The delay
-   * @param {Object} context The "this" variable when the function is called.
-   * @returns {number} The timer id.
-   */
-  setTimeout: function(func, delay, context) {
-    return setTimeout(this.proxy(func, context), delay);
+  stopEvent: function(event) {
+    // Compatibility with older versions of IE
+    event.cancelBubble = true;
+    if (event.stopPropagation) {
+      event.stopPropagation();
+    }
+    if (event.preventDefault) {
+      event.preventDefault();
+    }
   },
 
   type: function(object) {

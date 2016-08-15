@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 /*
  * Helper functions
@@ -22,7 +23,7 @@ var refute = buster.assertions.refute;
 
 buster.testCase('DateTimePicker class tests', {
   setUp: function() {
-    this.input = Prime.Document.queryByID('datetimepicker-test1');
+    this.input = Prime.Document.queryById('datetimepicker-test1');
     this.dateWidget = new Prime.Widgets.DateTimePicker(this.input).render();
   },
 

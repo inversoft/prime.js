@@ -45,6 +45,7 @@
       });
 
       var DocumentReadyClass = function() {
+        Prime.Utils.bindAll(this);
         this.count = 0;
       };
 
@@ -55,7 +56,7 @@
       };
 
       var drc = new DocumentReadyClass();
-      Prime.Document.onReady(drc.documentReady, drc);
+      Prime.Document.onReady(drc.documentReady);
     </script>
     <script type="text/javascript" src="../js/mock.js"></script>
     <script type="text/javascript" src="../js/Ajax.RequestTest.js"></script>
@@ -93,6 +94,8 @@
     </style>
   </head>
   <body>
+    <div class="body-test"></div>
+
     <!-- This is the only section that uses p tags so we can test selecting by tagname -->
     <div id="query">
       <p id="queryOne" class="test">

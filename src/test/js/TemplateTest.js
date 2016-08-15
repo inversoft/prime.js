@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 buster.testCase('Prime.Template', {
   'generate with no replaces': function() {
@@ -70,7 +71,7 @@ buster.testCase('Prime.Template', {
 
   'insertBefore': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Document.queryByID("templateInsertBefore");
+    var target = Prime.Document.queryById("templateInsertBefore");
 
     template.insertBefore(target, {'foo': 'bar'});
     assert.equals(target.domElement.parentNode.children[0].innerHTML, 'bar');
@@ -79,7 +80,7 @@ buster.testCase('Prime.Template', {
 
   'insertBeforeMultiple': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Document.queryByID("templateInsertBeforeMultiple");
+    var target = Prime.Document.queryById("templateInsertBeforeMultiple");
 
     template.insertBefore(target, {'foo': 'bar'});
     template.insertBefore(target, {'foo': 'baz'});
@@ -90,7 +91,7 @@ buster.testCase('Prime.Template', {
 
   'insertAfter': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Document.queryByID("templateInsertAfter");
+    var target = Prime.Document.queryById("templateInsertAfter");
 
     template.insertAfter(target, {'foo': 'bar'});
     assert.equals(target.domElement.parentNode.children[0].innerHTML, '');
@@ -99,7 +100,7 @@ buster.testCase('Prime.Template', {
 
   'insertAfterMultiple': function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var target = Prime.Document.queryByID("templateInsertBeforeAfter");
+    var target = Prime.Document.queryById("templateInsertBeforeAfter");
 
     template.insertAfter(target, {'foo': 'bar'});
     template.insertAfter(target, {'foo': 'baz'});

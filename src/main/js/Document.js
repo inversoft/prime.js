@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -25,29 +27,30 @@ Prime.Document = Prime.Document || {};
 
 Prime.Document.readyFunctions = [];
 Prime.Document.tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
+Prime.Document.bodyElement = null;
 
 /**
  * Attaches an event listener to the document, returning the handler proxy.
  *
  * @param {string} event The name of the event.
- * @param {Function} handler The event handler.
- * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
- *        function call). Defaults to this Element.
- * @returns {Function} The proxy handler.
+ * @param {Function} listener The event listener function.
+ * @returns {Prime.Document} The Prime.Document object so you can chain method calls together.
  */
-Prime.Document.addEventListener = function(event, handler, context) {
-  var theContext = (arguments.length < 3) ? this : context;
-  handler.primeProxy = Prime.Utils.proxy(handler, theContext);
-
-  if (document.addEventListener) {
-    document.addEventListener(event, handler.primeProxy, false);
-  } else if (document.attachEvent) {
-    document.attachEvent('on' + event, handler.primeProxy);
+Prime.Document.addEventListener = function(event, listener) {
+  if (event.indexOf(':') === -1) {
+    // Traditional event
+    document.eventListeners = document.eventListeners || {};
+    document.eventListeners[event] = document.eventListeners[event] || [];
+    document.eventListeners[event].push(listener);
+    document.addEventListener(event, listener, false);
   } else {
-    throw new TypeError('Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available');
+    // Custom event
+    document.customEventListeners = document.customEventListeners || {};
+    document.customEventListeners[event] = document.customEventListeners[event] || [];
+    document.customEventListeners[event].push(listener);
   }
 
-  return handler.primeProxy;
+  return Prime.Document;
 };
 
 /**
@@ -92,17 +95,17 @@ Prime.Document.newDocument = function(documentString) {
  * @returns {Prime.Document.Element} A new Prime.Document.Element.
  */
 Prime.Document.newElement = function(elementString, properties) {
-  properties = typeof properties !== 'undefined' ? properties : {};
+  properties = Prime.Utils.isDefined(properties) ? properties : {};
   var result = Prime.Document.tagRegexp.exec(elementString);
   if (result === null) {
     throw new TypeError('Invalid string to create a new element [' + elementString + ']. It should look like <a/>');
   }
 
   var element = new Prime.Document.Element(document.createElement(result[1]));
-  for (key in properties) {
+  for (var key in properties) {
     if (properties.hasOwnProperty(key)) {
       if (key === 'id') {
-        element.setID(properties[key]);
+        element.setId(properties[key]);
       } else {
         element.setAttribute(key, properties[key]);
       }
@@ -117,12 +120,10 @@ Prime.Document.newElement = function(elementString, properties) {
  * already fully loaded, this simply invokes the callback directly.
  *
  * @param {Function} callback The callback function.
- * @param {Object} [context] The context for the function call (sets the this variable).
  */
-Prime.Document.onReady = function(callback, context) {
-  var theContext = (arguments.length < 2) ? this : context;
+Prime.Document.onReady = function(callback) {
   if (document.readyState === 'complete') {
-    callback.call(context);
+    callback();
   } else {
     // If this is the first call, register the event listener on the document
     if (this.readyFunctions.length === 0) {
@@ -136,7 +137,7 @@ Prime.Document.onReady = function(callback, context) {
     }
 
     // Add the callback
-    this.readyFunctions.push(Prime.Utils.proxy(callback, theContext));
+    this.readyFunctions.push(callback);
   }
 };
 
@@ -159,7 +160,7 @@ Prime.Document.appendHTML = function(html) {
 Prime.Document.move = function(element, appendToElement) {
   element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
 
-  if (typeof appendToElement === 'undefined' || appendToElement === null) {
+  if (!Prime.Utils.isDefined(appendToElement)) {
     appendToElement = new Prime.Document.Element(document.body);
   } else {
     appendToElement = (appendToElement instanceof Prime.Document.Element) ? appendToElement : new Prime.Document.Element(appendToElement);
@@ -179,7 +180,7 @@ Prime.Document.move = function(element, appendToElement) {
  */
 Prime.Document.query = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     domElement = document;
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -195,7 +196,7 @@ Prime.Document.query = function(selector, element) {
  * @param {string} id The ID.
  * @returns {Prime.Document.Element} The element or null.
  */
-Prime.Document.queryByID = function(id) {
+Prime.Document.queryById = function(id) {
   var element = document.getElementById(id);
   if (!element) {
     return null;
@@ -214,7 +215,7 @@ Prime.Document.queryByID = function(id) {
  */
 Prime.Document.queryFirst = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     domElement = document;
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -238,7 +239,7 @@ Prime.Document.queryFirst = function(selector, element) {
  */
 Prime.Document.queryLast = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     domElement = document;
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -261,7 +262,7 @@ Prime.Document.queryLast = function(selector, element) {
  */
 Prime.Document.queryUp = function(selector, element) {
   var domElement = null;
-  if (typeof element === 'undefined' || element === null) {
+  if (!Prime.Utils.isDefined(element)) {
     throw new SyntaxError('Missing required parameter. The element is required.');
   } else {
     domElement = (element instanceof Prime.Document.Element) ? element.domElement : element;
@@ -286,14 +287,13 @@ Prime.Document.queryUp = function(selector, element) {
  * Removes an event handler for a specific event from the document that you attached using addEventListener
  *
  * @param {string} event The name of the event.
- * @param {Object} handler The handler.
+ * @param {Function} listener The listener function.
  */
-Prime.Document.removeEventListener = function(event, handler) {
-  var proxy = handler.primeProxy ? handler.primeProxy : handler;
+Prime.Document.removeEventListener = function(event, listener) {
   if (document.removeEventListener) {
-    document.removeEventListener(event, proxy, false);
+    document.removeEventListener(event, listener, false);
   } else if (document.detachEvent) {
-    document.detachEvent('on' + event, proxy);
+    document.detachEvent('on' + event, listener);
   } else {
     throw new TypeError('Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available');
   }
@@ -324,12 +324,23 @@ Prime.Document._callReadyListeners = function() {
 };
 
 /* ===================================================================================================================
+ * Globals
+ * ===================================================================================================================*/
+
+/**
+ * Setup the body static.
+ */
+Prime.Document.onReady(function() {
+  Prime.Document.bodyElement = new Prime.Document.Element(document.body);
+});
+
+/* ===================================================================================================================
  * Polyfill
  * ===================================================================================================================*/
 
 /* https://developer.mozilla.org/en-US/docs/Web/API/DOMParser */
 (function(DOMParser) {
-  "use strict";
+  'use strict';
 
   var proto = DOMParser.prototype;
   var nativeParse = proto.parseFromString;
@@ -337,7 +348,7 @@ Prime.Document._callReadyListeners = function() {
   // Firefox/Opera/IE throw errors on unsupported types
   try {
     // WebKit returns null on unsupported types
-    if ((new DOMParser()).parseFromString("", "text/html")) {
+    if ((new DOMParser()).parseFromString('', 'text/html')) {
       // text/html parsing is natively supported
       return;
     }
@@ -345,7 +356,7 @@ Prime.Document._callReadyListeners = function() {
 
   proto.parseFromString = function(markup, type) {
     if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
-      var doc = document.implementation.createHTMLDocument("");
+      var doc = document.implementation.createHTMLDocument('');
       if (markup.toLowerCase().indexOf('<!doctype') > -1) {
         doc.documentElement.innerHTML = markup;
       } else {

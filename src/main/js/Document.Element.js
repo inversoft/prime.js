@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 Prime.Document = Prime.Document || {};
 
@@ -24,10 +26,11 @@ Prime.Document = Prime.Document || {};
  * @param {Element|EventTarget} element The element
  */
 Prime.Document.Element = function(element) {
-  if (typeof element.nodeType === 'undefined' || element.nodeType !== 1) {
+  if (!Prime.Utils.isDefined(element.nodeType) || element.nodeType !== 1) {
     throw new TypeError('You can only pass in DOM element Node objects to the Prime.Document.Element constructor');
   }
 
+  Prime.Utils.bindAll(this);
   this.domElement = element;
   this.domElement.customEventListeners = [];
   this.domElement.eventListeners = {};
@@ -43,6 +46,17 @@ Prime.Document.Element.mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup
 Prime.Document.Element.htmlEventsRegexp = /^(?:abort|blur|change|error|focus|load|reset|resize|scroll|select|submit|unload)$/;
 Prime.Document.Element.anonymousId = 1;
 Prime.Document.Element.ieAlpaRegexp = /alpha\(opacity=(.+)\)/;
+
+/**
+ * Static method that wraps an element in a Prime.Document.Element unless it is already wrapped. In that case, it simply
+ * returns the element.
+ *
+ * @param {Prime.Document.Element|Element|EventTarget} element The element to wrap.
+ * @static
+ */
+Prime.Document.Element.wrap = function(element) {
+  return (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
+};
 
 Prime.Document.Element.prototype = {
   /**
@@ -76,29 +90,24 @@ Prime.Document.Element.prototype = {
    *
    * @param {string} event The name of the event.
    * @param {Function} listener The event listener function.
-   * @param {Object} [context=this] The context to use when invoking the handler (this sets the 'this' variable for the
-   *        function call). Defaults to this Element.
    * @returns {Prime.Document.Element} This Element.
    */
-  addEventListener: function(event, listener, context) {
-    var theContext = (arguments.length < 3) ? this : context;
-    listener.primeProxy = Prime.Utils.proxy(listener, theContext);
-    this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || [];
-    this.domElement.eventListeners[event].push(listener.primeProxy);
-
+  addEventListener: function(event, listener) {
     if (event.indexOf(':') === -1) {
       // Traditional event
-      if (this.domElement.addEventListener) {
-        this.domElement.addEventListener(event, listener.primeProxy, false);
-      } else if (this.domElement.attachEvent) {
-        this.domElement.attachEvent('on' + event, listener.primeProxy);
-      } else {
-        throw new TypeError('Unable to set event onto the element. Neither addEventListener nor attachEvent methods are available');
+      this.domElement.eventListeners = this.domElement.eventListeners || {};
+      this.domElement.eventListeners[event] = this.domElement.eventListeners[event] || [];
+      if (this.domElement.eventListeners[event].indexOf(listener) === -1) {
+        this.domElement.eventListeners[event].push(listener);
       }
+      this.domElement.addEventListener(event, listener, false);
     } else {
       // Custom event
+      this.domElement.customEventListeners = this.domElement.customEventListeners || {};
       this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
-      this.domElement.customEventListeners[event].push(listener.primeProxy);
+      if (this.domElement.customEventListeners[event].indexOf(listener) === -1) {
+        this.domElement.customEventListeners[event].push(listener);
+      }
     }
 
     return this;
@@ -166,10 +175,10 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   fireEvent: function(event, memo, target, bubbling, cancelable) {
-    memo = typeof(memo) !== 'undefined' ? memo : {};
-    target = typeof(target) !== 'undefined' ? target : this;
-    bubbling = typeof(bubbling) !== 'undefined' ? bubbling : true;
-    cancelable = typeof(cancelable) !== 'undefined' ? cancelable : true;
+    memo = Prime.Utils.isDefined(memo) ? memo : {};
+    target = Prime.Utils.isDefined(target) ? target : this;
+    bubbling = Prime.Utils.isDefined(bubbling) ? bubbling : true;
+    cancelable = Prime.Utils.isDefined(cancelable) ? cancelable : true;
 
     var evt;
     if (event.indexOf(':') === -1) {
@@ -201,10 +210,35 @@ Prime.Document.Element.prototype = {
       // Custom event
       this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
       evt = {'event': event, 'memo': memo, 'target': target};
-      for (index in this.domElement.customEventListeners[event]) {
+      for (var index in this.domElement.customEventListeners[event]) {
         if (this.domElement.customEventListeners[event].hasOwnProperty(index)) {
           this.domElement.customEventListeners[event][index](evt);
         }
+      }
+    }
+
+    return this;
+  },
+
+  /**
+   * Fires a custom event on the Element using the given event object rather than creating a new event object. This is
+   * useful for pass-through event handling.
+   *
+   * @param {string} event The name of the event.
+   * @param {Object} eventObj The event object to pass to the handlers.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  fireCustomEvent: function(event, eventObj) {
+    eventObj = Prime.Utils.isDefined(eventObj) ? eventObj : {};
+    if (event.indexOf(':') === -1) {
+      throw new TypeError('This method can only be used for custom events');
+    }
+
+    // Custom event
+    this.domElement.customEventListeners[event] = this.domElement.customEventListeners[event] || [];
+    for (var index in this.domElement.customEventListeners[event]) {
+      if (this.domElement.customEventListeners[event].hasOwnProperty(index)) {
+        this.domElement.customEventListeners[event][index](eventObj);
       }
     }
 
@@ -282,7 +316,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.ElementList} The children.
    */
   getChildren: function(selector) {
-    if (typeof selector === 'undefined' || selector === null) {
+    if (!Prime.Utils.isDefined(selector)) {
       return new Prime.Document.ElementList(this.domElement.children);
     }
 
@@ -356,7 +390,7 @@ Prime.Document.Element.prototype = {
    */
   getFirstChild: function(selector) {
     var lastChild = this.getChildren(selector)[0];
-    if (typeof lastChild === 'undefined') {
+    if (!Prime.Utils.isDefined(lastChild)) {
       return null;
     }
     return lastChild;
@@ -390,7 +424,7 @@ Prime.Document.Element.prototype = {
    *
    * @returns {string} ID The id of the domElement if it exists.
    */
-  getID: function() {
+  getId: function() {
     return this.domElement.id;
   },
 
@@ -508,6 +542,19 @@ Prime.Document.Element.prototype = {
     var marginLeft = computedStyle['marginLeft'];
     var marginRight = computedStyle['marginRight'];
     return offsetWidth + Prime.Utils.parseCSSMeasure(marginLeft) + Prime.Utils.parseCSSMeasure(marginRight);
+  },
+
+  /**
+   * Returns this element's parent as a Prime.Document.Element.
+   *
+   * @returns {Prime.Document.Element} This element's parent or null if there is no parent
+   */
+  getParent: function() {
+    if (Prime.Utils.isDefined(this.domElement.parentNode)) {
+      return new Prime.Document.Element(this.domElement.parentNode);
+    } else {
+      return null;
+    }
   },
 
   /**
@@ -872,12 +919,12 @@ Prime.Document.Element.prototype = {
       return false;
     }
 
-    var parent = this.parent();
+    var parent = this.getParent();
     while (parent.domElement !== document.body) {
       if (parent.domElement === target.domElement) {
         return true;
       }
-      parent = parent.parent();
+      parent = parent.getParent();
     }
 
     return false;
@@ -904,23 +951,10 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Returns this element's parent as  Prime.Document.Element.
-   *
-   * @returns {Prime.Document.Element} this element's parent or null if there is no parent
-   */
-  parent: function() {
-    if (this.domElement.parentNode !== null) {
-      return new Prime.Document.Element(this.domElement.parentNode);
-    } else {
-      return null;
-    }
-  },
-
-  /**
    * Inserts this Element (which must be a newly created Element) into the DOM inside at the very beginning of the given
    * element.
    *
-   * @param {Element} element The element to insert this Element into.
+   * @param {Prime.Document.Element|Element} element The element to insert this Element into.
    * @returns {Prime.Document.Element} This Element.
    */
   prependTo: function(element) {
@@ -987,17 +1021,16 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   removeAllEventListeners: function() {
-    for (event in this.domElement.eventListeners) {
+    for (var event in this.domElement.eventListeners) {
       if (this.domElement.eventListeners.hasOwnProperty(event)) {
         for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
-          var listener = this.domElement.eventListeners[event][i];
-          var proxy = listener.primeProxy ? listener.primeProxy : listener;
-          this._internalRemoveEventListener(event, proxy);
+          this._internalRemoveEventListener(event, this.domElement.eventListeners[event][i]);
         }
       }
     }
 
     this.domElement.eventListeners = {};
+    this.domElement.customEventListeners = {};
 
     return this;
   },
@@ -1043,13 +1076,17 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   removeEventListener: function(event, listener) {
-    var proxy = listener.primeProxy ? listener.primeProxy : listener;
-    var listeners = this.domElement.eventListeners[event];
-    if (listeners) {
-      Prime.Utils.removeFromArray(listeners, proxy);
+    var listeners;
+    if (event.indexOf(':') === -1) {
+      this._internalRemoveEventListener(event, listener);
+      listeners = this.domElement.eventListeners[event];
+    } else {
+      listeners = this.domElement.customEventListeners[event];
     }
 
-    this._internalRemoveEventListener(event, proxy);
+    if (listeners) {
+      Prime.Utils.removeFromArray(listeners, listener);
+    }
 
     return this;
   },
@@ -1061,14 +1098,44 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   removeEventListeners: function(event) {
-    if (this.domElement.eventListeners[event]) {
-      for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
-        var listener = this.domElement.eventListeners[event][i];
-        var proxy = listener.primeProxy ? listener.primeProxy : listener;
-        this._internalRemoveEventListener(event, proxy);
-      }
+    if (event.indexOf(':') === -1) {
+      if (this.domElement.eventListeners[event]) {
+        for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
+          this._internalRemoveEventListener(event, this.domElement.eventListeners[event][i]);
+        }
 
-      delete this.domElement.eventListeners[event];
+        delete this.domElement.eventListeners[event];
+      }
+    } else {
+      if (this.domElement.customEventListeners[event]) {
+        delete this.domElement.customEventListeners[event];
+      }
+    }
+
+    return this;
+  },
+
+  /**
+   * Removes all of the event listeners for the given pattern from this element.
+   *
+   * @param {RegExp} pattern The regular expression that matches the names of the events to remove the listeners for.
+   * @returns {Prime.Document.Element} This Element.
+   */
+  removeEventListenersByPattern: function(pattern) {
+    for (var event in this.domElement.eventListeners) {
+      if (this.domElement.eventListeners.hasOwnProperty(event) && pattern.test(event)) {
+        for (var i = 0; i < this.domElement.eventListeners[event].length; i++) {
+          this._internalRemoveEventListener(event, this.domElement.eventListeners[event][i]);
+        }
+
+        delete this.domElement.eventListeners[event];
+      }
+    }
+
+    for (event in this.domElement.customEventListeners) {
+      if (this.domElement.customEventListeners.hasOwnProperty(event) && pattern.test(event)) {
+        delete this.domElement.customEventListeners[event];
+      }
     }
 
     return this;
@@ -1183,7 +1250,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   setAttributes: function(attributes) {
-    for (key in attributes) {
+    for (var key in attributes) {
       if (attributes.hasOwnProperty(key)) {
         this.setAttribute(key, attributes[key]);
       }
@@ -1221,7 +1288,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   setHeight: function(height) {
-    if (typeof(height) == 'number') {
+    if (typeof(height) === 'number') {
       height = height + 'px';
     }
 
@@ -1252,7 +1319,7 @@ Prime.Document.Element.prototype = {
    * @param {string} id The ID.
    * @returns {Prime.Document.Element} This Element.
    */
-  setID: function(id) {
+  setId: function(id) {
     this.domElement.id = id;
     return this;
   },
@@ -1350,7 +1417,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   setStyles: function(styles) {
-    for (key in styles) {
+    for (var key in styles) {
       if (styles.hasOwnProperty(key)) {
         this.setStyle(key, styles[key]);
       }
@@ -1417,7 +1484,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   setWidth: function(width) {
-    if (typeof(width) == 'number') {
+    if (typeof(width) === 'number') {
       width = width + 'px';
     }
 
@@ -1436,7 +1503,7 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This Element.
    */
   show: function(displayValue) {
-    if (typeof(displayValue) !== 'undefined') {
+    if (Prime.Utils.isDefined(displayValue)) {
       this.domElement.style.display = displayValue;
       return this;
     }
@@ -1445,7 +1512,7 @@ Prime.Document.Element.prototype = {
 
     var computedDisplay = this.getComputedStyle()['display'];
     if (computedDisplay === 'none') {
-      if (typeof(displayValue) === 'undefined') {
+      if (!Prime.Utils.isDefined(displayValue)) {
         displayValue = (Prime.Document.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
       }
 
@@ -1475,12 +1542,12 @@ Prime.Document.Element.prototype = {
    * Removes this element from the DOM while preserving the inner HTML.
    *
    * Example, call unwrap on the italic element:
-   *   <strong>Hello</strong><italic> World </italic> --> <strong>Hello</string> World
+   *   <strong>Hello</strong><italic> World </italic> --> <strong>Hello</strong> World
    *
    * @returns {Prime.Document.Element} This Element.
    */
   unwrap: function() {
-    var parent = this.parent().domElement;
+    var parent = this.getParent().domElement;
     while (this.domElement.firstChild) {
       parent.insertBefore(this.domElement.firstChild, this.domElement);
     }
@@ -1507,62 +1574,26 @@ Prime.Document.Element.prototype = {
    * ===================================================================================================================*/
 
   /**
-   * Changes a style property iteratively over a given period of time from one value to another value.
-   *
-   * @param {Object} config The configuration object for the iteration. This must contain the name of the style property
-   *        being changed, the units of the property (px, em, etc), the defaultStartValue if the element doesn't have the
-   *        style already, the end value, the duration, and the number of iterations.
-   * @param {Function} [endFunction] Optional end function to call.
-   * @param {Object} [context] Optional context for the function calls.
-   * @private
-   */
-  _changeNumberStyleIteratively: function(config, endFunction, context) {
-    var domElement = this.domElement;
-    var currentValue = (domElement.style[config.name]) ? (domElement.style[config.name]) : config.defaultStartValue;
-    var step = currentValue / config.iterations;
-    var stepFunction = function(last) {
-      if (last) {
-        currentValue = config.endValue;
-      } else {
-        if (currentValue < config.endValue) {
-          currentValue += step;
-        } else {
-          currentValue -= step;
-        }
-      }
-
-      domElement.style[config.name] = currentValue + config.units;
-
-      // Handle the special opacity case for IE
-      if (config.name === 'opacity') {
-        domElement.style.filter = 'alpha(opacity=' + currentValue + config.units + ')';
-      }
-    };
-
-    Prime.Utils.callIteratively(config.duration, config.iterations, stepFunction, endFunction, context);
-  },
-
-  /**
    * Removes the event listener proxy from this element.
    *
    * @param {string} event The event name.
-   * @param {Function} proxy The proxy function.
+   * @param {Function} listener The listener function.
    * @private
    */
-  _internalRemoveEventListener: function(event, proxy) {
+  _internalRemoveEventListener: function(event, listener) {
     if (event.indexOf(':') === -1) {
       // Traditional event
       if (this.domElement.removeEventListener) {
-        this.domElement.removeEventListener(event, proxy, false);
+        this.domElement.removeEventListener(event, listener, false);
       } else if (this.domElement.detachEvent) {
-        this.domElement.detachEvent('on' + event, proxy);
+        this.domElement.detachEvent('on' + event, listener);
       } else {
         throw new TypeError('Unable to remove event from the element. Neither removeEventListener nor detachEvent methods are available');
       }
     } else if (this.domElement.customEventListeners[event]) {
       // Custom event
       var customListeners = this.domElement.customEventListeners[event];
-      Prime.Utils.removeFromArray(customListeners, proxy);
+      Prime.Utils.removeFromArray(customListeners, listener);
     }
   }
 };
@@ -1574,7 +1605,6 @@ Prime.Document.Element.prototype = {
 
 (function() {
   if (!Element.prototype.matches) {
-
     Element.prototype.matches = function(selector) {
       var domElement = this;
       var matches = (domElement.parentNode || domElement.document).querySelectorAll(selector);

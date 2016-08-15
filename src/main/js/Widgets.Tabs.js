@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -25,11 +27,11 @@ Prime.Widgets = Prime.Widgets || {};
 /**
  * Constructs a new Tabs object for the given ul element.
  *
- * @param element The ul element to build the tab widget from
+ * @param {Prime.Document.Element|Element|EventTarget} element The ul element to build the tab widget from
  * @constructor
  */
 Prime.Widgets.Tabs = function(element) {
-  this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
+  this.element = Prime.Document.Element.wrap(element);
 
   if (this.element.getTagName().toLowerCase() === 'ul') {
     this.tabsContainer = this.element;
@@ -45,6 +47,8 @@ Prime.Widgets.Tabs = function(element) {
     throw new Error('This element has already been initialized. Call destroy before initializing again.');
   }
 
+  Prime.Utils.bindAll(this);
+
   this._setInitialOptions();
   this.tabsContainer.hide().addClass('prime-tabs');
   this.tabContents = {};
@@ -54,7 +58,7 @@ Prime.Widgets.Tabs = function(element) {
   this.selectHandler = null;
 
   this.tabsContainer.query('li:not(.prime-disabled)').each(function(tab) {
-    var a = tab.queryFirst('a').addEventListener('click', this._handleClick, this);
+    var a = tab.queryFirst('a').addEventListener('click', this._handleClick);
     var dataSet = tab.getDataSet();
 
     var href = a.getAttribute('href');
@@ -70,7 +74,7 @@ Prime.Widgets.Tabs = function(element) {
     this.tabs[dataSet.tabId] = tab;
     this.tabArray.push(tab);
 
-    var content = Prime.Document.queryByID(dataSet.tabId);
+    var content = Prime.Document.queryById(dataSet.tabId);
     if (content === null && isAnchor) {
       throw new Error('A div is required with the following ID [' + dataSet.tabId + ']');
     } else if (content === null) {
@@ -81,7 +85,7 @@ Prime.Widgets.Tabs = function(element) {
 
     content.addClass('prime-tab-content');
     this.tabContents[dataSet.tabId] = content;
-  }, this);
+  }.bind(this));
 
   this.tabsContainer.addClass('prime-initialized');
 };
@@ -94,7 +98,7 @@ Prime.Widgets.Tabs.prototype = {
     this.tabsContainer.getChildren().each(function(tab) {
       var a = Prime.Document.queryFirst('a', tab);
       a.removeEventListener('click', this._handleClick);
-    }, this);
+    }.bind(this));
 
     for (var i = 0; i < this.tabs.length; i++) {
       this.tabs[i].removeClass('prime-tab-content');
@@ -181,7 +185,7 @@ Prime.Widgets.Tabs.prototype = {
    */
   render: function() {
     // Check if local storage is enabled to save selected tab
-    this.localStorageSupported = typeof(Storage) !== 'undefined' && this.options['localStorageKey'] !== null;
+    this.localStorageSupported = Prime.Utils.isDefined(Storage) && this.options['localStorageKey'] !== null;
 
     this.tabsContainer.show();
     this.redraw();
@@ -234,7 +238,6 @@ Prime.Widgets.Tabs.prototype = {
       new Prime.Ajax.Request(ajaxURL, 'GET')
           .withSuccessHandler(this._handleAJAXResponse)
           .withErrorHandler(this._handleAJAXResponse)
-          .withContext(this)
           .go();
     }
   },
@@ -303,7 +306,7 @@ Prime.Widgets.Tabs.prototype = {
    * @returns {Prime.Widgets.Tabs} This Tabs.
    */
   withOptions: function(options) {
-    if (typeof options === 'undefined' || options === null) {
+    if (!Prime.Utils.isDefined(options)) {
       return this;
     }
 
@@ -339,7 +342,7 @@ Prime.Widgets.Tabs.prototype = {
   /**
    * Handle the tab click by showing the corresponding panel and hiding the others.
    *
-   * @param event The click event on the anchor tag.
+   * @param {MouseEvent} event The click event on the anchor tag.
    * @private
    */
   _handleClick: function(event) {
@@ -353,7 +356,7 @@ Prime.Widgets.Tabs.prototype = {
       }
     }
 
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**

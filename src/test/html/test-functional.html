@@ -72,6 +72,29 @@
         }
       };
 
+      function one(foo, bar) {
+        console.log('Arguments ' + arguments.length);
+        console.log('bar ' + bar);
+      }
+
+      function two(foo, bar) {
+        one(foo, bar);
+      }
+
+      console.log('Calling single param');
+      two('two');
+      console.log('Calling undefined param');
+      two('two', undefined);
+      console.log('Calling two params');
+      two('two', 'two');
+
+      console.log('Calling direct single param');
+      one('one');
+      console.log('Calling direct undefined param');
+      one('one', undefined);
+      console.log('Calling direct two params');
+      one('one', 'one');
+
       Prime.Document.onReady(function() {
         Prime.Document.queryFirst('#fade').
           addEventListener('click', function() {
@@ -84,73 +107,77 @@
             new Prime.Effects.Appear(element).withDuration(500).go();
           });
 
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-test')).
+        new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-test')).
             render();
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-custom-add-disabled-test')).
+        new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-custom-add-disabled-test')).
             withPlaceholder('Choose').
             withCustomAddEnabled(false).
             render();
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryByID('multiple-select-lots-of-options')).
+        new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options')).
             render();
-        new Prime.Widgets.Searcher(Prime.Document.queryByID('searcher'), Prime.Document.queryByID('searcher-results'), searcherCallback);
-        new Prime.Widgets.PhraseBuilder(Prime.Document.queryByID('phrase-builder'), searcherCallback.search, searcherCallback).
+        new Prime.Widgets.Searcher(Prime.Document.queryById('searcher'), Prime.Document.queryById('searcher-results'), searcherCallback);
+        new Prime.Widgets.PhraseBuilder(Prime.Document.queryById('phrase-builder'), searcherCallback.search).
             render();
 
-        var tabs = new Prime.Widgets.Tabs(Prime.Document.queryByID('tabs')).render();
-        Prime.Document.queryByID('hide-foo').addEventListener('click', function() {
+        var tabs = new Prime.Widgets.Tabs(Prime.Document.queryById('tabs')).render();
+        Prime.Document.queryById('hide-foo').addEventListener('click', function() {
           tabs.hideTab('fooTab');
         });
-        Prime.Document.queryByID('show-foo').addEventListener('click', function() {
+        Prime.Document.queryById('show-foo').addEventListener('click', function() {
           tabs.showTab('fooTab');
         });
-        var dragElement = Prime.Document.queryByID('draggable');
+        var dragElement = Prime.Document.queryById('draggable');
         dragElement.setLeft(document.body.clientWidth - 300);
         dragElement.setTop(50);
         var draggable = new Prime.Widgets.Draggable(dragElement);
 
-        var destroy = Prime.Document.queryByID('destroy-draggable').addEventListener('click', function() {
+        var destroy = Prime.Document.queryById('destroy-draggable').addEventListener('click', function(event) {
           draggable.destroy();
-          return false;
-        }, this);
+          Prime.Utils.stopEvent(event);
+        });
 
-        new Prime.Widgets.DateTimePicker(Prime.Document.queryByID('datepicker1'))
+        new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker1'))
             .render();
 
-        new Prime.Widgets.DateTimePicker(Prime.Document.queryByID('datepicker2'))
+        new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker2'))
             .render();
 
-        new Prime.Widgets.SideMenu(Prime.Document.queryByID('side-menu'));
-        Prime.Window.addEventListener('beforeunload', function(event) {
+        // Side menu
+        new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryFirst('.main'))
+            .usingSideMenuElement(Prime.Document.queryById('prime-side-menu'));
+
+        Prime.Window.addEventListener('beforeunload', function() {
           console.log('Beforeunload');
         });
 
-        var scrollMe = Prime.Document.queryByID('scroll-me');
-        Prime.Document.queryByID('scroll-up').addEventListener('click', function() {
+        var scrollMe = Prime.Document.queryById('scroll-me');
+        Prime.Document.queryById('scroll-up').addEventListener('click', function() {
           new Prime.Effects.ScrollTo(scrollMe, 0)
               .withDuration(400)
               .go();
-        }, this);
-        Prime.Document.queryByID('scroll-down').addEventListener('click', function() {
+        });
+        Prime.Document.queryById('scroll-down').addEventListener('click', function() {
           new Prime.Effects.ScrollTo(scrollMe, (scrollMe.getScrollHeight() - scrollMe.getHeight()))
               .withDuration(400)
               .go();
-        }, this);
+        });
 
-        var touchable = new Prime.Widgets.Touchable(Prime.Document.queryByID('touchable'))
+        var touchableElement = Prime.Document.queryById('touchable');
+        var touchable = new Prime.Widgets.Touchable(touchableElement)
             .withLongPressHandler(function() {
-              this.element.setHTML('long press');
+              touchableElement.setHTML('long press');
             })
             .withSwipeUpHandler(function() {
-              this.element.setHTML('swipe-up');
+              touchableElement.setHTML('swipe-up');
             })
             .withSwipeDownHandler(function() {
-              this.element.setHTML('swipe-down');
+              touchableElement.setHTML('swipe-down');
             })
             .withSwipeLeftHandler(function() {
-              this.element.setHTML('swipe-left');
+              touchableElement.setHTML('swipe-left');
             })
             .withSwipeRightHandler(function() {
-              this.element.setHTML('swipe-right');
+              touchableElement.setHTML('swipe-right');
             })
             .withMoveHandler(function(event) {
               var touchPoints = event.changedTouches.length;
@@ -160,9 +187,9 @@
 
               clearTimeout(this.timer);
               var delta = (event.touches[0].clientX - this.touchStartX) * 0.5;
-              this.element.setStyle('margin-left', delta + 'px');
+              touchableElement.setStyle('margin-left', delta + 'px');
               this.timer = setTimeout((function() {
-                this.element.setStyle('margin-left', '0px');
+                touchableElement.setStyle('margin-left', '0px');
               }).bind(this), 50);
             });
       });
@@ -177,17 +204,26 @@
     </style>
   </head>
   <body>
-    <div id="side-menu">
-      <div class="prime-side-menu">
-        <ul>
-          <li><strong>foo</strong></li>
-          <li><a href="#">bar</a></li>
-          <li><a href="#">baz</a></li>
-        </ul>
-      </div>
-    </div>
+    <nav id="prime-side-menu" class="prime-side-menu">
+      <ul>
+        <li>
+          <strong>foo</strong>
+          <ul>
+            <li><a href="#">bar</a></li>
+            <li><a href="#">baz</a></li>
+            <li>
+              <a href="#">fred</a>
+              <ul>
+                <li><a href="#">fred 1</a></li>
+                <li><a href="#">fred 2</a></li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
     <div class="main">
-      <div class="prime-side-menu-button"><span>&#9776;</span></div>
+      <div id="prime-side-menu-button"><span>&#9776;</span></div>
       <br>
 
       <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">

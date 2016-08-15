@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 var Prime = Prime || {};
 
@@ -26,14 +27,16 @@ Prime.Widgets = Prime.Widgets || {};
 /**
  * Constructs a new DateTimePicker object for the given input element.
  *
- * @param {Prime.Document.Element} element The Prime Element for the DateTimePicker widget.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the DateTimePicker widget.
  * @constructor
  */
 Prime.Widgets.DateTimePicker = function(element) {
-  this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element.domElement);
+  this.element = Prime.Document.Element.wrap(element);
   if (!this.element.is('input')) {
     throw new TypeError('You can only use Prime.Widgets.DateTimePicker with an input element');
   }
+
+  Prime.Utils.bindAll(this);
 
   var value = this.element.getValue();
   if (value === '' || value === null) {
@@ -85,32 +88,31 @@ Prime.Widgets.DateTimePicker = function(element) {
       '</div>';
   Prime.Document.appendHTML(html);
   this.datepicker = Prime.Document.queryLast('.prime-date-picker').hide();
-  this.element.addEventListener('click', this._handleInputClick, this);
-  this.element.addEventListener('focus', this._handleInputClick, this);
-  this.element.addEventListener('keydown', this._handleInputKey, this);
+  this.element.addEventListener('click', this._handleInputClick);
+  this.element.addEventListener('focus', this._handleInputClick);
+  this.element.addEventListener('keydown', this._handleInputKey);
 
-  this.calendarBody = this.datepicker.queryFirst('table tbody').addEventListener('click', this._handleDayClick, this);
-  this.monthDisplay = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand, this);
-  this.yearDisplay = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand, this);
+  this.calendarBody = this.datepicker.queryFirst('table tbody').addEventListener('click', this._handleDayClick);
+  this.monthDisplay = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand);
+  this.yearDisplay = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand);
 
   this.time = this.datepicker.queryFirst('.time');
   this.inputs = this.datepicker.queryFirst('div.inputs');
-  this.hourInput = this.inputs.queryFirst('input[name=hour]').addEventListener('change', this._handleDateTimeChange, this).addEventListener('keydown', this._handleHourKey, this);
-  this.minuteInput = this.inputs.queryFirst('input[name=minute]').addEventListener('change', this._handleDateTimeChange, this).addEventListener('keydown', this._handleMinuteKey, this);
-  this.secondInput = this.inputs.queryFirst('input[name=second]').addEventListener('change', this._handleDateTimeChange, this).addEventListener('keydown', this._handleSecondKey, this);
-  this.ampmInput = this.inputs.queryFirst('input[name=am_pm]').addEventListener('keydown', this._handleAmPmKey, this);
-  this.monthInput = this.inputs.queryFirst('input[name=month]').setValue(this.date.getMonth() + 1).addEventListener('change', this._handleDateTimeChange, this).addEventListener('keydown', this._handleMonthKey, this);
-  this.dayInput = this.inputs.queryFirst('input[name=day]').setValue(this.date.getDate()).addEventListener('change', this._handleDateTimeChange, this).addEventListener('keydown', this._handleDayKey, this);
-  this.yearInput = this.inputs.queryFirst('input[name=year]').setValue(this.date.getFullYear()).addEventListener('change', this._handleDateTimeChange, this).addEventListener('keydown', this._handleYearKey, this);
+  this.hourInput = this.inputs.queryFirst('input[name=hour]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleHourKey);
+  this.minuteInput = this.inputs.queryFirst('input[name=minute]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleMinuteKey);
+  this.secondInput = this.inputs.queryFirst('input[name=second]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleSecondKey);
+  this.ampmInput = this.inputs.queryFirst('input[name=am_pm]').addEventListener('keydown', this._handleAmPmKey);
+  this.monthInput = this.inputs.queryFirst('input[name=month]').setValue(this.date.getMonth() + 1).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleMonthKey);
+  this.dayInput = this.inputs.queryFirst('input[name=day]').setValue(this.date.getDate()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleDayKey);
+  this.yearInput = this.inputs.queryFirst('input[name=year]').setValue(this.date.getFullYear()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleYearKey);
 
-  this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth, this);
-  this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth, this);
+  this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth);
+  this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth);
 
   this.callback = null;
-  this.callbackContext = null;
 
-  Prime.Document.addEventListener('click', this._handleGlobalClick, this);
-  Prime.Document.addEventListener('keydown', this._handleGlobalKey, this);
+  Prime.Document.addEventListener('click', this._handleGlobalClick);
+  Prime.Document.addEventListener('keydown', this._handleGlobalKey);
 
   this.element.addClass('prime-initialized');
 };
@@ -201,7 +203,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   openMonthSelect: function() {
     this.months = this.datepicker.queryFirst('.months');
-    if (typeof this.years !== 'undefined') {
+    if (Prime.Utils.isDefined(this.years)) {
       this.years.hide();
     }
     if (this.months === null) {
@@ -216,8 +218,8 @@ Prime.Widgets.DateTimePicker.prototype = {
         month.addEventListener('click', function() {
           new Prime.Effects.Fade(this.months).withDuration(100).go();
           this.setMonth(parseInt(month.getDataAttribute('month')));
-        }, this);
-      }, this);
+        }.bind(this));
+      }.bind(this));
     }
 
     new Prime.Effects.Appear(this.months).withDuration(100).go();
@@ -226,7 +228,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     var currentMonth = this.months.queryFirst('[data-month="' + this.date.getMonth() + '"]');
     this.months.getChildren().each(function(month) {
       month.removeClass('prime-selected');
-    }, this);
+    });
     currentMonth.addClass('prime-selected');
   },
 
@@ -235,7 +237,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   openYearSelect: function() {
     this.years = this.datepicker.queryFirst('.years');
-    if (typeof this.months !== 'undefined') {
+    if (Prime.Utils.isDefined(this.months)) {
       this.months.hide();
     }
 
@@ -253,8 +255,8 @@ Prime.Widgets.DateTimePicker.prototype = {
         year.addEventListener('click', function() {
           new Prime.Effects.Fade(this.years).withDuration(100).go();
           this.setYear(parseInt(year.getDataAttribute('year')));
-        }, this);
-      }, this);
+        }.bind(this));
+      }.bind(this));
     }
 
     new Prime.Effects.Appear(this.years).withDuration(100).go();
@@ -263,7 +265,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     var currentYear = this.years.queryFirst('[data-year="' + this.date.getFullYear() + '"]');
     this.years.getChildren().each(function(year) {
       year.removeClass('prime-selected');
-    }, this);
+    });
     currentYear.addClass('prime-selected');
   },
 
@@ -314,7 +316,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     this.render();
 
     if (this.callback !== null) {
-      this.callback.call(this.callbackContext, [this]);
+      this.callback(this);
     }
 
     return this;
@@ -370,12 +372,10 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Sets the callback handler that is called with the DateTimePicker's value is changed.
    *
    * @param callback {Function} The callback function.
-   * @param context {*} The context for the callback.
    * @return {Prime.Widgets.DateTimePicker} This.
    */
-  withCallback: function(callback, context) {
+  withCallback: function(callback) {
     this.callback = callback;
-    this.callbackContext = context;
     return this;
   },
 
@@ -398,7 +398,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
    */
   withOptions: function(options) {
-    if (typeof options === 'undefined' || options === null) {
+    if (!Prime.Utils.isDefined(options)) {
       return this;
     }
 
@@ -475,7 +475,6 @@ Prime.Widgets.DateTimePicker.prototype = {
    * user hits P, this changes to PM. If the use hits the up or down arrows, this toggles between AM and PM.
    *
    * @param {KeyboardEvent} event The keyboard event.
-   * @returns {boolean} Always false so that the keyboard event is not propagated.
    * @private
    */
   _handleAmPmKey: function(event) {
@@ -487,7 +486,8 @@ Prime.Widgets.DateTimePicker.prototype = {
         this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
         this.monthInput.focus();
       }
-      return false;
+      Prime.Utils.stopEvent(event);
+      return;
     }
 
     // Decode the key event
@@ -510,21 +510,22 @@ Prime.Widgets.DateTimePicker.prototype = {
         Prime.Date.plusHours(this.date, -12);
       }
     } else if (event.keyCode === Prime.Events.Keys.ENTER || event.keyCode === Prime.Events.Keys.ESCAPE) {
-      return true;
+      return;
     }
 
     this.setDate(this.date);
     this.ampmInput.domElement.setSelectionRange(0, this.ampmInput.getValue().length);
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**
    * Handle date/time change events. This pulls the values from the 3 date fields and makes a new Date. Then it calls
    * {@link #setDate(Date)}.
    *
+   * @param {KeyboardEvent} event The keyboard event.
    * @private
    */
-  _handleDateTimeChange: function() {
+  _handleDateTimeChange: function(event) {
     var newDate = new Date();
     var hours = this._clamp(1, 12, parseInt(this.hourInput.getValue()));
     if (this.ampmInput.getValue() === Prime.Widgets.DateTimePicker.AM_PM[0]) {
@@ -552,14 +553,13 @@ Prime.Widgets.DateTimePicker.prototype = {
     newDate.setYear(parseInt(this.yearInput.getValue()));
 
     this.setDate(newDate);
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**
    * Handle the click on a day.
    *
    * @parameter {MouseEvent} event The click event.
-   * @return {boolean} Always false.
    * @private
    */
   _handleDayClick: function(event) {
@@ -574,7 +574,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     newDate.setMonth(parseInt(dayElement.getDataAttribute('month')));
     newDate.setDate(parseInt(dayElement.getDataAttribute('day')));
     this.setDate(newDate);
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**
@@ -583,7 +583,6 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Also handles up and down arrow to increment and decrement the day.
    *
    * @param {KeyboardEvent} event The key event.
-   * @returns {boolean} False if the keys are shift+tab, true otherwise.
    * @private
    */
   _handleDayKey: function(event) {
@@ -591,30 +590,27 @@ Prime.Widgets.DateTimePicker.prototype = {
       Prime.Date.plusDays(this.date, 1);
       this.setDate(this.date);
       this.dayInput.domElement.setSelectionRange(0, this.dayInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusDays(this.date, -1);
       this.setDate(this.date);
       this.dayInput.domElement.setSelectionRange(0, this.dayInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setDate(parseInt(this.dayInput.getValue()));
     }
-
-    return true;
   },
 
   /**
    * Handles a global click event. This determines if the click was outside of the DateTimePicker and closes it.
    *
    * @param {MouseEvent} event The click event.
-   * @returns {boolean} Always true.
    * @private
    */
   _handleGlobalClick: function(event) {
     // Skip this function completely if they clicked the input field
     if (event.target === this.element.domElement) {
-      return true;
+      return;
     }
 
     var top = this.datepicker.getTop();
@@ -622,41 +618,37 @@ Prime.Widgets.DateTimePicker.prototype = {
     var left = this.datepicker.getLeft();
     var right = this.datepicker.getRight();
     if (this.datepicker.isVisible() && (event.x < left || event.x > right || event.y < top || event.y > bottom)) {
-      if (typeof this.years !== 'undefined') {
+      if (Prime.Utils.isDefined(this.years)) {
         this.years.hide();
       }
-      if (typeof this.months !== 'undefined') {
+      if (Prime.Utils.isDefined(this.months)) {
         this.months.hide();
       }
       this.hide();
     }
-    return true;
   },
 
   /**
    * Handles a global key event. This determines if the DateTimePicker is open and if enter or escape was hit.
    *
    * @param {KeyboardEvent} event The key event.
-   * @returns {boolean} Always true.
    * @private
    */
   _handleGlobalKey: function(event) {
     // Skip this function completely if the DateTimePicker isn't open
     if (!this.datepicker.isVisible()) {
-      return true;
+      return;
     }
 
     if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.setDate(this.date);
       this.hide();
       this.element.focus();
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ESCAPE) {
       this.hide();
       this.element.focus();
     }
-
-    return true;
   },
 
   /**
@@ -665,7 +657,6 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Also handles up and down arrow to increment and decrement the hour.
    *
    * @param {KeyboardEvent} event The key event.
-   * @returns {boolean} False if the keys are shift+tab, true otherwise.
    * @private
    */
   _handleHourKey: function(event) {
@@ -673,16 +664,15 @@ Prime.Widgets.DateTimePicker.prototype = {
       Prime.Date.plusHours(this.date, 1);
       this.setDate(this.date);
       this.hourInput.domElement.setSelectionRange(0, this.hourInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusHours(this.date, -1);
       this.setDate(this.date);
       this.hourInput.domElement.setSelectionRange(0, this.hourInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setHours(parseInt(this.hourInput.getValue()));
     }
-    return true;
   },
 
   /**
@@ -698,7 +688,6 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
       this.monthInput.focus();
     }
-    return true;
   },
 
   /**
@@ -706,7 +695,6 @@ Prime.Widgets.DateTimePicker.prototype = {
    * nested inputs.
    *
    * @param {KeyboardEvent} event The keyboard event.
-   * @returns {boolean} False if this handled the key, otherwise true.
    * @private
    */
   _handleInputKey: function(event) {
@@ -718,17 +706,14 @@ Prime.Widgets.DateTimePicker.prototype = {
         this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
         this.monthInput.focus();
       }
-      return false;
+      Prime.Utils.stopEvent(event);
     }
-
-    return true;
   },
 
   /**
    * Handle the key down event and capture the up and down arrow key to increment and decrement the minute.
 
    * @param {KeyboardEvent} event The key event.
-   * @returns {boolean}
    * @private
    */
   _handleMinuteKey: function(event) {
@@ -736,16 +721,15 @@ Prime.Widgets.DateTimePicker.prototype = {
       Prime.Date.plusMinutes(this.date, 1);
       this.setDate(this.date);
       this.minuteInput.domElement.setSelectionRange(0, this.minuteInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusMinutes(this.date, -1);
       this.setDate(this.date);
       this.minuteInput.domElement.setSelectionRange(0, this.minuteInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setMinutes(parseInt(this.minuteInput.getValue()));
     }
-    return true;
   },
 
   /**
@@ -763,7 +747,6 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Also handles up and down arrow to increment and decrement the month.
    *
    * @param {KeyboardEvent} event The key event.
-   * @returns {boolean} False if the keys are shift+tab, true otherwise.
    * @private
    */
   _handleMonthKey: function(event) {
@@ -775,52 +758,51 @@ Prime.Widgets.DateTimePicker.prototype = {
         this.ampmInput.domElement.setSelectionRange(0, this.ampmInput.getValue().length);
         this.ampmInput.focus();
       }
-      return false;
+      Prime.Utils.stopEvent(event);
+      return;
     }
 
     if (event.keyCode === Prime.Events.Keys.UP_ARROW) {
       Prime.Date.plusMonths(this.date, 1);
       this.setDate(this.date);
       this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusMonths(this.date, -1);
       this.setDate(this.date);
       this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setMonth(parseInt(this.monthInput.getValue()) - 1);
     }
-    return true;
   },
 
   /**
    * Handle the next month button click.
    *
-   * @returns {boolean} Always False.
+   * @param {MouseEvent} event The mouse event.
    * @private
    */
-  _handleNextMonth: function() {
+  _handleNextMonth: function(event) {
     this.nextMonth();
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**
    * Handle the previous month button click.
    *
-   * @returns {boolean} Always False.
+   * @param {MouseEvent} event The mouse event.
    * @private
    */
-  _handlePreviousMonth: function() {
+  _handlePreviousMonth: function(event) {
     this.previousMonth();
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**
    * Handle the key down event and capture the up and down arrow key to increment and decrement the second.
 
    * @param {KeyboardEvent} event The key event.
-   * @returns {boolean} False if the key was the up or down arrow, otherwise true.
    * @private
    */
   _handleSecondKey: function(event) {
@@ -828,16 +810,15 @@ Prime.Widgets.DateTimePicker.prototype = {
       Prime.Date.plusSeconds(this.date, 1);
       this.setDate(this.date);
       this.secondInput.domElement.setSelectionRange(0, this.secondInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusSeconds(this.date, -1);
       this.setDate(this.date);
       this.secondInput.domElement.setSelectionRange(0, this.secondInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setSeconds(parseInt(this.secondInput.getValue()));
     }
-    return true;
   },
 
   /**
@@ -855,7 +836,6 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Also handles up and down arrow to increment and decrement the year.
    *
    * @param {KeyboardEvent} event The key event.
-   * @returns {boolean} False if the keys are shift+tab, true otherwise.
    * @private
    */
   _handleYearKey: function(event) {
@@ -863,12 +843,12 @@ Prime.Widgets.DateTimePicker.prototype = {
       Prime.Date.plusYears(this.date, 1);
       this.setDate(this.date);
       this.yearInput.domElement.setSelectionRange(0, this.yearInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.DOWN_ARROW) {
       Prime.Date.plusYears(this.date, -1);
       this.setDate(this.date);
       this.yearInput.domElement.setSelectionRange(0, this.yearInput.getValue().length);
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.TAB && this.options.dateOnly) {
       if (event.shiftKey) {
         this.dayInput.domElement.setSelectionRange(0, this.dayInput.getValue().length);
@@ -877,11 +857,10 @@ Prime.Widgets.DateTimePicker.prototype = {
         this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
         this.monthInput.focus();
       }
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.date.setFullYear(parseInt(this.yearInput.getValue()));
     }
-    return true;
   },
   /**
    * Refresh the time inputs.

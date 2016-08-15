@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 var assert = buster.assertions.assert;
 
@@ -28,7 +29,7 @@ buster.testCase('Safari Browser tests', {
 
   'safari_mac': function() {
     assert.equals(Prime.Browser.name, 'Safari');
-    assert.equals(Prime.Browser.version, '9');
+    assert.equals(Prime.Browser.version, '9.1');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });
@@ -45,7 +46,7 @@ buster.testCase('Chrome Browser tests', {
 
   'chrome': function() {
     assert.equals(Prime.Browser.name, 'Chrome');
-    assert.equals(Prime.Browser.version, '48');
+    assert.equals(Prime.Browser.version, '52');
     assert.equals(Prime.Browser.os, 'Mac');
   }
 });

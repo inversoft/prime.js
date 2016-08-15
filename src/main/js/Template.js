@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 
@@ -23,6 +25,7 @@ var Prime = Prime || {};
  * @param {string} template The String that defines the source of the template.
  */
 Prime.Template = function(template) {
+  Prime.Utils.bindAll(this);
   this.init(template);
 };
 
@@ -43,18 +46,18 @@ Prime.Template.prototype = {
    * @returns {string} The result of executing the template.
    */
   generate: function(parameters) {
-    parameters = typeof parameters !== 'undefined' ? parameters : {};
+    parameters = Prime.Utils.isDefined(parameters) ? parameters : {};
     var templateCopy = new String(this.template);
-    var key;
-    for (key in parameters) {
+    for (var key in parameters) {
       if (parameters.hasOwnProperty(key)) {
         var value = parameters[key];
         var expressedValue;
-        if (typeof value === 'function') {
+        if (typeof(value) === 'function') {
           expressedValue = value();
         } else {
           expressedValue = value;
         }
+
         if (key.indexOf('/') === 0 && key.lastIndexOf('/') === key.length - 1) {
           templateCopy = templateCopy.replace(new RegExp(key.substring(1, key.length - 1), "g"), expressedValue);
         } else {
@@ -65,6 +68,7 @@ Prime.Template.prototype = {
         }
       }
     }
+
     return templateCopy;
   },
 
@@ -75,7 +79,7 @@ Prime.Template.prototype = {
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   appendTo: function(primeElement, parameters) {
-    if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
+    if (Prime.Utils.isDefined(primeElement)) {
       primeElement.setHTML(primeElement.getHTML() + this.generate(parameters));
     } else {
       throw new TypeError('Please supply an element to append to');
@@ -89,7 +93,7 @@ Prime.Template.prototype = {
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   insertBefore: function(primeElement, parameters) {
-    if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
+    if (Prime.Utils.isDefined(primeElement)) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameters);
       new Prime.Document.Element(holder.children[0]).insertBefore(primeElement);
@@ -105,7 +109,7 @@ Prime.Template.prototype = {
    * @param {Object} parameters An object that contains the parameters for the template to replace.
    */
   insertAfter: function(primeElement, parameters) {
-    if (typeof(primeElement) !== 'undefined' && primeElement !== null) {
+    if (Prime.Utils.isDefined(primeElement)) {
       var holder = document.createElement('div');
       holder.innerHTML = this.generate(parameters);
       new Prime.Document.Element(holder.children[0]).insertAfter(primeElement);

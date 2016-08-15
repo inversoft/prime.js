@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var assert = buster.assertions.assert;
 var refute = buster.assertions.refute;
 
@@ -58,7 +60,7 @@ buster.testCase('ElementList namespace tests', {
     assert.equals(list[1].domElement.id, 'queryTwo');
     assert.equals(list[2].domElement.id, 'queryThree');
 
-    var parent = Prime.Document.queryByID('query');
+    var parent = Prime.Document.queryById('query');
     list = Prime.Document.query('p.test', parent);
     assert.equals(list[0].domElement.id, 'queryOne');
     assert.equals(list[1].domElement.id, 'queryTwo');
@@ -76,21 +78,20 @@ buster.testCase('ElementList class tests', {
     var count = 0;
     Prime.Document.query('p.test').each(function(element, index) {
       assert.equals(index, count++);
-      assert.isTrue(this instanceof Array);
       assert.isTrue(element instanceof Prime.Document.Element);
       assert.equals(element.domElement.tagName, 'P');
-    }, []);
+    });
 
     assert.equals(count, 3);
   },
 
   'indexOf Prime Element': function() {
-    var container = Prime.Document.queryByID("query");
+    var container = Prime.Document.queryById("query");
     var list = Prime.Document.query("p", container);
 
-    var one = Prime.Document.queryByID("queryOne");
-    var two = Prime.Document.queryByID("queryTwo");
-    var outside = Prime.Document.queryByID("insertSingle");
+    var one = Prime.Document.queryById("queryOne");
+    var two = Prime.Document.queryById("queryTwo");
+    var outside = Prime.Document.queryById("insertSingle");
 
     assert.equals(list.indexOf(one), 0);
     assert.equals(list.indexOf(one.domElement), 0);
@@ -101,11 +102,11 @@ buster.testCase('ElementList class tests', {
   },
 
   'addClass and removeClass': function() {
-    var container = Prime.Document.queryByID("query");
+    var container = Prime.Document.queryById("query");
     var list = Prime.Document.query("p", container);
 
-    var one = Prime.Document.queryByID("queryOne");
-    var two = Prime.Document.queryByID("queryTwo");
+    var one = Prime.Document.queryById("queryOne");
+    var two = Prime.Document.queryById("queryTwo");
 
     list.addClass('foobar');
 
@@ -119,28 +120,28 @@ buster.testCase('ElementList class tests', {
   },
 
   'setChecked and setDisabled': function() {
-    var container = Prime.Document.queryByID("element-list-test");
+    var container = Prime.Document.queryById("element-list-test");
     var checkboxes =container.query('input[type="checkbox"]');
 
     checkboxes.setChecked(true);
     checkboxes.each(function(checkbox) {
       assert.isTrue(checkbox.isChecked());
-    }, this);
+    });
 
     checkboxes.setChecked(false);
     checkboxes.each(function(checkbox) {
       assert.isFalse(checkbox.isChecked());
-    }, this);
+    });
 
     checkboxes.setDisabled(true);
     checkboxes.each(function(checkbox) {
       assert.isTrue(checkbox.isDisabled());
-    }, this);
+    });
 
     checkboxes.setDisabled(false);
     checkboxes.each(function(checkbox) {
       assert.isFalse(checkbox.isDisabled());
-    }, this);
+    });
   }
 
 });

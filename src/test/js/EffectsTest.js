@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 /*
  * Helper functions
@@ -45,6 +46,7 @@ buster.testCase('Fade tests', {
 
   'fadeContext': function(done) {
     var FadeClass = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
     };
     FadeClass.prototype = {
@@ -61,9 +63,8 @@ buster.testCase('Fade tests', {
     effect.withDuration(200);
     assert.equals(effect.duration, 200);
 
-    effect.withEndFunction(handler.handle, handler);
+    effect.withEndFunction(handler.handle);
     assert.equals(effect.endFunction, handler.handle);
-    assert.equals(effect.context, handler);
 
     effect.go();
 
@@ -118,6 +119,7 @@ buster.testCase('Appear tests', {
 
   'appearContext': function(done) {
     var AppearClass = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
     };
     AppearClass.prototype = {
@@ -134,9 +136,8 @@ buster.testCase('Appear tests', {
     effect.withDuration(200);
     assert.equals(effect.duration, 200);
 
-    effect.withEndFunction(handler.handle, handler);
+    effect.withEndFunction(handler.handle);
     assert.equals(effect.endFunction, handler.handle);
-    assert.equals(effect.context, handler);
 
     effect.go();
 
@@ -150,6 +151,7 @@ buster.testCase('Appear tests', {
 
   'appearContextCSS': function(done) {
     var AppearClass = function() {
+      Prime.Utils.bindAll(this);
       this.called = false;
     };
     AppearClass.prototype = {
@@ -166,9 +168,8 @@ buster.testCase('Appear tests', {
     effect.withDuration(200);
     assert.equals(effect.duration, 200);
 
-    effect.withEndFunction(handler.handle, handler);
+    effect.withEndFunction(handler.handle);
     assert.equals(effect.endFunction, handler.handle);
-    assert.equals(effect.context, handler);
 
     effect.go();
 

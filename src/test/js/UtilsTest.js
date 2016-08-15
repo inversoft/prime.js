@@ -13,12 +13,49 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+// Cannot set strict on this test because you can't modify the window object in strict mode
+// 'use strict';
 
 var assert = buster.assertions.assert;
 
 buster.testCase('Utils tests', {
   setUp: function() {
     this.timeout = 2000;
+  },
+
+  'bindAll': function() {
+    function MyClass() {
+      this.calledOne = false;
+      this.calledTwo = false;
+    };
+
+    MyClass.prototype = {
+      one: function() {
+        this.calledOne = true;
+      },
+
+      _two: function() {
+        this.calledTwo = true;
+      }
+    };
+
+    // Detach the functions from the object so that the 'this' reference is broken
+    var myClass = new MyClass();
+    var funcOne = myClass.one;
+    var funcTwo = myClass._two;
+    funcOne();
+    funcTwo();
+    assert.isFalse(myClass.calledOne);
+    assert.isFalse(myClass.calledTwo);
+
+    // Bind all
+    Prime.Utils.bindAll(myClass);
+    funcOne = myClass.one;
+    funcTwo = myClass._two;
+    funcOne();
+    funcTwo();
+    assert.isTrue(myClass.calledOne);
+    assert.isTrue(myClass.calledTwo);
   },
 
   'callIteratively': function(done) {
@@ -57,6 +94,7 @@ buster.testCase('Utils tests', {
 
   'callIterativelyWithEndFunctionAndContext': function(done) {
     var CallIterativelyClass = function() {
+      Prime.Utils.bindAll(this);
       this.count = 0;
       this.ended = false;
     };
@@ -71,7 +109,7 @@ buster.testCase('Utils tests', {
     };
 
     var instance = new CallIterativelyClass();
-    Prime.Utils.callIteratively(1000, 10, instance.call, instance.end, instance);
+    Prime.Utils.callIteratively(1000, 10, instance.call, instance.end);
 
     setTimeout(function() {
       assert.equals(instance.count, 10);

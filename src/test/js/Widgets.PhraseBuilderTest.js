@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 /*
  * Helper functions
@@ -26,9 +27,9 @@ buster.testCase('PhraseBuilder class tests', {
     this.callbackFunction = function(searchText) {
     };
 
-    this.phraseBuilder = new Prime.Widgets.PhraseBuilder(Prime.Document.queryFirst('#phrase-builder'), this.callbackFunction, this).
-        withPlaceholder('Select One').
-        render();
+    this.phraseBuilder = new Prime.Widgets.PhraseBuilder(Prime.Document.queryFirst('#phrase-builder'), this.callbackFunction)
+        .withPlaceholder('Select One')
+        .render();
     this.phraseBuilder.removeAllWords();
     this.phraseBuilder.addWord('one');
     this.phraseBuilder.addWord('two');
@@ -44,15 +45,15 @@ buster.testCase('PhraseBuilder class tests', {
     assert.equals(children.length, 2);
     assert.equals(children[0].getTagName(), 'UL');
     assert.equals(children[0].getChildren().length, 4);
-    assert.equals(children[0].getChildren()[0].getID(), 'phrase-builder-option-one');
+    assert.equals(children[0].getChildren()[0].getId(), 'phrase-builder-option-one');
     assert.equals(children[0].getChildren()[0].getChildren()[0].getHTML(), 'one');
     assert.equals(children[0].getChildren()[0].getChildren()[1].getAttribute('value'), 'one');
     assert.equals(children[0].getChildren()[0].getChildren()[1].getHTML(), 'X');
-    assert.equals(children[0].getChildren()[1].getID(), 'phrase-builder-option-two');
+    assert.equals(children[0].getChildren()[1].getId(), 'phrase-builder-option-two');
     assert.equals(children[0].getChildren()[1].getChildren()[0].getHTML(), 'two');
     assert.equals(children[0].getChildren()[1].getChildren()[1].getAttribute('value'), 'two');
     assert.equals(children[0].getChildren()[1].getChildren()[1].getHTML(), 'X');
-    assert.equals(children[0].getChildren()[2].getID(), 'phrase-builder-option-three');
+    assert.equals(children[0].getChildren()[2].getId(), 'phrase-builder-option-three');
     assert.equals(children[0].getChildren()[2].getChildren()[0].getHTML(), 'three');
     assert.equals(children[0].getChildren()[2].getChildren()[1].getAttribute('value'), 'three');
     assert.equals(children[0].getChildren()[2].getChildren()[1].getHTML(), 'X');
@@ -82,13 +83,13 @@ buster.testCase('PhraseBuilder class tests', {
     // Ensure that the option got added to the display
     var displayOptions = Prime.Document.query('#phrase-builder-display ul.prime-phrase-builder-option-list li');
     assert.equals(displayOptions.length, 5);
-    assert.equals(displayOptions[0].getID(), 'phrase-builder-option-one');
+    assert.equals(displayOptions[0].getId(), 'phrase-builder-option-one');
     assert.equals(displayOptions[0].getAttribute('value'), 'one');
-    assert.equals(displayOptions[1].getID(), 'phrase-builder-option-two');
+    assert.equals(displayOptions[1].getId(), 'phrase-builder-option-two');
     assert.equals(displayOptions[1].getAttribute('value'), 'two');
-    assert.equals(displayOptions[2].getID(), 'phrase-builder-option-three');
+    assert.equals(displayOptions[2].getId(), 'phrase-builder-option-three');
     assert.equals(displayOptions[2].getAttribute('value'), 'three');
-    assert.equals(displayOptions[3].getID(), 'phrase-builder-option-four');
+    assert.equals(displayOptions[3].getId(), 'phrase-builder-option-four');
     assert.equals(displayOptions[3].getAttribute('value'), 'four');
     assert.isTrue(displayOptions[4].hasClass('prime-phrase-builder-input-option'));
   },
@@ -113,9 +114,9 @@ buster.testCase('PhraseBuilder class tests', {
 
     var displayOptions = Prime.Document.query('#phrase-builder-display ul.prime-phrase-builder-option-list li');
     assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'phrase-builder-option-two');
+    assert.equals(displayOptions[0].getId(), 'phrase-builder-option-two');
     assert.equals(displayOptions[0].getAttribute('value'), 'two');
-    assert.equals(displayOptions[1].getID(), 'phrase-builder-option-three');
+    assert.equals(displayOptions[1].getId(), 'phrase-builder-option-three');
     assert.equals(displayOptions[1].getAttribute('value'), 'three');
     assert.isTrue(displayOptions[2].hasClass('prime-phrase-builder-input-option'));
   },
@@ -134,11 +135,11 @@ buster.testCase('PhraseBuilder class tests', {
 
     var displayOptions = Prime.Document.query('#phrase-builder-display ul.prime-phrase-builder-option-list li');
     assert.equals(displayOptions.length, 4);
-    assert.equals(displayOptions[0].getID(), 'phrase-builder-option-one');
+    assert.equals(displayOptions[0].getId(), 'phrase-builder-option-one');
     assert.isFalse(displayOptions[0].hasClass('prime-phrase-builder-option-highlighted'));
-    assert.equals(displayOptions[1].getID(), 'phrase-builder-option-two');
+    assert.equals(displayOptions[1].getId(), 'phrase-builder-option-two');
     assert.isFalse(displayOptions[1].hasClass('prime-phrase-builder-option-highlighted'));
-    assert.equals(displayOptions[2].getID(), 'phrase-builder-option-three');
+    assert.equals(displayOptions[2].getId(), 'phrase-builder-option-three');
     assert.isTrue(displayOptions[2].hasClass('prime-phrase-builder-option-highlighted'));
     assert.isTrue(displayOptions[3].hasClass('prime-phrase-builder-input-option'));
   },
@@ -158,9 +159,9 @@ buster.testCase('PhraseBuilder class tests', {
 
     var displayOptions = Prime.Document.query('#phrase-builder-display ul.prime-phrase-builder-option-list li');
     assert.equals(displayOptions.length, 3);
-    assert.equals(displayOptions[0].getID(), 'phrase-builder-option-one');
+    assert.equals(displayOptions[0].getId(), 'phrase-builder-option-one');
     assert.isFalse(displayOptions[0].hasClass('prime-phrase-builder-option-highlighted'));
-    assert.equals(displayOptions[1].getID(), 'phrase-builder-option-two');
+    assert.equals(displayOptions[1].getId(), 'phrase-builder-option-two');
     assert.isFalse(displayOptions[1].hasClass('prime-phrase-builder-option-highlighted'));
     assert.isTrue(displayOptions[2].hasClass('prime-phrase-builder-input-option'));
   },
@@ -183,11 +184,11 @@ buster.testCase('PhraseBuilder class tests', {
 
     var displayOptions = Prime.Document.query('#phrase-builder-display ul.prime-phrase-builder-option-list li');
     assert.equals(displayOptions.length, 4);
-    assert.equals(displayOptions[0].getID(), 'phrase-builder-option-one');
+    assert.equals(displayOptions[0].getId(), 'phrase-builder-option-one');
     assert.isFalse(displayOptions[0].hasClass('prime-phrase-builder-option-highlighted'));
-    assert.equals(displayOptions[1].getID(), 'phrase-builder-option-two');
+    assert.equals(displayOptions[1].getId(), 'phrase-builder-option-two');
     assert.isFalse(displayOptions[1].hasClass('prime-phrase-builder-option-highlighted'));
-    assert.equals(displayOptions[2].getID(), 'phrase-builder-option-three');
+    assert.equals(displayOptions[2].getId(), 'phrase-builder-option-three');
     assert.isFalse(displayOptions[2].hasClass('prime-phrase-builder-option-highlighted'));
     assert.isTrue(displayOptions[3].hasClass('prime-phrase-builder-input-option'));
   }

@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 var Prime = Prime || {};
 
@@ -26,14 +27,15 @@ Prime.Widgets = Prime.Widgets || {};
 /**
  * Constructs a new Draggable object for the given element.
  *
- * @param {Prime.Document.Element} element The Prime Element for the Draggable widget.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the Draggable widget.
  * @param {string} [gripSelector=] gripSelector  The optional selector to identify the 'grippy' part.
  * @constructor
  */
 Prime.Widgets.Draggable = function(element, gripSelector) {
+  Prime.Utils.bindAll(this);
 
-  this.element = element;
-  if (typeof gripSelector === 'undefined' || gripSelector === null) {
+  this.element = Prime.Document.Element.wrap(element);
+  if (!Prime.Utils.isDefined(gripSelector)) {
     this.grip = this.element;
   } else {
     this.grip = this.element.queryFirst(gripSelector);
@@ -50,11 +52,11 @@ Prime.Widgets.Draggable = function(element, gripSelector) {
 
   this.offset = {};
 
-  this.grip.addEventListener('mousedown', this._handleMouseDown, this);
-  this.element.addEventListener('mouseup', this._handleOnMouseUp, this);
+  this.grip.addEventListener('mousedown', this._handleMouseDown);
+  this.element.addEventListener('mouseup', this._handleOnMouseUp);
 
   this.parent = new Prime.Document.Element(this.element.domElement.parentNode);
-  this.parent.addEventListener('mouseup', this._handleParentMouseUp, this);
+  this.parent.addEventListener('mouseup', this._handleParentMouseUp);
   this.element.addClass('prime-draggable');
 };
 
@@ -92,7 +94,7 @@ Prime.Widgets.Draggable.prototype = {
     this.element.setStyle('z-index', this.offset.z_index + 1000);
     // defensive move to make sure we don't register more than one.
     this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
-    this.parent.addEventListener('mousemove', this._handleParentMouseMove, this);
+    this.parent.addEventListener('mousemove', this._handleParentMouseMove);
     event.preventDefault();
   },
 
@@ -123,5 +125,4 @@ Prime.Widgets.Draggable.prototype = {
     this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
     this.element.removeClass('prime-draggable-active');
   }
-
 };

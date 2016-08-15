@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -26,7 +28,7 @@ Prime.Widgets = Prime.Widgets || {};
 /**
  * Constructs a PhraseBuilder object for the given element.
  *
- * The PhraseBuilder uses a callback function (and optional context) to build a set of search results. The user can then
+ * The PhraseBuilder uses a callback function to build a set of search results. The user can then
  * select one of those search results and add it to their phrase. A fully rendered PhraseBuilder might look something
  * like this:
  *
@@ -62,13 +64,12 @@ Prime.Widgets = Prime.Widgets || {};
  * </ul>
  *
  * @constructor
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the PhraseBuilder.
  * @param {Function} searchCallback The callback function used for searching.
- * @param {*} [callbackContext] THe optional context used when invoking the callback function.
- * @param {Prime.Document.Element} element The Prime Element for the PhraseBuilder.
  */
-Prime.Widgets.PhraseBuilder = function(element, searchCallback, callbackContext) {
+Prime.Widgets.PhraseBuilder = function(element, searchCallback) {
+  this.element = Prime.Document.Element.wrap(element);
   this.customAddEnabled = false;
-  this.element = (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
   if (this.element.domElement.tagName !== 'SELECT') {
     throw new TypeError('You can only use Prime.Widgets.PhraseBuilder with select elements');
   }
@@ -77,48 +78,36 @@ Prime.Widgets.PhraseBuilder = function(element, searchCallback, callbackContext)
     throw new TypeError('The select box you are attempting to convert to a Prime.Widgets.PhraseBuilder must have the multiple="multiple" attribute set');
   }
 
+  Prime.Utils.bindAll(this);
+
   this.element.hide();
 
-  var theContext = (arguments.length < 3) ? this : callbackContext;
-  this.searchCallback = Prime.Utils.proxy(searchCallback, theContext);
+  this.searchCallback = searchCallback;
 
-  var id = this.element.getID();
+  var id = this.element.getId();
   if (id === null || id === '') {
     id = 'prime-phrase-builder' + Prime.Widgets.PhraseBuilder.count++;
-    this.element.setID(id);
+    this.element.setId(id);
   }
 
   this.placeholder = 'Type Words for Phrase Here';
   this.customAddLabel = null;
 
-  this.displayContainer = Prime.Document.queryByID(id + '-display');
+  this.displayContainer = Prime.Document.queryById(id + '-display');
   this.input = null;
   if (this.displayContainer === null) {
-    this.displayContainer = Prime.Document.newElement('<div/>').
-        setID(id + '-display').
-        addClass('prime-phrase-builder-display').
-        addEventListener('click', this._handleClickEvent, this).
-        addEventListener('keyup', this._handleKeyUpEvent, this).
-        insertAfter(this.element);
+    this.displayContainer = Prime.Document.newElement('<div/>').setId(id + '-display').addClass('prime-phrase-builder-display').addEventListener('click', this._handleClickEvent).addEventListener('keyup', this._handleKeyUpEvent).insertAfter(this.element);
 
-    this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>').
-        addClass('prime-phrase-builder-option-list').
-        appendTo(this.displayContainer);
+    this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>').addClass('prime-phrase-builder-option-list').appendTo(this.displayContainer);
 
-    this.searchResultsContainer = Prime.Document.newElement('<ul/>').
-        addClass('prime-phrase-builder-search-result-list').
-        hide().
-        appendTo(this.displayContainer);
+    this.searchResultsContainer = Prime.Document.newElement('<ul/>').addClass('prime-phrase-builder-search-result-list').hide().appendTo(this.displayContainer);
   } else {
-    this.displayContainer.
-        removeAllEventListeners().
-        addEventListener('click', this._handleClickEvent, this).
-        addEventListener('keyup', this._handleKeyUpEvent, this);
+    this.displayContainer.removeAllEventListeners().addEventListener('click', this._handleClickEvent).addEventListener('keyup', this._handleKeyUpEvent);
     this.displayContainerSelectedOptionList = Prime.Document.queryFirst('.prime-phrase-builder-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Document.queryFirst('.prime-phrase-builder-search-result-list', this.displayContainer);
   }
 
-  Prime.Document.queryFirst('html').addEventListener('click', this._handleGlobalClickEvent, this);
+  Prime.Document.queryFirst('html').addEventListener('click', this._handleGlobalClickEvent);
 };
 
 /*
@@ -139,11 +128,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
       return this;
     }
 
-    var option = Prime.Document.newElement('<option/>').
-        setValue(word).
-        setHTML(word).
-        setAttribute('selected', 'selected').
-        appendTo(this.element);
+    var option = Prime.Document.newElement('<option/>').setValue(word).setHTML(word).setAttribute('selected', 'selected').appendTo(this.element);
 
     this._addSelectedOptionToDisplay(option);
 
@@ -236,7 +221,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
     option.removeFromDOM();
 
     var id = this._makeOptionID(option);
-    var displayOption = Prime.Document.queryByID(id);
+    var displayOption = Prime.Document.queryById(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
     }
@@ -263,13 +248,8 @@ Prime.Widgets.PhraseBuilder.prototype = {
     });
 
     // Add the input option since the select options are inserted before it
-    this.inputOption = Prime.Document.newElement('<li/>').
-        addClass('prime-phrase-builder-input-option').
-        appendTo(this.displayContainerSelectedOptionList);
-    this.input = Prime.Document.newElement('<input/>').
-        addClass('prime-phrase-builder-input').
-        setAttribute('type', 'text').
-        appendTo(this.inputOption);
+    this.inputOption = Prime.Document.newElement('<li/>').addClass('prime-phrase-builder-input-option').appendTo(this.displayContainerSelectedOptionList);
+    this.input = Prime.Document.newElement('<input/>').addClass('prime-phrase-builder-input').setAttribute('type', 'text').appendTo(this.inputOption);
     this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this)
         .withCustomAddEnabled(this.customAddEnabled);
     if (this.customAddEnabled) {
@@ -301,8 +281,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * Added so that subclasses can define how this should work.
    */
   _createOption: function(option) {
-    return new Prime.Document.Element(option).
-    setAttribute('selected', 'selected');
+    return new Prime.Document.Element(option).setAttribute('selected', 'selected');
   },
 
   /**
@@ -331,18 +310,17 @@ Prime.Widgets.PhraseBuilder.prototype = {
   /**
    * Sets whether or not this Searcher allows custom options to be added and, optionally, a callback function.
    *
-   * @param {function} callback The function to call that will return true if the custom option can be added. Default: function(abc){return true;}
-   * @param {object} theContext The context of the callback method, MUST be supplied if callback is supplied
+   * @param {function} callback The function to call that will return true if the custom option can be added.
    * @returns {Prime.Widgets.PhraseBuilder} This PhraseBuilder.
    */
-  withCustomAdd: function(callback, theContext) {
+  withCustomAdd: function(callback) {
     this.customAddEnabled = true;
-    if (callback === 'undefined') {
-      this.customAddCallback = function(abc) {
+    if (callback === undefined) {
+      this.customAddCallback = function() {
         return true;
       };
     } else {
-      this.customAddCallback = Prime.Utils.proxy(callback, theContext);
+      this.customAddCallback = callback;
     }
     return this;
   },
@@ -401,29 +379,29 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * Adds the given selected option to the display.
    *
    * @param {Prime.Document.Element} option The option.
-   * @private
+   * @protected
    */
   _addSelectedOptionToDisplay: function(option) {
     var id = this._makeOptionID(option);
 
     // Check if the option has already been selected
-    if (Prime.Document.queryByID(id) === null) {
-      var li = Prime.Document.newElement('<li/>').
-          addClass('prime-phrase-builder-option').
-          setAttribute('value', option.getValue()).
-          setID(id).
-          insertBefore(this.inputOption);
-      Prime.Document.newElement('<span/>').
-          setHTML(option.getHTML()).
-          setAttribute('value', option.getValue()).
-          appendTo(li);
-      Prime.Document.newElement('<a/>').
-          setAttribute('href', '#').
-          setAttribute('value', option.getValue()).
-          addClass('prime-phrase-builder-remove-option').
-          setHTML('X').
-          addEventListener('click', this._handleClickEvent, this).
-          appendTo(li);
+    if (Prime.Document.queryById(id) === null) {
+      var li = Prime.Document.newElement('<li/>')
+          .addClass('prime-phrase-builder-option')
+          .setAttribute('value', option.getValue())
+          .setId(id)
+          .insertBefore(this.inputOption);
+      Prime.Document.newElement('<span/>')
+          .setHTML(option.getHTML())
+          .setAttribute('value', option.getValue())
+          .appendTo(li);
+      Prime.Document.newElement('<a/>')
+          .setAttribute('href', '#')
+          .setAttribute('value', option.getValue())
+          .addClass('prime-phrase-builder-remove-option')
+          .setHTML('X')
+          .addEventListener('click', this._handleClickEvent)
+          .appendTo(li);
     }
   },
 
@@ -461,7 +439,7 @@ Prime.Widgets.PhraseBuilder.prototype = {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
 
-    return false;
+    Prime.Utils.stopEvent(event);
   },
 
   /**
@@ -486,8 +464,6 @@ Prime.Widgets.PhraseBuilder.prototype = {
     if (this.displayContainer.domElement !== target.domElement && !target.isChildOf(this.displayContainer)) {
       this.searcher.closeSearchResults();
     }
-
-    return true;
   },
 
   /**
@@ -502,8 +478,6 @@ Prime.Widgets.PhraseBuilder.prototype = {
     if (key === Prime.Events.Keys.ESCAPE) {
       this.unhighlightWordForRemoval();
     }
-
-    return true;
   },
 
   /**
@@ -513,15 +487,15 @@ Prime.Widgets.PhraseBuilder.prototype = {
    * @private
    */
   _makeOptionID: function(option) {
-    return this.element.getID() + '-option-' + option.getValue().replace(' ', '-');
+    return this.element.getId() + '-option-' + option.getValue().replace(' ', '-');
   }
 };
 
 /**
  * A Prime.Widgets.PhraseBuilder that supports using the same word multiple times
  */
-Prime.Widgets.PhraseBuilderSupportsDupes = function(element, searchCallback, callbackContext) {
-  Prime.Widgets.PhraseBuilder.call(this, element, searchCallback, callbackContext);
+Prime.Widgets.PhraseBuilderSupportsDupes = function(element, searchCallback) {
+  Prime.Widgets.PhraseBuilder.call(this, element, searchCallback);
 };
 
 Prime.Widgets.PhraseBuilderSupportsDupes.prototype = Object.create(Prime.Widgets.PhraseBuilder.prototype);

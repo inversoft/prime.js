@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 Prime.Window = {
@@ -20,24 +22,29 @@ Prime.Window = {
    * Attaches an event listener to the window, returning the handler proxy.
    *
    * @param {string} event The name of the event.
-   * @param {Function} handler The event handler.
-   * @param {Object} [context] The context to use when invoking the handler (this sets the 'this' variable for the
-   *        function call). Defaults to this Element.
-   * @returns {Function} The proxy handler.
+   * @param {Function} listener The event handler.
+   * @returns {Window} The window object.
    */
-  addEventListener: function(event, handler, context) {
-    var theContext = (arguments.length < 3) ? this : context;
-    handler.primeProxy = Prime.Utils.proxy(handler, theContext);
-
-    if (window.addEventListener) {
-      window.addEventListener(event, handler.primeProxy, false);
-    } else if (document.attachEvent) {
-      window.attachEvent('on' + event, handler.primeProxy);
+  addEventListener: function(event, listener) {
+    if (event.indexOf(':') === -1) {
+      window.eventListeners = window.eventListeners || {};
+      window.eventListeners[event] = window.eventListeners[event] || [];
+      window.eventListeners[event].push(listener);
+      if (window.addEventListener) {
+        window.addEventListener(event, listener, false);
+      } else if (window.attachEvent) {
+        window.attachEvent('on' + event, listener);
+      } else {
+        throw new TypeError('Unable to set event onto the window. Neither addEventListener nor attachEvent methods are available');
+      }
     } else {
-      throw new TypeError('Unable to set event onto the window. Neither addEventListener nor attachEvent methods are available');
+      // Custom event
+      window.customEventListeners = window.customEventListeners || {};
+      window.customEventListeners[event] = window.customEventListeners[event] || [];
+      window.customEventListeners[event].push(listener);
     }
 
-    return handler.primeProxy;
+    return window;
   },
 
   /**

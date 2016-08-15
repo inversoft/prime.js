@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,7 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
 
 /*
  * Helper functions
@@ -27,7 +28,7 @@ buster.testCase('Tabs class tests', {
       this.handlerCalled = true;
     };
 
-    this.container = Prime.Document.queryByID('tab-test1');
+    this.container = Prime.Document.queryById('tab-test1');
     this.tabs = Prime.Document.queryFirst('ul', this.container);
     this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).withSelectHandler(handler.bind(this)).render();
     this.tabContents = Prime.Document.query('div.prime-tab-content', this.container);
@@ -49,7 +50,7 @@ buster.testCase('Tabs class tests', {
     // assert data-tab-id attributes are set correctly
     Prime.Document.query('li', this.tabs).each(function(li) {
       assert.equals(li.getAttribute('data-tab-id'), li.queryFirst('a').getAttribute('href').substring(1));
-    }, this);
+    });
   },
 
   'click switches active tab': function(done) {
@@ -57,9 +58,9 @@ buster.testCase('Tabs class tests', {
     assert.isFalse(inactiveTab.hasClass('prime-active'));
     Prime.Document.queryFirst('a', inactiveTab).fireEvent('click');
 
-    setTimeout(Prime.Utils.proxy(done(function() {
+    setTimeout(done(function() {
       assert.isTrue(inactiveTab.hasClass('prime-active'));
       assert.isTrue(this.handlerCalled);
-    }), this), 10);
+    }).bind(this), 10);
   }
 });

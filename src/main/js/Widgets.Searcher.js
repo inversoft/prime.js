@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,6 +13,8 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
+'use strict';
+
 var Prime = Prime || {};
 
 /**
@@ -62,23 +64,26 @@ Prime.Widgets = Prime.Widgets || {};
  * </pre>
  *
  * @constructor
- * @param {Prime.Document.Element} inputElement The input element that is used to execute the search.
- * @param {Prime.Document.Element} searchResultsContainer The element that is used to store the search results.
+ * @param {Prime.Document.Element|Element|EventTarget} inputElement The input element that is used to execute the search.
+ * @param {Prime.Document.Element|Element|EventTarget} searchResultsContainer The element that is used to store the search results.
  * @param {*} callbackObject The object that is used to callback for searching and numerous other functions to help
  *            communicate state and determine how to draw the input and search results.
  */
 Prime.Widgets.Searcher = function(inputElement, searchResultsContainer, callbackObject) {
-  this.inputElement = (inputElement instanceof Prime.Document.Element) ? inputElement : new Prime.Document.Element(inputElement);
+  this.inputElement = Prime.Document.Element.wrap(inputElement);
   if (this.inputElement.domElement.tagName !== 'INPUT') {
     throw new TypeError('You can only use Prime.Widgets.SearchResults with INPUT elements');
   }
+
+  Prime.Utils.bindAll(this);
+
   this.inputElement.
       addClass('prime-searcher-input').
-      addEventListener('blur', this._handleBlurEvent, this).
-      addEventListener('click', this._handleClickEvent, this).
-      addEventListener('keyup', this._handleKeyUpEvent, this).
-      addEventListener('keydown', this._handleKeyDownEvent, this).
-      addEventListener('focus', this._handleFocusEvent, this);
+      addEventListener('blur', this._handleBlurEvent).
+      addEventListener('click', this._handleClickEvent).
+      addEventListener('keyup', this._handleKeyUpEvent).
+      addEventListener('keydown', this._handleKeyDownEvent).
+      addEventListener('focus', this._handleFocusEvent);
 
   this.searchResultsContainer = (searchResultsContainer instanceof Prime.Document.Element) ? searchResultsContainer : new Prime.Document.Element(searchResultsContainer);
   this.searchResultsContainer.addClass('prime-searcher-search-results-list');
@@ -86,7 +91,7 @@ Prime.Widgets.Searcher = function(inputElement, searchResultsContainer, callback
   this.noSearchResultsLabel = 'No Matches For: ';
   this.tooManySearchResultsLabel = 'Too Many Matches For: ';
   this.customAddEnabled = true;
-  this.customAddCallback = function(customValue) {return true;};
+  this.customAddCallback = function() {return true;};
   this.customAddLabel = 'Add Custom: ';
   this.callbackObject = callbackObject;
 
@@ -222,11 +227,11 @@ Prime.Widgets.Searcher.prototype = {
    */
   search: function(searchText) {
     // Set the search text into the input box if it is different and then lowercase it
-    if (typeof(searchText) !== 'undefined' && this.inputElement.getValue() !== searchText) {
+    if (Prime.Utils.isDefined(searchText) && this.inputElement.getValue() !== searchText) {
       this.inputElement.setValue(searchText);
     }
 
-    searchText = typeof(searchText) !== 'undefined' ? searchText.toLowerCase() : this.inputElement.getValue();
+    searchText = Prime.Utils.isDefined(searchText) ? searchText.toLowerCase() : this.inputElement.getValue();
     this.resizeInput();
 
     // Clear the search results (if there are any)
@@ -246,8 +251,8 @@ Prime.Widgets.Searcher.prototype = {
           addClass('prime-searcher-search-result').
           setAttribute('value', searchResult).
           setHTML(searchResult).
-          addEventListener('click', this._handleClickEvent, this).
-          addEventListener('mouseover', this._handleMouseOverEvent, this).
+          addEventListener('click', this._handleClickEvent).
+          addEventListener('mouseover', this._handleMouseOverEvent).
           appendTo(this.searchResultsContainer);
       if (searchResult.toLowerCase().trim() === searchText.toLowerCase().trim()) {
         matchingSearchResultElement = element;
@@ -262,8 +267,8 @@ Prime.Widgets.Searcher.prototype = {
         && ( !('doesNotContainValue' in this.callbackObject) || this.callbackObject.doesNotContainValue(searchText))) {
       matchingSearchResultElement = Prime.Document.newElement('<li/>').
           addClass('prime-searcher-search-result prime-searcher-add-custom').
-          addEventListener('click', this._handleClickEvent, this).
-          addEventListener('mouseover', this._handleMouseOverEvent, this).
+          addEventListener('click', this._handleClickEvent).
+          addEventListener('mouseover', this._handleMouseOverEvent).
           setHTML(this.customAddLabel + searchText).
           appendTo(this.searchResultsContainer);
       count++;
@@ -334,7 +339,7 @@ Prime.Widgets.Searcher.prototype = {
   /**
    * Sets whether or not this Searcher allows custom options to be added.
    *
-   * @param {string} enabled The flag.
+   * @param {boolean} enabled The flag.
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   withCustomAddEnabled: function(enabled) {
@@ -345,7 +350,7 @@ Prime.Widgets.Searcher.prototype = {
   /**
    * Sets whether or not this Searcher allows custom options to be added.
    *
-   * @param {function} callback The function to call that will return true if the custom option can be added.
+   * @param {Function} callback The function to call that will return true if the custom option can be added.
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   withCustomAddCallback: function(callback) {
@@ -396,11 +401,11 @@ Prime.Widgets.Searcher.prototype = {
    * @private
    */
   _handleBlurEvent: function() {
-    window.setTimeout(Prime.Utils.proxy(function() {
+    window.setTimeout((function() {
       if (document.activeElement !== this.inputElement.domElement) {
         this.closeSearchResults();
       }
-    }, this), 300);
+    }).bind(this), 300);
   },
 
   /**
@@ -418,8 +423,6 @@ Prime.Widgets.Searcher.prototype = {
     } else {
       console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
     }
-
-    return true;
   },
 
   /**
@@ -434,8 +437,7 @@ Prime.Widgets.Searcher.prototype = {
   /**
    * Handles the key down events that should not be propagated.
    *
-   * @param {Event} event The browser event object.
-   * @returns {boolean} True if the event is not an arrow key.
+   * @param {KeyboardEvent} event The keyboard event object.
    * @private
    */
   _handleKeyDownEvent: function(event) {
@@ -444,7 +446,7 @@ Prime.Widgets.Searcher.prototype = {
       this.previousSearchString = this.inputElement.getValue();
     } else if (key === Prime.Events.Keys.UP_ARROW) {
       this.highlightPreviousSearchResult();
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (key === Prime.Events.Keys.DOWN_ARROW) {
       if (this.isSearchResultsVisible()) {
         this.highlightNextSearchResult();
@@ -452,19 +454,16 @@ Prime.Widgets.Searcher.prototype = {
         this.search();
       }
 
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (key === Prime.Events.Keys.ENTER) {
-      return false; // Don't bubble enter otherwise the form submits
+      Prime.Utils.stopEvent(event); // Don't bubble enter otherwise the form submits
     }
-
-    return true;
   },
 
   /**
    * Handles all key up events sent to the search results container.
    *
-   * @param {Event} event The browser event object.
-   * @returns {boolean} True if the search display is not open, false otherwise. This will prevent the event from continuing.
+   * @param {KeyboardEvent} event The keyboard event object.
    *  @private
    */
   _handleKeyUpEvent: function(event) {
@@ -483,15 +482,13 @@ Prime.Widgets.Searcher.prototype = {
         this.selectHighlightedSearchResult();
       }
 
-      return false;
+      Prime.Utils.stopEvent(event);
     } else if (key === Prime.Events.Keys.ESCAPE) {
       this.searchResultsContainer.hide();
     } else if (key === Prime.Events.Keys.SPACE || key === Prime.Events.Keys.DELETE ||
         (key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
       this.search();
     }
-
-    return true;
   },
 
   /**
