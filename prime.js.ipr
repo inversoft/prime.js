@@ -47,6 +47,9 @@
     <entry_points version="2.0" />
   </component>
   <component name="IdProvider" IDEtalkID="F3BFA6F7F97511391424BC4C5FE66463" />
+  <component name="JavaScriptLibraryMappings">
+    <file url="file://$PROJECT_DIR$" libraries="{prime.js/node_modules}" />
+  </component>
   <component name="Palette2">
     <group name="Swing">
       <item class="com.intellij.uiDesigner.HSpacer" tooltip-text="Horizontal Spacer" icon="/com/intellij/uiDesigner/icons/hspacer.png" removable="false" auto-create-binding="false" can-attach-label="false">
