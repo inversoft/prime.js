@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2013-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -86,6 +86,17 @@ Prime.Document.ElementList.prototype = {
   },
 
   /**
+   * Shorthand for calling {@link Prime.Document.Element.hide} on each Element in the ElementList.
+   *
+   * Hides the Element by setting the display style to none.
+   *
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  hide: function() {
+    return this._proxyToElement('hide');
+  },
+
+  /**
    * Returns the indexOf the element that matches the parameter, either Prime Element or DOMElement.
    *
    * @param {Prime.Document.Element|Element} element The element to look for
@@ -151,6 +162,17 @@ Prime.Document.ElementList.prototype = {
    */
   setDisabled: function(value) {
     return this._proxyToElement('setDisabled', value);
+  },
+
+  /**
+   * Shorthand for calling {@link Prime.Document.Element.show} on each Element in the ElementList.
+   *
+   * Shows the element.
+   *
+   * @returns {Prime.Document.ElementList} This ElementList.
+   */
+  show: function() {
+    return this._proxyToElement('show');
   },
 
   /* ===================================================================================================================
