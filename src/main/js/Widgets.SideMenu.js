@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -33,6 +33,7 @@ Prime.Widgets.SideMenu = function(button, mainBody) {
   Prime.Document.Element.wrap(button).addEventListener('click', this._handleClickEvent);
 
   Prime.Document.Element.wrap(mainBody).addClass('prime-side-menu-body');
+  this._setInitialOptions();
 };
 
 Prime.Widgets.SideMenu.constructor = Prime.Widgets.SideMenu;
@@ -56,9 +57,11 @@ Prime.Widgets.SideMenu.prototype = {
 
   /**
    * Closes the side menu.
+   * @returns {Prime.Widgets.SideMenu} This.
    */
   close: function() {
     this.body.removeClass('prime-side-menu-open');
+    return this;
   },
 
   /**
@@ -70,23 +73,52 @@ Prime.Widgets.SideMenu.prototype = {
 
   /**
    * Opens the mobile nav.
+   * @returns {Prime.Widgets.SideMenu} This.
    */
   open: function() {
     this.body.addClass('prime-side-menu-open');
     this.touchable = new Prime.Widgets.Touchable(this.body).withSwipeLeftHandler(this._handleSwipeLeft);
+    return this;
   },
 
   /**
    * Sets this SideMenu to use the given element. You can also call copyFromElement to setup the side menu.
    *
    * @param {Prime.Document.Element|Element} sideMenuElement The existing side menu element.
+   * @returns {Prime.Widgets.SideMenu} This.
    */
   usingSideMenuElement: function(sideMenuElement) {
     sideMenuElement = Prime.Document.Element.wrap(sideMenuElement);
     sideMenuElement.query('a').each(function(e) {
       e.addEventListener('click', this._handleTOCClickEvent);
     }.bind(this));
+
+    return this;
   },
+
+  /**
+   * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
+   * method to set options on the widget. The caller needs to know what properties are valid in the options object.
+   *
+   * @param {Object} options Key value pair of configuration options.
+   * @returns {Prime.Widgets.SideMenu} This.
+   */
+  withOptions: function(options) {
+    if (!Prime.Utils.isDefined(options)) {
+      return this;
+    }
+
+    for (var option in options) {
+      if (options.hasOwnProperty(option)) {
+        this.options[option] = options[option];
+      }
+    }
+    return this;
+  },
+
+  /* ===================================================================================================================
+   * Private methods
+   * ===================================================================================================================*/
 
   /**
    * Handles the click event on the side menu button and calls either the open or close function.
@@ -125,5 +157,14 @@ Prime.Widgets.SideMenu.prototype = {
    */
   _handleTOCClickEvent: function() {
     this.close();
+  },
+
+  /**
+   * Set the initial options for this widget.
+   * @private
+   */
+  _setInitialOptions: function() {
+    // Defaults
+    this.options = {};
   }
 };
