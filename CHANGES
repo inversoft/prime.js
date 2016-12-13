@@ -1,0 +1,41 @@
+prime.js Changes
+
+Changes in 0.35.3
+
+ * Add Document.Element.selectElementContents
+ * Make the close indicator configurable for MultipleSelect widget. Defaults to 'X'.
+
+Changes in 0.35.2
+
+ * Add option capability to the SideMenu widget.
+ * Return 'this' from the SideMenu widget for fluent API calls.
+
+Changes in 0.35.1
+
+ * Add Document.ElementList.show()
+ * Add Document.ElementList.hide()
+
+Changes in 0.35.0
+
+ * Note this release introduces incompatible changes.
+  - 'this' is no longer managed by passing the context parameter. Callers are responsible for binding 'this'.
+    + Prime.Window.addEventListener, Prime.Document.addEventListener and Prime.Document.Element.addEventListener no longer take the context parameter
+    + Prime.Document.ElementList.each no longer takes the context parameter
+    + Prime.Ajax.Request no longer takes the context parameter
+  - Removed context helpers
+    + Removed Prime.Utils.proxy()
+  - Added helpers
+    + Returning false from event handlers no longer limits event propagation. Use Prime.Utils.stopEvent(event) as a shorthand.
+    + Added Prime.Utils.bindAll() to help with binding named functions in your class. Inline functions will need to be manually bound if you need 'this' reference.
+  - Correct method naming conventions
+    + Prime.Document.Element.parent() renamed to Prime.Document.Element.getParent()
+    + Prime.Document.queryByID() renamed to Prime.Document.queryById()
+    + Prime.Document.getID() renamed to Prime.Document.getId()
+    + Prime.Document.setID() renamed to Prime.Document.setId()
+
+
+
+
+
+
+
