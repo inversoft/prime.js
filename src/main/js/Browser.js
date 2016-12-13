@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -158,6 +158,11 @@ Prime.Browser = {
       string: navigator.userAgent,
       subString: "iPhone",
       identity: "iPhone/iPod"
+    },
+    {
+      string: navigator.userAgent,
+      subString: "iPad",
+      identity: "iPad"
     },
     {
       string: navigator.platform,

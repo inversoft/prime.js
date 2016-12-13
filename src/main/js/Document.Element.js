@@ -1155,6 +1155,32 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * Create a selected range for this element.
+   *
+   * @returns {Prime.Document.Element} This Element.
+   */
+  selectElementContents: function() {
+    var range;
+    var selection;
+
+    if (document.body.createTextRange) {
+      /* IE */
+      range = document.body.createTextRange();
+      range.moveToElementText(this.domElement);
+      range.select();
+    } else if (window.getSelection) {
+      /* Rest of the world */
+      selection = window.getSelection();
+      range = document.createRange();
+      range.selectNodeContents(this.domElement);
+      selection.removeAllRanges();
+      selection.addRange(range);
+    }
+
+    return this;
+  },
+
+  /**
    * Scrolls this Element into the visible area of the browser window.
    *
    * @returns {Prime.Document.Element} This Element.

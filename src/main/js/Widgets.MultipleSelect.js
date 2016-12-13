@@ -77,6 +77,7 @@ Prime.Widgets.MultipleSelect = function(element) {
 
   Prime.Utils.bindAll(this);
 
+  this.removeIcon = 'X';
   this.element.hide();
   this.placeholder = 'Choose';
   this.noSearchResultsLabel = 'No Matches For: ';
@@ -448,7 +449,7 @@ Prime.Widgets.MultipleSelect.prototype = {
           .setAttribute('href', '#')
           .setAttribute('value', option.getValue())
           .addClass('prime-multiple-select-remove-option')
-          .setHTML('X')
+          .setHTML(this.removeIcon)
           .addEventListener('click', this._handleClickEvent)
           .appendTo(li);
     }
@@ -557,6 +558,16 @@ Prime.Widgets.MultipleSelect.prototype = {
     return this;
   },
 
+  /**
+   * Sets the remove icon value. This overrides the default value.
+   *
+   * @param {string} removeIcon The remove icon text.
+   * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
+   */
+  withRemoveIcon: function(removeIcon) {
+    this.removeIcon = removeIcon;
+    return this;
+  },
 
   /* ===================================================================================================================
    * Searcher's callback interface methods.
@@ -655,14 +666,16 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @private
    */
   _handleClickEvent: function(event) {
-    var target = new Prime.Document.Element(event.currentTarget);
-    if (this.displayContainer.domElement === target.domElement) {
-      this.input.focus();
-    } else if (target.hasClass('prime-multiple-select-remove-option')) {
+    var target = new Prime.Document.Element(event.target);
+    if (target.hasClass('prime-multiple-select-remove-option')) {
       this.removeOptionWithValue(target.getAttribute('value'));
-    } else if (this.input.domElement !== target.currentTarget) {
-      console.log('Clicked something else target=[' + event.target + '] currentTarget=[' + event.currentTarget + ']');
+    } else if (target.is('span') || target.is('span')) {
+      target.selectElementContents();
+    } else if (target.is('.prime-multiple-select-option-list') || target.getParent().is('.prime-multiple-select-display')) {
+      this.input.focus();
     }
+
+    Prime.Utils.stopEvent(event);
   },
 
   /**
