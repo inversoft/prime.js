@@ -1,5 +1,9 @@
 prime.js Changes
 
+Changes in 0.35.4
+
+ * Fix. Draggable Widget Y position was missing the scroll top.
+
 Changes in 0.35.3
 
  * Add Document.Element.selectElementContents
