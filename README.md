@@ -5,6 +5,11 @@ Welcome to the Prime JavaScript Framework. Visit the project [website](http://in
 
 **Note:** This project uses the Savant build tool, for more information checkout the [savant-core](https://github.com/inversoft/savant-core) project.
 
+## Downloading
+Released versions can be downloaded from the Savant Repository.
+ 
+ * http://savant.inversoft.org/org/inversoft/prime/prime.js/
+
 ## Release Notes
 
 ### 0.35.0
