@@ -76,13 +76,9 @@ Prime.Widgets.MultipleSelect = function(element) {
   }
 
   Prime.Utils.bindAll(this);
+  this._setInitialOptions();
 
-  this.removeIcon = 'X';
   this.element.hide();
-  this.placeholder = 'Choose';
-  this.noSearchResultsLabel = 'No Matches For: ';
-  this.customAddEnabled = true;
-  this.customAddLabel = 'Add Custom Value: ';
 
   var id = this.element.getId();
   if (id === null || id === '') {
@@ -93,26 +89,26 @@ Prime.Widgets.MultipleSelect = function(element) {
   this.displayContainer = Prime.Document.queryById(id + '-display');
   this.input = null;
   if (this.displayContainer === null) {
-    this.displayContainer = Prime.Document.newElement('<div/>').
-        setId(id + '-display').
-        addClass('prime-multiple-select-display').
-        addEventListener('click', this._handleClickEvent).
-        addEventListener('keyup', this._handleKeyUpEvent).
-        insertAfter(this.element);
+    this.displayContainer = Prime.Document.newElement('<div/>')
+        .setId(id + '-display')
+        .addClass('prime-multiple-select-display')
+        .addEventListener('click', this._handleClickEvent)
+        .addEventListener('keyup', this._handleKeyUpEvent)
+        .insertAfter(this.element);
 
-    this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>').
-        addClass('prime-multiple-select-option-list').
-        appendTo(this.displayContainer);
+    this.displayContainerSelectedOptionList = Prime.Document.newElement('<ul/>')
+        .addClass('prime-multiple-select-option-list')
+        .appendTo(this.displayContainer);
 
-    this.searchResultsContainer = Prime.Document.newElement('<ul/>').
-        addClass('prime-multiple-select-search-result-list').
-        hide().
-        appendTo(this.displayContainer);
+    this.searchResultsContainer = Prime.Document.newElement('<ul/>')
+        .addClass('prime-multiple-select-search-result-list')
+        .hide()
+        .appendTo(this.displayContainer);
   } else {
-    this.displayContainer.
-        removeAllEventListeners().
-        addEventListener('click', this._handleClickEvent).
-        addEventListener('keyup', this._handleKeyUpEvent);
+    this.displayContainer
+        .removeAllEventListeners()
+        .addEventListener('click', this._handleClickEvent)
+        .addEventListener('keyup', this._handleKeyUpEvent);
     this.displayContainerSelectedOptionList = Prime.Document.queryFirst('.prime-multiple-select-option-list', this.displayContainer);
     this.searchResultsContainer = Prime.Document.queryFirst('.prime-multiple-select-search-result-list', this.displayContainer);
   }
@@ -195,7 +191,7 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // If there are no selected options left, add back the placeholder attribute to the input and resize it
     if (Prime.Document.query('.prime-multiple-select-option', this.displayContainerSelectedOptionList).length === 0) {
-      this.input.setAttribute('placeholder', this.placeholder);
+      this.input.setAttribute('placeholder', this.options['placeholder']);
       this.searcher.resizeInput();
     }
 
@@ -389,12 +385,13 @@ Prime.Widgets.MultipleSelect.prototype = {
         .addClass('prime-multiple-select-input')
         .addEventListener('click', this._handleClickEvent)
         .addEventListener('blur', this._handleBlurEvent)
+        .addEventListener('focus', this._handleFocusEvent)
         .setAttribute('type', 'text')
         .appendTo(this.inputOption);
     this.searcher = new Prime.Widgets.Searcher(this.input, this.searchResultsContainer, this)
-        .withCustomAddEnabled(this.customAddEnabled)
-        .withCustomAddLabel(this.customAddLabel)
-        .withNoSearchResultsLabel(this.noSearchResultsLabel);
+        .withCustomAddEnabled(this.options['customAddEnabled'])
+        .withCustomAddLabel(this.options['customAddLabel'])
+        .withNoSearchResultsLabel(this.options['noSearchResultsLabel']);
 
     // Add the selected options
     var hasSelectedOptions = false;
@@ -409,10 +406,15 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // Put the placeholder attribute in if the MultipleSelect has no selected options
     if (!hasSelectedOptions) {
-      this.input.setAttribute('placeholder', this.placeholder);
+      this.input.setAttribute('placeholder', this.options['placeholder']);
     }
 
     this.searcher.resizeInput();
+
+    // If error class handling was enabled and the select box has the error class, add it to the display
+    if (this.options.errorClass && this.element.hasClass(this.options['errorClass'])) {
+      this.displayContainer.addClass(this.options['errorClass']);
+    }
 
     return this;
   },
@@ -449,7 +451,7 @@ Prime.Widgets.MultipleSelect.prototype = {
           .setAttribute('href', '#')
           .setAttribute('value', option.getValue())
           .addClass('prime-multiple-select-remove-option')
-          .setHTML(this.removeIcon)
+          .setHTML(this.options['removeIcon'])
           .addEventListener('click', this._handleClickEvent)
           .appendTo(li);
     }
@@ -521,7 +523,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   withCustomAddEnabled: function(enabled) {
-    this.customAddEnabled = enabled;
+    this.options['customAddEnabled'] = enabled;
     return this;
   },
 
@@ -532,7 +534,18 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   withCustomAddLabel: function(customAddLabel) {
-    this.customAddLabel = customAddLabel;
+    this.options['customAddLabel'] = customAddLabel;
+    return this;
+  },
+
+  /**
+   * Enable error class handling. When this option is used, if the specified error class is found on any element
+   * in the tab content the same error class will be added to the tab to identify the tab contains errors.
+   *
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  withErrorClassHandling: function(errorClass) {
+    this.options['errorClass'] = errorClass;
     return this;
   },
 
@@ -543,7 +556,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   withNoSearchResultsLabel: function(noSearchResultsLabel) {
-    this.noSearchResultsLabel = noSearchResultsLabel;
+    this.options['noSearchResultsLabel'] = noSearchResultsLabel;
     return this;
   },
 
@@ -554,7 +567,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   withPlaceholder: function(placeholder) {
-    this.placeholder = placeholder;
+    this.options['placeholder'] = placeholder;
     return this;
   },
 
@@ -565,7 +578,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This MultipleSelect.
    */
   withRemoveIcon: function(removeIcon) {
-    this.removeIcon = removeIcon;
+    this.options['removeIcon'] = removeIcon;
     return this;
   },
 
@@ -657,6 +670,7 @@ Prime.Widgets.MultipleSelect.prototype = {
         this.searcher.closeSearchResults();
       }
     }).bind(this), 300);
+    this.displayContainer.removeClass('prime-focus');
   },
 
   /**
@@ -676,6 +690,15 @@ Prime.Widgets.MultipleSelect.prototype = {
     }
 
     Prime.Utils.stopEvent(event);
+  },
+
+  /**
+   * Handles the blur event when the input goes out of focus.
+   *
+   * @private
+   */
+  _handleFocusEvent: function() {
+    this.displayContainer.addClass('prime-focus');
   },
 
   /**
@@ -715,5 +738,28 @@ Prime.Widgets.MultipleSelect.prototype = {
    */
   _makeOptionID: function(option) {
     return this.element.getId() + '-option-' + option.getValue().replace(' ', '-');
+  },
+
+  /**
+   * Set the initial options for this widget.
+   * @private
+   */
+  _setInitialOptions: function() {
+    // Defaults
+    this.options = {
+      'customAddEnabled': true,
+      'customAddLabel': 'Add Custom Value: ',
+      'errorClass': null,
+      'noSearchResultsLabel': 'No Matches For: ',
+      'placeholder': 'Choose',
+      'removeIcon': 'X'
+    };
+
+    var userOptions = Prime.Utils.dataSetToOptions(this.element);
+    for (var option in userOptions) {
+      if (userOptions.hasOwnProperty(option)) {
+        this.options[option] = userOptions[option];
+      }
+    }
   }
 };
