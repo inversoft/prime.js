@@ -41,6 +41,7 @@ Prime.Document.Element = function(element) {
  *
  * @type {RegExp}
  */
+Prime.Document.Element.blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
 Prime.Document.Element.mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup|mouseover|mousemove|mouseout)$/;
 Prime.Document.Element.htmlEventsRegexp = /^(?:abort|blur|change|error|focus|load|reset|resize|scroll|select|submit|unload)$/;
 Prime.Document.Element.anonymousId = 1;
@@ -462,6 +463,15 @@ Prime.Document.Element.prototype = {
     }
 
     return new Prime.Document.Element(sibling);
+  },
+
+  /**
+   * The elements offset left in pixels.
+   *
+   * @returns {number} The offset left.
+   */
+  getOffsetLeft: function() {
+    return this.domElement.offsetLeft;
   },
 
   /**
@@ -1537,7 +1547,11 @@ Prime.Document.Element.prototype = {
 
     var computedDisplay = this.getComputedStyle()['display'];
     if (computedDisplay === 'none') {
-      this.domElement.style.display = 'unset';
+      if (!Prime.Utils.isDefined(displayValue)) {
+        displayValue = (Prime.Document.Element.blockElementRegexp.test(this.domElement.tagName)) ? 'block' : 'inline';
+      }
+
+      this.domElement.style.display = displayValue;
     }
 
     return this;

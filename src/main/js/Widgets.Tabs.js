@@ -187,7 +187,7 @@ Prime.Widgets.Tabs.prototype = {
     // Check if local storage is enabled to save selected tab
     this.localStorageSupported = Prime.Utils.isDefined(Storage) && this.options['localStorageKey'] !== null;
 
-    this.tabsContainer.show();
+    this.tabsContainer.show('block');
     this.redraw();
     return this;
   },
@@ -212,7 +212,7 @@ Prime.Widgets.Tabs.prototype = {
     this.selectedTab = this.tabs[id];
     for (tabId in this.tabContents) {
       if (this.tabContents.hasOwnProperty(tabId) && tabId === id) {
-        this.tabContents[tabId].show();
+        this.tabContents[tabId].show('block');
         if (this.selectHandler) {
           this.selectHandler(this.tabs[tabId], this.tabContents[tabId]);
         }

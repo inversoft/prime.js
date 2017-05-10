@@ -114,6 +114,40 @@ Prime.Widgets.DateTimePicker = function(element) {
   Prime.Document.addEventListener('click', this._handleGlobalClick);
   Prime.Document.addEventListener('keydown', this._handleGlobalKey);
 
+  // Setup months dropdown
+  html = '<div class="months">';
+  for (var i = 0; i < Prime.Widgets.DateTimePicker.MONTHS.length; i++) {
+    html += '<div data-month="' + i + '">' + Prime.Widgets.DateTimePicker.MONTHS[i] + '</div>';
+  }
+  html += '</div>';
+  this.datepicker.appendHTML(html);
+  this.months = this.datepicker.queryFirst('.months');
+  this.months.hide();
+  this.months.getChildren().each(function(month) {
+    month.addEventListener('click', function() {
+      new Prime.Effects.Fade(this.months).withDuration(100).go();
+      this.setMonth(parseInt(month.getDataAttribute('month')));
+    }.bind(this));
+  }.bind(this));
+
+  // Setup year dropdown
+  html = '<div class="years">';
+  var startYear = this.date.getFullYear() - 10;
+  var endYear = this.date.getFullYear() + 10;
+  for (i = startYear; i < endYear; i++) {
+    html += '<div data-year="' + i + '">' + i + '</div>';
+  }
+  html += '</div>';
+  this.datepicker.appendHTML(html);
+  this.years = this.datepicker.queryFirst('.years');
+  this.years.hide();
+  this.years.getChildren().each(function(year) {
+    year.addEventListener('click', function() {
+      new Prime.Effects.Fade(this.years).withDuration(100).go();
+      this.setYear(parseInt(year.getDataAttribute('year')));
+    }.bind(this));
+  }.bind(this));
+
   this.element.addClass('prime-initialized');
 };
 
@@ -202,29 +236,10 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Opens the month select box.
    */
   openMonthSelect: function() {
-    this.months = this.datepicker.queryFirst('.months');
-    if (Prime.Utils.isDefined(this.years)) {
-      this.years.hide();
-    }
-    if (this.months === null) {
-      var html = '<div class="months">';
-      for (var i = 0; i < Prime.Widgets.DateTimePicker.MONTHS.length; i++) {
-        html += '<div data-month="' + i + '">' + Prime.Widgets.DateTimePicker.MONTHS[i] + '</div>';
-      }
-      html += '</div>';
-      this.datepicker.appendHTML(html);
-      this.months = this.datepicker.queryFirst('.months');
-      this.months.getChildren().each(function(month) {
-        month.addEventListener('click', function() {
-          new Prime.Effects.Fade(this.months).withDuration(100).go();
-          this.setMonth(parseInt(month.getDataAttribute('month')));
-        }.bind(this));
-      }.bind(this));
-    }
-
+    this.years.hide();
     new Prime.Effects.Appear(this.months).withDuration(100).go();
-    this.months.setLeft(this.monthDisplay.getLeft() - 10);
-    this.months.setTop(this.monthDisplay.getAbsoluteTop());
+    this.months.setLeft(this.monthDisplay.getOffsetLeft() - 5);
+    this.months.setTop(this.monthDisplay.getOffsetTop() - 5);
     var currentMonth = this.months.queryFirst('[data-month="' + this.date.getMonth() + '"]');
     this.months.getChildren().each(function(month) {
       month.removeClass('prime-selected');
@@ -236,32 +251,10 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Opens the year select box.
    */
   openYearSelect: function() {
-    this.years = this.datepicker.queryFirst('.years');
-    if (Prime.Utils.isDefined(this.months)) {
-      this.months.hide();
-    }
-
-    if (this.years === null) {
-      var html = '<div class="years">';
-      var startYear = this.date.getFullYear() - 10;
-      var endYear = this.date.getFullYear() + 10;
-      for (var i = startYear; i < endYear; i++) {
-        html += '<div data-year="' + i + '">' + i + '</div>';
-      }
-      html += '</div>';
-      this.datepicker.appendHTML(html);
-      this.years = this.datepicker.queryFirst('.years');
-      this.years.getChildren().each(function(year) {
-        year.addEventListener('click', function() {
-          new Prime.Effects.Fade(this.years).withDuration(100).go();
-          this.setYear(parseInt(year.getDataAttribute('year')));
-        }.bind(this));
-      }.bind(this));
-    }
-
+    this.months.hide();
     new Prime.Effects.Appear(this.years).withDuration(100).go();
-    this.years.setLeft(this.yearDisplay.getLeft() - 10);
-    this.years.setTop(this.yearDisplay.getAbsoluteTop());
+    this.years.setLeft(this.yearDisplay.getOffsetLeft() - 5);
+    this.years.setTop(this.yearDisplay.getOffsetTop() - 5);
     var currentYear = this.years.queryFirst('[data-year="' + this.date.getFullYear() + '"]');
     this.years.getChildren().each(function(year) {
       year.removeClass('prime-selected');
