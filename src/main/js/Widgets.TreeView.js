@@ -44,5 +44,6 @@ Prime.Widgets.TreeView.prototype = {
       a.addClass('active');
       li.addClass('active');
     }
+    Prime.Utils.stopEvent(event);
   }
 };

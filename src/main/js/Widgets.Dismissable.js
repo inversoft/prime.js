@@ -49,10 +49,11 @@ Prime.Widgets.Dismissable.prototype = {
    * Handles the click event.
    * @private
    */
-  _handleClick: function() {
+  _handleClick: function(event) {
     this.element.setOpacity(0);
     setTimeout(function() {
       this.element.removeFromDOM();
     }.bind(this), 400);
+    Prime.Utils.stopEvent(event);
   }
 };
