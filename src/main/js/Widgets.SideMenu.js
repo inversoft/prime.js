@@ -22,17 +22,13 @@ Prime.Widgets = Prime.Widgets || {};
  * Constructs the side menu.
  *
  * @param {Prime.Document.Element|Element} button The button element that is used to open the side menu.
- * @param {Prime.Document.Element|Element} mainBody The main body element of the page. This should be after the side
- * menu element in the DOM and contain the entire page (but not the &lt;body> element).
+ * @param {Prime.Document.Element|Element} sideMenuElement The side menu element that will be "hidden" and "show".
  * @constructor
  */
-Prime.Widgets.SideMenu = function(button, mainBody) {
+Prime.Widgets.SideMenu = function(button, sideMenuElement) {
   Prime.Utils.bindAll(this);
-
-  this.body = new Prime.Document.Element(document.body);
   Prime.Document.Element.wrap(button).addEventListener('click', this._handleClickEvent);
-
-  Prime.Document.Element.wrap(mainBody).addClass('prime-side-menu-body');
+  this.sideMenu = Prime.Document.Element.wrap(sideMenuElement);
   this._setInitialOptions();
 };
 
@@ -40,27 +36,18 @@ Prime.Widgets.SideMenu.constructor = Prime.Widgets.SideMenu;
 
 Prime.Widgets.SideMenu.prototype = {
   /**
-   * Creates a side menu by copying an existing side menu into a new element that is the first child under the &lt;body>
-   * element.
-   *
-   * @param {Prime.Document.Element} element The existing menu element to copy into a new side menu.
-   */
-  copyFromElement: function(element) {
-    var sideMenu = Prime.Document.newElement('<nav/>')
-        .prependTo(this.body)
-        .addClass('prime-side-menu')
-        .setHTML(element.getHTML());
-    sideMenu.query('a').each(function(e) {
-      e.addEventListener('click', this._handleTOCClickEvent);
-    }.bind(this));
-  },
-
-  /**
    * Closes the side menu.
    * @returns {Prime.Widgets.SideMenu} This.
    */
   close: function() {
-    this.body.removeClass('prime-side-menu-open');
+    if (!Prime.Document.bodyElement.hasClass(this.options['closedClass'])) {
+      Prime.Document.bodyElement.addClass(this.options['closedClass']);
+    }
+
+    if (Prime.Document.bodyElement.hasClass(this.options['openClass'])) {
+      Prime.Document.bodyElement.removeClass(this.options['openClass']);
+    }
+
     return this;
   },
 
@@ -68,7 +55,8 @@ Prime.Widgets.SideMenu.prototype = {
    * @returns {boolean} True if the side menu is currently open.
    */
   isOpen: function() {
-    return this.body.hasClass('prime-side-menu-open');
+    return this.sideMenu.getLeft() >= 0;
+    // return Prime.Document.bodyElement.hasClass('prime-side-menu-open') || !Prime.Document.bodyElement.hasClass('prime-side-menu-closed');
   },
 
   /**
@@ -76,23 +64,15 @@ Prime.Widgets.SideMenu.prototype = {
    * @returns {Prime.Widgets.SideMenu} This.
    */
   open: function() {
-    this.body.addClass('prime-side-menu-open');
-    this.touchable = new Prime.Widgets.Touchable(this.body).withSwipeLeftHandler(this._handleSwipeLeft);
-    return this;
-  },
+    if (Prime.Document.bodyElement.hasClass(this.options['closedClass'])) {
+      Prime.Document.bodyElement.removeClass(this.options['closedClass']);
+    }
 
-  /**
-   * Sets this SideMenu to use the given element. You can also call copyFromElement to setup the side menu.
-   *
-   * @param {Prime.Document.Element|Element} sideMenuElement The existing side menu element.
-   * @returns {Prime.Widgets.SideMenu} This.
-   */
-  usingSideMenuElement: function(sideMenuElement) {
-    sideMenuElement = Prime.Document.Element.wrap(sideMenuElement);
-    sideMenuElement.query('a').each(function(e) {
-      e.addEventListener('click', this._handleTOCClickEvent);
-    }.bind(this));
+    if (!Prime.Document.bodyElement.hasClass(this.options['openClass'])) {
+      Prime.Document.bodyElement.addClass(this.options['openClass']);
+    }
 
+    this.touchable = new Prime.Widgets.Touchable(Prime.Document.bodyElement).withSwipeLeftHandler(this._handleSwipeLeft);
     return this;
   },
 
@@ -151,20 +131,21 @@ Prime.Widgets.SideMenu.prototype = {
   },
 
   /**
-   * Handles the click event on a mobile link.
-   *
-   * @private
-   */
-  _handleTOCClickEvent: function() {
-    this.close();
-  },
-
-  /**
    * Set the initial options for this widget.
    * @private
    */
   _setInitialOptions: function() {
     // Defaults
-    this.options = {};
+    this.options = {
+      'closedClass': 'prime-side-menu-closed',
+      'openClass': 'prime-side-menu-open'
+    };
+
+    var userOptions = Prime.Utils.dataSetToOptions(this.sideMenu);
+    for (var option in userOptions) {
+      if (userOptions.hasOwnProperty(option)) {
+        this.options[option] = userOptions[option];
+      }
+    }
   }
 };

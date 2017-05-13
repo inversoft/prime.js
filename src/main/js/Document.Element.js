@@ -595,6 +595,7 @@ Prime.Document.Element.prototype = {
   getScrollHeight: function() {
     return this.domElement.scrollHeight;
   },
+
   /**
    * @returns {number} The scroll left position of this element.
    */

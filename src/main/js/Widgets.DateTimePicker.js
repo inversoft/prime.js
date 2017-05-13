@@ -611,13 +611,16 @@ Prime.Widgets.DateTimePicker.prototype = {
     var left = this.datepicker.getLeft();
     var right = this.datepicker.getRight();
     if (this.datepicker.isVisible() && (event.x < left || event.x > right || event.y < top || event.y > bottom)) {
-      if (Prime.Utils.isDefined(this.years)) {
+      this.hide();
+      this.years.hide();
+      this.months.hide();
+    } else {
+      if (this.years.isVisible()) {
         this.years.hide();
       }
-      if (Prime.Utils.isDefined(this.months)) {
+      if (this.months.isVisible()) {
         this.months.hide();
       }
-      this.hide();
     }
   },
 
@@ -730,8 +733,9 @@ Prime.Widgets.DateTimePicker.prototype = {
    *
    * @private
    */
-  _handleMonthExpand: function() {
+  _handleMonthExpand: function(event) {
     this.openMonthSelect();
+    Prime.Utils.stopEvent(event);
   },
 
   /**
@@ -819,8 +823,9 @@ Prime.Widgets.DateTimePicker.prototype = {
    *
    * @private
    */
-  _handleYearExpand: function() {
+  _handleYearExpand: function(event) {
     this.openYearSelect();
+    Prime.Utils.stopEvent(event);
   },
 
   /**

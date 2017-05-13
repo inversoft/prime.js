@@ -50,42 +50,11 @@ Prime.Widgets.Tabs = function(element) {
   Prime.Utils.bindAll(this);
 
   this._setInitialOptions();
-  this.tabsContainer.hide().addClass('prime-tabs');
   this.tabContents = {};
   this.tabs = {};
   this.tabArray = [];
   this.selectedTab = null;
   this.selectHandler = null;
-
-  this.tabsContainer.query('li:not(.prime-disabled)').each(function(tab) {
-    var a = tab.queryFirst('a').addEventListener('click', this._handleClick);
-    var dataSet = tab.getDataSet();
-
-    var href = a.getAttribute('href');
-    var isAnchor = href.charAt(0) === '#';
-    if (isAnchor) {
-      dataSet.tabId = href.substring(1);
-      dataSet.tabURL = '';
-    } else {
-      dataSet.tabId = href;
-      dataSet.tabURL = href;
-    }
-
-    this.tabs[dataSet.tabId] = tab;
-    this.tabArray.push(tab);
-
-    var content = Prime.Document.queryById(dataSet.tabId);
-    if (content === null && isAnchor) {
-      throw new Error('A div is required with the following ID [' + dataSet.tabId + ']');
-    } else if (content === null) {
-      content = Prime.Document.newElement('<div>').insertAfter(this.element).setAttribute('id', href);
-    }
-
-    content.hide();
-
-    content.addClass('prime-tab-content');
-    this.tabContents[dataSet.tabId] = content;
-  }.bind(this));
 
   this.tabsContainer.addClass('prime-initialized');
 };
@@ -101,10 +70,10 @@ Prime.Widgets.Tabs.prototype = {
     }.bind(this));
 
     for (var i = 0; i < this.tabs.length; i++) {
-      this.tabs[i].removeClass('prime-tab-content');
+      this.tabs[i].removeClass(this.options['tabContentClass']);
     }
 
-    this.tabsContainer.removeClass('prime-tabs prime-initialized');
+    this.tabsContainer.removeClass('prime-initialized');
   },
 
   /**
@@ -119,7 +88,7 @@ Prime.Widgets.Tabs.prototype = {
   },
 
   /**
-   * Re-applies the first-child, last-child, and prime-active classes based on the current state of the tabs. If there
+   * Re-applies the first-child, last-child, and active classes based on the current state of the tabs. If there
    * is no tab that is active, this also selects the first tab that is visible.
    */
   redraw: function() {
@@ -135,18 +104,19 @@ Prime.Widgets.Tabs.prototype = {
 
         lastVisible = this.tabArray[i];
 
-        if (this.tabArray[i].hasClass('prime-active')) {
+        if (this.tabArray[i].hasClass(this.options['activeClass'])) {
           noneActive = false;
         }
-      } else if (this.tabArray[i].hasClass('prime-active')) {
+      } else if (this.tabArray[i].hasClass(this.options['activeClass'])) {
         selectNew = true;
       }
 
-      this.tabArray[i].removeClass('first-child last-child');
+      this.tabArray[i].removeClass(this.options['firstChildClass']);
+      this.tabArray[i].removeClass(this.options['lastChildClass']);
     }
 
-    firstVisible.addClass('first-child');
-    lastVisible.addClass('last-child');
+    firstVisible.addClass(this.options['firstChildClass']);
+    lastVisible.addClass(this.options['lastChildClass']);
 
     var tabId = null;
     if (selectNew || noneActive) {
@@ -184,16 +154,46 @@ Prime.Widgets.Tabs.prototype = {
    * @returns {Prime.Widgets.Tabs} This Tabs.
    */
   render: function() {
+    this.tabsContainer.query('li:not(.' + this.options['disabledClass'] + ')').each(function(tab) {
+      var a = tab.queryFirst('a').addEventListener('click', this._handleClick);
+      var dataSet = tab.getDataSet();
+
+      var href = a.getAttribute('href');
+      var isAnchor = href.charAt(0) === '#';
+      if (isAnchor) {
+        dataSet.tabId = href.substring(1);
+        dataSet.tabURL = '';
+      } else {
+        dataSet.tabId = href;
+        dataSet.tabURL = href;
+      }
+
+      this.tabs[dataSet.tabId] = tab;
+      this.tabArray.push(tab);
+
+      var content = Prime.Document.queryById(dataSet.tabId);
+      if (content === null && isAnchor) {
+        throw new Error('A div is required with the following ID [' + dataSet.tabId + ']');
+      } else if (content === null) {
+        content = Prime.Document.newElement('<div>').insertAfter(this.element).setAttribute('id', href);
+      }
+
+      content.hide();
+
+      content.addClass(this.options['tabContentClass']);
+      this.tabContents[dataSet.tabId] = content;
+    }.bind(this));
+
     // Check if local storage is enabled to save selected tab
     this.localStorageSupported = Prime.Utils.isDefined(Storage) && this.options['localStorageKey'] !== null;
 
-    this.tabsContainer.show('block');
+    // this.tabsContainer.show('block');
     this.redraw();
     return this;
   },
 
   /**
-   * Select the active tab. Sets the prime-active class on the li and shows only the corresponding tab content.
+   * Select the active tab. Sets the active class on the li and shows only the corresponding tab content.
    *
    * @param id The Id of the tab to select.
    */
@@ -204,11 +204,11 @@ Prime.Widgets.Tabs.prototype = {
 
     for (var tabId in this.tabs) {
       if (this.tabs.hasOwnProperty(tabId)) {
-        this.tabs[tabId].removeClass('prime-active');
+        this.tabs[tabId].removeClass(this.options['activeClass']);
       }
     }
 
-    this.tabs[id].addClass('prime-active');
+    this.tabs[id].addClass(this.options['activeClass']);
     this.selectedTab = this.tabs[id];
     for (tabId in this.tabContents) {
       if (this.tabContents.hasOwnProperty(tabId) && tabId === id) {
@@ -232,9 +232,9 @@ Prime.Widgets.Tabs.prototype = {
 
     var ajaxURL = this.selectedTab.getDataSet().tabURL;
     if (ajaxURL !== '') {
-      this.selectedTab.addClass('prime-loading');
+      this.selectedTab.addClass(this.options['loadingClass']);
       this.tabContents[id].setHTML('');
-      this.tabContents[id].addClass('prime-loading');
+      this.tabContents[id].addClass(this.options['loadingClass']);
       new Prime.Ajax.Request(ajaxURL, 'GET')
           .withSuccessHandler(this._handleAJAXResponse)
           .withErrorHandler(this._handleAJAXResponse)
@@ -329,9 +329,9 @@ Prime.Widgets.Tabs.prototype = {
    * @private
    */
   _handleAJAXResponse: function(xhr) {
-    this.selectedTab.removeClass('prime-loading');
+    this.selectedTab.removeClass(this.options['loadingClass']);
     var container = this.tabContents[this.selectedTab.getDataSet().tabId];
-    container.removeClass('prime-loading');
+    container.removeClass(this.options['loadingClass']);
     container.setHTML(xhr.responseText);
 
     if (this.options['ajaxCallback'] !== null) {
@@ -347,7 +347,7 @@ Prime.Widgets.Tabs.prototype = {
    */
   _handleClick: function(event) {
     var a = new Prime.Document.Element(event.currentTarget);
-    if (!a.hasClass('prime-disabled')) {
+    if (!a.hasClass(this.options['disabledClass'])) {
       var href = a.getAttribute('href');
       if (href.charAt(0) === '#') {
         this.selectTab(href.substring(1));
@@ -366,9 +366,15 @@ Prime.Widgets.Tabs.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
+      'activeClass': 'prime-active',
       'ajaxCallback': null,
+      'disabledClass': 'prime-disabled',
       'errorClass': null,
-      'localStorageKey': null
+      'firstChildClass': 'first-child',
+      'lastChildClass': 'last-child',
+      'loadingClass': 'prime-loading',
+      'localStorageKey': null,
+      'tabContentClass': 'prime-tab-content'
     };
 
     var userOptions = Prime.Utils.dataSetToOptions(this.element);
