@@ -27,6 +27,12 @@ Prime.Document = Prime.Document || {};
 
 Prime.Document.readyFunctions = [];
 Prime.Document.tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
+
+/**
+ * The Body element as a Prime.Document.Element object.
+ *
+ * @type {Prime.Document.Element}
+ */
 Prime.Document.bodyElement = null;
 
 /**

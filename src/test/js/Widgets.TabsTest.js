@@ -40,7 +40,8 @@ buster.testCase('Tabs class tests', {
   },
 
   'tabs constructed ok': function() {
-    assert.isTrue(this.tabs.hasClass('prime-tabs'));
+    // I changed tabs to use the class on the element rather than forcing a prime-class. This prevents the FOUC.
+    // assert.isTrue(this.tabs.hasClass('prime-tabs'));
     assert.equals(this.tabContents.length, 2);
 
     // only one tab should ever be active

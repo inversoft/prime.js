@@ -18,7 +18,6 @@
 var Prime = Prime || {};
 Prime.Document = Prime.Document || {};
 
-
 /**
  * Creates an Element class for the given DOM element.
  *
@@ -347,6 +346,30 @@ Prime.Document.Element.prototype = {
    */
   getComputedStyle: function() {
     return (this.domElement.currentStyle) ? this.domElement.currentStyle : document.defaultView.getComputedStyle(this.domElement, null);
+  },
+
+  /**
+   * Calculates the location of this element with respect to the document rather than the elements parent, offset parent
+   * or scroll position.
+   *
+   * @returns {{top: number, left: number}}
+   */
+  getCoordinates: function() {
+    var box = this.domElement.getBoundingClientRect();
+
+    var body = document.body;
+    var documentElement = document.documentElement;
+
+    var scrollTop = window.pageYOffset || documentElement.scrollTop || body.scrollTop;
+    var scrollLeft = window.pageXOffset || documentElement.scrollLeft || body.scrollLeft;
+
+    var clientTop = documentElement.clientTop || body.clientTop || 0;
+    var clientLeft = documentElement.clientLeft || body.clientLeft || 0;
+
+    var top  = box.top + scrollTop - clientTop;
+    var left = box.left + scrollLeft - clientLeft;
+
+    return { top: Math.round(top), left: Math.round(left) };
   },
 
   /**

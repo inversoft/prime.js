@@ -333,6 +333,16 @@ buster.testCase('Element class tests', {
     assert.equals(element.getClass(), 'class1 class2');
   },
 
+  'getCoordinates': function() {
+    var coordinates = Prime.Document.queryById("getCoordinates-absolute").getCoordinates();
+    assert.isTrue(coordinates.left > 0);
+    assert.isTrue(coordinates.top > 0);
+
+    coordinates = Prime.Document.queryById("getCoordinates-fixed").getCoordinates();
+    assert.equals(coordinates.left, -15);
+    assert.equals(coordinates.top, -15);
+  },
+
   'getDataAttribute': function() {
     assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('attr1'), 'value1');
     assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('attr2'), 'value2');

@@ -30,6 +30,7 @@
     <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
     <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
+    <link rel="stylesheet" href="../../main/css/Widgets.Tooltip.css"/>
     <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
     <script type="text/javascript" src="../../main/js/Browser.js"></script>
     <script type="text/javascript" src="../../main/js/Date.js"></script>
@@ -47,6 +48,7 @@
     <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
+    <script type="text/javascript" src="../../main/js/Widgets.Tooltip.js"></script>
     <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
     <script type="text/javascript" src="../../main/js/Window.js"></script>
     <script type="text/javascript">
@@ -143,8 +145,7 @@
             .render();
 
         // Side menu
-        new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryFirst('.main'))
-            .usingSideMenuElement(Prime.Document.queryById('prime-side-menu'));
+        new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryById('prime-side-menu'));
 
         Prime.Window.addEventListener('beforeunload', function() {
           console.log('Beforeunload');
@@ -192,6 +193,9 @@
                 touchableElement.setStyle('margin-left', '0px');
               }).bind(this), 50);
             });
+
+        new Prime.Widgets.Tooltip(Prime.Document.queryById('tooltip'))
+            .render();
       });
     </script>
     <style>
@@ -222,9 +226,13 @@
         </li>
       </ul>
     </nav>
-    <div class="main">
+    <div class="main prime-side-menu-body">
       <div id="prime-side-menu-button"><span>&#9776;</span></div>
       <br>
+
+      <div id="tooltip" data-tooltip="The tooltip text!">
+        This element has a tooltip.
+      </div>
 
       <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">
         <form>
