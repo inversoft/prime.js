@@ -606,6 +606,17 @@ Prime.Document.Element.prototype = {
   },
 
   /**
+   * @returns {number} The zIndex style of this element based on the element or the first positioned parent.
+   */
+  getRelativeZIndex: function() {
+    var e = this;
+    while (e !== null && e.getComputedStyle()['zIndex'] === 'auto') {
+      e = e.getParent();
+    }
+    return e === null ? 0 : parseInt(e.getComputedStyle()['zIndex']);
+  },
+
+  /**
    * @returns {number} The right position (in pixels) of the current element.
    */
   getRight: function() {

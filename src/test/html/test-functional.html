@@ -16,328 +16,344 @@
   -->
 
 <html>
-  <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
-    <title>Prime Functional Tests</title>
-    <link rel="stylesheet" href="../css/normalize-3.0.2.css"/>
-    <link rel="stylesheet" href="../js/buster-test.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.PhraseBuilder.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.Searcher.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
-    <link rel="stylesheet" href="../../main/css/Widgets.Tooltip.css"/>
-    <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
-    <script type="text/javascript" src="../../main/js/Browser.js"></script>
-    <script type="text/javascript" src="../../main/js/Date.js"></script>
-    <script type="text/javascript" src="../../main/js/Document.js"></script>
-    <script type="text/javascript" src="../../main/js/Document.Element.js"></script>
-    <script type="text/javascript" src="../../main/js/Document.ElementList.js"></script>
-    <script type="text/javascript" src="../../main/js/Effects.js"></script>
-    <script type="text/javascript" src="../../main/js/Events.js"></script>
-    <script type="text/javascript" src="../../main/js/Template.js"></script>
-    <script type="text/javascript" src="../../main/js/Utils.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.Tooltip.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
-    <script type="text/javascript" src="../../main/js/Window.js"></script>
-    <script type="text/javascript">
-      var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
-      var searcherCallback = {
-        search: function(searchText) {
-          var result = {};
-          result.tooManyResults = searchText === 'fuck';
-          result.results = [];
-          if (!result.tooManyResults) {
-            for (var i = 0; searchText !== '' && i < values.length; i++) {
-              if (values[i].indexOf(searchText) === 0) {
-                result.results.push(values[i]);
-              }
+<head>
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <title>Prime Functional Tests</title>
+  <link rel="stylesheet" href="../css/normalize-3.0.2.css"/>
+  <link rel="stylesheet" href="../js/buster-test.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Dialog.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Overlay.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.PhraseBuilder.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Searcher.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Tooltip.css"/>
+  <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
+  <script type="text/javascript" src="../../main/js/Browser.js"></script>
+  <script type="text/javascript" src="../../main/js/Date.js"></script>
+  <script type="text/javascript" src="../../main/js/Document.js"></script>
+  <script type="text/javascript" src="../../main/js/Document.Element.js"></script>
+  <script type="text/javascript" src="../../main/js/Document.ElementList.js"></script>
+  <script type="text/javascript" src="../../main/js/Effects.js"></script>
+  <script type="text/javascript" src="../../main/js/Events.js"></script>
+  <script type="text/javascript" src="../../main/js/Template.js"></script>
+  <script type="text/javascript" src="../../main/js/Utils.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.AJAXDialog.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Overlay.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Tooltip.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
+  <script type="text/javascript" src="../../main/js/Window.js"></script>
+  <script type="text/javascript">
+    var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
+    var searcherCallback = {
+      search: function(searchText) {
+        var result = {};
+        result.tooManyResults = searchText === 'fuck';
+        result.results = [];
+        if (!result.tooManyResults) {
+          for (var i = 0; searchText !== '' && i < values.length; i++) {
+            if (values[i].indexOf(searchText) === 0) {
+              result.results.push(values[i]);
             }
           }
-
-          return result;
-        },
-
-        selectSearchResult: function(value) {
-          alert("You selected [" + value + "]");
         }
+
+        return result;
+      },
+
+      selectSearchResult: function(value) {
+        alert("You selected [" + value + "]");
+      }
+    };
+
+    function one(foo, bar) {
+      console.log('Arguments ' + arguments.length);
+      console.log('bar ' + bar);
+    }
+
+    function two(foo, bar) {
+      one(foo, bar);
+    }
+
+    console.log('Calling single param');
+    two('two');
+    console.log('Calling undefined param');
+    two('two', undefined);
+    console.log('Calling two params');
+    two('two', 'two');
+
+    console.log('Calling direct single param');
+    one('one');
+    console.log('Calling direct undefined param');
+    one('one', undefined);
+    console.log('Calling direct two params');
+    one('one', 'one');
+
+    Prime.Document.onReady(function() {
+      Prime.Document.queryFirst('#fade').addEventListener('click', function() {
+        new Prime.Effects.Fade(this).withDuration(500).go();
+      });
+
+      Prime.Document.queryFirst('#appearButton').addEventListener('click', function() {
+        var element = Prime.Document.queryFirst('#appear');
+        new Prime.Effects.Appear(element).withDuration(500).go();
+      });
+
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-test')).render();
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-custom-add-disabled-test')).withPlaceholder('Choose').withCustomAddEnabled(false).render();
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options')).render();
+      new Prime.Widgets.Searcher(Prime.Document.queryById('searcher'), Prime.Document.queryById('searcher-results'), searcherCallback);
+      new Prime.Widgets.PhraseBuilder(Prime.Document.queryById('phrase-builder'), searcherCallback.search).render();
+
+      var tabs = new Prime.Widgets.Tabs(Prime.Document.queryById('tabs')).render();
+      Prime.Document.queryById('hide-foo').addEventListener('click', function() {
+        tabs.hideTab('fooTab');
+      });
+      Prime.Document.queryById('show-foo').addEventListener('click', function() {
+        tabs.showTab('fooTab');
+      });
+      var dragElement = Prime.Document.queryById('draggable');
+      dragElement.setLeft(document.body.clientWidth - 300);
+      dragElement.setTop(50);
+      var draggable = new Prime.Widgets.Draggable(dragElement);
+
+      var destroy = Prime.Document.queryById('destroy-draggable').addEventListener('click', function(event) {
+        draggable.destroy();
+        Prime.Utils.stopEvent(event);
+      });
+
+      new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker1'))
+          .render();
+
+      new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker2'))
+          .render();
+
+      // Side menu
+      new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryById('prime-side-menu'));
+
+      Prime.Window.addEventListener('beforeunload', function() {
+        console.log('Beforeunload');
+      });
+
+      var scrollMe = Prime.Document.queryById('scroll-me');
+      Prime.Document.queryById('scroll-up').addEventListener('click', function() {
+        new Prime.Effects.ScrollTo(scrollMe, 0)
+            .withDuration(400)
+            .go();
+      });
+      Prime.Document.queryById('scroll-down').addEventListener('click', function() {
+        new Prime.Effects.ScrollTo(scrollMe, (scrollMe.getScrollHeight() - scrollMe.getHeight()))
+            .withDuration(400)
+            .go();
+      });
+
+      var touchableElement = Prime.Document.queryById('touchable');
+      var touchable = new Prime.Widgets.Touchable(touchableElement)
+          .withLongPressHandler(function() {
+            touchableElement.setHTML('long press');
+          })
+          .withSwipeUpHandler(function() {
+            touchableElement.setHTML('swipe-up');
+          })
+          .withSwipeDownHandler(function() {
+            touchableElement.setHTML('swipe-down');
+          })
+          .withSwipeLeftHandler(function() {
+            touchableElement.setHTML('swipe-left');
+          })
+          .withSwipeRightHandler(function() {
+            touchableElement.setHTML('swipe-right');
+          })
+          .withMoveHandler(function(event) {
+            var touchPoints = event.changedTouches.length;
+            if (touchPoints > 1) {
+              return true;
+            }
+
+            clearTimeout(this.timer);
+            var delta = (event.touches[0].clientX - this.touchStartX) * 0.5;
+            touchableElement.setStyle('margin-left', delta + 'px');
+            this.timer = setTimeout((function() {
+              touchableElement.setStyle('margin-left', '0px');
+            }).bind(this), 50);
+          });
+
+      new Prime.Widgets.Tooltip(Prime.Document.queryById('tooltip'));
+
+      var openFunction = function(e) {
+        new Prime.Widgets.AJAXDialog()
+            .withCallback(function(dialog) {
+              dialog.queryFirst('a.dialog-button').addEventListener('click', openFunction);
+              new Prime.Widgets.Tooltip(dialog.queryFirst('p'));
+            })
+            .initialize()
+            .open('ajax-dialog-response.html');
+        Prime.Utils.stopEvent(e);
       };
 
-      function one(foo, bar) {
-        console.log('Arguments ' + arguments.length);
-        console.log('bar ' + bar);
-      }
+      Prime.Document.queryById('ajax-dialog-button').addEventListener('click', openFunction);
+    });
+  </script>
+  <style>
+    #multiple-select-lots-of-options-display {
+      width: 300px;
+    }
 
-      function two(foo, bar) {
-        one(foo, bar);
-      }
-
-      console.log('Calling single param');
-      two('two');
-      console.log('Calling undefined param');
-      two('two', undefined);
-      console.log('Calling two params');
-      two('two', 'two');
-
-      console.log('Calling direct single param');
-      one('one');
-      console.log('Calling direct undefined param');
-      one('one', undefined);
-      console.log('Calling direct two params');
-      one('one', 'one');
-
-      Prime.Document.onReady(function() {
-        Prime.Document.queryFirst('#fade').
-          addEventListener('click', function() {
-            new Prime.Effects.Fade(this).withDuration(500).go();
-          });
-
-        Prime.Document.queryFirst('#appearButton').
-          addEventListener('click', function() {
-            var element = Prime.Document.queryFirst('#appear');
-            new Prime.Effects.Appear(element).withDuration(500).go();
-          });
-
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-test')).
-            render();
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-custom-add-disabled-test')).
-            withPlaceholder('Choose').
-            withCustomAddEnabled(false).
-            render();
-        new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options')).
-            render();
-        new Prime.Widgets.Searcher(Prime.Document.queryById('searcher'), Prime.Document.queryById('searcher-results'), searcherCallback);
-        new Prime.Widgets.PhraseBuilder(Prime.Document.queryById('phrase-builder'), searcherCallback.search).
-            render();
-
-        var tabs = new Prime.Widgets.Tabs(Prime.Document.queryById('tabs')).render();
-        Prime.Document.queryById('hide-foo').addEventListener('click', function() {
-          tabs.hideTab('fooTab');
-        });
-        Prime.Document.queryById('show-foo').addEventListener('click', function() {
-          tabs.showTab('fooTab');
-        });
-        var dragElement = Prime.Document.queryById('draggable');
-        dragElement.setLeft(document.body.clientWidth - 300);
-        dragElement.setTop(50);
-        var draggable = new Prime.Widgets.Draggable(dragElement);
-
-        var destroy = Prime.Document.queryById('destroy-draggable').addEventListener('click', function(event) {
-          draggable.destroy();
-          Prime.Utils.stopEvent(event);
-        });
-
-        new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker1'))
-            .render();
-
-        new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker2'))
-            .render();
-
-        // Side menu
-        new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryById('prime-side-menu'));
-
-        Prime.Window.addEventListener('beforeunload', function() {
-          console.log('Beforeunload');
-        });
-
-        var scrollMe = Prime.Document.queryById('scroll-me');
-        Prime.Document.queryById('scroll-up').addEventListener('click', function() {
-          new Prime.Effects.ScrollTo(scrollMe, 0)
-              .withDuration(400)
-              .go();
-        });
-        Prime.Document.queryById('scroll-down').addEventListener('click', function() {
-          new Prime.Effects.ScrollTo(scrollMe, (scrollMe.getScrollHeight() - scrollMe.getHeight()))
-              .withDuration(400)
-              .go();
-        });
-
-        var touchableElement = Prime.Document.queryById('touchable');
-        var touchable = new Prime.Widgets.Touchable(touchableElement)
-            .withLongPressHandler(function() {
-              touchableElement.setHTML('long press');
-            })
-            .withSwipeUpHandler(function() {
-              touchableElement.setHTML('swipe-up');
-            })
-            .withSwipeDownHandler(function() {
-              touchableElement.setHTML('swipe-down');
-            })
-            .withSwipeLeftHandler(function() {
-              touchableElement.setHTML('swipe-left');
-            })
-            .withSwipeRightHandler(function() {
-              touchableElement.setHTML('swipe-right');
-            })
-            .withMoveHandler(function(event) {
-              var touchPoints = event.changedTouches.length;
-              if (touchPoints > 1) {
-                return true;
-              }
-
-              clearTimeout(this.timer);
-              var delta = (event.touches[0].clientX - this.touchStartX) * 0.5;
-              touchableElement.setStyle('margin-left', delta + 'px');
-              this.timer = setTimeout((function() {
-                touchableElement.setStyle('margin-left', '0px');
-              }).bind(this), 50);
-            });
-
-        new Prime.Widgets.Tooltip(Prime.Document.queryById('tooltip'))
-            .render();
-      });
-    </script>
-    <style>
-      #multiple-select-lots-of-options-display {
-        width: 300px;
-      }
-      body {
-        margin: 10px;
-      }
-    </style>
-  </head>
-  <body>
-    <nav id="prime-side-menu" class="prime-side-menu">
+    body {
+      margin: 10px;
+    }
+  </style>
+</head>
+<body>
+<nav id="prime-side-menu" class="prime-side-menu">
+  <ul>
+    <li>
+      <strong>foo</strong>
       <ul>
+        <li><a href="#">bar</a></li>
+        <li><a href="#">baz</a></li>
         <li>
-          <strong>foo</strong>
+          <a href="#">fred</a>
           <ul>
-            <li><a href="#">bar</a></li>
-            <li><a href="#">baz</a></li>
-            <li>
-              <a href="#">fred</a>
-              <ul>
-                <li><a href="#">fred 1</a></li>
-                <li><a href="#">fred 2</a></li>
-              </ul>
-            </li>
+            <li><a href="#">fred 1</a></li>
+            <li><a href="#">fred 2</a></li>
           </ul>
         </li>
       </ul>
-    </nav>
-    <div class="main prime-side-menu-body">
-      <div id="prime-side-menu-button"><span>&#9776;</span></div>
-      <br>
+    </li>
+  </ul>
+</nav>
+<div class="main prime-side-menu-body">
+  <div id="prime-side-menu-button"><span>&#9776;</span></div>
+  <br>
 
-      <div id="tooltip" data-tooltip="The tooltip text!">
-        This element has a tooltip.
-      </div>
+  <div id="tooltip" data-tooltip="The tooltip text!">
+    This element has a tooltip.
+  </div>
 
-      <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">
-        <form>
-          <input id="datepicker1" type="text" name="datepicker" size="40">
-          <input id="datepicker2" type="text" name="datepicker" size="40" data-date-only="true">
-        </form>
-      </div>
+  <div id="ajax-dialog-container">
+    <a href="#" id="ajax-dialog-button">Open AJAX dialog</a>
+  </div>
 
-      <div id="touchable" style="width: 400px; height: 150px; background-color: gray;">
-        Swipe left or right...give it a shot!
-      </div>
+  <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">
+    <form>
+      <input id="datepicker1" type="text" name="datepicker" size="40">
+      <input id="datepicker2" type="text" name="datepicker" size="40" data-date-only="true">
+    </form>
+  </div>
 
-      <a href="#" id="hide-foo">Hide Foo Tab</a>
-      <a href="#" id="show-foo">Show Foo Tab</a>
-      <ul id="tabs" class="prime-tabs">
-        <li><a href="#fooTab">Foo</a></li>
-        <li><a href="#barTab">Bar</a></li>
-        <li><a href="#bazTab">Baz</a></li>
-        <li><a href="ajax-response.html">AJAX tab</a></li>
-        <li><a href="ajax-response2.html">AJAX tab #2</a></li>
-      </ul>
-      <div id="fooTab">
-        Foo Tab
-      </div>
-      <div id="barTab">
-        Bar Tab
-      </div>
-      <div id="bazTab">
-        Baz Tab
-      </div>
-      <div style="height:25px;"></div>
+  <div id="touchable" style="width: 400px; height: 150px; background-color: gray;">
+    Swipe left or right...give it a shot!
+  </div>
 
-      <div id="fade" style="border: 1px solid black;">
-        Some content in the div.
-        <p>
-          Some more content.
-      </div>
-      After
-      <div id="appear" style="border: 1px solid green; display: none;">
-        Some content in the div.
-        <p>
-          Some more content.
-      </div>
-      <button id="appearButton">Appear</button>
-      <div>
-        <form action="http://www.google.com" method="GET">
-          <label for="multiple-select-test">Multiple Select Test</label><br/>
-          <select id="multiple-select-test" multiple="multiple" name="mst">
-            <option value="one" selected="selected">One</option>
-            <option value="two">Two</option>
-            <option value="three" selected="selected">Three</option>
-          </select>
-          <label for="multiple-select-custom-add-disabled-test">Multiple Select Test (custom add disabled)</label><br/>
-          <select id="multiple-select-custom-add-disabled-test" multiple="multiple" name="mscadt">
-            <option value="one" selected="selected">One</option>
-            <option value="two">Two</option>
-            <option value="three" selected="selected">Three</option>
-          </select>
-          <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
-          <select id="multiple-select-lots-of-options" multiple="multiple" name="msloo">
-            <option value="one">One</option>
-            <option value="two">Two</option>
-            <option value="three">Three</option>
-            <option value="four">Four</option>
-            <option value="five">Five</option>
-            <option value="six">Six</option>
-            <option value="seven">Seven</option>
-            <option value="eight">Eight</option>
-            <option value="nine">Nine</option>
-            <option value="ten">Ten</option>
-            <option value="eleven">Eleven</option>
-            <option value="twelve">Twelve</option>
-            <option value="thirteen">Thirteen</option>
-            <option value="fourteen">Fourteen</option>
-            <option value="fifteen">Fifteen</option>
-            <option value="sixteen">Sixteen</option>
-            <option value="seventeen">Seventeen</option>
-            <option value="eighteen">Eighteen</option>
-            <option value="nineteen">Nineteen</option>
-            <option value="Twenty">Twenty</option>
-          </select>
-          <input type="submit" value="Submit"/>
-          <br/>
-          <br/>
-          <div class="prime-searcher-container">
-            <label for="searcher">Searcher</label>
-            <input type="text" id="searcher"/>
-            <div id="searcher-results">
+  <a href="#" id="hide-foo">Hide Foo Tab</a>
+  <a href="#" id="show-foo">Show Foo Tab</a>
+  <ul id="tabs" class="prime-tabs">
+    <li><a href="#fooTab">Foo</a></li>
+    <li><a href="#barTab">Bar</a></li>
+    <li><a href="#bazTab">Baz</a></li>
+    <li><a href="ajax-response.html">AJAX tab</a></li>
+    <li><a href="ajax-response2.html">AJAX tab #2</a></li>
+  </ul>
+  <div id="fooTab">
+    Foo Tab
+  </div>
+  <div id="barTab">
+    Bar Tab
+  </div>
+  <div id="bazTab">
+    Baz Tab
+  </div>
+  <div style="height:25px;"></div>
 
-            </div>
-          </div>
-          <br/>
-          <br/>
-          <label for="phrase-builder">Phrase Builder</label>
-          <select id="phrase-builder" multiple="multiple">
-            <option value="one">one</option>
-            <option value="ten">ten</option>
-          </select>
-        </form>
+  <div id="fade" style="border: 1px solid black;">
+    Some content in the div.
+    <p>
+      Some more content.
+  </div>
+  After
+  <div id="appear" style="border: 1px solid green; display: none;">
+    Some content in the div.
+    <p>
+      Some more content.
+  </div>
+  <button id="appearButton">Appear</button>
+  <div>
+    <form action="http://www.google.com" method="GET">
+      <label for="multiple-select-test">Multiple Select Test</label><br/>
+      <select id="multiple-select-test" multiple="multiple" name="mst">
+        <option value="one" selected="selected">One</option>
+        <option value="two">Two</option>
+        <option value="three" selected="selected">Three</option>
+      </select>
+      <label for="multiple-select-custom-add-disabled-test">Multiple Select Test (custom add disabled)</label><br/>
+      <select id="multiple-select-custom-add-disabled-test" multiple="multiple" name="mscadt">
+        <option value="one" selected="selected">One</option>
+        <option value="two">Two</option>
+        <option value="three" selected="selected">Three</option>
+      </select>
+      <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
+      <select id="multiple-select-lots-of-options" multiple="multiple" name="msloo">
+        <option value="one">One</option>
+        <option value="two">Two</option>
+        <option value="three">Three</option>
+        <option value="four">Four</option>
+        <option value="five">Five</option>
+        <option value="six">Six</option>
+        <option value="seven">Seven</option>
+        <option value="eight">Eight</option>
+        <option value="nine">Nine</option>
+        <option value="ten">Ten</option>
+        <option value="eleven">Eleven</option>
+        <option value="twelve">Twelve</option>
+        <option value="thirteen">Thirteen</option>
+        <option value="fourteen">Fourteen</option>
+        <option value="fifteen">Fifteen</option>
+        <option value="sixteen">Sixteen</option>
+        <option value="seventeen">Seventeen</option>
+        <option value="eighteen">Eighteen</option>
+        <option value="nineteen">Nineteen</option>
+        <option value="Twenty">Twenty</option>
+      </select>
+      <input type="submit" value="Submit"/>
+      <br/>
+      <br/>
+      <div class="prime-searcher-container">
+        <label for="searcher">Searcher</label>
+        <input type="text" id="searcher"/>
+        <div id="searcher-results">
+
+        </div>
       </div>
-      <div id="draggable" style="right: 50px; width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br><button id="destroy-draggable">Destroy</button></div>
-      <div id="scroll-tests" style="margin-top: 50px;">
-        <button id="scroll-up">Scroll Up</button>
-        <button id="scroll-down">Scroll Down</button>
-        <div id="scroll-me" style="margin-bottom: 100px; padding: 5px; overflow: scroll; height: 300px; border: 1px solid black;">
+      <br/>
+      <br/>
+      <label for="phrase-builder">Phrase Builder</label>
+      <select id="phrase-builder" multiple="multiple">
+        <option value="one">one</option>
+        <option value="ten">ten</option>
+      </select>
+    </form>
+  </div>
+  <div id="draggable" style="right: 50px; width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br>
+    <button id="destroy-draggable">Destroy</button>
+  </div>
+  <div id="scroll-tests" style="margin-top: 50px;">
+    <button id="scroll-up">Scroll Up</button>
+    <button id="scroll-down">Scroll Down</button>
+    <div id="scroll-me"
+         style="margin-bottom: 100px; padding: 5px; overflow: scroll; height: 300px; border: 1px solid black;">
 <pre>
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -400,8 +416,8 @@ some advantage from it? But who has any right to find fault with a man who choos
 a pleasure that has no annoying consequences, or one who avoids a pain that produces no
 resultant pleasure?"
 </pre>
-        </div>
-      </div>
     </div>
-  </body>
+  </div>
+</div>
+</body>
 </html>

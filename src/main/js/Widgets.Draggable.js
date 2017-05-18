@@ -28,7 +28,7 @@ Prime.Widgets = Prime.Widgets || {};
  * Constructs a new Draggable object for the given element.
  *
  * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the Draggable widget.
- * @param {string} [gripSelector=] gripSelector  The optional selector to identify the 'grippy' part.
+ * @param {string} [gripSelector=] gripSelector The optional selector to identify the 'grippy' part.
  * @constructor
  */
 Prime.Widgets.Draggable = function(element, gripSelector) {

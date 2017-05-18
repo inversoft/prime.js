@@ -16,17 +16,17 @@
   </component>
   <component name="CopyrightManager" default="Inversoft Apache">
     <copyright>
-      <option name="notice" value="Copyright (c) &amp;#36;today.year, Inversoft Inc., All Rights Reserved" />
-      <option name="keyword" value="Copyright" />
-      <option name="allowReplaceKeyword" value="" />
-      <option name="myName" value="Inversoft" />
-      <option name="myLocal" value="true" />
-    </copyright>
-    <copyright>
       <option name="notice" value="Copyright (c) &amp;#36;today.year, Inversoft Inc., All Rights Reserved&#10;&#10;Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);&#10;you may not use this file except in compliance with the License.&#10;You may obtain a copy of the License at&#10;&#10;  http://www.apache.org/licenses/LICENSE-2.0&#10;&#10;Unless required by applicable law or agreed to in writing,&#10;software distributed under the License is distributed on an&#10;&quot;AS IS&quot; BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND,&#10;either express or implied. See the License for the specific&#10;language governing permissions and limitations under the License." />
       <option name="keyword" value="Copyright" />
       <option name="allowReplaceKeyword" value="" />
       <option name="myName" value="Inversoft Apache" />
+      <option name="myLocal" value="true" />
+    </copyright>
+    <copyright>
+      <option name="notice" value="Copyright (c) &amp;#36;today.year, Inversoft Inc., All Rights Reserved" />
+      <option name="keyword" value="Copyright" />
+      <option name="allowReplaceKeyword" value="" />
+      <option name="myName" value="Inversoft" />
       <option name="myLocal" value="true" />
     </copyright>
   </component>
@@ -233,9 +233,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/prime.js.iml" filepath="$PROJECT_DIR$/prime.js.iml" />
     </modules>
-  </component>
-  <component name="ProjectResources">
-    <default-html-doctype>http://www.w3.org/1999/xhtml</default-html-doctype>
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_6" project-jdk-name="1.6" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />

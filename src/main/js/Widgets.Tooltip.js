@@ -56,25 +56,18 @@ Prime.Widgets.Tooltip.prototype = {
   },
 
   /**
-   * Extracts the text from the data-set and prepares the tooltip for rendering.
-   *
-   * @returns {Prime.Widgets.Tooltip} This.
-   */
-  render: function() {
-    this.text = this.element.getDataSet()[this.options.dataName];
-    return this;
-  },
-
-  /**
    * Shows the tooltip.
    *
    * @returns {Prime.Widgets.Tooltip} This.
    */
   show: function() {
+    var text = this.element.getDataSet()[this.options.dataName];
+    var zIndex = this.element.getRelativeZIndex();
     var tooltip = Prime.Document.newElement('<span>')
         .appendTo(Prime.Document.bodyElement)
         .addClass(this.options.className + ' ' + this.element.getTagName().toLowerCase())
-        .setHTML(this.text);
+        .setHTML(text)
+        .setStyle('zIndex', zIndex + 10);
     var offsetLeft = this.element.getOffsetLeft();
     var offsetTop = this.element.getCoordinates().top;
     var targetWidth = this.element.getWidth();
