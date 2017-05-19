@@ -24,6 +24,7 @@
   <link rel="stylesheet" href="../../main/css/Widgets.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Dialog.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Dismissable.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Overlay.css"/>
@@ -44,14 +45,15 @@
   <script type="text/javascript" src="../../main/js/Template.js"></script>
   <script type="text/javascript" src="../../main/js/Utils.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.AJAXDialog.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Dismissable.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Overlay.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
-  <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
-  <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
-  <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Tooltip.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
   <script type="text/javascript" src="../../main/js/Window.js"></script>
@@ -135,10 +137,10 @@
       });
 
       new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker1'))
-          .render();
+          .initialize();
 
       new Prime.Widgets.DateTimePicker(Prime.Document.queryById('datepicker2'))
-          .render();
+          .initialize();
 
       // Side menu
       new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryById('prime-side-menu'));
@@ -204,6 +206,9 @@
       };
 
       Prime.Document.queryById('ajax-dialog-button').addEventListener('click', openFunction);
+
+      new Prime.Widgets.Dismissable(Prime.Document.queryFirst('.dismissable'), Prime.Document.queryFirst('.dismissable a'))
+          .initialize();
     });
   </script>
   <style>
@@ -235,6 +240,9 @@
     </li>
   </ul>
 </nav>
+<div class="dismissable open">
+  Dismiss me! <a href="#">X</a>
+</div>
 <div class="main prime-side-menu-body">
   <div id="prime-side-menu-button"><span>&#9776;</span></div>
   <br>

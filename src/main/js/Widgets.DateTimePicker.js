@@ -37,118 +37,8 @@ Prime.Widgets.DateTimePicker = function(element) {
   }
 
   Prime.Utils.bindAll(this);
-
-  var value = this.element.getValue();
-  if (value === '' || value === null) {
-    this.date = new Date();
-  } else {
-    this.date = new Date(value);
-  }
-
-  this._setInitialOptions();
-  var year = this.date.getUTCFullYear();
-  var timeSeparator = '<span>' + Prime.Widgets.DateTimePicker.TIME_SEPARATOR + '</span>';
-  var dateSeparator = '<span>' + Prime.Widgets.DateTimePicker.DATE_SEPARATOR + '</span>';
-  var html =
-      '<div class="prime-date-picker">' +
-      '  <div class="header">' +
-      '    <span class="prev">&#9664;</span>' +
-      '    <span class="month"></span>' +
-      '    <span class="year"></span>' +
-      '    <span class="next">&#9654;</span>' +
-      '  </div>' +
-      '  <table class="month">' +
-      '    <thead>' +
-      '      <tr>' +
-      '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[0] + '</th>' +
-      '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[1] + '</th>' +
-      '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[2] + '</th>' +
-      '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[3] + '</th>' +
-      '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[4] + '</th>' +
-      '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[5] + '</th>' +
-      '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[6] + '</th>' +
-      '      </tr>' +
-      '    </thead>' +
-      '    <tbody>' +
-      '    </tbody>' +
-      '  </table>' +
-      '  <div class="inputs">' +
-      '    <div class="date">' +
-      '      <input size="2" maxlength="2" type="text" name="month" autocomplete="off"/>' + dateSeparator +
-      '      <input size="2" maxlength="2" type="text" name="day" autocomplete="off"/>' + dateSeparator +
-      '      <input size="4" maxlength="4" type="text" name="year" autocomplete="off"/>' +
-      '    </div>' +
-      '    <div class="time">' +
-      '      <input size="2" maxlength="2" type="text" name="hour" autocomplete="off"/>' + timeSeparator +
-      '      <input size="2" maxlength="2" type="text" name="minute" autocomplete="off"/>' + timeSeparator +
-      '      <input size="2" maxlength="2" type="text" name="second" autocomplete="off"/>' +
-      '      <input size="2" maxlength="2" type="text" name="am_pm" autocomplete="off"/>' +
-      '    </div>' +
-      '  </div>' +
-      '</div>';
-  Prime.Document.appendHTML(html);
-  this.datepicker = Prime.Document.queryLast('.prime-date-picker').hide();
-  this.element.addEventListener('click', this._handleInputClick);
-  this.element.addEventListener('focus', this._handleInputClick);
-  this.element.addEventListener('keydown', this._handleInputKey);
-
-  this.calendarBody = this.datepicker.queryFirst('table tbody').addEventListener('click', this._handleDayClick);
-  this.monthDisplay = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand);
-  this.yearDisplay = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand);
-
-  this.time = this.datepicker.queryFirst('.time');
-  this.inputs = this.datepicker.queryFirst('div.inputs');
-  this.hourInput = this.inputs.queryFirst('input[name=hour]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleHourKey);
-  this.minuteInput = this.inputs.queryFirst('input[name=minute]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleMinuteKey);
-  this.secondInput = this.inputs.queryFirst('input[name=second]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleSecondKey);
-  this.ampmInput = this.inputs.queryFirst('input[name=am_pm]').addEventListener('keydown', this._handleAmPmKey);
-  this.monthInput = this.inputs.queryFirst('input[name=month]').setValue(this.date.getMonth() + 1).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleMonthKey);
-  this.dayInput = this.inputs.queryFirst('input[name=day]').setValue(this.date.getDate()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleDayKey);
-  this.yearInput = this.inputs.queryFirst('input[name=year]').setValue(this.date.getFullYear()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleYearKey);
-
-  this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth);
-  this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth);
-
   this.callback = null;
-
-  Prime.Document.addEventListener('click', this._handleGlobalClick);
-  Prime.Document.addEventListener('keydown', this._handleGlobalKey);
-
-  // Setup months dropdown
-  html = '<div class="months">';
-  for (var i = 0; i < Prime.Widgets.DateTimePicker.MONTHS.length; i++) {
-    html += '<div data-month="' + i + '">' + Prime.Widgets.DateTimePicker.MONTHS[i] + '</div>';
-  }
-  html += '</div>';
-  this.datepicker.appendHTML(html);
-  this.months = this.datepicker.queryFirst('.months');
-  this.months.hide();
-  this.months.getChildren().each(function(month) {
-    month.addEventListener('click', function() {
-      new Prime.Effects.Fade(this.months).withDuration(100).go();
-      this.setMonth(parseInt(month.getDataAttribute('month')));
-    }.bind(this));
-  }.bind(this));
-
-  // Setup year dropdown
-  html = '<div class="years">';
-  var startYear = this.date.getFullYear() - 10;
-  var endYear = this.date.getFullYear() + 10;
-  for (i = startYear; i < endYear; i++) {
-    html += '<div data-year="' + i + '">' + i + '</div>';
-  }
-  html += '</div>';
-  this.datepicker.appendHTML(html);
-  this.years = this.datepicker.queryFirst('.years');
-  this.years.hide();
-  this.years.getChildren().each(function(year) {
-    year.addEventListener('click', function() {
-      new Prime.Effects.Fade(this.years).withDuration(100).go();
-      this.setYear(parseInt(year.getDataAttribute('year')));
-    }.bind(this));
-  }.bind(this));
-
-  this.element.addClass('prime-initialized');
+  this._setInitialOptions();
 };
 
 Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
@@ -158,6 +48,22 @@ Prime.Widgets.DateTimePicker.TIME_SEPARATOR = ':';
 Prime.Widgets.DateTimePicker.AM_PM = ['AM', 'PM'];
 
 Prime.Widgets.DateTimePicker.prototype = {
+  /**
+   * Closes the Date Picker widget.
+   *
+   * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
+   */
+  close: function() {
+    // new Prime.Effects.Fade(this.datepicker).withDuration(100).go();
+    this.datepicker.removeClass('open');
+
+    // Pause a bit to cancel focus event and allow transition to play
+    setTimeout(function(){
+      this.datepicker.hide();
+    }.bind(this), this.options['closeTimeout']);
+    return this;
+  },
+
   /**
    * Destroys the DateTimePicker Widget
    */
@@ -208,12 +114,123 @@ Prime.Widgets.DateTimePicker.prototype = {
   },
 
   /**
-   * Hide the Date Picker widget.
+   * Rebuilds the entire widget using the date value. Even if the user has moved to a different month display, this will
+   * rebuild the table completely.
    *
    * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
    */
-  hide: function() {
-    new Prime.Effects.Fade(this.datepicker).withDuration(100).go();
+  initialize: function() {
+    var value = this.element.getValue();
+    if (value === '' || value === null) {
+      this.date = new Date();
+    } else {
+      this.date = new Date(value);
+    }
+
+    var year = this.date.getUTCFullYear();
+    var timeSeparator = '<span>' + Prime.Widgets.DateTimePicker.TIME_SEPARATOR + '</span>';
+    var dateSeparator = '<span>' + Prime.Widgets.DateTimePicker.DATE_SEPARATOR + '</span>';
+    var html =
+        '<div class="prime-date-picker">' +
+        '  <div class="header">' +
+        '    <span class="prev">&#9664;</span>' +
+        '    <span class="month"></span>' +
+        '    <span class="year"></span>' +
+        '    <span class="next">&#9654;</span>' +
+        '  </div>' +
+        '  <table class="month">' +
+        '    <thead>' +
+        '      <tr>' +
+        '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[0] + '</th>' +
+        '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[1] + '</th>' +
+        '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[2] + '</th>' +
+        '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[3] + '</th>' +
+        '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[4] + '</th>' +
+        '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[5] + '</th>' +
+        '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[6] + '</th>' +
+        '      </tr>' +
+        '    </thead>' +
+        '    <tbody>' +
+        '    </tbody>' +
+        '  </table>' +
+        '  <div class="inputs">' +
+        '    <div class="date">' +
+        '      <input size="2" maxlength="2" type="text" name="month" autocomplete="off"/>' + dateSeparator +
+        '      <input size="2" maxlength="2" type="text" name="day" autocomplete="off"/>' + dateSeparator +
+        '      <input size="4" maxlength="4" type="text" name="year" autocomplete="off"/>' +
+        '    </div>' +
+        '    <div class="time">' +
+        '      <input size="2" maxlength="2" type="text" name="hour" autocomplete="off"/>' + timeSeparator +
+        '      <input size="2" maxlength="2" type="text" name="minute" autocomplete="off"/>' + timeSeparator +
+        '      <input size="2" maxlength="2" type="text" name="second" autocomplete="off"/>' +
+        '      <input size="2" maxlength="2" type="text" name="am_pm" autocomplete="off"/>' +
+        '    </div>' +
+        '  </div>' +
+        '</div>';
+    Prime.Document.appendHTML(html);
+    this.datepicker = Prime.Document.queryLast('.prime-date-picker').hide();
+    this.element.addEventListener('click', this._handleInputClick);
+    this.element.addEventListener('focus', this._handleInputClick);
+    this.element.addEventListener('keydown', this._handleInputKey);
+
+    this.calendarBody = this.datepicker.queryFirst('table tbody').addEventListener('click', this._handleDayClick);
+    this.monthDisplay = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand);
+    this.yearDisplay = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand);
+
+    this.time = this.datepicker.queryFirst('.time');
+    this.inputs = this.datepicker.queryFirst('div.inputs');
+    this.hourInput = this.inputs.queryFirst('input[name=hour]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleHourKey);
+    this.minuteInput = this.inputs.queryFirst('input[name=minute]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleMinuteKey);
+    this.secondInput = this.inputs.queryFirst('input[name=second]').addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleSecondKey);
+    this.ampmInput = this.inputs.queryFirst('input[name=am_pm]').addEventListener('keydown', this._handleAmPmKey);
+    this.monthInput = this.inputs.queryFirst('input[name=month]').setValue(this.date.getMonth() + 1).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleMonthKey);
+    this.dayInput = this.inputs.queryFirst('input[name=day]').setValue(this.date.getDate()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleDayKey);
+    this.yearInput = this.inputs.queryFirst('input[name=year]').setValue(this.date.getFullYear()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleYearKey);
+
+    this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth);
+    this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth);
+
+    this.callback = null;
+
+    Prime.Document.addEventListener('click', this._handleGlobalClick);
+    Prime.Document.addEventListener('keydown', this._handleGlobalKey);
+
+    // Setup months dropdown
+    html = '<div class="months">';
+    for (var i = 0; i < Prime.Widgets.DateTimePicker.MONTHS.length; i++) {
+      html += '<div data-month="' + i + '">' + Prime.Widgets.DateTimePicker.MONTHS[i] + '</div>';
+    }
+    html += '</div>';
+    this.datepicker.appendHTML(html);
+    this.months = this.datepicker.queryFirst('.months');
+    this.months.hide();
+    this.months.getChildren().each(function(month) {
+      month.addEventListener('click', function() {
+        new Prime.Effects.Fade(this.months).withDuration(100).go();
+        this.setMonth(parseInt(month.getDataAttribute('month')));
+      }.bind(this));
+    }.bind(this));
+
+    // Setup year dropdown
+    html = '<div class="years">';
+    var startYear = this.date.getFullYear() - 10;
+    var endYear = this.date.getFullYear() + 10;
+    for (i = startYear; i < endYear; i++) {
+      html += '<div data-year="' + i + '">' + i + '</div>';
+    }
+    html += '</div>';
+    this.datepicker.appendHTML(html);
+    this.years = this.datepicker.queryFirst('.years');
+    this.years.hide();
+    this.years.getChildren().each(function(year) {
+      year.addEventListener('click', function() {
+        new Prime.Effects.Fade(this.years).withDuration(100).go();
+        this.setYear(parseInt(year.getDataAttribute('year')));
+      }.bind(this));
+    }.bind(this));
+
+    this._rebuild();
+    this.element.addClass('prime-initialized');
     return this;
   },
 
@@ -229,6 +246,23 @@ Prime.Widgets.DateTimePicker.prototype = {
     newDate.setFullYear(parseInt(this.yearDisplay.getDataAttribute('year')));
     Prime.Date.plusMonths(newDate, 1);
     this.drawCalendar(newDate);
+    return this;
+  },
+
+  /**
+   * Opens the Date Picker widget.
+   *
+   * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
+   */
+  open: function() {
+    this.datepicker.setLeft(this.element.getLeft());
+    this.datepicker.setTop(this.element.getAbsoluteTop() + this.element.getHeight() + 8);
+    this.datepicker.show();
+    this.datepicker.addClass('open');
+
+    var zIndex = this.element.getRelativeZIndex();
+    this.datepicker.setStyle('zIndex', zIndex + 10);
+    // new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
     return this;
   },
 
@@ -278,22 +312,6 @@ Prime.Widgets.DateTimePicker.prototype = {
   },
 
   /**
-   * Rebuilds the entire widget using the date value. Even if the user has moved to a different month
-   * display, this will rebuild the table completely.
-   *
-   * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
-   */
-  render: function() {
-    this.drawCalendar(this.date);
-    this._refreshInputs();
-
-    if (this.options.dateOnly) {
-      this.time.hide();
-    }
-    return this;
-  },
-
-  /**
    * Sets the date of the DateTimePicker and redraws the calendar to the month for the date.
    *
    * @param {Date} newDate The new date.
@@ -306,7 +324,8 @@ Prime.Widgets.DateTimePicker.prototype = {
     } else {
       this.element.setValue(newDate.toISOString());
     }
-    this.render();
+
+    this._rebuild();
 
     if (this.callback !== null) {
       this.callback(this);
@@ -350,18 +369,6 @@ Prime.Widgets.DateTimePicker.prototype = {
   },
 
   /**
-   * Show the Date Picker widget
-   *
-   * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
-   */
-  show: function() {
-    this.datepicker.setLeft(this.element.getLeft());
-    this.datepicker.setTop(this.element.getAbsoluteTop() + this.element.getHeight() + 8);
-    new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
-    return this;
-  },
-
-  /**
    * Sets the callback handler that is called with the DateTimePicker's value is changed.
    *
    * @param callback {Function} The callback function.
@@ -369,6 +376,17 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   withCallback: function(callback) {
     this.callback = callback;
+    return this;
+  },
+
+  /**
+   * Sets the timeout used in the close method to allow for transitions.
+   *
+   * @param timeout {int} The timeout.
+   * @returns {Prime.Widgets.DateTimePicker}
+   */
+  withCloseTimeout: function(timeout) {
+    this.options['closeTimeout'] = timeout;
     return this;
   },
 
@@ -611,7 +629,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     var left = this.datepicker.getLeft();
     var right = this.datepicker.getRight();
     if (this.datepicker.isVisible() && (event.x < left || event.x > right || event.y < top || event.y > bottom)) {
-      this.hide();
+      this.close();
       this.years.hide();
       this.months.hide();
     } else {
@@ -638,11 +656,11 @@ Prime.Widgets.DateTimePicker.prototype = {
 
     if (event.keyCode === Prime.Events.Keys.ENTER) {
       this.setDate(this.date);
-      this.hide();
+      this.close();
       this.element.focus();
       Prime.Utils.stopEvent(event);
     } else if (event.keyCode === Prime.Events.Keys.ESCAPE) {
-      this.hide();
+      this.close();
       this.element.focus();
     }
   },
@@ -680,7 +698,7 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   _handleInputClick: function() {
     if (!this.datepicker.isVisible()) {
-      this.show();
+      this.open();
       this.monthInput.domElement.setSelectionRange(0, this.monthInput.getValue().length);
       this.monthInput.focus();
     }
@@ -860,6 +878,20 @@ Prime.Widgets.DateTimePicker.prototype = {
       this.date.setFullYear(parseInt(this.yearInput.getValue()));
     }
   },
+
+  /**
+   * Rebuilds the HTML of the DateTimePicker.
+   * @private
+   */
+  _rebuild: function() {
+    this.drawCalendar(this.date);
+    this._refreshInputs();
+
+    if (this.options.dateOnly) {
+      this.time.hide();
+    }
+  },
+
   /**
    * Refresh the time inputs.
    *
@@ -894,6 +926,7 @@ Prime.Widgets.DateTimePicker.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
+      'closeTimeout': 200,
       'dateOnly': false
     };
 

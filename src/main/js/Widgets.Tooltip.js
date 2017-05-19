@@ -68,22 +68,22 @@ Prime.Widgets.Tooltip.prototype = {
         .addClass(this.options.className + ' ' + this.element.getTagName().toLowerCase())
         .setHTML(text)
         .setStyle('zIndex', zIndex + 10);
-    var offsetLeft = this.element.getOffsetLeft();
-    var offsetTop = this.element.getCoordinates().top;
+
+    var coords = this.element.getCoordinates();
     var targetWidth = this.element.getWidth();
     var tooltipHeight = tooltip.getHeight();
     var tooltipWidth = tooltip.getWidth();
     var textAlign = this.element.getComputedStyle()['textAlign'];
     if (textAlign === 'right') {
-      tooltip.setLeft(offsetLeft + (targetWidth - 5) - (tooltipWidth / 2));
-      tooltip.setTop(offsetTop - tooltipHeight - 6);
+      tooltip.setLeft(coords.left + (targetWidth - 5) - (tooltipWidth / 2));
+      tooltip.setTop(coords.top - tooltipHeight - 6);
     } else if (targetWidth > tooltipWidth && (textAlign === 'left' || textAlign === 'start')) {
-      var left = offsetLeft - (tooltipWidth / 2);
+      var left = coords.left - (tooltipWidth / 2);
       tooltip.setLeft(left < 5 ? 5 : left);
-      tooltip.setTop(offsetTop - tooltipHeight - 6);
+      tooltip.setTop(coords.top - tooltipHeight - 6);
     } else {
-      tooltip.setLeft(offsetLeft + (targetWidth / 2) - (tooltipWidth / 2));
-      tooltip.setTop(offsetTop - tooltipHeight - 6);
+      tooltip.setLeft(coords.left + (targetWidth / 2) - (tooltipWidth / 2));
+      tooltip.setTop(coords.top - tooltipHeight - 6);
     }
 
     this.element.domElement.tooltip = tooltip;

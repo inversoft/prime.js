@@ -25,6 +25,7 @@ Prime.Widgets.AJAXDialog = function() {
   Prime.Utils.bindAll(this);
   this.callback = null;
   this.element = null;
+  this._setInitialOptions();
 };
 
 Prime.Widgets.AJAXDialog.prototype = {
@@ -44,7 +45,7 @@ Prime.Widgets.AJAXDialog.prototype = {
       } else {
         Prime.Widgets.Overlay.instance.close();
       }
-    }.bind(this), 200);
+    }.bind(this), this.options['closeTimeout']);
 
     return this;
   },
@@ -63,7 +64,6 @@ Prime.Widgets.AJAXDialog.prototype = {
    * @returns {Prime.Widgets.AJAXDialog} This.
    */
   initialize: function() {
-    this._setInitialOptions();
     return this;
   },
 
@@ -162,6 +162,17 @@ Prime.Widgets.AJAXDialog.prototype = {
   },
 
   /**
+   * Sets the timeout used in the close method to allow for transitions.
+   *
+   * @param timeout {int} The timeout.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withCloseTimeout: function(timeout) {
+    this.options['closeTimeout'] = timeout;
+    return this;
+  },
+
+  /**
    * Sets the draggable element selector that is used for the Prime.Widgets.Draggable.
    *
    * @param selector {string} The element selector.
@@ -177,7 +188,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
    * @param {Object} options Key value pair of configuration options.
-   * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
+   * @returns {Prime.Widgets.AJAXDialog} This.
    */
   withOptions: function(options) {
     if (!Prime.Utils.isDefined(options)) {
@@ -251,6 +262,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     this.options = {
       'className': 'prime-dialog',
       'closeButtonElementSelector': '[data-dialog-role="close-button"]',
+      'closeTimeout': 200,
       'draggableElementSelector': '[data-dialog-role="draggable"]',
       'zIndexOffset': 1000
     };

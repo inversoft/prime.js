@@ -28,10 +28,16 @@
   font-size: 12px;
   line-height: 18px;
   margin: 1px;
+  opacity: 0;
   padding: 5px;
   position: absolute;
+  transition: opacity 0.2s ease-in-out;
   width: 250px;
   z-index: 3000;
+}
+
+.prime-date-picker.open {
+  opacity: 1;
 }
 
 .prime-date-picker:before {
