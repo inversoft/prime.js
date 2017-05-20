@@ -51,7 +51,7 @@
   top: -7px;
 }
 
-.prime-date-picker .header {
+.prime-date-picker header {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
@@ -65,29 +65,29 @@
   user-select: none;
 }
 
-.prime-date-picker .header span {
+.prime-date-picker header span {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   display: inline;
 }
 
-.prime-date-picker span.next,
-.prime-date-picker span.prev {
+.prime-date-picker header span.next,
+.prime-date-picker header span.prev {
   cursor: pointer;
 }
 
-.prime-date-picker span.prev {
+.prime-date-picker header span.prev {
   float: left;
   margin-left: 7px;
 }
 
-.prime-date-picker span.next {
+.prime-date-picker header span.next {
   float: right;
   margin-right: 7px;
 }
 
-.prime-date-picker .header .month {
+.prime-date-picker header .month {
   font-weight: bold;
   margin-right: 4px;
   text-transform: uppercase;
@@ -107,9 +107,15 @@
   box-sizing: border-box;
   display: inline-block;
   height: 150px;
+  opacity: 0;
   overflow: scroll;
-  position: fixed;
-  z-index: 3001;
+  position: absolute;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.prime-date-picker .months.open,
+.prime-date-picker .years.open {
+  opacity: 1;
 }
 
 .prime-date-picker .months > div,
@@ -124,8 +130,8 @@
   background-color: #f0f0f0;
 }
 
-.prime-date-picker .months > div.prime-selected,
-.prime-date-picker .years > div.prime-selected {
+.prime-date-picker .months > div.selected,
+.prime-date-picker .years > div.selected {
   background-color: #f0f0f0;
   border: 1px solid #d3d3d3;
 }
@@ -191,7 +197,7 @@
   font-weight: normal;
 }
 
-.prime-date-picker td a.prime-selected {
+.prime-date-picker td a.selected {
   border: 1px solid #4c4c4c;
   background: #f3f3f3;
   font-weight: normal;

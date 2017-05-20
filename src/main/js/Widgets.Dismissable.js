@@ -55,9 +55,12 @@ Prime.Widgets.Dismissable.prototype = {
 
   /**
    * Initializes the Dismissable by binding the events to the dismiss button.
+   *
+   * @returns {Prime.Widgets.Dismissable} This.
    */
   initialize: function() {
     this.dismissButton.addEventListener('click', this._handleClick);
+    return this;
   },
 
   /**

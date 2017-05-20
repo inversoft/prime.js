@@ -226,7 +226,7 @@ Prime.Widgets.AJAXDialog.prototype = {
   _handleAjaxDialogResponse: function(xhr) {
     this.element = Prime.Document.newElement('<div/>', {class: this.options['className']}).appendTo(document.body);
     this.setHTML(xhr.responseText);
-    new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']);
+    new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
 
     var highestZIndex = this._determineZIndex();
     Prime.Widgets.Overlay.instance.open(highestZIndex + this.options['zIndexOffset']);

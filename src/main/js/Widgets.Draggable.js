@@ -33,8 +33,10 @@ Prime.Widgets = Prime.Widgets || {};
  */
 Prime.Widgets.Draggable = function(element, gripSelector) {
   Prime.Utils.bindAll(this);
-
   this.element = Prime.Document.Element.wrap(element);
+  this.offset = {};
+  this._setInitialOptions();
+
   if (!Prime.Utils.isDefined(gripSelector)) {
     this.grip = this.element;
   } else {
@@ -43,31 +45,58 @@ Prime.Widgets.Draggable = function(element, gripSelector) {
       throw Error('Unable to find an element using the provided selector [' + gripSelector + ']');
     }
   }
-  this.grip.addClass('prime-draggable-grip');
-
-  this.originalStyle = {
-    'cursor': this.element.getStyle('cursor'),
-    'z-index': this.element.getStyle('z-index')
-  };
-
-  this.offset = {};
-
-  this.grip.addEventListener('mousedown', this._handleMouseDown);
-  this.element.addEventListener('mouseup', this._handleOnMouseUp);
-
-  this.parent = new Prime.Document.Element(this.element.domElement.parentNode);
-  this.parent.addEventListener('mouseup', this._handleParentMouseUp);
-  this.element.addClass('prime-draggable');
 };
 
 Prime.Widgets.Draggable.prototype = {
-
   /**
    * Destroys the Draggable Widget
    */
   destroy: function() {
-    this.element.removeClass('prime-draggable prime-draggable-active');
+    this.element.removeClass(this.options['className']);
+    this.element.removeClass('active');
     this.element.setStyles(this.originalStyle);
+  },
+
+  /**
+   * Initializes the Draggable by attaching the event listeners.
+   *
+   * @returns {Prime.Widgets.Draggable} This.
+   */
+  initialize: function() {
+    this.grip.addClass(this.options['gripClassName']);
+
+    this.originalStyle = {
+      'cursor': this.element.getStyle('cursor'),
+      'zIndex': this.element.getStyle('zIndex')
+    };
+
+    this.grip.addEventListener('mousedown', this._handleMouseDown);
+    this.element.addEventListener('mouseup', this._handleOnMouseUp);
+
+    this.parent = new Prime.Document.Element(this.element.domElement.parentNode);
+    this.parent.addEventListener('mouseup', this._handleParentMouseUp);
+    this.element.addClass(this.options['className']);
+    return this;
+  },
+
+  /**
+   * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
+   * method to set options on the widget. The caller needs to know what properties are valid in the options object.
+   *
+   * @param {Object} options Key value pair of configuration options.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withOptions: function(options) {
+    if (!Prime.Utils.isDefined(options)) {
+      return this;
+    }
+
+    for (var option in options) {
+      if (options.hasOwnProperty(option)) {
+        this.options[option] = options[option];
+      }
+    }
+    return this;
   },
 
   /* ===================================================================================================================
@@ -80,18 +109,17 @@ Prime.Widgets.Draggable.prototype = {
    * @private
    */
   _handleMouseDown: function(event) {
-
-    this.element.addClass('prime-draggable-active');
+    this.element.addClass('active');
 
     this.offset = {
-      'z_index': this.element.getStyle('z-index'),
+      'zIndex': this.element.getStyle('zIndex'),
       'height': this.element.getOuterHeight(),
       'width': this.element.getOuterWidth(),
       'x': this.element.getLeft() + this.element.getOuterWidth() - event.pageX,
       'y': this.element.getTop() + this.element.getOuterHeight() - event.pageY
     };
 
-    this.element.setStyle('z-index', this.offset.z_index + 1000);
+    this.element.setStyle('zIndex', this.offset.zIndex + 10);
     // defensive move to make sure we don't register more than one.
     this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
     this.parent.addEventListener('mousemove', this._handleParentMouseMove);
@@ -114,8 +142,8 @@ Prime.Widgets.Draggable.prototype = {
    * @private
    */
   _handleParentMouseUp: function() {
-    this.element.removeClass('prime-draggable-active');
-    this.element.setStyle('z-index', this.offset.z_index);
+    this.element.removeClass('active');
+    this.element.setStyle('zIndex', this.offset.zIndex);
   },
 
   /**
@@ -124,6 +152,18 @@ Prime.Widgets.Draggable.prototype = {
    */
   _handleOnMouseUp: function() {
     this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
-    this.element.removeClass('prime-draggable-active');
+    this.element.removeClass('active');
+  },
+
+  /**
+   * Set the initial options for this widget.
+   * @private
+   */
+  _setInitialOptions: function() {
+    // Defaults
+    this.options = {
+      'className': 'prime-draggable',
+      'gripClassName': 'grip'
+    };
   }
 };

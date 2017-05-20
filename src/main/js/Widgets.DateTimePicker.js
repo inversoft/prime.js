@@ -54,12 +54,37 @@ Prime.Widgets.DateTimePicker.prototype = {
    * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
    */
   close: function() {
-    // new Prime.Effects.Fade(this.datepicker).withDuration(100).go();
     this.datepicker.removeClass('open');
 
     // Pause a bit to cancel focus event and allow transition to play
     setTimeout(function(){
       this.datepicker.hide();
+    }.bind(this), this.options['closeTimeout']);
+    return this;
+  },
+
+  /**
+   * Closes the months select box.
+   *
+   * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
+   */
+  closeMonthsSelect: function() {
+    this.months.removeClass('open');
+    setTimeout(function() {
+      this.months.hide();
+    }.bind(this), this.options['closeTimeout']);
+    return this;
+  },
+
+  /**
+   * Closes the years select box.
+   *
+   * @returns {Prime.Widgets.DateTimePicker} This DateTimePicker.
+   */
+  closeYearsSelect: function() {
+    this.years.removeClass('open');
+    setTimeout(function() {
+      this.years.hide();
     }.bind(this), this.options['closeTimeout']);
     return this;
   },
@@ -74,7 +99,6 @@ Prime.Widgets.DateTimePicker.prototype = {
     this.element.removeEventListener('keydown', this._handleInputKey);
     Prime.Document.removeEventListener('click', this._handleGlobalClick);
     Prime.Document.removeEventListener('keydown', this._handleGlobalKey);
-    this.element.removeClass('prime-initialized');
   },
 
   /**
@@ -131,14 +155,14 @@ Prime.Widgets.DateTimePicker.prototype = {
     var timeSeparator = '<span>' + Prime.Widgets.DateTimePicker.TIME_SEPARATOR + '</span>';
     var dateSeparator = '<span>' + Prime.Widgets.DateTimePicker.DATE_SEPARATOR + '</span>';
     var html =
-        '<div class="prime-date-picker">' +
-        '  <div class="header">' +
+        '<div class="' + this.options['className'] + '">' +
+        '  <header>' +
         '    <span class="prev">&#9664;</span>' +
         '    <span class="month"></span>' +
         '    <span class="year"></span>' +
         '    <span class="next">&#9654;</span>' +
-        '  </div>' +
-        '  <table class="month">' +
+        '  </header>' +
+        '  <table>' +
         '    <thead>' +
         '      <tr>' +
         '        <th>' + Prime.Widgets.DateTimePicker.SHORT_DAY_NAMES[0] + '</th>' +
@@ -168,14 +192,14 @@ Prime.Widgets.DateTimePicker.prototype = {
         '  </div>' +
         '</div>';
     Prime.Document.appendHTML(html);
-    this.datepicker = Prime.Document.queryLast('.prime-date-picker').hide();
+    this.datepicker = Prime.Document.queryLast('.' + this.options['className']).hide();
     this.element.addEventListener('click', this._handleInputClick);
     this.element.addEventListener('focus', this._handleInputClick);
     this.element.addEventListener('keydown', this._handleInputKey);
 
     this.calendarBody = this.datepicker.queryFirst('table tbody').addEventListener('click', this._handleDayClick);
-    this.monthDisplay = this.datepicker.queryFirst('.header .month').addEventListener('click', this._handleMonthExpand);
-    this.yearDisplay = this.datepicker.queryFirst('.header .year').addEventListener('click', this._handleYearExpand);
+    this.monthDisplay = this.datepicker.queryFirst('header .month').addEventListener('click', this._handleMonthExpand);
+    this.yearDisplay = this.datepicker.queryFirst('header .year').addEventListener('click', this._handleYearExpand);
 
     this.time = this.datepicker.queryFirst('.time');
     this.inputs = this.datepicker.queryFirst('div.inputs');
@@ -187,8 +211,8 @@ Prime.Widgets.DateTimePicker.prototype = {
     this.dayInput = this.inputs.queryFirst('input[name=day]').setValue(this.date.getDate()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleDayKey);
     this.yearInput = this.inputs.queryFirst('input[name=year]').setValue(this.date.getFullYear()).addEventListener('change', this._handleDateTimeChange).addEventListener('keydown', this._handleYearKey);
 
-    this.datepicker.queryFirst('.header .next').addEventListener('click', this._handleNextMonth);
-    this.datepicker.queryFirst('.header .prev').addEventListener('click', this._handlePreviousMonth);
+    this.datepicker.queryFirst('header .next').addEventListener('click', this._handleNextMonth);
+    this.datepicker.queryFirst('header .prev').addEventListener('click', this._handlePreviousMonth);
 
     this.callback = null;
 
@@ -206,8 +230,8 @@ Prime.Widgets.DateTimePicker.prototype = {
     this.months.hide();
     this.months.getChildren().each(function(month) {
       month.addEventListener('click', function() {
-        new Prime.Effects.Fade(this.months).withDuration(100).go();
         this.setMonth(parseInt(month.getDataAttribute('month')));
+        this.closeMonthsSelect();
       }.bind(this));
     }.bind(this));
 
@@ -224,13 +248,12 @@ Prime.Widgets.DateTimePicker.prototype = {
     this.years.hide();
     this.years.getChildren().each(function(year) {
       year.addEventListener('click', function() {
-        new Prime.Effects.Fade(this.years).withDuration(100).go();
         this.setYear(parseInt(year.getDataAttribute('year')));
+        this.closeYearsSelect();
       }.bind(this));
     }.bind(this));
 
     this._rebuild();
-    this.element.addClass('prime-initialized');
     return this;
   },
 
@@ -262,7 +285,6 @@ Prime.Widgets.DateTimePicker.prototype = {
 
     var zIndex = this.element.getRelativeZIndex();
     this.datepicker.setStyle('zIndex', zIndex + 10);
-    // new Prime.Effects.Appear(this.datepicker).withDuration(200).go();
     return this;
   },
 
@@ -270,30 +292,38 @@ Prime.Widgets.DateTimePicker.prototype = {
    * Opens the month select box.
    */
   openMonthSelect: function() {
-    this.years.hide();
-    new Prime.Effects.Appear(this.months).withDuration(100).go();
+    this.closeYearsSelect();
+
     this.months.setLeft(this.monthDisplay.getOffsetLeft() - 5);
     this.months.setTop(this.monthDisplay.getOffsetTop() - 5);
+    this.months.setStyle('zIndex', this.monthDisplay.getRelativeZIndex() + 10);
+    this.months.show();
+    this.months.addClass('open');
+
     var currentMonth = this.months.queryFirst('[data-month="' + this.date.getMonth() + '"]');
     this.months.getChildren().each(function(month) {
-      month.removeClass('prime-selected');
+      month.removeClass('selected');
     });
-    currentMonth.addClass('prime-selected');
+    currentMonth.addClass('selected');
   },
 
   /**
    * Opens the year select box.
    */
   openYearSelect: function() {
-    this.months.hide();
-    new Prime.Effects.Appear(this.years).withDuration(100).go();
+    this.closeMonthsSelect();
+
     this.years.setLeft(this.yearDisplay.getOffsetLeft() - 5);
     this.years.setTop(this.yearDisplay.getOffsetTop() - 5);
+    this.years.setStyle('zIndex', this.yearDisplay.getRelativeZIndex() + 10);
+    this.years.show();
+    this.years.addClass('open');
+
     var currentYear = this.years.queryFirst('[data-year="' + this.date.getFullYear() + '"]');
     this.years.getChildren().each(function(year) {
-      year.removeClass('prime-selected');
+      year.removeClass('selected');
     });
-    currentYear.addClass('prime-selected');
+    currentYear.addClass('selected');
   },
 
   /**
@@ -380,6 +410,17 @@ Prime.Widgets.DateTimePicker.prototype = {
   },
 
   /**
+   * Sets the class name for the main div of the date time picker.
+   *
+   * @param className {string} The class name.
+   * @returns {Prime.Widgets.DateTimePicker} This.
+   */
+  withClassName: function(className) {
+    this.options['className'] = className;
+    return this;
+  },
+
+  /**
    * Sets the timeout used in the close method to allow for transitions.
    *
    * @param timeout {int} The timeout.
@@ -449,18 +490,18 @@ Prime.Widgets.DateTimePicker.prototype = {
       var dayOfWeek = startDayOfMonth + i;
       // Days of the previous month
       if (dayOfWeek <= startDayOfWeek) {
-        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + (month - 1) + '" data-day="' + startDayOfPreviousMonth + '">' + startDayOfPreviousMonth + '</a></td>';
+        row += '<td><a class="inactive" href="#" data-year="' + year + '" data-month="' + (month - 1) + '" data-day="' + startDayOfPreviousMonth + '">' + startDayOfPreviousMonth + '</a></td>';
         startDayOfPreviousMonth++;
         emptyColumns++;
       } else if (dayOfWeek > daysInMonth) {
         // Days of the next month
-        row += '<td><a class="prime-inactive" href="#" data-year="' + year + '" data-month="' + month + '" data-day="' + dayOfWeek + '">' + startDayOfNextMonth + '</a></td>';
+        row += '<td><a class="inactive" href="#" data-year="' + year + '" data-month="' + month + '" data-day="' + dayOfWeek + '">' + startDayOfNextMonth + '</a></td>';
         startDayOfNextMonth++;
       } else {
         // Days in the current month
         var day = dayOfWeek - emptyColumns;
         var selected = this.date.getDate() === day && this.date.getMonth() === month;
-        row += '<td><a ' + (selected ? 'class="prime-selected"' : '') + 'href="#" data-year="' + year + '" data-month="' + month + '" data-day="' + day + '">' + day + '</a></td>';
+        row += '<td><a ' + (selected ? 'class="selected"' : '') + 'href="#" data-year="' + year + '" data-month="' + month + '" data-day="' + day + '">' + day + '</a></td>';
       }
     }
 
@@ -630,14 +671,14 @@ Prime.Widgets.DateTimePicker.prototype = {
     var right = this.datepicker.getRight();
     if (this.datepicker.isVisible() && (event.x < left || event.x > right || event.y < top || event.y > bottom)) {
       this.close();
-      this.years.hide();
-      this.months.hide();
+      this.closeYearsSelect();
+      this.closeMonthsSelect();
     } else {
       if (this.years.isVisible()) {
-        this.years.hide();
+        this.closeYearsSelect();
       }
       if (this.months.isVisible()) {
-        this.months.hide();
+        this.closeMonthsSelect();
       }
     }
   },
@@ -926,6 +967,7 @@ Prime.Widgets.DateTimePicker.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
+      'className': 'prime-date-picker',
       'closeTimeout': 200,
       'dateOnly': false
     };
