@@ -34,11 +34,11 @@ Prime.Widgets = Prime.Widgets || {};
  *
  * <pre>
  *   &lt;input type="text" class="prime-search-result-input" value="F"/>
- *   &lt;ul class="prime-search-result-list">
- *     &lt;li class="prime-search-result">Four&lt;/li>
- *     &lt;li class="prime-search-result">Five&lt;/li>
- *     &lt;li class="prime-search-result">Fifteen&lt;/li>
- *     &lt;li class="prime-add-custom">Add Custom Entry: F/li>
+ *   &lt;ul>
+ *     &lt;li>Four&lt;/li>
+ *     &lt;li>Five&lt;/li>
+ *     &lt;li>Fifteen&lt;/li>
+ *     &lt;li>Add Custom Entry: F/li>
  *   &lt;/ul>
  * &lt;/div>
  * </pre>
@@ -46,6 +46,7 @@ Prime.Widgets = Prime.Widgets || {};
  * The with* methods can be used to setup the configuration for this SearchResults, but here are some defaults:
  *
  * <ul>
+ *   <li>closeTimeout = 200</li>
  *   <li>customAddEnabled = true</li>
  *   <li>customAddCallback = function(customValue){return true;}</li>
  *   <li>customAddLabel = "Add Custom:"</li>
@@ -57,9 +58,10 @@ Prime.Widgets = Prime.Widgets || {};
  *
  * <pre>
  *   CallbackObject {
+ *     void deletedBeyondSearchInput()
+ *     void doesNotContainValue()
  *     object{results:Array, tooManyResults:boolean} search(_searchString:string),
  *     void selectSearchResult(selectedSearchResult:string),
- *     void deletedBeyondSearchInput()
  *   }
  * </pre>
  *
@@ -70,32 +72,15 @@ Prime.Widgets = Prime.Widgets || {};
  *            communicate state and determine how to draw the input and search results.
  */
 Prime.Widgets.Searcher = function(inputElement, searchResultsContainer, callbackObject) {
+  Prime.Utils.bindAll(this);
+
+  this.searchResults = Prime.Document.Element.wrap(searchResultsContainer);
   this.inputElement = Prime.Document.Element.wrap(inputElement);
   if (this.inputElement.domElement.tagName !== 'INPUT') {
     throw new TypeError('You can only use Prime.Widgets.SearchResults with INPUT elements');
   }
 
-  Prime.Utils.bindAll(this);
-
-  this.inputElement.
-      addClass('prime-searcher-input').
-      addEventListener('blur', this._handleBlurEvent).
-      addEventListener('click', this._handleClickEvent).
-      addEventListener('keyup', this._handleKeyUpEvent).
-      addEventListener('keydown', this._handleKeyDownEvent).
-      addEventListener('focus', this._handleFocusEvent);
-
-  this.searchResultsContainer = (searchResultsContainer instanceof Prime.Document.Element) ? searchResultsContainer : new Prime.Document.Element(searchResultsContainer);
-  this.searchResultsContainer.addClass('prime-searcher-search-results-list');
-
-  this.noSearchResultsLabel = 'No Matches For: ';
-  this.tooManySearchResultsLabel = 'Too Many Matches For: ';
-  this.customAddEnabled = true;
-  this.customAddCallback = function() {return true;};
-  this.customAddLabel = 'Add Custom: ';
-  this.callbackObject = callbackObject;
-
-  this.closeSearchResults();
+  this._setInitialOptions(callbackObject);
 };
 
 
@@ -106,9 +91,24 @@ Prime.Widgets.Searcher.prototype = {
    */
   closeSearchResults: function() {
     this._removeAllSearchResults();
-    this.searchResultsContainer.hide();
     this.inputElement.setValue('');
-    this.resizeInput();
+    this.searchResults.removeClass('open');
+    setTimeout(function() {
+      this.searchResults.hide();
+      this.resizeInput();
+    }.bind(this), this.options['closeTimeout']);
+  },
+
+  /**
+   * Removes all of the event listeners from the input element.
+   */
+  destroy: function() {
+    this.inputElement
+        .removeEventListener('blur', this._handleBlurEvent)
+        .removeEventListener('click', this._handleClickEvent)
+        .removeEventListener('keyup', this._handleKeyUpEvent)
+        .removeEventListener('keydown', this._handleKeyDownEvent)
+        .removeEventListener('focus', this._handleFocusEvent);
   },
 
   focus: function() {
@@ -119,7 +119,7 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {Prime.Document.Element} The highlighted search result or null.
    */
   getHighlightedSearchResult: function() {
-    return Prime.Document.queryFirst('.prime-searcher-highlighted-search-result', this.searchResultsContainer);
+    return this.searchResults.queryFirst('.selected');
   },
 
   /**
@@ -136,7 +136,7 @@ Prime.Widgets.Searcher.prototype = {
 
     // Grab the first search result in the list if there isn't a next sibling
     if (searchResult === null) {
-      searchResult = Prime.Document.queryFirst('.prime-searcher-search-result', this.searchResultsContainer);
+      searchResult = this.searchResults.queryFirst('.search-result');
     }
 
     if (searchResult !== null) {
@@ -159,7 +159,7 @@ Prime.Widgets.Searcher.prototype = {
     }
 
     if (searchResult === null) {
-      searchResult = Prime.Document.queryLast('.prime-searcher-search-result', this.searchResultsContainer);
+      searchResult = this.searchResults.queryFirst('.search-result');
     }
 
     if (searchResult !== null) {
@@ -176,20 +176,37 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   highlightSearchResult: function(searchResult) {
-    this.searchResultsContainer.getChildren().each(function(element) {
-      element.removeClass('prime-searcher-highlighted-search-result');
+    this.searchResults.getChildren().each(function(e) {
+      e.removeClass('selected');
     });
 
-    searchResult.addClass('prime-searcher-highlighted-search-result');
-    var scrollTop = this.searchResultsContainer.getScrollTop();
-    var height = this.searchResultsContainer.getHeight();
+    searchResult.addClass('selected');
+    var scrollTop = this.searchResults.getScrollTop();
+    var height = this.searchResults.getHeight();
     var searchResultOffset = searchResult.getOffsetTop();
     if (searchResultOffset + 1 >= scrollTop + height) {
-      this.searchResultsContainer.scrollTo(searchResult.getOffsetTop() - this.searchResultsContainer.getHeight() + searchResult.getOuterHeight());
+      this.searchResults.scrollTo(searchResult.getOffsetTop() - this.searchResults.getHeight() + searchResult.getOuterHeight());
     } else if (searchResultOffset < scrollTop) {
-      this.searchResultsContainer.scrollTo(searchResultOffset);
+      this.searchResults.scrollTo(searchResultOffset);
     }
 
+    return this;
+  },
+
+  /**
+   * Initializes the Searcher by setting up the event listeners and closing the search result element.
+   *
+   * @returns {Prime.Widgets.Searcher} This.
+   */
+  initialize: function() {
+    this.inputElement
+        .addEventListener('blur', this._handleBlurEvent)
+        .addEventListener('click', this._handleClickEvent)
+        .addEventListener('keyup', this._handleKeyUpEvent)
+        .addEventListener('keydown', this._handleKeyDownEvent)
+        .addEventListener('focus', this._handleFocusEvent);
+
+    this.closeSearchResults();
     return this;
   },
 
@@ -197,14 +214,14 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {boolean} True if the search results add custom option is being displayed currently.
    */
   isCustomAddVisible: function() {
-    return Prime.Document.queryFirst('.prime-searcher-add-custom', this.searchResultsContainer) !== null;
+    return this.searchResults.queryFirst('input') !== null;
   },
 
   /**
    * @returns {boolean} True if any search results are being displayed currently.
    */
   isSearchResultsVisible: function() {
-    return this.searchResultsContainer.isVisible();
+    return this.searchResults.isVisible();
   },
 
   /**
@@ -238,7 +255,7 @@ Prime.Widgets.Searcher.prototype = {
     this._removeAllSearchResults();
 
     // Call the callback
-    var searchResults = this.callbackObject.search(searchText);
+    var searchResults = this.options['callbackObject'].search(searchText);
     if (!searchResults.hasOwnProperty('results') || !searchResults.hasOwnProperty('tooManyResults')) {
       throw new TypeError('The callback must return an Object that contains the properties results[Array] and tooManyResults[boolean]');
     }
@@ -247,13 +264,13 @@ Prime.Widgets.Searcher.prototype = {
     var matchingSearchResultElement = null;
     for (var i = 0; i < searchResults.results.length; i++) {
       var searchResult = searchResults.results[i];
-      var element  = Prime.Document.newElement('<li/>').
-          addClass('prime-searcher-search-result').
-          setAttribute('value', searchResult).
-          setHTML(searchResult).
-          addEventListener('click', this._handleClickEvent).
-          addEventListener('mouseover', this._handleMouseOverEvent).
-          appendTo(this.searchResultsContainer);
+      var element = Prime.Document.newElement('<li/>')
+          .addClass('search-result')
+          .setAttribute('value', searchResult)
+          .setHTML(searchResult)
+          .addEventListener('click', this._handleClickEvent)
+          .addEventListener('mouseover', this._handleMouseOverEvent)
+          .appendTo(this.searchResults);
       if (searchResult.toLowerCase().trim() === searchText.toLowerCase().trim()) {
         matchingSearchResultElement = element;
       }
@@ -263,44 +280,45 @@ Prime.Widgets.Searcher.prototype = {
 
     // Show the custom add option if necessary
     var trimmedLength = searchText.trim().length;
-    if (this.customAddEnabled && trimmedLength !== 0 && matchingSearchResultElement === null
-        && ( !('doesNotContainValue' in this.callbackObject) || this.callbackObject.doesNotContainValue(searchText))) {
-      matchingSearchResultElement = Prime.Document.newElement('<li/>').
-          addClass('prime-searcher-search-result prime-searcher-add-custom').
-          addEventListener('click', this._handleClickEvent).
-          addEventListener('mouseover', this._handleMouseOverEvent).
-          setHTML(this.customAddLabel + searchText).
-          appendTo(this.searchResultsContainer);
+    if (this.options['customAddEnabled'] && trimmedLength !== 0 && matchingSearchResultElement === null
+        && ( !('doesNotContainValue' in this.options['callbackObject']) || this.options['callbackObject'].doesNotContainValue(searchText))) {
+      matchingSearchResultElement = Prime.Document.newElement('<li/>')
+          .addClass('custom-add')
+          .addEventListener('click', this._handleClickEvent)
+          .addEventListener('mouseover', this._handleMouseOverEvent)
+          .setHTML(this.options['customAddLabel'] + searchText)
+          .appendTo(this.searchResults);
       count++;
     }
 
     if (count === 0 && trimmedLength !== 0) {
-      Prime.Document.newElement('<li/>').
-          addClass('prime-searcher-no-search-results').
-          setHTML(this.noSearchResultsLabel + searchText).
-          appendTo(this.searchResultsContainer);
+      Prime.Document.newElement('<li/>')
+          .addClass('no-search-results')
+          .setHTML(this.options['noSearchResultsLabel'] + searchText)
+          .appendTo(this.searchResults);
       count++;
     }
 
     // Handle too many results
     if (searchResults.tooManyResults) {
-      Prime.Document.newElement('<li/>').
-          addClass('prime-searcher-too-many-search-results').
-          setHTML(this.tooManySearchResultsLabel + searchText).
-          appendTo(this.searchResultsContainer);
+      Prime.Document.newElement('<li/>')
+          .addClass('too-many-search-results')
+          .setHTML(this.options['tooManySearchResultsLabel'] + searchText)
+          .appendTo(this.searchResults);
       count++;
     }
 
     if (count !== 0) {
-      this.searchResultsContainer.show();
+      this.searchResults.show();
+      this.searchResults.addClass('open');
 
       if (count >= 10) {
-        this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * 10 + 1);
+        this.searchResults.setHeight(this.searchResults.getChildren()[0].getOuterHeight() * 10 + 1);
       } else {
-        this.searchResultsContainer.setHeight(this.searchResultsContainer.getChildren()[0].getOuterHeight() * count + 1);
+        this.searchResults.setHeight(this.searchResults.getChildren()[0].getOuterHeight() * count + 1);
       }
     } else {
-      this.searchResultsContainer.hide();
+      this.closeSearchResults();
     }
 
     if (matchingSearchResultElement !== null) {
@@ -321,18 +339,29 @@ Prime.Widgets.Searcher.prototype = {
       return this;
     }
 
-    var custom = searchResult.hasClass('prime-searcher-add-custom');
+    var custom = searchResult.hasClass('custom-add');
     var value = (custom) ? this.inputElement.getValue().trim() : searchResult.getHTML();
-    if(custom) {
+    if (custom) {
       // The client of this searcher needs to warn the user.
-      if(!this.customAddCallback(value)) {
+      if (!this.options['customAddCallback'](value)) {
         return this;
       }
     }
 
-    this.callbackObject.selectSearchResult(value);
+    this.options['callbackObject'].selectSearchResult(value);
     this.closeSearchResults();
 
+    return this;
+  },
+
+  /**
+   * Sets the timeout used in the close method to allow for transitions.
+   *
+   * @param timeout {int} The timeout.
+   * @returns {Prime.Widgets.Searcher} This.
+   */
+  withCloseTimeout: function(timeout) {
+    this.options['closeTimeout'] = timeout;
     return this;
   },
 
@@ -343,7 +372,7 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   withCustomAddEnabled: function(enabled) {
-    this.customAddEnabled = enabled;
+    this.options['customAddEnabled'] = enabled;
     return this;
   },
 
@@ -354,7 +383,7 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   withCustomAddCallback: function(callback) {
-    this.customAddCallback = callback;
+    this.options['customAddCallback'] = callback;
     return this;
   },
 
@@ -365,18 +394,27 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   withCustomAddLabel: function(customAddLabel) {
-    this.customAddLabel = customAddLabel;
+    this.options['customAddLabel'] = customAddLabel;
     return this;
   },
 
   /**
-   * Sets the label that is printed when there are too many search results.
+   * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
+   * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
-   * @param {string} tooManySearchResultsLabel The label text.
-   * @returns {Prime.Widgets.Searcher} This Searcher.
+   * @param {Object} options Key value pair of configuration options.
+   * @returns {Prime.Widgets.Searcher} This.
    */
-  withTooManySearchResultsLabel: function(tooManySearchResultsLabel) {
-    this.tooManySearchResultsLabel = tooManySearchResultsLabel;
+  withOptions: function(options) {
+    if (!Prime.Utils.isDefined(options)) {
+      return this;
+    }
+
+    for (var option in options) {
+      if (options.hasOwnProperty(option)) {
+        this.options[option] = options[option];
+      }
+    }
     return this;
   },
 
@@ -387,7 +425,18 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   withNoSearchResultsLabel: function(noSearchResultsLabel) {
-    this.noSearchResultsLabel = noSearchResultsLabel;
+    this.options['noSearchResultsLabel'] = noSearchResultsLabel;
+    return this;
+  },
+
+  /**
+   * Sets the label that is printed when there are too many search results.
+   *
+   * @param {string} tooManySearchResultsLabel The label text.
+   * @returns {Prime.Widgets.Searcher} This Searcher.
+   */
+  withTooManySearchResultsLabel: function(tooManySearchResultsLabel) {
+    this.options['tooManySearchResultsLabel'] = tooManySearchResultsLabel;
     return this;
   },
 
@@ -416,7 +465,7 @@ Prime.Widgets.Searcher.prototype = {
    */
   _handleClickEvent: function(event) {
     var target = new Prime.Document.Element(event.currentTarget);
-    if (target.hasClass('prime-searcher-add-custom') || target.hasClass('prime-searcher-search-result')) {
+    if (target.hasClass('add-custom') || target.hasClass('search-result')) {
       this.selectHighlightedSearchResult();
     } else if (target.domElement === this.inputElement.domElement) {
       this.search();
@@ -470,9 +519,9 @@ Prime.Widgets.Searcher.prototype = {
     var key = event.keyCode;
     var value = this.inputElement.getValue();
 
-    if (key == Prime.Events.Keys.BACKSPACE) {
+    if (key === Prime.Events.Keys.BACKSPACE) {
       if (value === '' && this.previousSearchString === '') {
-        this.callbackObject.deletedBeyondSearchInput();
+        this.options['callbackObject'].deletedBeyondSearchInput();
       } else {
         this.search();
       }
@@ -484,7 +533,7 @@ Prime.Widgets.Searcher.prototype = {
 
       Prime.Utils.stopEvent(event);
     } else if (key === Prime.Events.Keys.ESCAPE) {
-      this.searchResultsContainer.hide();
+      this.closeSearchResults();
     } else if (key === Prime.Events.Keys.SPACE || key === Prime.Events.Keys.DELETE ||
         (key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
       this.search();
@@ -508,6 +557,66 @@ Prime.Widgets.Searcher.prototype = {
    * @private
    */
   _removeAllSearchResults: function() {
-    Prime.Document.query('li', this.searchResultsContainer).removeAllFromDOM();
+    this.searchResults.query('li').removeAllFromDOM();
+  },
+
+  /**
+   * Set the initial options for this widget.
+   * @private
+   */
+  _setInitialOptions: function(callbackObject) {
+    // Defaults
+    this.options = {
+      'callbackObject': callbackObject,
+      'closeTimeout': 200,
+      'customAddEnabled': true,
+      'customAddCallback': function() {
+        return true;
+      },
+      'customAddLabel': 'Add Custom: ',
+      'noSearchResultsLabel': 'No Matches For: ',
+      'tooManySearchResultsLabel': 'Too Many Matches For: ',
+    };
+
+    var userOptions = Prime.Utils.dataSetToOptions(this.inputElement);
+    for (var option in userOptions) {
+      if (userOptions.hasOwnProperty(option)) {
+        this.options[option] = userOptions[option];
+      }
+    }
   }
+};
+
+/* ===================================================================================================================
+ * Search function implementations.
+ * ===================================================================================================================*/
+
+/**
+ * A search function that works on a select box.
+ *
+ * @param searchText {String} The search String.
+ * @param select {HTMLSelectElement|Prime.Document.Element} The select box.
+ * @returns {{results: Array, tooManyResults: boolean}}
+ */
+Prime.Widgets.Searcher.selectSearchFunction = function(searchText, select) {
+  var options = Prime.Document.Element.unwrap(select).options;
+  var selectableOptions = [];
+  for (var i = 0; i < options.length; i++) {
+    var option = new Prime.Document.Element(options[i]);
+    if (option.isSelected()) {
+      continue;
+    }
+
+    var html = option.getHTML();
+    if (searchText === null || searchText === '' || html.toLowerCase().indexOf(searchText.toLowerCase()) === 0) {
+      selectableOptions.push(html);
+    }
+  }
+
+  // Alphabetize the options
+  if (selectableOptions.length > 0) {
+    selectableOptions.sort();
+  }
+
+  return {results: selectableOptions, tooManyResults: false};
 };

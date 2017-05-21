@@ -1,15 +1,15 @@
-.prime-disabled {
+.disabled {
   opacity: 0.4;
 }
 
-.prime-disabled a {
+.disabled a {
   pointer-events: none;
 }
 
-.prime-inactive {
+.inactive {
   opacity: 0.7;
 }
 
-.prime-focus {
+.focus {
   outline: -webkit-focus-ring-color auto 5px;
 }

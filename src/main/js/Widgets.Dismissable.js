@@ -33,9 +33,10 @@ Prime.Widgets = Prime.Widgets || {};
  * @constructor
  */
 Prime.Widgets.Dismissable = function(element, dismissButton) {
+  Prime.Utils.bindAll(this);
+
   this.element = Prime.Document.Element.wrap(element);
   this.dismissButton = dismissButton;
-  Prime.Utils.bindAll(this);
   this._setInitialOptions();
 };
 
@@ -51,6 +52,13 @@ Prime.Widgets.Dismissable.prototype = {
     setTimeout(function() {
       this.element.removeFromDOM();
     }.bind(this), this.options['closeTimeout']);
+  },
+
+  /**
+   * Destroys the widget.
+   */
+  destroy: function() {
+    this.dismissButton.removeEventListener('click', this._handleClick);
   },
 
   /**

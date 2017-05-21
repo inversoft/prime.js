@@ -31,12 +31,13 @@ Prime.Widgets = Prime.Widgets || {};
  * @constructor
  */
 Prime.Widgets.DateTimePicker = function(element) {
+  Prime.Utils.bindAll(this);
+
   this.element = Prime.Document.Element.wrap(element);
   if (!this.element.is('input')) {
     throw new TypeError('You can only use Prime.Widgets.DateTimePicker with an input element');
   }
 
-  Prime.Utils.bindAll(this);
   this.callback = null;
   this._setInitialOptions();
 };
@@ -57,7 +58,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     this.datepicker.removeClass('open');
 
     // Pause a bit to cancel focus event and allow transition to play
-    setTimeout(function(){
+    setTimeout(function() {
       this.datepicker.hide();
     }.bind(this), this.options['closeTimeout']);
     return this;
@@ -94,9 +95,9 @@ Prime.Widgets.DateTimePicker.prototype = {
    */
   destroy: function() {
     this.datepicker.removeFromDOM();
-    this.element.removeEventListener('click', this._handleInputClick);
-    this.element.removeEventListener('focus', this._handleInputClick);
-    this.element.removeEventListener('keydown', this._handleInputKey);
+    this.element.removeEventListener('click', this._handleInputClick)
+        .removeEventListener('focus', this._handleInputClick)
+        .removeEventListener('keydown', this._handleInputKey);
     Prime.Document.removeEventListener('click', this._handleGlobalClick);
     Prime.Document.removeEventListener('keydown', this._handleGlobalKey);
   },
@@ -522,7 +523,7 @@ Prime.Widgets.DateTimePicker.prototype = {
     return Math.max(min, Math.min(value, max));
   },
 
-/**
+  /**
    * Handles when the AM/PM element is selected and the user hits a key. If the user hits A, this changes to AM. If the
    * user hits P, this changes to PM. If the use hits the up or down arrows, this toggles between AM and PM.
    *

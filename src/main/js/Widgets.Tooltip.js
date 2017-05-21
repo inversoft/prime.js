@@ -32,12 +32,10 @@ Prime.Widgets = Prime.Widgets || {};
  * @constructor
  */
 Prime.Widgets.Tooltip = function(element) {
-  this.element = Prime.Document.Element.wrap(element);
-
   Prime.Utils.bindAll(this);
+
+  this.element = Prime.Document.Element.wrap(element);
   this._setInitialOptions();
-  this.element.addEventListener('mouseenter', this._handleMouseEnter)
-              .addEventListener('mouseleave', this._handleMouseLeave);
 };
 
 Prime.Widgets.Tooltip.constructor = Prime.Widgets.Tooltip;
@@ -52,6 +50,17 @@ Prime.Widgets.Tooltip.prototype = {
     if (this.element.domElement.tooltip) {
       this.element.domElement.tooltip.removeFromDOM();
     }
+    return this;
+  },
+
+  /**
+   * Initializes the widget by attaching event listeners to the element.
+   *
+   * @returns {Prime.Widgets.Tooltip} This.
+   */
+  initialize: function() {
+    this.element.addEventListener('mouseenter', this._handleMouseEnter)
+        .addEventListener('mouseleave', this._handleMouseLeave);
     return this;
   },
 
@@ -154,7 +163,7 @@ Prime.Widgets.Tooltip.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
-      'className': 'tooltip',
+      'className': 'prime-tooltip',
       'dataName': 'tooltip'
     };
 

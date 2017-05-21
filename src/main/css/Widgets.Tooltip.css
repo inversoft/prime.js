@@ -14,7 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 
-.tooltip {
+.prime-tooltip {
   background: #222;
   -webkit-border-radius: 5px;
   -moz-border-radius: 5px;
@@ -27,7 +27,7 @@
   max-width: 150px;
 }
 
-.tooltip:after {
+.prime-tooltip:after {
  border: 6px solid rgba(0, 0, 0, 0);
  border-top-color: #222;
  content: ' ';
@@ -40,6 +40,6 @@
  width: 0;
 }
 
-.tooltip.label {
+.prime-tooltip.label {
  width: 150px;
 }

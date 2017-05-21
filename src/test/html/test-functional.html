@@ -25,15 +25,14 @@
   <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Dialog.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Dismissable.css"/>
-  <link rel="stylesheet" href="../../main/css/Widgets.Draggable.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Overlay.css"/>
-  <link rel="stylesheet" href="../../main/css/Widgets.PhraseBuilder.css"/>
-  <link rel="stylesheet" href="../../main/css/Widgets.Searcher.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Tooltip.css"/>
+  <link rel="stylesheet" href="../../test/css/Widgets.Searcher.css"/>
+  <link rel="stylesheet" href="../../test/css/Widgets.TreeView.css"/>
   <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
   <script type="text/javascript" src="../../main/js/Browser.js"></script>
   <script type="text/javascript" src="../../main/js/Date.js"></script>
@@ -50,12 +49,12 @@
   <script type="text/javascript" src="../../main/js/Widgets.Dismissable.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Overlay.js"></script>
-  <script type="text/javascript" src="../../main/js/Widgets.PhraseBuilder.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Tooltip.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.TreeView.js"></script>
   <script type="text/javascript" src="../../main/js/Window.js"></script>
   <script type="text/javascript">
     var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
@@ -113,18 +112,20 @@
         new Prime.Effects.Appear(element).withDuration(500).go();
       });
 
-      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-test')).render();
-      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-custom-add-disabled-test')).withPlaceholder('Choose').withCustomAddEnabled(false).render();
-      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options')).render();
-      new Prime.Widgets.Searcher(Prime.Document.queryById('searcher'), Prime.Document.queryById('searcher-results'), searcherCallback);
-      new Prime.Widgets.PhraseBuilder(Prime.Document.queryById('phrase-builder'), searcherCallback.search).render();
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-test')).initialize();
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-custom-add-disabled-test')).withPlaceholder('Choose').withCustomAddEnabled(false).initialize();
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options')).initialize();
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('phrase-builder')).withCustomAddEnabled(false).withSearchFunction(searcherCallback.search).initialize();
+      new Prime.Widgets.Searcher(Prime.Document.queryById('searcher'), Prime.Document.queryById('searcher-results'), searcherCallback).initialize();
 
-      var tabs = new Prime.Widgets.Tabs(Prime.Document.queryById('tabs')).render();
-      Prime.Document.queryById('hide-foo').addEventListener('click', function() {
+      var tabs = new Prime.Widgets.Tabs(Prime.Document.queryById('tabs')).initialize();
+      Prime.Document.queryById('hide-foo').addEventListener('click', function(e) {
         tabs.hideTab('fooTab');
+        Prime.Utils.stopEvent(e);
       });
-      Prime.Document.queryById('show-foo').addEventListener('click', function() {
+      Prime.Document.queryById('show-foo').addEventListener('click', function(e) {
         tabs.showTab('fooTab');
+        Prime.Utils.stopEvent(e);
       });
       var dragElement = Prime.Document.queryById('draggable');
       dragElement.setLeft(document.body.clientWidth - 300);
@@ -190,9 +191,10 @@
             this.timer = setTimeout((function() {
               touchableElement.setStyle('margin-left', '0px');
             }).bind(this), 50);
-          });
+          })
+          .initialize();
 
-      new Prime.Widgets.Tooltip(Prime.Document.queryById('tooltip'));
+      new Prime.Widgets.Tooltip(Prime.Document.queryById('tooltip')).initialize();
 
       var openFunction = function(e) {
         new Prime.Widgets.AJAXDialog()
@@ -209,6 +211,8 @@
 
       new Prime.Widgets.Dismissable(Prime.Document.queryFirst('.dismissable'), Prime.Document.queryFirst('.dismissable a'))
           .initialize();
+
+      new Prime.Widgets.TreeView(Prime.Document.queryById('treeview')).initialize();
     });
   </script>
   <style>
@@ -297,6 +301,19 @@
     <p>
       Some more content.
   </div>
+  <p>
+    TreeView Test
+  </p>
+  <ul id="treeview">
+    <li>
+      <a href="#" class="prime-folder-toggle">Open</a>
+      <ul>
+        <li>One</li>
+        <li>Two</li>
+        <li>Three</li>
+      </ul>
+    </li>
+  </ul>
   <button id="appearButton">Appear</button>
   <div>
     <form action="http://www.google.com" method="GET">
@@ -341,7 +358,7 @@
       <div class="prime-searcher-container">
         <label for="searcher">Searcher</label>
         <input type="text" id="searcher"/>
-        <div id="searcher-results">
+        <div id="searcher-results" class="prime-searcher-display">
 
         </div>
       </div>
@@ -354,7 +371,7 @@
       </select>
     </form>
   </div>
-  <div id="draggable" style="right: 50px; width: 200px; height: 200px; border: 1px solid black;">Drag me please.<br>
+  <div id="draggable" style="background: #ffffff; cursor: move; right: 50px; width: 200px; height: 200px; border: 1px solid black; box-shadow: 3px 3px 3px #000">Drag me please.<br>
     <button id="destroy-draggable">Destroy</button>
   </div>
   <div id="scroll-tests" style="margin-top: 50px;">

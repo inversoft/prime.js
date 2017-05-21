@@ -27,8 +27,8 @@ Prime.Widgets = Prime.Widgets || {};
  */
 Prime.Widgets.SideMenu = function(button, sideMenuElement) {
   Prime.Utils.bindAll(this);
-  Prime.Document.Element.wrap(button).addEventListener('click', this._handleClickEvent);
   this.sideMenu = Prime.Document.Element.wrap(sideMenuElement);
+  this.button = Prime.Document.Element.wrap(button);
   this._setInitialOptions();
 };
 
@@ -37,6 +37,7 @@ Prime.Widgets.SideMenu.constructor = Prime.Widgets.SideMenu;
 Prime.Widgets.SideMenu.prototype = {
   /**
    * Closes the side menu.
+   *
    * @returns {Prime.Widgets.SideMenu} This.
    */
   close: function() {
@@ -48,6 +49,16 @@ Prime.Widgets.SideMenu.prototype = {
       Prime.Document.bodyElement.removeClass(this.options['openClass']);
     }
 
+    return this;
+  },
+
+  /**
+   * Initializes the widget by attaching the event listener to the menu button.
+   *
+   * @returns {Prime.Widgets.SideMenu}
+   */
+  initialize: function() {
+    this.button.addEventListener('click', this._handleClickEvent);
     return this;
   },
 

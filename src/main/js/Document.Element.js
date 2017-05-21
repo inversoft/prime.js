@@ -57,6 +57,16 @@ Prime.Document.Element.wrap = function(element) {
   return (element instanceof Prime.Document.Element) ? element : new Prime.Document.Element(element);
 };
 
+/**
+ * Static method that unwraps an element to a DOM element. This is the inverse of Element.wrap. If this is passed an
+ * Element, it returns domElement. Otherwise, this just returns the element.
+ *
+ * @returns {Prime.Document.Element} This Element.
+ */
+Prime.Document.Element.unwrap = function(element) {
+  return (element instanceof Prime.Document.Element) ? element.domElement : element;
+},
+
 Prime.Document.Element.prototype = {
   /**
    * Adds the given class (or list of space separated classes) to this Element.

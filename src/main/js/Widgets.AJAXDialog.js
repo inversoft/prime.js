@@ -23,6 +23,7 @@ Prime.Widgets = Prime.Widgets || {};
  */
 Prime.Widgets.AJAXDialog = function() {
   Prime.Utils.bindAll(this);
+
   this.callback = null;
   this.element = null;
   this._setInitialOptions();

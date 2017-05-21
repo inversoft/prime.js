@@ -1,11 +1,12 @@
 /* Prime MultipleSelect */
 
-.prime-multiple-select-display {
+.prime-multiple-select {
   font-family: Arial, sans-serif;
   font-size: 12px;
   position: relative;
 }
-.prime-multiple-select-display ul.prime-multiple-select-option-list {
+
+.prime-multiple-select ul.option-list {
   border: 1px solid #000000;
   margin: 0;
   padding: 3px;
@@ -15,12 +16,12 @@
   overflow-y: scroll;
 }
 
-.prime-multiple-select-display ul.prime-multiple-select-option-list li {
+.prime-multiple-select ul.option-list li {
   color: #000000;
   display: inline-block;
 }
 
-.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option {
+.prime-multiple-select ul.option-list li:not(:last-of-type) {
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   border-radius: 3px;
@@ -43,7 +44,7 @@
   padding: 4px;
 }
 
-.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option-highlighted {
+.prime-multiple-select ul.option-list li.selected {
   background-color: #3875d7;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3875d7', endColorstr='#2a62bc', GradientType=0 );
   background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));
@@ -54,18 +55,18 @@
   color: #fff;
 }
 
-.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option span {
+.prime-multiple-select ul.option-list li span {
   display: inline-block;
   margin-right: 2px;
 }
 
-.prime-multiple-select-display ul.prime-multiple-select-option-list li.prime-multiple-select-option a {
+.prime-multiple-select ul.option-list li a {
   color: #000000;
   font-size: 11px;
   text-decoration: none;
 }
 
-.prime-multiple-select-input {
+.prime-multiple-select input {
   border: none;
   font-family: Arial, sans-serif;
   font-size: 12px;
@@ -75,7 +76,7 @@
   padding: 0;
 }
 
-.prime-multiple-select-display .prime-multiple-select-search-result-list {
+.prime-multiple-select ul.search-results {
   background: #ffffff;
   border: 1px solid #aaaaaa;
   border-top: 0;
@@ -93,14 +94,20 @@
   margin: 0;
   padding: 0;
   position: absolute;
+  opacity: 0;
   overflow-x: hidden;
   overflow-y: auto;
+  transition: opacity 0.2s ease-in-out;
   top: 100%;
   width: 100%;
   z-index: 1010;
 }
 
-.prime-multiple-select-display .prime-multiple-select-search-result-list li {
+.prime-multiple-select ul.search-results.open {
+  opacity: 1;
+}
+
+.prime-multiple-select ul.search-results li {
   -moz-box-sizing   : border-box;
   -ms-box-sizing    : border-box;
   -webkit-box-sizing: border-box;
@@ -109,7 +116,7 @@
   padding: 5px;
 }
 
-.prime-multiple-select-display .prime-multiple-select-search-result-list .prime-multiple-select-highlighted-search-result {
+.prime-multiple-select ul.search-results li.selected {
   background-color: #3875d7;
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3875d7', endColorstr='#2a62bc', GradientType=0 );
   background-image: -webkit-gradient(linear, 0 0, 0 100%, color-stop(20%, #3875d7), color-stop(90%, #2a62bc));

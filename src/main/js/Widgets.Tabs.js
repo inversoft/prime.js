@@ -31,8 +31,9 @@ Prime.Widgets = Prime.Widgets || {};
  * @constructor
  */
 Prime.Widgets.Tabs = function(element) {
-  this.element = Prime.Document.Element.wrap(element);
+  Prime.Utils.bindAll(this);
 
+  this.element = Prime.Document.Element.wrap(element);
   if (this.element.getTagName().toLowerCase() === 'ul') {
     this.tabsContainer = this.element;
   } else {
@@ -43,20 +44,11 @@ Prime.Widgets.Tabs = function(element) {
     throw new TypeError('Tabs requires a ul element. The passed element does not contain a ul element');
   }
 
-  if (this.tabsContainer.hasClass('prime-initialized')) {
-    throw new Error('This element has already been initialized. Call destroy before initializing again.');
-  }
-
-  Prime.Utils.bindAll(this);
-
   this._setInitialOptions();
   this.tabContents = {};
   this.tabs = {};
   this.tabArray = [];
   this.selectedTab = null;
-  this.selectHandler = null;
-
-  this.tabsContainer.addClass('prime-initialized');
 };
 
 Prime.Widgets.Tabs.prototype = {
@@ -64,16 +56,13 @@ Prime.Widgets.Tabs.prototype = {
    * Destroys the Tabs widget
    */
   destroy: function() {
-    this.tabsContainer.getChildren().each(function(tab) {
-      var a = Prime.Document.queryFirst('a', tab);
+    this.tabsContainer.query('a').each(function(a) {
       a.removeEventListener('click', this._handleClick);
     }.bind(this));
 
     for (var i = 0; i < this.tabs.length; i++) {
       this.tabs[i].removeClass(this.options['tabContentClass']);
     }
-
-    this.tabsContainer.removeClass('prime-initialized');
   },
 
   /**
@@ -88,73 +77,12 @@ Prime.Widgets.Tabs.prototype = {
   },
 
   /**
-   * Re-applies the first-child, last-child, and active classes based on the current state of the tabs. If there
-   * is no tab that is active, this also selects the first tab that is visible.
-   */
-  redraw: function() {
-    var firstVisible = null;
-    var lastVisible = null;
-    var selectNew = false;
-    var noneActive = true;
-    for (var i = 0; i < this.tabArray.length; i++) {
-      if (this.tabArray[i].isVisible()) {
-        if (firstVisible === null) {
-          firstVisible = this.tabArray[i];
-        }
-
-        lastVisible = this.tabArray[i];
-
-        if (this.tabArray[i].hasClass(this.options['activeClass'])) {
-          noneActive = false;
-        }
-      } else if (this.tabArray[i].hasClass(this.options['activeClass'])) {
-        selectNew = true;
-      }
-
-      this.tabArray[i].removeClass(this.options['firstChildClass']);
-      this.tabArray[i].removeClass(this.options['lastChildClass']);
-    }
-
-    firstVisible.addClass(this.options['firstChildClass']);
-    lastVisible.addClass(this.options['lastChildClass']);
-
-    var tabId = null;
-    if (selectNew || noneActive) {
-      if (this.localStorageSupported && this.options['localStorageKey'] !== null) {
-        var item = sessionStorage.getItem(this.options['localStorageKey']);
-        if (item !== null) {
-          tabId = JSON.parse(item).tabId;
-        }
-      }
-
-      // If no tabId was found or the tab is not currently visible, select the first visible
-      if (tabId === null || !this.tabs[tabId] || !this.tabs[tabId].isVisible()) {
-        tabId = firstVisible.getDataSet().tabId;
-      }
-      this.selectTab(tabId);
-    }
-
-    // If error class handling was enabled, add the error class to the tab and set focus
-    if (this.options.errorClass) {
-      for (tabId in this.tabContents) {
-        if (this.tabContents.hasOwnProperty(tabId)) {
-          var errorElement = this.tabContents[tabId].queryFirst('.' + this.options.errorClass);
-          if (errorElement !== null) {
-            this.tabs[tabId].queryFirst('a').addClass(this.options.errorClass);
-            this.selectTab(tabId);
-          }
-        }
-      }
-    }
-  },
-
-  /**
-   * Render the Tabs widget. Call this after you have set all the initial options.
+   * Initializes the Tabs widget. Call this after you have set all the initial options.
    *
-   * @returns {Prime.Widgets.Tabs} This Tabs.
+   * @returns {Prime.Widgets.Tabs} This.
    */
-  render: function() {
-    this.tabsContainer.query('li:not(.' + this.options['disabledClass'] + ')').each(function(tab) {
+  initialize: function() {
+    this.tabsContainer.query('li:not(.disabled)').each(function(tab) {
       var a = tab.queryFirst('a').addEventListener('click', this._handleClick);
       var dataSet = tab.getDataSet();
 
@@ -187,9 +115,70 @@ Prime.Widgets.Tabs.prototype = {
     // Check if local storage is enabled to save selected tab
     this.localStorageSupported = Prime.Utils.isDefined(Storage) && this.options['localStorageKey'] !== null;
 
-    // this.tabsContainer.show('block');
     this.redraw();
     return this;
+  },
+
+  /**
+   * Re-applies the first-child, last-child, and active classes based on the current state of the tabs. If there
+   * is no tab that is active, this also selects the first tab that is visible.
+   */
+  redraw: function() {
+    var firstVisible = null;
+    var lastVisible = null;
+    var selectNew = false;
+    var noneActive = true;
+    for (var i = 0; i < this.tabArray.length; i++) {
+      if (this.tabArray[i].isVisible()) {
+        if (firstVisible === null) {
+          firstVisible = this.tabArray[i];
+        }
+
+        lastVisible = this.tabArray[i];
+
+        if (this.tabArray[i].hasClass('selected')) {
+          noneActive = false;
+        }
+      } else if (this.tabArray[i].hasClass('selected')) {
+        selectNew = true;
+      }
+
+      this.tabArray[i].removeClass('first-visible-tab');
+      this.tabArray[i].removeClass('last-visible-tab');
+    }
+
+    firstVisible.addClass('first-visible-tab');
+    lastVisible.addClass('last-visible-tab');
+
+    var tabId = null;
+    if (selectNew || noneActive) {
+      if (this.localStorageSupported && this.options['localStorageKey'] !== null) {
+        var item = sessionStorage.getItem(this.options['localStorageKey']);
+        if (item !== null) {
+          tabId = JSON.parse(item).tabId;
+        }
+      }
+
+      // If no tabId was found or the tab is not currently visible, select the first visible
+      if (tabId === null || !this.tabs[tabId] || !this.tabs[tabId].isVisible()) {
+        tabId = firstVisible.getDataSet().tabId;
+      }
+
+      this.selectTab(tabId);
+    }
+
+    // If error class handling was enabled, add the error class to the tab and set focus
+    if (this.options.errorClass) {
+      for (tabId in this.tabContents) {
+        if (this.tabContents.hasOwnProperty(tabId)) {
+          var errorElement = this.tabContents[tabId].queryFirst('.' + this.options['errorClass']);
+          if (errorElement !== null) {
+            this.tabs[tabId].queryFirst('a').addClass(this.options['errorClass']);
+            this.selectTab(tabId);
+          }
+        }
+      }
+    }
   },
 
   /**
@@ -204,17 +193,17 @@ Prime.Widgets.Tabs.prototype = {
 
     for (var tabId in this.tabs) {
       if (this.tabs.hasOwnProperty(tabId)) {
-        this.tabs[tabId].removeClass(this.options['activeClass']);
+        this.tabs[tabId].removeClass('selected');
       }
     }
 
-    this.tabs[id].addClass(this.options['activeClass']);
+    this.tabs[id].addClass('selected');
     this.selectedTab = this.tabs[id];
     for (tabId in this.tabContents) {
       if (this.tabContents.hasOwnProperty(tabId) && tabId === id) {
         this.tabContents[tabId].show('block');
-        if (this.selectHandler) {
-          this.selectHandler(this.tabs[tabId], this.tabContents[tabId]);
+        if (this.options['selectCallback']) {
+          this.options['selectCallback'](this.tabs[tabId], this.tabContents[tabId]);
         }
       } else {
         this.tabContents[tabId].hide();
@@ -232,9 +221,9 @@ Prime.Widgets.Tabs.prototype = {
 
     var ajaxURL = this.selectedTab.getDataSet().tabURL;
     if (ajaxURL !== '') {
-      this.selectedTab.addClass(this.options['loadingClass']);
+      this.selectedTab.addClass('loading');
       this.tabContents[id].setHTML('');
-      this.tabContents[id].addClass(this.options['loadingClass']);
+      this.tabContents[id].addClass('loading');
       new Prime.Ajax.Request(ajaxURL, 'GET')
           .withSuccessHandler(this._handleAJAXResponse)
           .withErrorHandler(this._handleAJAXResponse)
@@ -288,17 +277,6 @@ Prime.Widgets.Tabs.prototype = {
   },
 
   /**
-   * Specifies a handler function that is called whenever tabs are changed.
-   *
-   * @param {Function} func The handler function.
-   * @returns {Prime.Widgets.Tabs} This Tabs.
-   */
-  withSelectHandler: function(func) {
-    this.selectHandler = func;
-    return this;
-  },
-
-  /**
    * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
@@ -318,6 +296,28 @@ Prime.Widgets.Tabs.prototype = {
     return this;
   },
 
+  /**
+   * Specifies a callback function that is called whenever tabs are changed.
+   *
+   * @param {Function} func The callback function.
+   * @returns {Prime.Widgets.Tabs} This Tabs.
+   */
+  withSelectCallback: function(func) {
+    this.options['selectCallback'] = func;
+    return this;
+  },
+
+  /**
+   * Sets the class name for the tab content elements.
+   *
+   * @param className {String} The class name.
+   * @returns {Prime.Widgets.Tabs}
+   */
+  withTabContentClass: function(className) {
+    this.options['tabContentClass'] = className;
+    return this;
+  },
+
   /* ===================================================================================================================
    * Private methods
    * ===================================================================================================================*/
@@ -329,9 +329,9 @@ Prime.Widgets.Tabs.prototype = {
    * @private
    */
   _handleAJAXResponse: function(xhr) {
-    this.selectedTab.removeClass(this.options['loadingClass']);
+    this.selectedTab.removeClass('loading');
     var container = this.tabContents[this.selectedTab.getDataSet().tabId];
-    container.removeClass(this.options['loadingClass']);
+    container.removeClass('loading');
     container.setHTML(xhr.responseText);
 
     if (this.options['ajaxCallback'] !== null) {
@@ -347,7 +347,7 @@ Prime.Widgets.Tabs.prototype = {
    */
   _handleClick: function(event) {
     var a = new Prime.Document.Element(event.currentTarget);
-    if (!a.hasClass(this.options['disabledClass'])) {
+    if (!a.hasClass('disabled')) {
       var href = a.getAttribute('href');
       if (href.charAt(0) === '#') {
         this.selectTab(href.substring(1));
@@ -366,14 +366,10 @@ Prime.Widgets.Tabs.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
-      'activeClass': 'prime-active',
       'ajaxCallback': null,
-      'disabledClass': 'prime-disabled',
       'errorClass': null,
-      'firstChildClass': 'first-child',
-      'lastChildClass': 'last-child',
-      'loadingClass': 'prime-loading',
       'localStorageKey': null,
+      'selectCallback': null,
       'tabContentClass': 'prime-tab-content'
     };
 

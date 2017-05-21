@@ -33,9 +33,9 @@ Prime.Widgets = Prime.Widgets || {};
  */
 Prime.Widgets.Draggable = function(element, gripSelector) {
   Prime.Utils.bindAll(this);
+
   this.element = Prime.Document.Element.wrap(element);
   this.offset = {};
-  this._setInitialOptions();
 
   if (!Prime.Utils.isDefined(gripSelector)) {
     this.grip = this.element;
@@ -52,7 +52,6 @@ Prime.Widgets.Draggable.prototype = {
    * Destroys the Draggable Widget
    */
   destroy: function() {
-    this.element.removeClass(this.options['className']);
     this.element.removeClass('active');
     this.element.setStyles(this.originalStyle);
   },
@@ -63,8 +62,7 @@ Prime.Widgets.Draggable.prototype = {
    * @returns {Prime.Widgets.Draggable} This.
    */
   initialize: function() {
-    this.grip.addClass(this.options['gripClassName']);
-
+    this.element.setStyle('position', 'absolute');
     this.originalStyle = {
       'cursor': this.element.getStyle('cursor'),
       'zIndex': this.element.getStyle('zIndex')
@@ -75,27 +73,6 @@ Prime.Widgets.Draggable.prototype = {
 
     this.parent = new Prime.Document.Element(this.element.domElement.parentNode);
     this.parent.addEventListener('mouseup', this._handleParentMouseUp);
-    this.element.addClass(this.options['className']);
-    return this;
-  },
-
-  /**
-   * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
-   * method to set options on the widget. The caller needs to know what properties are valid in the options object.
-   *
-   * @param {Object} options Key value pair of configuration options.
-   * @returns {Prime.Widgets.AJAXDialog} This.
-   */
-  withOptions: function(options) {
-    if (!Prime.Utils.isDefined(options)) {
-      return this;
-    }
-
-    for (var option in options) {
-      if (options.hasOwnProperty(option)) {
-        this.options[option] = options[option];
-      }
-    }
     return this;
   },
 
@@ -153,17 +130,5 @@ Prime.Widgets.Draggable.prototype = {
   _handleOnMouseUp: function() {
     this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
     this.element.removeClass('active');
-  },
-
-  /**
-   * Set the initial options for this widget.
-   * @private
-   */
-  _setInitialOptions: function() {
-    // Defaults
-    this.options = {
-      'className': 'prime-draggable',
-      'gripClassName': 'grip'
-    };
   }
 };

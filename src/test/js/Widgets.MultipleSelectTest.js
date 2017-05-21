@@ -231,61 +231,61 @@ buster.testCase('MultipleSelect class tests', {
     assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
     assert.isTrue(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 't');
-    assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 2); // The option for Two and the add custom option
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getHTML(), 'Add New Value: t');
+    assert.isTrue(this.multipleSelect.searchResults.isVisible());
+    assert.equals(this.multipleSelect.searchResults.getChildren().length, 2); // The option for Two and the add custom option
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getClass(), 'prime-searcher-search-result');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getHTML(), 'Two');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[1].getHTML(), 'Add New Value: t');
 
     // Add a letter
     this.multipleSelect.searcher.search('tw');
     assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
     assert.isTrue(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 'tw');
-    assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 2); // The option for Two and the add custom option
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[1].getHTML(), 'Add New Value: tw');
+    assert.isTrue(this.multipleSelect.searchResults.isVisible());
+    assert.equals(this.multipleSelect.searchResults.getChildren().length, 2); // The option for Two and the add custom option
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getClass(), 'prime-searcher-search-result');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getHTML(), 'Two');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[1].getHTML(), 'Add New Value: tw');
 
     // Make the custom add option go away
     this.multipleSelect.searcher.search('two');
     assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
     assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 'two');
-    assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 1);
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-highlighted-search-result');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
+    assert.isTrue(this.multipleSelect.searchResults.isVisible());
+    assert.equals(this.multipleSelect.searchResults.getChildren().length, 1);
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-highlighted-search-result');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getHTML(), 'Two');
 
     // Add a letter
     this.multipleSelect.searcher.search('twos');
     assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
     assert.isTrue(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), 'twos');
-    assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 1); // The option for Two and the add custom option
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Add New Value: twos');
+    assert.isTrue(this.multipleSelect.searchResults.isVisible());
+    assert.equals(this.multipleSelect.searchResults.getChildren().length, 1); // The option for Two and the add custom option
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getHTML(), 'Add New Value: twos');
 
     // Empty search
     this.multipleSelect.searcher.search('');
     assert.isTrue(this.multipleSelect.searcher.isSearchResultsVisible());
     assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), '');
-    assert.isTrue(this.multipleSelect.searchResultsContainer.isVisible());
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 1);
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-search-result');
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren()[0].getHTML(), 'Two');
+    assert.isTrue(this.multipleSelect.searchResults.isVisible());
+    assert.equals(this.multipleSelect.searchResults.getChildren().length, 1);
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getClass(), 'prime-searcher-search-result');
+    assert.equals(this.multipleSelect.searchResults.getChildren()[0].getHTML(), 'Two');
 
     // Whitespace search
     this.multipleSelect.searcher.search('   ');
     assert.isFalse(this.multipleSelect.searcher.isSearchResultsVisible());
     assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), '   ');
-    assert.isFalse(this.multipleSelect.searchResultsContainer.isVisible());
+    assert.isFalse(this.multipleSelect.searchResults.isVisible());
 
     // Empty search with no options available
     this.multipleSelect.selectOptionWithValue('two');
@@ -293,8 +293,8 @@ buster.testCase('MultipleSelect class tests', {
     assert.isFalse(this.multipleSelect.searcher.isSearchResultsVisible());
     assert.isFalse(this.multipleSelect.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelect.input.getValue(), '');
-    assert.isFalse(this.multipleSelect.searchResultsContainer.isVisible());
-    assert.equals(this.multipleSelect.searchResultsContainer.getChildren().length, 0);
+    assert.isFalse(this.multipleSelect.searchResults.isVisible());
+    assert.equals(this.multipleSelect.searchResults.getChildren().length, 0);
   },
 
   'search custom add disabled': function() {
@@ -303,10 +303,10 @@ buster.testCase('MultipleSelect class tests', {
     assert.isTrue(this.multipleSelectCustomAddDisabled.searcher.isSearchResultsVisible());
     assert.isFalse(this.multipleSelectCustomAddDisabled.searcher.isCustomAddVisible());
     assert.equals(this.multipleSelectCustomAddDisabled.input.getValue(), 'nothing');
-    assert.isTrue(this.multipleSelectCustomAddDisabled.searchResultsContainer.isVisible());
-    assert.equals(this.multipleSelectCustomAddDisabled.searchResultsContainer.getChildren().length, 1);
-    assert.equals(this.multipleSelectCustomAddDisabled.searchResultsContainer.getChildren()[0].getClass(), 'prime-searcher-no-search-results');
-    assert.equals(this.multipleSelectCustomAddDisabled.searchResultsContainer.getChildren()[0].getHTML(), 'No Matches For: nothing');
+    assert.isTrue(this.multipleSelectCustomAddDisabled.searchResults.isVisible());
+    assert.equals(this.multipleSelectCustomAddDisabled.searchResults.getChildren().length, 1);
+    assert.equals(this.multipleSelectCustomAddDisabled.searchResults.getChildren()[0].getClass(), 'prime-searcher-no-search-results');
+    assert.equals(this.multipleSelectCustomAddDisabled.searchResults.getChildren()[0].getHTML(), 'No Matches For: nothing');
   },
 
   'MultipleSelect.search': function() {

@@ -42,19 +42,19 @@ ul.prime-tabs li a:hover {
   background: #e6e6e6;
 }
 
-ul.prime-tabs li.prime-active a {
+ul.prime-tabs li.selected a {
   background: #fff;
   position: relative;
   top: 1px;
   pointer-events: none;
 }
 
-ul.prime-tabs li.first-child {
+ul.prime-tabs li.first-visible-child {
   border-radius: 3px 0 0 0;
   margin-left: 10px;
 }
 
-ul.prime-tabs li.last-child {
+ul.prime-tabs li.last-visible-child {
   border-radius: 0 3px 0 0;
 }
 

@@ -94,7 +94,6 @@ Prime.Widgets.SplitButton = function(element) {
 Prime.Widgets.SplitButton.constructor = Prime.Widgets.SplitButton;
 
 Prime.Widgets.SplitButton.prototype = {
-
   /**
    * Destroy the the SplitButton widget
    */
