@@ -592,8 +592,8 @@ Prime.Document.Element.prototype = {
    * @returns {Prime.Document.Element} This element's parent or null if there is no parent
    */
   getParent: function() {
-    if (Prime.Utils.isDefined(this.domElement.parentNode)) {
-      return new Prime.Document.Element(this.domElement.parentNode);
+    if (Prime.Utils.isDefined(this.domElement.parentElement)) {
+      return new Prime.Document.Element(this.domElement.parentElement);
     } else {
       return null;
     }

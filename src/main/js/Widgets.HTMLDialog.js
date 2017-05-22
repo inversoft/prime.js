@@ -17,27 +17,27 @@ var Prime = Prime || {};
 Prime.Widgets = Prime.Widgets || {};
 
 /**
- * Constructs a new dialog box, which is dynamically built and then populated with the HTML returned from an AJAX call.
+ * Constructs a new dialog box from an element.
  *
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the HTMLDialog widget.
  * @constructor
  */
-Prime.Widgets.AJAXDialog = function() {
+Prime.Widgets.HTMLDialog = function(element) {
   Prime.Utils.bindAll(this);
 
-  this.element = null;
+  this.element = Prime.Document.Element.wrap(element);
   this._setInitialOptions();
 };
 
-Prime.Widgets.AJAXDialog.prototype = {
+Prime.Widgets.HTMLDialog.prototype = {
   /**
    * Closes the dialog, destroys the HTML and updates or hides the overlay.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   close: function() {
     this.element.removeClass('open');
     setTimeout(function() {
-      this.element.removeFromDOM();
-      this.element = null;
+      this.element.hide();
 
       var highestZIndex = this._determineZIndex();
       if (highestZIndex !== 0) {
@@ -52,7 +52,7 @@ Prime.Widgets.AJAXDialog.prototype = {
 
   /**
    * Destroys the dialog by calling the close function.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   destroy: function() {
     this.close();
@@ -61,47 +61,48 @@ Prime.Widgets.AJAXDialog.prototype = {
 
   /**
    * Initializes the dialog.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   initialize: function() {
+    if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
+      new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
+    }
+
+    this.element.hide();
     return this;
   },
 
   /**
-   * Opens the dialog by making the AJAX GET request to the given URI and the opening then dialog.
+   * Opens the dialog.
    *
-   * @param uri {string} The URI to make the AJAX GET request to.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
-  open: function(uri) {
-    new Prime.Ajax.Request(uri, 'GET')
-        .withSuccessHandler(this._handleAjaxDialogResponse)
-        .withErrorHandler(this._handleAjaxDialogResponse)
-        .go();
-    return this;
-  },
+  open: function() {
+    var highestZIndex = this._determineZIndex();
+    Prime.Widgets.Overlay.instance.open(highestZIndex + this.options['zIndexOffset']);
+    this.element.setStyle('zIndex', (highestZIndex + this.options['zIndexOffset'] + 10).toString());
+    this.element.show();
+    this.element.addClass('open');
 
-  /**
-   * Opens the dialog by making the AJAX POST request to the given URI with the given form and extra data (optional)
-   * and then opening the dialog.
-   *
-   * @param uri {string} The URI to make the AJAX POST request to.
-   * @param form {FormElement|Prime.Document.Element} The Form element to retrieve the data from.
-   * @param extraData {object} (Optional) Extra data to send with the POST.
-   * @returns {Prime.Widgets.AJAXDialog} This.
-   */
-  openPost: function(uri, form, extraData) {
-    new Prime.Ajax.Request(uri, 'POST')
-        .withDataFromForm(form)
-        .withData(extraData)
-        .withSuccessHandler(this._handleAjaxDialogResponse)
-        .go();
+    var windowHeight = Prime.Window.getInnerHeight();
+    var maxDialogHeight = Math.floor(windowHeight * 0.9);
+    if (this.element.getHeight() > maxDialogHeight) {
+      this.element.setHeight(maxDialogHeight);
+    }
+
+    if (this.options['callback'] !== null) {
+      this.options['callback'](this.element);
+    }
+
+    // The callback allows the dialog to initialize itself and hide stuff etc. Wait to position it.
+    this.position();
+    this._setupButtons();
     return this;
   },
 
   /**
    * Positions the dialog on the screen.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   position: function() {
     var innerHeight = Prime.Window.getInnerHeight();
@@ -119,7 +120,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * Updates the HTML contents of the dialog.
    *
    * @param html {String} The HTML.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   setHTML: function(html) {
     this.element.setHTML(html);
@@ -131,7 +132,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * Sets the callback that is called after the dialog has been fetched and rendered.
    *
    * @param callback {function} The callback function.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   withCallback: function(callback) {
     this.options['callback'] = callback;
@@ -142,7 +143,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * Sets the class name for the dialog element.
    *
    * @param className {string} The class name.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   withClassName: function(className) {
     this.options['className'] = className;
@@ -154,7 +155,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * the server.
    *
    * @param selector {string} The element selector.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   withCloseButtonElementSelector: function(selector) {
     this.options['closeButtonElementSelector'] = selector;
@@ -165,7 +166,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * Sets the timeout used in the close method to allow for transitions.
    *
    * @param timeout {int} The timeout.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   withCloseTimeout: function(timeout) {
     this.options['closeTimeout'] = timeout;
@@ -176,7 +177,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * Sets the draggable element selector that is used for the Prime.Widgets.Draggable.
    *
    * @param selector {string} The element selector.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   withDraggableButtonElementSelector: function(selector) {
     this.options['draggableElementSelector'] = selector;
@@ -188,7 +189,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
    * @param {Object} options Key value pair of configuration options.
-   * @returns {Prime.Widgets.AJAXDialog} This.
+   * @returns {Prime.Widgets.HTMLDialog} This.
    */
   withOptions: function(options) {
     if (!Prime.Utils.isDefined(options)) {
@@ -223,33 +224,6 @@ Prime.Widgets.AJAXDialog.prototype = {
     Prime.Utils.stopEvent(event);
   },
 
-  _handleAjaxDialogResponse: function(xhr) {
-    this.element = Prime.Document.newElement('<div/>', {class: this.options['className']}).appendTo(document.body);
-    this.setHTML(xhr.responseText);
-
-    if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
-      new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
-    }
-
-    var highestZIndex = this._determineZIndex();
-    Prime.Widgets.Overlay.instance.open(highestZIndex + this.options['zIndexOffset']);
-    this.element.setStyle('zIndex', (highestZIndex + this.options['zIndexOffset'] + 10).toString());
-    this.element.addClass('open');
-
-    var windowHeight = Prime.Window.getInnerHeight();
-    var maxDialogHeight = Math.floor(windowHeight * 0.9);
-    if (this.element.getHeight() > maxDialogHeight) {
-      this.element.setHeight(maxDialogHeight);
-    }
-
-    if (this.options['callback'] !== null) {
-      this.options['callback'](this.element);
-    }
-
-    // The callback allows the dialog to initialize itself and hide stuff etc. Wait to position it.
-    this.position();
-  },
-
   _setupButtons: function() {
     this.element.query(this.options['closeButtonElementSelector']).each(function(e) {
       e.addEventListener('click', this._handleCloseClickEvent);
@@ -270,5 +244,12 @@ Prime.Widgets.AJAXDialog.prototype = {
       'draggableElementSelector': '[data-dialog-role="draggable"]',
       'zIndexOffset': 1000
     };
+
+    var userOptions = Prime.Utils.dataSetToOptions(this.element);
+    for (var option in userOptions) {
+      if (userOptions.hasOwnProperty(option)) {
+        this.options[option] = userOptions[option];
+      }
+    }
   }
 };

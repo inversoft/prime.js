@@ -54,6 +54,9 @@ Prime.Widgets.Draggable.prototype = {
   destroy: function() {
     this.element.removeClass('active');
     this.element.setStyles(this.originalStyle);
+    this.grip.removeEventListener('mousedown', this._handleMouseDown);
+    this.element.removeEventListener('mouseup', this._handleOnMouseUp);
+    this.parent.removeEventListener('mouseup', this._handleParentMouseUp);
   },
 
   /**
@@ -62,16 +65,17 @@ Prime.Widgets.Draggable.prototype = {
    * @returns {Prime.Widgets.Draggable} This.
    */
   initialize: function() {
-    this.element.setStyle('position', 'absolute');
     this.originalStyle = {
       'cursor': this.element.getStyle('cursor'),
       'zIndex': this.element.getStyle('zIndex')
     };
 
-    this.grip.addEventListener('mousedown', this._handleMouseDown);
-    this.element.addEventListener('mouseup', this._handleOnMouseUp);
+    this.grip.addEventListener('mousedown', this._handleMouseDown)
+        .setStyle('cursor', 'move');
+    this.element.addEventListener('mouseup', this._handleOnMouseUp)
+        .setStyle('position', 'absolute');
 
-    this.parent = new Prime.Document.Element(this.element.domElement.parentNode);
+    this.parent = new Prime.Document.Element(this.element.domElement.parentElement);
     this.parent.addEventListener('mouseup', this._handleParentMouseUp);
     return this;
   },

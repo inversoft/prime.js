@@ -47,6 +47,7 @@
   <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Dismissable.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.HTMLDialog.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Overlay.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
@@ -208,6 +209,10 @@
       };
 
       Prime.Document.queryById('ajax-dialog-button').addEventListener('click', openFunction);
+      var htmlDialog = new Prime.Widgets.HTMLDialog(Prime.Document.queryById('html-dialog'));
+      Prime.Document.queryById('html-dialog-button').addEventListener('click', function() {
+        htmlDialog.open();
+      });
 
       new Prime.Widgets.Dismissable(Prime.Document.queryFirst('.dismissable'), Prime.Document.queryFirst('.dismissable a'))
           .initialize();
@@ -257,6 +262,19 @@
 
   <div id="ajax-dialog-container">
     <a href="#" id="ajax-dialog-button">Open AJAX dialog</a>
+  </div>
+
+  <a href="#" id="html-dialog-button">Open HTML dialog</a>
+  <div id="html-dialog" class="prime-dialog">
+    <header data-dialog-role="draggable">
+      <h2>HTML dialog header <a href="#" data-dialog-role="close-button">X</a></h2>
+    </header>
+    <main>
+      This is an HTML dialog.
+    </main>
+    <footer>
+      <a href="#" data-dialog-role="close-button">Close</a>
+    </footer>
   </div>
 
   <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">
@@ -371,7 +389,7 @@
       </select>
     </form>
   </div>
-  <div id="draggable" style="background: #ffffff; cursor: move; right: 50px; width: 200px; height: 200px; border: 1px solid black; box-shadow: 3px 3px 3px #000">Drag me please.<br>
+  <div id="draggable" style="background: #ffffff; right: 50px; width: 200px; height: 200px; border: 1px solid black; box-shadow: 3px 3px 3px #000">Drag me please.<br>
     <button id="destroy-draggable">Destroy</button>
   </div>
   <div id="scroll-tests" style="margin-top: 50px;">

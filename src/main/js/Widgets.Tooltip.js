@@ -28,7 +28,7 @@ Prime.Widgets = Prime.Widgets || {};
 /**
  * Constructs a new Tooltip object for the given element.
  *
- * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the TreeView widget.
+ * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the Tooltip widget.
  * @constructor
  */
 Prime.Widgets.Tooltip = function(element) {
@@ -99,8 +99,15 @@ Prime.Widgets.Tooltip.prototype = {
     return this;
   },
 
-  withClassName: function(name) {
-    this.options.className = name;
+  /**
+   * Sets the class name to use when creating the tooltip.
+   *
+   * @param className {String} The class name.
+   * @returns {Prime.Widgets.Tooltip} This.
+   */
+  withClassName: function(className) {
+    this.options.className = className;
+    return this;
   },
 
   /**
