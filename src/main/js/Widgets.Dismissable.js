@@ -48,7 +48,7 @@ Prime.Widgets.Dismissable.prototype = {
    * the DOM.
    */
   close: function() {
-    this.element.removeClass('open');
+    this.element.addClass('closed');
     setTimeout(function() {
       this.element.removeFromDOM();
     }.bind(this), this.options['closeTimeout']);

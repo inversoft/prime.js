@@ -16,11 +16,11 @@
 
 .dismissable {
   border: 1px solid #ccc;
-  opacity: 0;
+  opacity: 1;
   padding: 10px;
   transition: opacity 0.4s ease-in-out;
 }
 
-.dismissable.open {
-  opacity: 1;
+.dismissable.closed {
+  opacity: 0;
 }
