@@ -36,7 +36,17 @@ target(name: "clean", description: "Does nothing. Exists for scripting") {
   file.prune(dir: "build")
 }
 
+target(name: "install-uglifyjs") {
+  "npm install uglify-js -g".execute()
+}
+
 target(name: "int", description: "Releases a local integration build of the project") {
+  def test = "which uglifyjs".execute().exitValue()
+  if (test == 1) {
+    println "Error. I can't run an int build until you install uglifyjs. Run > sb install-uglifyjs"
+    exit
+  }
+
   file.prune(dir: "build/js")
   file.append(to: "build/js/prime.js") {
     fileSet(dir: "src/main/js", includePatterns: [~/.+\.js/], excludePatterns: [~/.+\/.+/])
