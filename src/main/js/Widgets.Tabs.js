@@ -90,10 +90,10 @@ Prime.Widgets.Tabs.prototype = {
       var isAnchor = href.charAt(0) === '#';
       if (isAnchor) {
         dataSet.tabId = href.substring(1);
-        dataSet.tabURL = '';
+        dataSet.tabUrl = '';
       } else {
         dataSet.tabId = href;
-        dataSet.tabURL = href;
+        dataSet.tabUrl = href;
       }
 
       this.tabs[dataSet.tabId] = tab;
@@ -219,7 +219,7 @@ Prime.Widgets.Tabs.prototype = {
       sessionStorage.setItem(this.options['localStorageKey'], JSON.stringify(data));
     }
 
-    var ajaxURL = this.selectedTab.getDataSet().tabURL;
+    var ajaxURL = this.selectedTab.getDataSet().tabUrl;
     if (ajaxURL !== '') {
       this.selectedTab.addClass('loading');
       this.tabContents[id].setHTML('');
