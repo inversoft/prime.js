@@ -24,6 +24,7 @@ Prime.Widgets = Prime.Widgets || {};
 Prime.Widgets.AJAXDialog = function() {
   Prime.Utils.bindAll(this);
 
+  this.draggable = null;
   this.element = null;
   this._setInitialOptions();
 };
@@ -35,6 +36,11 @@ Prime.Widgets.AJAXDialog.prototype = {
    */
   close: function() {
     this.element.removeClass('open');
+    if (this.draggable !== null) {
+      this.draggable.destroy();
+      this.draggable = null;
+    }
+
     setTimeout(function() {
       this.element.removeFromDOM();
       this.element = null;
@@ -228,7 +234,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     this.setHTML(xhr.responseText);
 
     if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
-      new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
+      this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
     }
 
     var highestZIndex = this._determineZIndex();

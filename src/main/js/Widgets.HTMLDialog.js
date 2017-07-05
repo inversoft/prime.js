@@ -27,6 +27,7 @@ Prime.Widgets.HTMLDialog = function(element) {
 
   this.element = Prime.Document.Element.wrap(element);
   this._setInitialOptions();
+  this.draggable = null;
 };
 
 Prime.Widgets.HTMLDialog.prototype = {
@@ -36,6 +37,11 @@ Prime.Widgets.HTMLDialog.prototype = {
    */
   close: function() {
     this.element.removeClass('open');
+    if (this.draggable !== null) {
+      this.draggable.destroy();
+      this.draggable = null;
+    }
+
     setTimeout(function() {
       this.element.hide();
 
@@ -64,10 +70,6 @@ Prime.Widgets.HTMLDialog.prototype = {
    * @returns {Prime.Widgets.HTMLDialog} This.
    */
   initialize: function() {
-    if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
-      new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
-    }
-
     this.element.hide();
     return this;
   },
@@ -97,6 +99,12 @@ Prime.Widgets.HTMLDialog.prototype = {
     // The callback allows the dialog to initialize itself and hide stuff etc. Wait to position it.
     this.position();
     this._setupButtons();
+
+    if (this.draggable === null) {
+      if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
+        this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
+      }
+    }
     return this;
   },
 
