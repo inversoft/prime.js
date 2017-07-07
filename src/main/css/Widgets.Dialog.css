@@ -18,8 +18,10 @@
   background: #fff;
   display: flex;
   flex-direction: column;
+  left: calc(50vw - 150px);
   opacity: 0;
-  position: absolute;
+  position: fixed;
+  top: calc(50vh - 150px);
   transition: opacity 0.3s ease-in-out;
 }
 

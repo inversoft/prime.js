@@ -96,8 +96,6 @@ Prime.Widgets.HTMLDialog.prototype = {
       this.options['callback'](this.element);
     }
 
-    // The callback allows the dialog to initialize itself and hide stuff etc. Wait to position it.
-    this.position();
     this._setupButtons();
 
     if (this.draggable === null) {
@@ -105,22 +103,6 @@ Prime.Widgets.HTMLDialog.prototype = {
         this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
       }
     }
-    return this;
-  },
-
-  /**
-   * Positions the dialog on the screen.
-   * @returns {Prime.Widgets.HTMLDialog} This.
-   */
-  position: function() {
-    var innerHeight = Prime.Window.getInnerHeight();
-    var innerWidth = Prime.Window.getInnerWidth();
-
-    var scrollTop = Prime.Window.getScrollTop();
-    var elemHeight = this.element.getHeight();
-    var elemWidth = this.element.getWidth();
-    this.element.setLeft((innerWidth / 2) - (elemWidth / 2));
-    this.element.setTop((innerHeight / 2) - (elemHeight / 2) + scrollTop);
     return this;
   },
 

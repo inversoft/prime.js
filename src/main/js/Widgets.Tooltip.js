@@ -35,6 +35,12 @@ Prime.Widgets.Tooltip = function(element) {
   Prime.Utils.bindAll(this);
 
   this.element = Prime.Document.Element.wrap(element);
+  if (window.getComputedStyle(this.element.domElement, ':after').content) {
+    console.log('Have an after');
+  } else {
+    this.attachElement = this.element;
+  }
+
   this._setInitialOptions();
 };
 
@@ -71,29 +77,21 @@ Prime.Widgets.Tooltip.prototype = {
    */
   show: function() {
     var text = this.element.getDataSet()[this.options.dataName];
-    var zIndex = this.element.getRelativeZIndex();
+    var zIndex = this.attachElement.getRelativeZIndex();
     var tooltip = Prime.Document.newElement('<span>')
         .appendTo(Prime.Document.bodyElement)
         .addClass(this.options.className + ' ' + this.element.getTagName().toLowerCase())
         .setHTML(text)
         .setStyle('zIndex', zIndex + 10);
 
-    var coords = this.element.getCoordinates();
-    var targetWidth = this.element.getWidth();
-    var tooltipHeight = tooltip.getHeight();
+    var left = this.attachElement.getLeft();
+    var top = this.attachElement.getAbsoluteTop();
+    var width = this.attachElement.getWidth();
     var tooltipWidth = tooltip.getWidth();
-    var textAlign = this.element.getComputedStyle()['textAlign'];
-    if (textAlign === 'right') {
-      tooltip.setLeft(coords.left + (targetWidth - 5) - (tooltipWidth / 2));
-      tooltip.setTop(coords.top - tooltipHeight - 6);
-    } else if (targetWidth > tooltipWidth && (textAlign === 'left' || textAlign === 'start')) {
-      var left = coords.left - (tooltipWidth / 2);
-      tooltip.setLeft(left < 5 ? 5 : left);
-      tooltip.setTop(coords.top - tooltipHeight - 6);
-    } else {
-      tooltip.setLeft(coords.left + (targetWidth / 2) - (tooltipWidth / 2));
-      tooltip.setTop(coords.top - tooltipHeight - 6);
-    }
+    var tooltipHeight = tooltip.getHeight();
+
+    tooltip.setLeft(left - (tooltipWidth / 2) + (width / 2));
+    tooltip.setTop(top - tooltipHeight - 8);
 
     this.element.domElement.tooltip = tooltip;
     return this;

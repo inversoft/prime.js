@@ -70,10 +70,8 @@ Prime.Widgets.Draggable.prototype = {
       'zIndex': this.element.getStyle('zIndex')
     };
 
-    this.grip.addEventListener('mousedown', this._handleMouseDown)
-        .setStyle('cursor', 'move');
-    this.element.addEventListener('mouseup', this._handleOnMouseUp)
-        .setStyle('position', 'absolute');
+    this.grip.addEventListener('mousedown', this._handleMouseDown).setStyle('cursor', 'move');
+    this.element.addEventListener('mouseup', this._handleOnMouseUp);
 
     this.parent = new Prime.Document.Element(this.element.domElement.parentElement);
     this.parent.addEventListener('mouseup', this._handleParentMouseUp);
@@ -96,8 +94,8 @@ Prime.Widgets.Draggable.prototype = {
       'zIndex': this.element.getStyle('zIndex'),
       'height': this.element.getOuterHeight(),
       'width': this.element.getOuterWidth(),
-      'x': this.element.getLeft() + this.element.getOuterWidth() - event.pageX,
-      'y': this.element.getTop() + this.element.getOuterHeight() - event.pageY
+      'x': event.screenX,
+      'y': event.screenY
     };
 
     this.element.setStyle('zIndex', this.offset.zIndex + 10);
@@ -113,9 +111,12 @@ Prime.Widgets.Draggable.prototype = {
    * @private
    */
   _handleParentMouseMove: function(event) {
-    this.element.setLeft(event.pageX + this.offset.x - this.offset.width);
-    var scrollTop = Prime.Window.getScrollTop();
-    this.element.setTop(event.pageY + this.offset.y - this.offset.height + scrollTop);
+    var xDiff = event.screenX - this.offset.x;
+    var yDiff = event.screenY - this.offset.y;
+    this.offset.x = event.screenX;
+    this.offset.y = event.screenY;
+    this.element.setLeft(this.element.getLeft() + xDiff);
+    this.element.setTop(this.element.getTop() + yDiff);
   },
 
   /**
