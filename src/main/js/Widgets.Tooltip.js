@@ -35,12 +35,6 @@ Prime.Widgets.Tooltip = function(element) {
   Prime.Utils.bindAll(this);
 
   this.element = Prime.Document.Element.wrap(element);
-  if (window.getComputedStyle(this.element.domElement, ':after').content) {
-    console.log('Have an after');
-  } else {
-    this.attachElement = this.element;
-  }
-
   this._setInitialOptions();
 };
 
@@ -77,16 +71,16 @@ Prime.Widgets.Tooltip.prototype = {
    */
   show: function() {
     var text = this.element.getDataSet()[this.options.dataName];
-    var zIndex = this.attachElement.getRelativeZIndex();
+    var zIndex = this.element.getRelativeZIndex();
     var tooltip = Prime.Document.newElement('<span>')
         .appendTo(Prime.Document.bodyElement)
         .addClass(this.options.className + ' ' + this.element.getTagName().toLowerCase())
         .setHTML(text)
         .setStyle('zIndex', zIndex + 10);
 
-    var left = this.attachElement.getLeft();
-    var top = this.attachElement.getAbsoluteTop();
-    var width = this.attachElement.getWidth();
+    var left = this.element.getLeft();
+    var top = this.element.getAbsoluteTop();
+    var width = this.element.getWidth();
     var tooltipWidth = tooltip.getWidth();
     var tooltipHeight = tooltip.getHeight();
 
