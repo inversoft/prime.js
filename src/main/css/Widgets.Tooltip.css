@@ -22,7 +22,7 @@
   color: #fff;
   font-weight: normal;
   padding: 5px 10px;
-  position: absolute;
+  position: fixed;
   text-align: center;
   max-width: 150px;
 }

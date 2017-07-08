@@ -48,6 +48,7 @@
 }
 
 .prime-dialog main {
+  max-height: calc(100vh - 200px);
   overflow-y: scroll;
   padding: 5px;
 }

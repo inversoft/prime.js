@@ -59,8 +59,8 @@ Prime.Widgets.Tooltip.prototype = {
    * @returns {Prime.Widgets.Tooltip} This.
    */
   initialize: function() {
-    this.element.addEventListener('mouseenter', this._handleMouseEnter)
-        .addEventListener('mouseleave', this._handleMouseLeave);
+    this.element.addEventListener('mouseenter', this._handleMouseEnter).addEventListener('mouseleave', this._handleMouseLeave);
+    Prime.Document.addEventListener('scroll', this._handleMouseLeave);
     return this;
   },
 
@@ -79,7 +79,7 @@ Prime.Widgets.Tooltip.prototype = {
         .setStyle('zIndex', zIndex + 10);
 
     var left = this.element.getLeft();
-    var top = this.element.getAbsoluteTop();
+    var top = this.element.getTop();
     var width = this.element.getWidth();
     var tooltipWidth = tooltip.getWidth();
     var tooltipHeight = tooltip.getHeight();

@@ -145,7 +145,7 @@
           .initialize();
 
       // Side menu
-      new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryById('prime-side-menu'));
+      new Prime.Widgets.SideMenu(Prime.Document.queryById('prime-side-menu-button'), Prime.Document.queryById('prime-side-menu')).initialize();
 
       Prime.Window.addEventListener('beforeunload', function() {
         console.log('Beforeunload');
@@ -195,7 +195,9 @@
           })
           .initialize();
 
-      new Prime.Widgets.Tooltip(Prime.Document.queryById('tooltip')).initialize();
+      Prime.Document.query('[data-tooltip]').each(function(e) {
+        new Prime.Widgets.Tooltip(e).initialize();
+      });
 
       var openFunction = function(e) {
         new Prime.Widgets.AJAXDialog()
@@ -212,6 +214,10 @@
       var htmlDialog = new Prime.Widgets.HTMLDialog(Prime.Document.queryById('html-dialog'));
       Prime.Document.queryById('html-dialog-button').addEventListener('click', function() {
         htmlDialog.open();
+      });
+      var htmlDialog2 = new Prime.Widgets.HTMLDialog(Prime.Document.queryById('html-dialog-2'));
+      Prime.Document.queryById('html-dialog-button-2').addEventListener('click', function() {
+        htmlDialog2.open();
       });
 
       new Prime.Widgets.Dismissable(Prime.Document.queryFirst('.dismissable'), Prime.Document.queryFirst('.dismissable a'))
@@ -230,7 +236,7 @@
     }
   </style>
 </head>
-<body>
+<body style="position: relative">
 <nav id="prime-side-menu" class="prime-side-menu">
   <ul>
     <li>
@@ -256,6 +262,11 @@
   <div id="prime-side-menu-button"><span>&#9776;</span></div>
   <br>
 
+  <div class="fixed" style="position: fixed; background: rgba(0, 0, 0, 0.2)">
+    This is a fixed positioned element
+    <a href="#" data-tooltip="Tooltip text">This has a tooltip</a>
+  </div>
+
   <div id="tooltip" data-tooltip="The tooltip text!">
     This element has a tooltip.
   </div>
@@ -277,6 +288,19 @@
     </footer>
   </div>
 
+  <a href="#" id="html-dialog-button-2">Open HTML tall dialog</a>
+  <div id="html-dialog-2" class="prime-dialog">
+    <header data-dialog-role="draggable">
+      <h2>HTML dialog header <a href="#" data-dialog-role="close-button">X</a></h2>
+    </header>
+    <main>
+      This is an HTML dialog.<p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p>
+    </main>
+    <footer>
+      <a href="#" data-dialog-role="close-button">Close</a>
+    </footer>
+  </div>
+
   <div class="datepicker" style="margin-bottom: 50px; margin-top: 50px;">
     <form>
       <input id="datepicker1" type="text" name="datepicker" size="40">
@@ -286,6 +310,10 @@
 
   <div id="touchable" style="width: 400px; height: 150px; background-color: gray;">
     Swipe left or right...give it a shot!
+  </div>
+
+  <div id="tooltip" data-tooltip="The tooltip text!">
+    This element has a tooltip.
   </div>
 
   <a href="#" id="hide-foo">Hide Foo Tab</a>
