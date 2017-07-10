@@ -102,6 +102,7 @@ Prime.Widgets.HTMLDialog.prototype = {
         this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
       }
     }
+
     return this;
   },
 

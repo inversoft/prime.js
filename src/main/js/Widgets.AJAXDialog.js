@@ -92,7 +92,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    * and then opening the dialog.
    *
    * @param uri {string} The URI to make the AJAX POST request to.
-   * @param form {FormElement|Prime.Document.Element} The Form element to retrieve the data from.
+   * @param form {HTMLFormElement|Prime.Document.Element} The Form element to retrieve the data from.
    * @param extraData {object} (Optional) Extra data to send with the POST.
    * @returns {Prime.Widgets.AJAXDialog} This.
    */
@@ -217,23 +217,24 @@ Prime.Widgets.AJAXDialog.prototype = {
     this.element = Prime.Document.newElement('<div/>', {class: this.options['className']}).appendTo(document.body);
     this.setHTML(xhr.responseText);
 
-    if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
-      this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
-    }
-
     var highestZIndex = this._determineZIndex();
     Prime.Widgets.Overlay.instance.open(highestZIndex + this.options['zIndexOffset']);
     this.element.setStyle('zIndex', (highestZIndex + this.options['zIndexOffset'] + 10).toString());
     this.element.addClass('open');
 
+    // Position the fixed dialog in the center of the screen
     var windowHeight = Prime.Window.getInnerHeight();
-    var maxDialogHeight = Math.floor(windowHeight * 0.9);
-    if (this.element.getHeight() > maxDialogHeight) {
-      this.element.setHeight(maxDialogHeight);
-    }
+    var dialogHeight = this.element.getHeight();
+    this.element.setTop((windowHeight - dialogHeight) / 2);
 
     if (this.options['callback'] !== null) {
       this.options['callback'](this.element);
+    }
+
+    if (this.draggable === null) {
+      if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
+        this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
+      }
     }
   },
 
