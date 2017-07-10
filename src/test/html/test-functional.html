@@ -289,7 +289,7 @@
   </div>
 
   <a href="#" id="html-dialog-button-2">Open HTML tall dialog</a>
-  <div id="html-dialog-2" class="prime-dialog">
+  <div id="html-dialog-2" class="prime-dialog" style="display: none;">
     <header data-dialog-role="draggable">
       <h2>HTML dialog header <a href="#" data-dialog-role="close-button">X</a></h2>
     </header>
@@ -417,8 +417,10 @@
       </select>
     </form>
   </div>
-  <div id="draggable" style="background: #ffffff; right: 50px; width: 200px; height: 200px; border: 1px solid black; box-shadow: 3px 3px 3px #000">Drag me please.<br>
-    <button id="destroy-draggable">Destroy</button>
+  <div>
+    <div id="draggable" style="position: fixed; background: #ffffff; right: 50px; width: 200px; height: 200px; border: 1px solid black; box-shadow: 3px 3px 3px #000">Drag me please.<br>
+      <button id="destroy-draggable">Destroy</button>
+    </div>
   </div>
   <div id="scroll-tests" style="margin-top: 50px;">
     <button id="scroll-up">Scroll Up</button>

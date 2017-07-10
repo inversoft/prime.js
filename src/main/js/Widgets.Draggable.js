@@ -54,9 +54,10 @@ Prime.Widgets.Draggable.prototype = {
   destroy: function() {
     this.element.removeClass('active');
     this.element.setStyles(this.originalStyle);
+
     this.grip.removeEventListener('mousedown', this._handleMouseDown);
-    this.element.removeEventListener('mouseup', this._handleOnMouseUp);
-    this.parent.removeEventListener('mouseup', this._handleParentMouseUp);
+    Prime.Document.removeEventListener('mousemove', this._handleMouseMove);
+    Prime.Document.removeEventListener('mouseup', this._handleMouseUp);
   },
 
   /**
@@ -71,10 +72,6 @@ Prime.Widgets.Draggable.prototype = {
     };
 
     this.grip.addEventListener('mousedown', this._handleMouseDown).setStyle('cursor', 'move');
-    this.element.addEventListener('mouseup', this._handleOnMouseUp);
-
-    this.parent = new Prime.Document.Element(this.element.domElement.parentElement);
-    this.parent.addEventListener('mouseup', this._handleParentMouseUp);
     return this;
   },
 
@@ -88,6 +85,7 @@ Prime.Widgets.Draggable.prototype = {
    * @private
    */
   _handleMouseDown: function(event) {
+    event.preventDefault();
     this.element.addClass('active');
 
     this.offset = {
@@ -99,18 +97,23 @@ Prime.Widgets.Draggable.prototype = {
     };
 
     this.element.setStyle('zIndex', this.offset.zIndex + 10);
-    // defensive move to make sure we don't register more than one.
-    this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
-    this.parent.addEventListener('mousemove', this._handleParentMouseMove);
-    event.preventDefault();
+
+    // Remove old listeners
+    Prime.Document.removeEventListener('mousemove', this._handleMouseMove);
+    Prime.Document.removeEventListener('mouseup', this._handleMouseUp);
+
+    // Attach all the events
+    Prime.Document.addEventListener('mousemove', this._handleMouseMove);
+    Prime.Document.addEventListener('mouseup', this._handleMouseUp);
   },
 
   /**
-   * Handle the Mouse Move event for the parent element of this draggable widget.
+   * Handle the Mouse Move event for the body element.
+   *
    * @param {Event} event The mouse event.
    * @private
    */
-  _handleParentMouseMove: function(event) {
+  _handleMouseMove: function(event) {
     var xDiff = event.screenX - this.offset.x;
     var yDiff = event.screenY - this.offset.y;
     this.offset.x = event.screenX;
@@ -120,20 +123,13 @@ Prime.Widgets.Draggable.prototype = {
   },
 
   /**
-   * Handle Mouse Up event for the parent element of this draggable widget.
-   * @private
-   */
-  _handleParentMouseUp: function() {
-    this.element.removeClass('active');
-    this.element.setStyle('zIndex', this.offset.zIndex);
-  },
-
-  /**
    * Handle the Mouse Up event for this draggable widget.
    * @private
    */
-  _handleOnMouseUp: function() {
-    this.parent.removeEventListener('mousemove', this._handleParentMouseMove);
+  _handleMouseUp: function() {
+    Prime.Document.removeEventListener('mousemove', this._handleMouseMove);
+    Prime.Document.removeEventListener('mouseup', this._handleMouseUp);
+    this.element.setStyle('zIndex', this.offset.zIndex);
     this.element.removeClass('active');
   }
 };
