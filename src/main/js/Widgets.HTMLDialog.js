@@ -92,7 +92,7 @@ Prime.Widgets.HTMLDialog.prototype = {
     this.element.setTop(((windowHeight - dialogHeight) / 2) - 20);
 
     if (this.options['callback'] !== null) {
-      this.options['callback'](this.element);
+      this.options['callback'](this);
     }
 
     this._setupButtons();

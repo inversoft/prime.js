@@ -118,6 +118,17 @@ Prime.Widgets.AJAXDialog.prototype = {
   },
 
   /**
+   * Sets any additional classes that should be on the dialog.
+   *
+   * @param classes {string} The list of additional classes.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withAdditionalClasses: function(classes) {
+    this.options['additionalClasses'] = classes;
+    return this;
+  },
+
+  /**
    * Sets the callback that is called after the dialog has been fetched and rendered.
    *
    * @param callback {function} The callback function.
@@ -135,6 +146,10 @@ Prime.Widgets.AJAXDialog.prototype = {
    * @returns {Prime.Widgets.AJAXDialog} This.
    */
   withClassName: function(className) {
+    if (className.indexOf(' ') !== -1) {
+      throw 'Invalid class name [' + className + ']. You can use the additionalClasses options to add more classes.';
+    }
+
     this.options['className'] = className;
     return this;
   },
@@ -214,7 +229,7 @@ Prime.Widgets.AJAXDialog.prototype = {
   },
 
   _handleAjaxDialogResponse: function(xhr) {
-    this.element = Prime.Document.newElement('<div/>', {class: this.options['className']}).appendTo(document.body);
+    this.element = Prime.Document.newElement('<div/>', {class: this.options['className'] + ' ' + this.options['additionalClasses']}).appendTo(document.body);
     this.setHTML(xhr.responseText);
 
     var highestZIndex = this._determineZIndex();
@@ -228,7 +243,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     this.element.setTop(((windowHeight - dialogHeight) / 2) - 20);
 
     if (this.options['callback'] !== null) {
-      this.options['callback'](this.element);
+      this.options['callback'](this);
     }
 
     if (this.draggable === null) {
@@ -253,6 +268,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     this.options = {
       'callback': null,
       'className': 'prime-dialog',
+      'additionalClasses': '',
       'closeButtonElementSelector': '[data-dialog-role="close-button"]',
       'closeTimeout': 200,
       'draggableElementSelector': '[data-dialog-role="draggable"]',
