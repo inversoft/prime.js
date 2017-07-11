@@ -81,8 +81,8 @@ Prime.Widgets.AJAXDialog.prototype = {
    */
   open: function(uri) {
     new Prime.Ajax.Request(uri, 'GET')
-        .withSuccessHandler(this._handleAjaxDialogResponse)
-        .withErrorHandler(this._handleAjaxDialogResponse)
+        .withSuccessHandler(this._handleAJAXDialogResponse)
+        .withErrorHandler(this._handleAJAXDialogResponse)
         .go();
     return this;
   },
@@ -100,7 +100,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     new Prime.Ajax.Request(uri, 'POST')
         .withDataFromForm(form)
         .withData(extraData)
-        .withSuccessHandler(this._handleAjaxDialogResponse)
+        .withSuccessHandler(this._handleAJAXDialogResponse)
         .go();
     return this;
   },
@@ -189,6 +189,50 @@ Prime.Widgets.AJAXDialog.prototype = {
   },
 
   /**
+   * Sets an error callback for AJAX form handling. This is called after a failed form submission.
+   *
+   * @param callback {Function} The callback function.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withFormErrorCallback: function(callback) {
+    this.options['formErrorCallback'] = callback;
+    return this;
+  },
+
+  /**
+   * Sets whether or not forms inside the dialog are handled via AJAX or not.
+   *
+   * @param enabled {boolean} The choice.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withFormHandling: function(enabled) {
+    this.options['formHandling'] = enabled;
+    return this;
+  },
+
+  /**
+   * Sets a pre-submit callback for AJAX form handling. This is called before the form is submitted.
+   *
+   * @param callback {Function} The callback function.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withFormPreSubmitCallback: function(callback) {
+    this.options['formPreSubmitCallback'] = callback;
+    return this;
+  },
+
+  /**
+   * Sets a success callback for AJAX form handling. This is called after a successful form submission.
+   *
+   * @param callback {Function} The callback function.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withFormSuccessCallback: function(callback) {
+    this.options['formSuccessCallback'] = callback;
+    return this;
+  },
+
+  /**
    * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
@@ -228,7 +272,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     Prime.Utils.stopEvent(event);
   },
 
-  _handleAjaxDialogResponse: function(xhr) {
+  _handleAJAXDialogResponse: function(xhr) {
     this.element = Prime.Document.newElement('<div/>', {class: this.options['className'] + ' ' + this.options['additionalClasses']}).appendTo(document.body);
     this.setHTML(xhr.responseText);
 
@@ -237,20 +281,62 @@ Prime.Widgets.AJAXDialog.prototype = {
     this.element.setStyle('zIndex', (highestZIndex + this.options['zIndexOffset'] + 10).toString());
     this.element.addClass('open');
 
+    // Call the callback before positioning to ensure all changes to the dialog have been made
+    if (this.options['callback'] !== null) {
+      this.options['callback'](this);
+    }
+
+    // Setup forms if enabled
+    if (this.options['formHandling']) {
+      this.form = this.element.queryFirst('form').addEventListener('submit', this._handleAJAXFormSubmit);
+    }
+
     // Position the fixed dialog in the center of the screen
     var windowHeight = Prime.Window.getInnerHeight();
     var dialogHeight = this.element.getHeight();
     this.element.setTop(((windowHeight - dialogHeight) / 2) - 20);
-
-    if (this.options['callback'] !== null) {
-      this.options['callback'](this);
-    }
 
     if (this.draggable === null) {
       if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
         this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
       }
     }
+  },
+
+  _handleAJAXFormError: function(xhr) {
+    this.setHTML(xhr.responseText);
+    this.form = this.element.queryFirst('form').addEventListener('submit', this._handleAJAXFormSubmit);
+
+    if (this.options['formErrorCallback'] !== null) {
+      this.options['formErrorCallback'](this);
+    }
+  },
+
+  _handleAJAXFormSuccess: function(xhr) {
+    if (this.options['formSuccessCallback'] !== null) {
+      this.options['formSuccessCallback'](this);
+    } else {
+      var successURI = this.form.getDataSet().ajaxSuccessUri;
+      if (successURI !== undefined) {
+        window.location = successURI;
+      } else {
+        window.location.reload();
+      }
+    }
+  },
+
+  _handleAJAXFormSubmit: function(event) {
+    Prime.Utils.stopEvent(event);
+
+    if (this.options['formPreSubmitCallback'] !== null) {
+      this.options['formPreSubmitCallback'](this);
+    }
+
+    new Prime.Ajax.Request(this.form.getAttribute('action'), this.form.getAttribute('method'))
+        .withDataFromForm(this.form)
+        .withSuccessHandler(this._handleAJAXFormSuccess)
+        .withErrorHandler(this._handleAJAXFormError)
+        .go();
   },
 
   _setupButtons: function() {
@@ -266,12 +352,16 @@ Prime.Widgets.AJAXDialog.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
+      'additionalClasses': '',
       'callback': null,
       'className': 'prime-dialog',
-      'additionalClasses': '',
       'closeButtonElementSelector': '[data-dialog-role="close-button"]',
       'closeTimeout': 200,
       'draggableElementSelector': '[data-dialog-role="draggable"]',
+      'formErrorCallback': null,
+      'formHandling': false,
+      'formPreSubmitCallback': null,
+      'formSuccessCallback': null,
       'zIndexOffset': 1000
     };
   }

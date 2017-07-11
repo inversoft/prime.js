@@ -86,14 +86,15 @@ Prime.Widgets.HTMLDialog.prototype = {
     this.element.show();
     this.element.addClass('open');
 
+    // Call the callback before positioning to ensure all changes to the dialog have been made
+    if (this.options['callback'] !== null) {
+      this.options['callback'](this);
+    }
+
     // Position the fixed dialog in the center of the screen
     var windowHeight = Prime.Window.getInnerHeight();
     var dialogHeight = this.element.getHeight();
     this.element.setTop(((windowHeight - dialogHeight) / 2) - 20);
-
-    if (this.options['callback'] !== null) {
-      this.options['callback'](this);
-    }
 
     this._setupButtons();
 
