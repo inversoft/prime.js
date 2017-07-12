@@ -38,6 +38,7 @@ Prime.Ajax.Request = function(url, method) {
   this.body = null;
   this.queryParams = null;
   this.contentType = null;
+  this.inProgress = null;
   this.errorHandler = this.onError;
   this.headers = {};
   this.loadingHandler = this.onLoading;
@@ -83,6 +84,10 @@ Prime.Ajax.Request.prototype = {
     }
 
     if (this.async) {
+      if (this.inProgress !== null) {
+        this.inProgress.open();
+      }
+
       this.xhr.onreadystatechange = this._handler.bind(this);
     }
 
@@ -288,6 +293,17 @@ Prime.Ajax.Request.prototype = {
   },
 
   /**
+   * Sets an InProgress object that will be called by this AJAX request.
+   *
+   * @param {Prime.Widgets.InProgress} inProgress The InProgress object.
+   * @return {Prime.Ajax.Request} This.
+   */
+  withInProgress: function(inProgress) {
+    this.inProgress = inProgress;
+    return this;
+  },
+
+  /**
    * Sets the body of the AJAX request to the string value of the provided JSON object. The content-type of the request
    * will also be set to 'application/json'. The provided JSON object may be passed as a string or an object.
    *
@@ -425,6 +441,12 @@ Prime.Ajax.Request.prototype = {
     } else if (this.xhr.readyState === 3) {
       this.loadingHandler(this.xhr);
     } else if (this.xhr.readyState === 4) {
+
+      // Call the InProgress before hand because the success handler might call another AJAX method that might open another InProgress
+      if (this.inProgress !== null) {
+        this.inProgress.close();
+      }
+
       if (this.xhr.status >= 200 && this.xhr.status <= 299) {
         this.successHandler(this.xhr);
       } else {

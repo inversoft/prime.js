@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Dialog.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Dismissable.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.InProgress.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Overlay.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
@@ -33,6 +34,7 @@
   <link rel="stylesheet" href="../../main/css/Widgets.Tooltip.css"/>
   <link rel="stylesheet" href="../../test/css/Widgets.Searcher.css"/>
   <link rel="stylesheet" href="../../test/css/Widgets.TreeView.css"/>
+  <script type="text/javascript" src="https://use.fontawesome.com/54deec06c9.js"></script>
   <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
   <script type="text/javascript" src="../../main/js/Browser.js"></script>
   <script type="text/javascript" src="../../main/js/Date.js"></script>
@@ -48,6 +50,7 @@
   <script type="text/javascript" src="../../main/js/Widgets.Draggable.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Dismissable.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.HTMLDialog.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.InProgress.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Overlay.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
@@ -224,9 +227,22 @@
           .initialize();
 
       new Prime.Widgets.TreeView(Prime.Document.queryById('treeview')).initialize();
+
+      Prime.Document.queryById('in-progress').addEventListener('click', function() {
+        new Prime.Widgets.InProgress(Prime.Document.queryById('scroll-me'))
+            .withStartFunction(function() {console.log("In Progress!")})
+            .withEndFunction(function() {console.log("In Progress!")})
+            .withMinimumTime(3000)
+            .open()
+            .close();
+      });
     });
   </script>
   <style>
+    body {
+      position: relative;
+    }
+
     #multiple-select-lots-of-options-display {
       width: 300px;
     }
@@ -425,8 +441,8 @@
   <div id="scroll-tests" style="margin-top: 50px;">
     <button id="scroll-up">Scroll Up</button>
     <button id="scroll-down">Scroll Down</button>
-    <div id="scroll-me"
-         style="margin-bottom: 100px; padding: 5px; overflow: scroll; height: 300px; border: 1px solid black;">
+    <button id="in-progress">In Progress</button>
+    <div id="scroll-me" style="margin-bottom: 100px; padding: 5px; overflow: scroll; height: 300px; border: 1px solid black;">
 <pre>
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
