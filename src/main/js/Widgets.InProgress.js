@@ -65,8 +65,8 @@ Prime.Widgets.InProgress.prototype = {
     var bodyCoords = Prime.Document.bodyElement.getCoordinates();
     this.overlay.setTop(coords.top - bodyCoords.top);
     this.overlay.setLeft(coords.left - bodyCoords.left);
-    this.overlay.setWidth(this.element.getWidth());
-    this.overlay.setHeight(this.element.getHeight());
+    this.overlay.setWidth(this.element.getBorderedWidth());
+    this.overlay.setHeight(this.element.getBorderedHeight());
     this.overlay.setStyle('zIndex', (this.element.getRelativeZIndex() + 1000).toString());
 
     this.options['startFunction'](this);

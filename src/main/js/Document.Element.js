@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2013-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -309,6 +309,24 @@ Prime.Document.Element.prototype = {
     }
 
     return attrs;
+  },
+
+  /**
+   * Gets the viewable height of the Element as an integer value in pixels. This height includes border, padding and scroll bar but excludes the margins.
+   *
+   * @returns {number} The height as pixels (number) or a string.
+   */
+  getBorderedHeight: function() {
+    return this.domElement.offsetHeight;
+  },
+
+  /**
+   * Gets the width of the Element as an integer value. This width includes border, padding and scroll bar but excludes the margins.
+   *
+   * @returns {number} The height in pixels.
+   */
+  getBorderedWidth: function() {
+    return this.domElement.offsetWidth;
   },
 
   /**
