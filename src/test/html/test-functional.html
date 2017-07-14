@@ -21,6 +21,7 @@
   <title>Prime Functional Tests</title>
   <link rel="stylesheet" href="../css/normalize-3.0.2.css"/>
   <link rel="stylesheet" href="../js/buster-test.css"/>
+  <link rel="stylesheet" href="../../main/css/Effects.SlideOpen.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Dialog.css"/>
@@ -235,6 +236,16 @@
             .withMinimumTime(3000)
             .open()
             .close();
+      });
+
+      Prime.Document.queryById('slide-tests-short-checkbox').addEventListener('change', function(event) {
+        new Prime.Effects.SlideOpen(Prime.Document.queryById('slide-tests-short')).toggle();
+      });
+      Prime.Document.queryById('slide-tests-long-checkbox').addEventListener('change', function(event) {
+        new Prime.Effects.SlideOpen(Prime.Document.queryById('slide-tests-long')).toggle();
+      });
+      Prime.Document.queryById('slide-tests-open-checkbox').addEventListener('change', function(event) {
+        new Prime.Effects.SlideOpen(Prime.Document.queryById('slide-tests-open')).toggle();
       });
     });
   </script>
@@ -505,6 +516,146 @@ some advantage from it? But who has any right to find fault with a man who choos
 a pleasure that has no annoying consequences, or one who avoids a pain that produces no
 resultant pleasure?"
 </pre>
+    </div>
+  </div>
+
+  <div id="slide-tests">
+    <label><input type="checkbox" id="slide-tests-short-checkbox"> Toggle</label>
+    <div id="slide-tests-short" class="prime-slide-open">
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum."
+    </div>
+
+    <label><input type="checkbox" id="slide-tests-long-checkbox"> Toggle</label>
+    <div id="slide-tests-long" class="prime-slide-open">
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum."
+
+      "But I must explain to you how all this mistaken idea of denouncing pleasure and
+      praising pain was born and I will give you a complete account of the system, and
+      expound the actual teachings of the great explorer of the truth, the master-builder
+      of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it
+      is pleasure, but because those who do not know how to pursue pleasure rationally encounter
+      consequences that are extremely painful. Nor again is there anyone who loves or
+      pursues or desires to obtain pain of itself, because it is pain, but because occasionally
+      circumstances occur in which toil and pain can procure him some great pleasure. To take a
+      trivial example, which of us ever undertakes laborious physical exercise, except to obtain
+      some advantage from it? But who has any right to find fault with a man who chooses to enjoy
+      a pleasure that has no annoying consequences, or one who avoids a pain that produces no
+      resultant pleasure?"
+
+
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum."
+
+      "But I must explain to you how all this mistaken idea of denouncing pleasure and
+      praising pain was born and I will give you a complete account of the system, and
+      expound the actual teachings of the great explorer of the truth, the master-builder
+      of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it
+      is pleasure, but because those who do not know how to pursue pleasure rationally encounter
+      consequences that are extremely painful. Nor again is there anyone who loves or
+      pursues or desires to obtain pain of itself, because it is pain, but because occasionally
+      circumstances occur in which toil and pain can procure him some great pleasure. To take a
+      trivial example, which of us ever undertakes laborious physical exercise, except to obtain
+      some advantage from it? But who has any right to find fault with a man who chooses to enjoy
+      a pleasure that has no annoying consequences, or one who avoids a pain that produces no
+      resultant pleasure?"
+
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum."
+
+      "But I must explain to you how all this mistaken idea of denouncing pleasure and
+      praising pain was born and I will give you a complete account of the system, and
+      expound the actual teachings of the great explorer of the truth, the master-builder
+      of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it
+      is pleasure, but because those who do not know how to pursue pleasure rationally encounter
+      consequences that are extremely painful. Nor again is there anyone who loves or
+      pursues or desires to obtain pain of itself, because it is pain, but because occasionally
+      circumstances occur in which toil and pain can procure him some great pleasure. To take a
+      trivial example, which of us ever undertakes laborious physical exercise, except to obtain
+      some advantage from it? But who has any right to find fault with a man who chooses to enjoy
+      a pleasure that has no annoying consequences, or one who avoids a pain that produces no
+      resultant pleasure?"
+    </div>
+
+    <label><input type="checkbox" id="slide-tests-open-checkbox"> Toggle</label>
+    <div id="slide-tests-open" class="prime-slide-open open">
+        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum."
+
+      "But I must explain to you how all this mistaken idea of denouncing pleasure and
+      praising pain was born and I will give you a complete account of the system, and
+      expound the actual teachings of the great explorer of the truth, the master-builder
+      of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it
+      is pleasure, but because those who do not know how to pursue pleasure rationally encounter
+      consequences that are extremely painful. Nor again is there anyone who loves or
+      pursues or desires to obtain pain of itself, because it is pain, but because occasionally
+      circumstances occur in which toil and pain can procure him some great pleasure. To take a
+      trivial example, which of us ever undertakes laborious physical exercise, except to obtain
+      some advantage from it? But who has any right to find fault with a man who chooses to enjoy
+      a pleasure that has no annoying consequences, or one who avoids a pain that produces no
+      resultant pleasure?"
+
+
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum."
+
+      "But I must explain to you how all this mistaken idea of denouncing pleasure and
+      praising pain was born and I will give you a complete account of the system, and
+      expound the actual teachings of the great explorer of the truth, the master-builder
+      of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it
+      is pleasure, but because those who do not know how to pursue pleasure rationally encounter
+      consequences that are extremely painful. Nor again is there anyone who loves or
+      pursues or desires to obtain pain of itself, because it is pain, but because occasionally
+      circumstances occur in which toil and pain can procure him some great pleasure. To take a
+      trivial example, which of us ever undertakes laborious physical exercise, except to obtain
+      some advantage from it? But who has any right to find fault with a man who chooses to enjoy
+      a pleasure that has no annoying consequences, or one who avoids a pain that produces no
+      resultant pleasure?"
+
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
+      exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
+      irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+      pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia
+      deserunt mollit anim id est laborum."
+
+      "But I must explain to you how all this mistaken idea of denouncing pleasure and
+      praising pain was born and I will give you a complete account of the system, and
+      expound the actual teachings of the great explorer of the truth, the master-builder
+      of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it
+      is pleasure, but because those who do not know how to pursue pleasure rationally encounter
+      consequences that are extremely painful. Nor again is there anyone who loves or
+      pursues or desires to obtain pain of itself, because it is pain, but because occasionally
+      circumstances occur in which toil and pain can procure him some great pleasure. To take a
+      trivial example, which of us ever undertakes laborious physical exercise, except to obtain
+      some advantage from it? But who has any right to find fault with a man who chooses to enjoy
+      a pleasure that has no annoying consequences, or one who avoids a pain that produces no
+      resultant pleasure?"
     </div>
   </div>
 </div>

@@ -217,3 +217,39 @@ Prime.Effects.ScrollTo.prototype.go = function() {
     this._changeNumberStyleIteratively(this.element.getScrollLeft, this.element.scrollLeftTo);
   }
 };
+
+/**
+ * Creates a SlideOpen effect on the given element.
+ *
+ * @param {Prime.Document.Element} element The element.
+ * @constructor
+ */
+Prime.Effects.SlideOpen = function(element) {
+  Prime.Utils.bindAll(this);
+
+  this.element = element;
+  if (element.getHeight() !== 0 || element.hasClass('open')) {
+    element.domElement.primeVisibleHeight = element.getHeight();
+  } else {
+    element.setStyle('height', 'auto');
+    element.domElement.primeVisibleHeight = element.getHeight();
+    element.setStyle('height', '0');
+  }
+};
+
+Prime.Effects.SlideOpen.prototype = {
+  toggle: function() {
+    if (this.element.getHeight() !== 0 || this.element.hasClass('open')) {
+      this.element.setHeight(this.element.domElement.primeVisibleHeight);
+      this.element.removeClass('open');
+      setTimeout(function() {
+        this.element.setHeight(0);
+      }.bind(this), 100);
+    } else {
+      this.element.setHeight(this.element.domElement.primeVisibleHeight);
+      setTimeout(function() {
+        this.element.setHeight('auto');
+      }.bind(this), 500);
+    }
+  }
+};

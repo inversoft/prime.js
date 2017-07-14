@@ -448,8 +448,8 @@ Prime.Document.Element.prototype = {
   },
 
   /**
-   * Gets the viewable height of the Element as an integer value in pixels. This height includes padding and scroll bar but excludes the margin and borders.
-   * This is often called the innerHeight of the element.
+   * Gets the viewable height of the Element as an integer value in pixels. This height includes padding and scroll bar
+   * but excludes the margin and borders. This is often called the innerHeight of the element.
    *
    * @returns {number} The height as pixels (number) or a string.
    */
