@@ -228,7 +228,7 @@ Prime.Effects.SlideOpen = function(element) {
   Prime.Utils.bindAll(this);
 
   this.element = element;
-  if (element.getHeight() !== 0 || element.hasClass('open')) {
+  if (this.isOpen()) {
     element.domElement.primeVisibleHeight = element.getHeight();
   } else {
     element.setStyle('height', 'auto');
@@ -238,18 +238,38 @@ Prime.Effects.SlideOpen = function(element) {
 };
 
 Prime.Effects.SlideOpen.prototype = {
+  close: function() {
+    if (!this.isOpen()) {
+      return;
+    }
+
+    // Set a fixed height instead of auto so that the transition runs, but only if the element is "open"
+    this.element.setHeight(this.element.domElement.primeVisibleHeight);
+
+    // This timeout is needed since the height change takes time to run
+    setTimeout(function() {
+      this.element.setHeight(0);
+      this.element.removeClass('open');
+    }.bind(this), 50);
+  },
+
+  isOpen: function() {
+    return this.element.getHeight() !== 0 || this.element.hasClass('open');
+  },
+
+  open: function() {
+    this.element.setHeight(this.element.domElement.primeVisibleHeight);
+    setTimeout(function() {
+      this.element.setHeight('auto');
+      this.element.addClass('open');
+    }.bind(this), 500);
+  },
+
   toggle: function() {
     if (this.element.getHeight() !== 0 || this.element.hasClass('open')) {
-      this.element.setHeight(this.element.domElement.primeVisibleHeight);
-      this.element.removeClass('open');
-      setTimeout(function() {
-        this.element.setHeight(0);
-      }.bind(this), 100);
+      this.close();
     } else {
-      this.element.setHeight(this.element.domElement.primeVisibleHeight);
-      setTimeout(function() {
-        this.element.setHeight('auto');
-      }.bind(this), 500);
+      this.open();
     }
   }
 };
