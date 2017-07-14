@@ -47,8 +47,10 @@ Prime.Widgets.Tooltip.prototype = {
    * @returns {Prime.Widgets.Tooltip} This.
    */
   hide: function() {
-    if (this.element.domElement.tooltip) {
-      this.element.domElement.tooltip.removeFromDOM();
+    if (this.element.domElement.tooltips) {
+      this.element.domElement.tooltips.forEach(function(t) {
+        t.removeFromDOM();
+      });
     }
     return this;
   },
@@ -87,7 +89,10 @@ Prime.Widgets.Tooltip.prototype = {
     tooltip.setLeft(left - (tooltipWidth / 2) + (width / 2));
     tooltip.setTop(top - tooltipHeight - 8);
 
-    this.element.domElement.tooltip = tooltip;
+    if (!this.element.domElement.tooltips) {
+      this.element.domElement.tooltips = [];
+    }
+    this.element.domElement.tooltips.push(tooltip);
     return this;
   },
 
