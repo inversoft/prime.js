@@ -233,29 +233,6 @@ Prime.Widgets.AJAXDialog.prototype = {
   },
 
   /**
-   * Sets a form validation callback for AJAX form handling. This is called after a form validation error.
-   *
-   * @param callback {Function} The callback function.
-   * @returns {Prime.Widgets.AJAXDialog} This.
-   */
-  withFormValidationCallback: function(callback) {
-    this.options['formValidationCallback'] = callback;
-    return this;
-  },
-
-  /**
-   * Sets a form validation status code for AJAX form handling. This indicates when the Form Validation Callback
-   * Handler will be invoked when defined.
-   *
-   * @param code {int} The status code that indicates form validation errors.
-   * @returns {Prime.Widgets.AJAXDialog} This.
-   */
-  withFormValidationStatusCode: function(code) {
-    this.options['formValidationStatusCode'] = code;
-    return this;
-  },
-
-  /**
    * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
@@ -334,21 +311,16 @@ Prime.Widgets.AJAXDialog.prototype = {
       this.options['formErrorCallback'](this);
     }
 
-    // Handle Form Validation Errors
-    if (xhr.status === this.options['formValidationStatusCode'] && this.options['formValidationCallback'] !== null) {
-      this.options['formValidationCallback'](this);
+    if (this.draggable !== null) {
+      this.draggable.destroy();
+    }
 
-      if (this.draggable !== null) {
-        this.draggable.destroy();
-      }
-
-      if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
-        this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
-      }
+    if (this.options['draggableElementSelector'] !== null && this.element.queryFirst(this.options['draggableElementSelector']) !== null) {
+      this.draggable = new Prime.Widgets.Draggable(this.element, this.options['draggableElementSelector']).initialize();
     }
   },
 
-  _handleAJAXFormSuccess: function(xhr) {
+  _handleAJAXFormSuccess: function() {
     if (this.options['formSuccessCallback'] !== null) {
       this.options['formSuccessCallback'](this);
     } else {
@@ -398,8 +370,6 @@ Prime.Widgets.AJAXDialog.prototype = {
       'formHandling': false,
       'formPreSubmitCallback': null,
       'formSuccessCallback': null,
-      'formValidationCallback': null,
-      'formValidationStatusCode': 400,
       'zIndexOffset': 1000
     };
   }
