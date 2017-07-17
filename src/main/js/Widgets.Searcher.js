@@ -465,7 +465,7 @@ Prime.Widgets.Searcher.prototype = {
    */
   _handleClickEvent: function(event) {
     var target = new Prime.Document.Element(event.currentTarget);
-    if (target.hasClass('add-custom') || target.hasClass('search-result')) {
+    if (target.hasClass('custom-add') || target.hasClass('search-result')) {
       this.selectHighlightedSearchResult();
     } else if (target.domElement === this.inputElement.domElement) {
       this.search();
