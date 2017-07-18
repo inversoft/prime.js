@@ -444,13 +444,19 @@ Prime.Ajax.Request.prototype = {
 
       // Call the InProgress before hand because the success handler might call another AJAX method that might open another InProgress
       if (this.inProgress !== null) {
-        this.inProgress.close();
-      }
-
-      if (this.xhr.status >= 200 && this.xhr.status <= 299) {
-        this.successHandler(this.xhr);
+        this.inProgress.close(function() {
+          if (this.xhr.status >= 200 && this.xhr.status <= 299) {
+            this.successHandler(this.xhr);
+          } else {
+            this.errorHandler(this.xhr);
+          }
+        }.bind(this));
       } else {
-        this.errorHandler(this.xhr);
+        if (this.xhr.status >= 200 && this.xhr.status <= 299) {
+          this.successHandler(this.xhr);
+        } else {
+          this.errorHandler(this.xhr);
+        }
       }
     }
   },

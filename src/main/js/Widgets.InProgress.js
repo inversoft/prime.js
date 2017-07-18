@@ -34,8 +34,10 @@ Prime.Widgets.InProgress = function(element) {
 Prime.Widgets.InProgress.prototype = {
   /**
    * Closes the InProgress process.
+   *
+   * @param {Function} callback (Optional) A callback function to invoke after the InProgress has been completely closed.
    */
-  close: function() {
+  close: function(callback) {
     try {
       this.options['endFunction'](this);
     } finally {
@@ -44,9 +46,17 @@ Prime.Widgets.InProgress.prototype = {
       if (duration < this.options['minimumTime']) {
         setTimeout(function() {
           this.overlay.removeFromDOM();
+
+          if (callback) {
+            callback();
+          }
         }.bind(this), this.options['minimumTime'] - duration);
       } else {
         this.overlay.removeFromDOM();
+
+        if (callback) {
+          callback();
+        }
       }
     }
 
