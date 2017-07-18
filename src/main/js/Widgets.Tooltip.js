@@ -39,6 +39,7 @@ Prime.Widgets.Tooltip = function(element) {
 };
 
 Prime.Widgets.Tooltip.constructor = Prime.Widgets.Tooltip;
+Prime.Widgets.Tooltip.open = [];
 
 Prime.Widgets.Tooltip.prototype = {
   /**
@@ -47,8 +48,8 @@ Prime.Widgets.Tooltip.prototype = {
    * @returns {Prime.Widgets.Tooltip} This.
    */
   hide: function() {
-    if (this.element.domElement.tooltips) {
-      this.element.domElement.tooltips.forEach(function(t) {
+    if (Prime.Widgets.Tooltip.open.length > 0) {
+      Prime.Widgets.Tooltip.open.forEach(function(t) {
         t.removeFromDOM();
       });
     }
@@ -89,10 +90,7 @@ Prime.Widgets.Tooltip.prototype = {
     tooltip.setLeft(left - (tooltipWidth / 2) + (width / 2));
     tooltip.setTop(top - tooltipHeight - 8);
 
-    if (!this.element.domElement.tooltips) {
-      this.element.domElement.tooltips = [];
-    }
-    this.element.domElement.tooltips.push(tooltip);
+    Prime.Widgets.Tooltip.open.push(tooltip);
     return this;
   },
 
@@ -179,3 +177,14 @@ Prime.Widgets.Tooltip.prototype = {
     }
   }
 };
+
+Prime.Document.onReady(function() {
+  // Fix browser issues with tooltips sticking around on back-button navigation
+  Prime.Window.addEventListener('beforeunload', function() {
+    if (Prime.Widgets.Tooltip.open.length > 0) {
+      Prime.Widgets.Tooltip.open.forEach(function(t) {
+        t.removeFromDOM();
+      });
+    }
+  });
+});
