@@ -80,8 +80,8 @@ Prime.Widgets.AJAXDialog.prototype = {
    * @returns {Prime.Widgets.AJAXDialog} This.
    */
   open: function(uri) {
-    new Prime.Ajax.Request(uri, 'GET')
-        .withSuccessHandler(this._handleAJAXDialogResponse)
+    var request = this.options['ajaxRequest'] || new Prime.Ajax.Request(uri, 'GET');
+    request.withSuccessHandler(this._handleAJAXDialogResponse)
         .withErrorHandler(this._handleAJAXDialogResponse)
         .go();
     return this;
@@ -93,7 +93,7 @@ Prime.Widgets.AJAXDialog.prototype = {
    *
    * @param uri {string} The URI to make the AJAX POST request to.
    * @param form {HTMLFormElement|Prime.Document.Element} The Form element to retrieve the data from.
-   * @param extraData {object} (Optional) Extra data to send with the POST.
+   * @param extraData [extraData=] {object} (Optional) Extra data to send with the POST.
    * @returns {Prime.Widgets.AJAXDialog} This.
    */
   openPost: function(uri, form, extraData) {
@@ -125,6 +125,18 @@ Prime.Widgets.AJAXDialog.prototype = {
    */
   withAdditionalClasses: function(classes) {
     this.options['additionalClasses'] = classes;
+    return this;
+  },
+
+  /**
+   * Override the default Ajax Request used to open the dialog. This does not override the
+   * success and error handlers.
+   *
+   * @param request {Prime.Ajax.Request} The Ajax Request to use to open the dialog.
+   * @returns {Prime.Widgets.AJAXDialog} This.
+   */
+  withAjaxRequest: function(request) {
+    this.options['ajaxRequest'] = request;
     return this;
   },
 
@@ -361,6 +373,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     // Defaults
     this.options = {
       'additionalClasses': '',
+      'ajaxRequest': null,
       'callback': null,
       'className': 'prime-dialog',
       'closeButtonElementSelector': '[data-dialog-role="close-button"]',
