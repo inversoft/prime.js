@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -30,7 +30,7 @@ buster.testCase('Tabs class tests', {
 
     this.container = Prime.Document.queryById('tab-test1');
     this.tabs = Prime.Document.queryFirst('ul', this.container);
-    this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).withSelectHandler(handler.bind(this)).render();
+    this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).withSelectCallback(handler.bind(this)).initialize();
     this.tabContents = Prime.Document.query('div.prime-tab-content', this.container);
   },
 
@@ -45,7 +45,7 @@ buster.testCase('Tabs class tests', {
     assert.equals(this.tabContents.length, 2);
 
     // only one tab should ever be active
-    var activeTabs = Prime.Document.query('li.prime-active', this.container);
+    var activeTabs = Prime.Document.query('li.selected', this.container);
     assert.equals(activeTabs.length, 1);
 
     // assert data-tab-id attributes are set correctly
@@ -55,12 +55,12 @@ buster.testCase('Tabs class tests', {
   },
 
   'click switches active tab': function(done) {
-    var inactiveTab = Prime.Document.queryFirst('li:not(.prime-active)', this.container);
-    assert.isFalse(inactiveTab.hasClass('prime-active'));
+    var inactiveTab = Prime.Document.queryFirst('li:not(.selected)', this.container);
+    assert.isFalse(inactiveTab.hasClass('selected'));
     Prime.Document.queryFirst('a', inactiveTab).fireEvent('click');
 
     setTimeout(done(function() {
-      assert.isTrue(inactiveTab.hasClass('prime-active'));
+      assert.isTrue(inactiveTab.hasClass('selected'));
       assert.isTrue(this.handlerCalled);
     }).bind(this), 10);
   }

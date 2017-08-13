@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2016-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,7 +24,7 @@ var refute = buster.assertions.refute;
 buster.testCase('DateTimePicker class tests', {
   setUp: function() {
     this.input = Prime.Document.queryById('datetimepicker-test1');
-    this.dateWidget = new Prime.Widgets.DateTimePicker(this.input).render();
+    this.dateWidget = new Prime.Widgets.DateTimePicker(this.input).initialize();
   },
 
   tearDown: function() {

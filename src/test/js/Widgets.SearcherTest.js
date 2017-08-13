@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -71,7 +71,7 @@ buster.testCase('Searcher class tests', {
     this.searcher.closeSearchResults();
 
     var searchResultList = Prime.Document.queryFirst('#searcher-results');
-    assert.isFalse(searchResultList.isVisible());
+    assert.isFalse(searchResultList.hasClass('open'));
     assert.equals(this.searcher.inputElement.getValue(), '');
   },
 
@@ -83,35 +83,35 @@ buster.testCase('Searcher class tests', {
     // Highlight one
     var searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('search-result'));
+    assert.isFalse(searchResults[1].hasClass('search-result'));
 
     // Highlight the custom add option
     this.searcher.highlightNextSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isFalse(searchResults[0].hasClass('search-result'));
+    assert.isTrue(searchResults[1].hasClass('search-result'));
 
     // Wrap
     this.searcher.highlightNextSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('search-result'));
+    assert.isFalse(searchResults[1].hasClass('search-result'));
 
     // Get rid of the custom add option and highlight Two
     this.searcher.search('one');
     this.searcher.highlightNextSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
 
     // This should keep Two highlighted
     this.searcher.highlightNextSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
   },
 
   'highlightNextSearchResult custom add disabled': function() {
@@ -123,22 +123,22 @@ buster.testCase('Searcher class tests', {
     this.searcherCustomAddDisabled.highlightNextSearchResult();
     var searchResults = this.searcherCustomAddDisabledSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
+    assert.isFalse(searchResults[1].hasClass('selected'));
 
     // Highlight open
     this.searcherCustomAddDisabled.highlightNextSearchResult();
     searchResults = this.searcherCustomAddDisabledSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isFalse(searchResults[0].hasClass('selected'));
+    assert.isTrue(searchResults[1].hasClass('selected'));
 
     // Wrap
     this.searcherCustomAddDisabled.highlightNextSearchResult();
     searchResults = this.searcherCustomAddDisabledSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
+    assert.isFalse(searchResults[1].hasClass('selected'));
   },
 
   "highlightPreviousSearchResult": function() {
@@ -147,35 +147,35 @@ buster.testCase('Searcher class tests', {
 
     var searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isFalse(searchResults[0].hasClass('selected'));
+    assert.isTrue(searchResults[1].hasClass('selected'));
 
     // Highlight one
     this.searcher.highlightPreviousSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
+    assert.isFalse(searchResults[1].hasClass('selected'));
 
     // Wrap
     this.searcher.highlightPreviousSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isFalse(searchResults[0].hasClass('selected'));
+    assert.isTrue(searchResults[1].hasClass('selected'));
 
     // Get rid of the custom add option and highlight Two
     this.searcher.search('one');
     this.searcher.highlightPreviousSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
 
     // This should keep Two highlighted
     this.searcher.highlightPreviousSearchResult();
     searchResults = this.searcherSearchResults.getChildren();
     assert.equals(searchResults.length, 1);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
   },
 
   'highlightPreviousSearchResult custom add disabled': function() {
@@ -187,22 +187,22 @@ buster.testCase('Searcher class tests', {
     this.searcherCustomAddDisabled.highlightPreviousSearchResult();
     var searchResults = this.searcherCustomAddDisabledSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isFalse(searchResults[0].hasClass('selected'));
+    assert.isTrue(searchResults[1].hasClass('selected'));
 
     // Highlight open
     this.searcherCustomAddDisabled.highlightPreviousSearchResult();
     searchResults = this.searcherCustomAddDisabledSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isTrue(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isFalse(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isTrue(searchResults[0].hasClass('selected'));
+    assert.isFalse(searchResults[1].hasClass('selected'));
 
     // Wrap
     this.searcherCustomAddDisabled.highlightPreviousSearchResult();
     searchResults = this.searcherCustomAddDisabledSearchResults.getChildren();
     assert.equals(searchResults.length, 2);
-    assert.isFalse(searchResults[0].hasClass('prime-searcher-highlighted-search-result'));
-    assert.isTrue(searchResults[1].hasClass('prime-searcher-highlighted-search-result'));
+    assert.isFalse(searchResults[0].hasClass('selected'));
+    assert.isTrue(searchResults[1].hasClass('selected'));
   },
 
   'search': function() {
@@ -212,11 +212,11 @@ buster.testCase('Searcher class tests', {
     assert.isTrue(this.searcher.isSearchResultsVisible());
     assert.isTrue(this.searcher.isCustomAddVisible());
     assert.equals(this.searcherInput.getValue(), 'o');
-    assert.isTrue(this.searcherSearchResults.isVisible());
+    assert.isTrue(this.searcherSearchResults.hasClass('open'));
     assert.equals(this.searcherSearchResults.getChildren().length, 2); // The option for Two and the add custom option
-    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'prime-searcher-search-result');
+    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'search-result');
     assert.equals(this.searcherSearchResults.getChildren()[0].getHTML(), 'one');
-    assert.equals(this.searcherSearchResults.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
+    assert.equals(this.searcherSearchResults.getChildren()[1].getClass(), 'search-result custom-add selected');
     assert.equals(this.searcherSearchResults.getChildren()[1].getHTML(), 'Add New Value: o');
 
     // Add a letter
@@ -224,11 +224,11 @@ buster.testCase('Searcher class tests', {
     assert.isTrue(this.searcher.isSearchResultsVisible());
     assert.isTrue(this.searcher.isCustomAddVisible());
     assert.equals(this.searcherInput.getValue(), 'on');
-    assert.isTrue(this.searcherSearchResults.isVisible());
+    assert.isTrue(this.searcherSearchResults.hasClass('open'));
     assert.equals(this.searcherSearchResults.getChildren().length, 2); // The option for Two and the add custom option
-    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'prime-searcher-search-result');
+    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'search-result');
     assert.equals(this.searcherSearchResults.getChildren()[0].getHTML(), 'one');
-    assert.equals(this.searcherSearchResults.getChildren()[1].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
+    assert.equals(this.searcherSearchResults.getChildren()[1].getClass(), 'search-result custom-add selected');
     assert.equals(this.searcherSearchResults.getChildren()[1].getHTML(), 'Add New Value: on');
 
     // Make the custom add option go away
@@ -236,9 +236,9 @@ buster.testCase('Searcher class tests', {
     assert.isTrue(this.searcher.isSearchResultsVisible());
     assert.isFalse(this.searcher.isCustomAddVisible());
     assert.equals(this.searcherInput.getValue(), 'one');
-    assert.isTrue(this.searcherSearchResults.isVisible());
+    assert.isTrue(this.searcherSearchResults.hasClass('open'));
     assert.equals(this.searcherSearchResults.getChildren().length, 1);
-    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-highlighted-search-result');
+    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'search-result selected');
     assert.equals(this.searcherSearchResults.getChildren()[0].getHTML(), 'one');
 
     // Add a letter and simulate no search results
@@ -247,9 +247,9 @@ buster.testCase('Searcher class tests', {
     assert.isTrue(this.searcher.isSearchResultsVisible());
     assert.isTrue(this.searcher.isCustomAddVisible());
     assert.equals(this.searcherInput.getValue(), 'ones');
-    assert.isTrue(this.searcherSearchResults.isVisible());
+    assert.isTrue(this.searcherSearchResults.hasClass('open'));
     assert.equals(this.searcherSearchResults.getChildren().length, 1);
-    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'prime-searcher-search-result prime-searcher-add-custom prime-searcher-highlighted-search-result');
+    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'search-result custom-add selected');
     assert.equals(this.searcherSearchResults.getChildren()[0].getHTML(), 'Add New Value: ones');
 
     // Empty search
@@ -258,9 +258,9 @@ buster.testCase('Searcher class tests', {
     assert.isTrue(this.searcher.isSearchResultsVisible());
     assert.isFalse(this.searcher.isCustomAddVisible());
     assert.equals(this.searcherInput.getValue(), '');
-    assert.isTrue(this.searcherSearchResults.isVisible());
+    assert.isTrue(this.searcherSearchResults.hasClass('open'));
     assert.equals(this.searcherSearchResults.getChildren().length, 1);
-    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'prime-searcher-search-result');
+    assert.equals(this.searcherSearchResults.getChildren()[0].getClass(), 'search-result');
     assert.equals(this.searcherSearchResults.getChildren()[0].getHTML(), 'one');
 
     // Whitespace search
@@ -269,7 +269,7 @@ buster.testCase('Searcher class tests', {
     assert.isFalse(this.searcher.isSearchResultsVisible());
     assert.isFalse(this.searcher.isCustomAddVisible());
     assert.equals(this.searcherInput.getValue(), '   ');
-    assert.isFalse(this.searcherSearchResults.isVisible());
+    assert.isFalse(this.searcherSearchResults.hasClass('open'));
   },
 
   'search custom add disabled': function() {
