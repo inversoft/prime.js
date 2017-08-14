@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -112,9 +112,6 @@ Prime.Widgets.Tabs.prototype = {
       this.tabContents[dataSet.tabId] = content;
     }.bind(this));
 
-    // Check if local storage is enabled to save selected tab
-    this.localStorageSupported = Prime.Utils.isDefined(Storage) && this.options['localStorageKey'] !== null;
-
     this.redraw();
     return this;
   },
@@ -152,10 +149,10 @@ Prime.Widgets.Tabs.prototype = {
 
     var tabId = null;
     if (selectNew || noneActive) {
-      if (this.localStorageSupported && this.options['localStorageKey'] !== null) {
-        var item = sessionStorage.getItem(this.options['localStorageKey']);
-        if (item !== null) {
-          tabId = JSON.parse(item).tabId;
+      if (Prime.Storage.supported && this.options['localStorageKey'] !== null) {
+        var state = Prime.Storage.getSessionObject(this.options['localStorageKey']);
+        if (state !== null) {
+          tabId = state.tabId;
         }
       }
 
@@ -212,11 +209,11 @@ Prime.Widgets.Tabs.prototype = {
 
     // Save current selected tab state in local storage. The JSON object isn't necessary at the moment,
     // but we can tack on other properties as needed for additional state in the future.
-    if (this.localStorageSupported) {
+    if (Prime.Storage.supported && this.options['localStorageKey'] !== null) {
       var data = {
         'tabId': id
       };
-      sessionStorage.setItem(this.options['localStorageKey'], JSON.stringify(data));
+      Prime.Storage.setSessionObject(this.options['localStorageKey'], data);
     }
 
     var ajaxURL = this.selectedTab.getDataSet().tabUrl;

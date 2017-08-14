@@ -1,0 +1,38 @@
+
+
+#table-tests table {
+  margin-bottom: 20px;
+}
+
+#table-tests thead th,
+#table-tests tbody td {
+  border: 1px solid lightgrey;
+  padding: 5px 10px;
+}
+
+#table-tests thead th {
+  background-color: darkgray;
+  font-weight: 300;
+}
+
+#table-tests thead th.sortable {
+  cursor: pointer;
+}
+
+#table-tests thead th.sortable:after {
+  content: '^';
+  visibility: hidden;
+  display: inline-block;
+  margin-left: 5px;
+}
+
+#table-tests thead th.sort-up:after {
+  content: '^';
+  visibility: visible;
+}
+
+#table-tests thead th.sort-down:after {
+  content: '^';
+  transform: rotate(180deg);
+  visibility: visible;
+}

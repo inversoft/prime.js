@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <!--
-  ~ Copyright (c) 2014-2016, Inversoft Inc., All Rights Reserved
+  ~ Copyright (c) 2014-2017, Inversoft Inc., All Rights Reserved
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
   <title>Prime Functional Tests</title>
   <link rel="stylesheet" href="../css/normalize-3.0.2.css"/>
+  <link rel="stylesheet" href="../css/test-functional.css"/>
   <link rel="stylesheet" href="../js/buster-test.css"/>
   <link rel="stylesheet" href="../../main/css/Effects.SlideOpen.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.css"/>
@@ -44,6 +45,7 @@
   <script type="text/javascript" src="../../main/js/Document.ElementList.js"></script>
   <script type="text/javascript" src="../../main/js/Effects.js"></script>
   <script type="text/javascript" src="../../main/js/Events.js"></script>
+  <script type="text/javascript" src="../../main/js/Storage.js"></script>
   <script type="text/javascript" src="../../main/js/Template.js"></script>
   <script type="text/javascript" src="../../main/js/Utils.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.AJAXDialog.js"></script>
@@ -56,6 +58,7 @@
   <script type="text/javascript" src="../../main/js/Widgets.Overlay.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.SideMenu.js"></script>
+  <script type="text/javascript" src="../../main/js/Widgets.Table.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Tooltip.js"></script>
   <script type="text/javascript" src="../../main/js/Widgets.Touchable.js"></script>
@@ -246,6 +249,16 @@
       });
       Prime.Document.queryById('slide-tests-open-checkbox').addEventListener('change', function(event) {
         new Prime.Effects.SlideOpen(Prime.Document.queryById('slide-tests-open')).toggle();
+      });
+
+      Prime.Document.query('#table-tests table').each(function(element) {
+        new Prime.Widgets.Table(element)
+            .withLocalStorageKey('sort_table_test')
+            .initialize();
+
+        element.query('[data-tooltip]').each(function(element) {
+          new Prime.Widgets.Tooltip(element);
+        })
       });
     });
   </script>
@@ -517,6 +530,79 @@ a pleasure that has no annoying consequences, or one who avoids a pain that prod
 resultant pleasure?"
 </pre>
     </div>
+  </div>
+
+  <div id="table-tests">
+    <h3>Sortable Table</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Foo</th>
+          <th>Bar</th>
+          <th data-sort-type="number">Number</th>
+          <th data-sort-type="number">Currency</th>
+          <th data-sortable="false" class="action">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td><span data-tooltip="aaa">aaa</span></td>
+        <td>oranges</td>
+        <td data-sort-value="456">456</td>
+        <td data-sort-value="12.50">$12.50</td>
+        <td>View</td>
+      </tr>
+      <tr>
+        <td><span data-tooltip="bbb">bbb</span></td>
+        <td>orange</td>
+        <td data-sort-value="789">789</td>
+        <td data-sort-value="1890">$1,890.00</td>
+        <td>View</td>
+      </tr>
+      <tr>
+        <td><span data-tooltip="ccc">ccc</span></td>
+        <td>potato</td>
+        <td data-sort-value="123">123</td>
+        <td data-sort-value="1000">$1000.00</td>
+        <td>View</td>
+      </tr>
+      <tr>
+        <td><span data-tooltip="passport">passport</span></td>
+        <td>Bong</td>
+        <td data-sort-value="1112">1112</td>
+        <td data-sort-value="1001">$1,001.00</td>
+        <td>View</td>
+      </tr>
+      <tr>
+        <td><span data-tooltip="ddd">ddd</span></td>
+        <td>Zed</td>
+        <td data-sort-value="1111">1,111</td>
+        <td data-sort-value="1">$1</td>
+        <td>View</td>
+      </tr>
+      <tr>
+        <td><span data-tooltip="cab">cab</span></td>
+        <td>bing</td>
+        <td data-sort-value="1211">1211</td>
+        <td data-sort-value="1.25">$1.25</td>
+        <td>View</td>
+      </tr>
+      <tr>
+        <td><span data-tooltip="zzz">zzz</span></td>
+        <td>list</td>
+        <td data-sort-value="952000111">952,000,111</td>
+        <td data-sort-value="1150.05">$1,150.05</td>
+        <td>View</td>
+      </tr>
+      <tr>
+        <td><span data-tooltip="lll">lll</span></td>
+        <td>queue</td>
+        <td data-sort-value="953999">953,999</td>
+        <td data-sort-value="1250.05">$1,250.05</td>
+        <td>View</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 
   <div id="slide-tests">
