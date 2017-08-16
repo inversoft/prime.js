@@ -176,9 +176,7 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {Prime.Widgets.Searcher} This Searcher.
    */
   highlightSearchResult: function(searchResult) {
-    this.searchResults.getChildren().each(function(e) {
-      e.removeClass('selected');
-    });
+    this.searchResults.getChildren().removeClass('selected');
 
     searchResult.addClass('selected');
     var scrollTop = this.searchResults.getScrollTop();
@@ -214,14 +212,14 @@ Prime.Widgets.Searcher.prototype = {
    * @returns {boolean} True if the search results add custom option is being displayed currently.
    */
   isCustomAddVisible: function() {
-    return this.searchResults.queryFirst('input') !== null;
+    return this.searchResults.queryFirst('.custom-add') !== null;
   },
 
   /**
    * @returns {boolean} True if any search results are being displayed currently.
    */
   isSearchResultsVisible: function() {
-    return this.searchResults.isVisible();
+    return this.searchResults.hasClass('open');
   },
 
   /**
