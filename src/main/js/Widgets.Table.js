@@ -58,28 +58,19 @@ Prime.Widgets.Table.prototype = {
    */
   initialize: function() {
     // Sortable by default unless it is disabled
-    if (this.element.getDataAttribute('sortable') === 'false') {
-      return this;
+    if (this.element.getDataAttribute('sortable') !== 'false') {
+      this._initializeSort();
     }
 
-    this.thead.query('th').each(this._initializeColumn);
-
-    if (Prime.Storage.supported && this.options['localStorageKey'] !== null) {
-      var state = Prime.Storage.getSessionObject(this.options['localStorageKey']);
-      if (state !== null) {
-        this.columnIndex = state.columnIndex;
-        this.sortAscending = state.sortAscending;
-
-        this.column = this.thead.query('th')[this.columnIndex];
-        if (this.sortAscending) {
-          this.column.addClass('sort-down');
-        } else {
-          this.column.addClass('sort-up');
-        }
-
-        this.sort();
-      }
+    // Initialize the checkbox handling
+    this.selectAll = this.element.queryFirst('thead > tr > th input[type="checkbox"]');
+    if (this.selectAll !== null) {
+      this.selectAll.addEventListener('change', this._handleSelectAllChange);
     }
+
+    this.element.query('tbody > tr > td input[type="checkbox"]').addEventListener('click', this._handleCheckboxEvent);
+    this.checkedCount = 0;
+    this.numberofCheckboxes = this.element.query('tbody td input[type="checkbox"]').length;
 
     return this;
   },
@@ -127,6 +118,17 @@ Prime.Widgets.Table.prototype = {
       };
       Prime.Storage.setSessionObject(this.options['localStorageKey'], data);
     }
+  },
+
+  /**
+   * Sets a callback on a checkbox event.
+   *
+   * @param {function} callback The callback function
+   * @returns {Prime.Widgets.Table} This.
+   */
+  withCheckEventCallback: function(callback) {
+    this.options['checkEventCallback'] = callback;
+    return this;
   },
 
   /**
@@ -195,6 +197,50 @@ Prime.Widgets.Table.prototype = {
     return columnIndex - 1;
   },
 
+  _handleCheckboxEvent: function(event) {
+    var target = new Prime.Document.Element(event.currentTarget);
+    var currentCheckedCount = this.checkedCount;
+    this.checkedCount = this.checkedCount + (target.isChecked() ? 1 : -1);
+
+    if (this.selectAll !== null) {
+      if (currentCheckedCount === this.numberofCheckboxes && this.numberofCheckboxes !== this.checkedCount) {
+        this.selectAll.setChecked(false);
+      } else if (currentCheckedCount !== this.numberofCheckboxes && this.numberofCheckboxes === this.checkedCount) {
+        this.selectAll.setChecked(true);
+      }
+    }
+
+    if (this.options['checkEventCallback'] !== null) {
+      this.options['checkEventCallback']({
+       'checkedCount': this.checkedCount
+      });
+    }
+  },
+
+  _handleSelectAllChange: function() {
+    if (this.selectAll.isChecked()) {
+      this.element.query('tbody tr > td input[type="checkbox"]').each(function(e) {
+        if (!e.isChecked()) {
+          e.setChecked(true);
+          this.checkedCount++;
+        }
+      }.bind(this));
+    } else {
+      this.element.query('tbody tr > td input[type="checkbox"]').each(function(e) {
+        if (e.isChecked()) {
+          e.setChecked(false);
+          this.checkedCount--;
+        }
+      }.bind(this));
+    }
+
+    if (this.options['checkEventCallback'] !== null) {
+      this.options['checkEventCallback']({
+        'checkedCount': this.checkedCount
+      });
+    }
+  },
+
   /**
    * Handle the click event on the sortable column.
    * @param event {MouseEvent} the click event
@@ -214,8 +260,29 @@ Prime.Widgets.Table.prototype = {
    * @private
    */
   _initializeColumn: function(column) {
-    if (!column.is('[data-sortable="false"]')) {
+    if (!column.is('[data-sortable="false"]') && column.queryFirst('input[type="checkbox"]') === null) {
       column.addClass('sortable').addEventListener('click', this._handleSortableColumnClick);
+    }
+  },
+
+  _initializeSort: function() {
+    this.thead.query('th').each(this._initializeColumn);
+
+    if (Prime.Storage.supported && this.options['localStorageKey'] !== null) {
+      var state = Prime.Storage.getSessionObject(this.options['localStorageKey']);
+      if (state !== null) {
+        this.columnIndex = state.columnIndex;
+        this.sortAscending = state.sortAscending;
+
+        this.column = this.thead.query('th')[this.columnIndex];
+        if (this.sortAscending) {
+          this.column.addClass('sort-down');
+        } else {
+          this.column.addClass('sort-up');
+        }
+
+        this.sort();
+      }
     }
   },
 
@@ -226,7 +293,8 @@ Prime.Widgets.Table.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
-      'localStorageKey': null
+      'localStorageKey': null,
+      'checkEventCallback': null
     };
 
     var userOptions = Prime.Utils.dataSetToOptions(this.element);
