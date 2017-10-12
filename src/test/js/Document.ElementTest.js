@@ -347,6 +347,7 @@ buster.testCase('Element class tests', {
     assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('attr1'), 'value1');
     assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('attr2'), 'value2');
     assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('camelCase'), 'valueCamelCase');
+    assert.equals(Prime.Document.queryFirst('#dataset').getDataAttribute('portato'), null);
   },
 
   'getDataSet': function() {

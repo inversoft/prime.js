@@ -430,7 +430,7 @@ Prime.Document.Element.prototype = {
    * @returns {string} This attribute value or null.
    */
   getDataAttribute: function(name) {
-    return this.getDataSet()[name];
+    return this.getDataSet()[name] || null;
   },
 
   /**
