@@ -203,7 +203,8 @@ Prime.Widgets.AJAXDialog.prototype = {
   /**
    * Sets an error callback for AJAX form handling. This is called after a failed form submission.
    *
-   * @param callback {Function} The callback function.
+   * @param callback {Function} The callback function. The callback function will called with two parameters,
+   *        the first is a reference this object, the second is the XMLHttpRequest object.
    * @returns {Prime.Widgets.AJAXDialog} This.
    */
   withFormErrorCallback: function(callback) {
@@ -236,7 +237,8 @@ Prime.Widgets.AJAXDialog.prototype = {
   /**
    * Sets a success callback for AJAX form handling. This is called after a successful form submission.
    *
-   * @param callback {Function} The callback function.
+   * @param callback {Function} The callback function. The callback function will called with two parameters,
+   *        the first is a reference this object, the second is the XMLHttpRequest object.
    * @returns {Prime.Widgets.AJAXDialog} This.
    */
   withFormSuccessCallback: function(callback) {
@@ -320,7 +322,7 @@ Prime.Widgets.AJAXDialog.prototype = {
     this.form = this.element.queryFirst('form').addEventListener('submit', this._handleAJAXFormSubmit);
 
     if (this.options['formErrorCallback'] !== null) {
-      this.options['formErrorCallback'](this);
+      this.options['formErrorCallback'](this, xhr);
     }
 
     if (this.draggable !== null) {
@@ -332,9 +334,9 @@ Prime.Widgets.AJAXDialog.prototype = {
     }
   },
 
-  _handleAJAXFormSuccess: function() {
+  _handleAJAXFormSuccess: function(xhr) {
     if (this.options['formSuccessCallback'] !== null) {
-      this.options['formSuccessCallback'](this);
+      this.options['formSuccessCallback'](this, xhr);
     } else {
       var successURI = this.form.getDataSet().ajaxSuccessUri;
       if (successURI !== undefined) {
