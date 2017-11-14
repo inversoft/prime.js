@@ -109,16 +109,18 @@ Prime.Widgets.MultipleSelect.prototype = {
    *
    * @param {String} value The value for the option.
    * @param {String} display The display text for the option.
+   * @param {?String} [id] The id of the element. (Defaults to null)
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
-  addOption: function(value, display) {
-    if (this.containsOptionWithValue(value)) {
+  addOption: function(value, display, id) {
+    if ((id === null || id === undefined) && this.containsOptionWithValue(value)) {
       return this;
     }
 
     Prime.Document.newElement('<option/>')
         .setValue(value)
         .setHTML(display)
+        .setId(id || null)
         .appendTo(this.element);
 
     // Fire the custom event
@@ -206,6 +208,16 @@ Prime.Widgets.MultipleSelect.prototype = {
     }
 
     return null;
+  },
+
+  /**
+   * Finds the HTMLSelectOption with the given id and returns it wrapped in a Prime.Document.Element.
+   *
+   * @param {String} id
+   * @returns {Prime.Document.Element}
+   */
+  findOptionWithId(id) {
+    return Prime.Document.queryById(id);
   },
 
   /**
@@ -402,6 +414,13 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     // Check if the option has already been selected
     if (Prime.Document.queryById(id) === null) {
+      /*
+      If we allow dupes, always duplicate the option and append it to the end or the order will be a problem. The default multiselect doesn't support order)
+       */
+      if (this.options.allowDupes) {
+        this.addOption(option.getTextContent(), option.getTextContent(), id);
+        option = this.findOptionWithId(id);
+      }
       option.setSelected(true);
 
       var li = Prime.Document.newElement('<li/>')
@@ -480,6 +499,11 @@ Prime.Widgets.MultipleSelect.prototype = {
     return this;
   },
 
+  withAllowDupes: function(value) {
+    this.options.allowDupes = value;
+    return this;
+  },
+
   /**
    * Sets the class name for the MultipleSelect element.
    *
@@ -487,7 +511,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withClassName: function(className) {
-    this.options['className'] = className;
+    this.options.className = className;
     return this;
   },
 
@@ -498,7 +522,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withCloseTimeout: function(timeout) {
-    this.options['closeTimeout'] = timeout;
+    this.options.closeTimeout = timeout;
     return this;
   },
 
@@ -509,7 +533,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withCustomAddEnabled: function(enabled) {
-    this.options['customAddEnabled'] = enabled;
+    this.options.customAddEnabled = enabled;
     return this;
   },
 
@@ -520,7 +544,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withCustomAddLabel: function(customAddLabel) {
-    this.options['customAddLabel'] = customAddLabel;
+    this.options.customAddLabel = customAddLabel;
     return this;
   },
 
@@ -531,7 +555,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withErrorClassHandling: function(errorClass) {
-    this.options['errorClass'] = errorClass;
+    this.options.errorClass = errorClass;
     return this;
   },
 
@@ -542,7 +566,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withNoSearchResultsLabel: function(noSearchResultsLabel) {
-    this.options['noSearchResultsLabel'] = noSearchResultsLabel;
+    this.options.noSearchResultsLabel = noSearchResultsLabel;
     return this;
   },
 
@@ -553,7 +577,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withPlaceholder: function(placeholder) {
-    this.options['placeholder'] = placeholder;
+    this.options.placeholder = placeholder;
     return this;
   },
 
@@ -564,7 +588,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withRemoveIcon: function(removeIcon) {
-    this.options['removeIcon'] = removeIcon;
+    this.options.removeIcon = removeIcon;
     return this;
   },
 
@@ -575,7 +599,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @returns {Prime.Widgets.MultipleSelect} This.
    */
   withSearchFunction: function(searchFunction) {
-    this.options['searchFunction'] = searchFunction;
+    this.options.searchFunction = searchFunction;
     return this;
   },
 
@@ -714,6 +738,9 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @private
    */
   _makeOptionID: function(option) {
+    if (this.options.allowDupes === true) {
+      return Math.random();
+    }
     return this.element.getId() + '-option-' + option.getValue().replace(' ', '-');
   },
 
@@ -771,15 +798,16 @@ Prime.Widgets.MultipleSelect.prototype = {
   _setInitialOptions: function() {
     // Defaults
     this.options = {
-      'className': 'prime-multiple-select',
-      'closeTimeout': 200,
-      'customAddEnabled': true,
-      'customAddLabel': 'Add Custom Value: ',
-      'errorClass': null,
-      'noSearchResultsLabel': 'No Matches For: ',
-      'placeholder': 'Choose',
-      'removeIcon': 'X',
-      'searchFunction': Prime.Widgets.Searcher.selectSearchFunction
+      allowDupes: false,
+      className: 'prime-multiple-select',
+      closeTimeout: 200,
+      customAddEnabled: true,
+      customAddLabel: 'Add Custom Value: ',
+      errorClass: null,
+      noSearchResultsLabel: 'No Matches For: ',
+      placeholder: 'Choose',
+      removeIcon: 'X',
+      searchFunction: Prime.Widgets.Searcher.selectSearchFunction
     };
 
     var userOptions = Prime.Utils.dataSetToOptions(this.element);
