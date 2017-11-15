@@ -43,6 +43,9 @@
     </profile>
     <version value="1.0" />
   </component>
+  <component name="JavaScriptLibraryMappings">
+    <includedPredefinedLibrary name="Node.js Core" />
+  </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES5" />
   </component>

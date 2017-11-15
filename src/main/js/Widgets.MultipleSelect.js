@@ -120,7 +120,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     Prime.Document.newElement('<option/>')
         .setValue(value)
         .setHTML(display)
-        .setId(id || null)
+        .setDataAttribute("optionId", id || null)
         .appendTo(this.element);
 
     // Fire the custom event
@@ -148,7 +148,7 @@ Prime.Widgets.MultipleSelect.prototype = {
   deselectOption: function(option) {
     option.setSelected(false);
 
-    var id = this._makeOptionID(option);
+    var id = option.getDataAttribute('optionId') || this._makeOptionID(option);
     var displayOption = Prime.Document.queryById(id);
     if (displayOption !== null) {
       displayOption.removeFromDOM();
@@ -178,6 +178,17 @@ Prime.Widgets.MultipleSelect.prototype = {
     var option = this.findOptionWithValue(value);
     if (option === null) {
       throw new Error('MultipleSelect doesn\'t contain an option with the value [' + value + ']');
+    }
+
+    this.deselectOption(option);
+
+    return this;
+  },
+
+  deselectOptionWithId: function(id) {
+    var option = this.findOptionWithId(id);
+    if (option === null) {
+      throw new Error('MultipleSelect doesn\'t contain an option with the id [' + id + ']');
     }
 
     this.deselectOption(option);
@@ -216,8 +227,8 @@ Prime.Widgets.MultipleSelect.prototype = {
    * @param {String} id
    * @returns {Prime.Document.Element}
    */
-  findOptionWithId(id) {
-    return Prime.Document.queryById(id);
+  findOptionWithId: function(id) {
+    return Prime.Document.queryFirst('[data-option-id="' + id + '"]');
   },
 
   /**
@@ -349,7 +360,7 @@ Prime.Widgets.MultipleSelect.prototype = {
    */
   removeHighlightedOption: function() {
     var options = this.optionList.getChildren();
-    this.deselectOptionWithValue(options[options.length - 2].getAttribute('value'));
+    this.deselectOptionWithId(options[options.length - 2].getId());
     this.search(null);
   },
 
@@ -649,7 +660,7 @@ Prime.Widgets.MultipleSelect.prototype = {
     var option = this.findOptionWithText(value);
     if (option === null) {
       this.addOption(value, value);
-      option = this.findOptionWithText(value)
+      option = this.findOptionWithText(value);
     }
 
     this.selectOption(option);
@@ -683,7 +694,12 @@ Prime.Widgets.MultipleSelect.prototype = {
   _handleClickEvent: function(event) {
     var target = new Prime.Document.Element(event.target);
     if (target.is('a')) {
-      this.removeOptionWithValue(target.getAttribute('value'));
+      var id = target.getParent().getId();
+      if (id) {
+        this.removeOption(this.findOptionWithId(id));
+      } else {
+        this.removeOptionWithValue(target.getAttribute('value'));
+      }
     } else if (target.is('span')) {
       target.selectElementContents();
     } else {
