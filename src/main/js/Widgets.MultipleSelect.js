@@ -378,8 +378,16 @@ Prime.Widgets.MultipleSelect.prototype = {
 
     option.removeFromDOM();
 
-    var id = this._makeOptionID(option);
-    var displayOption = Prime.Document.queryById(id);
+    var id, displayOption;
+    if (this.options.allowDupes) {
+      // The ids are random so we need to get the data attribute.
+      id = option.getDataAttribute('optionId');
+      displayOption = Prime.Document.queryById(id);
+    } else {
+      // The ids aren't random and can be reproducably created.
+      id = this._makeOptionID(option);
+      displayOption = Prime.Document.queryById(id);
+    }
 
     // Check if the option has already been selected
     if (displayOption !== null) {
