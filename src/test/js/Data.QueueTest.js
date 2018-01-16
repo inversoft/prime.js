@@ -15,10 +15,8 @@
  */
 'use strict';
 
-var assert = buster.assertions.assert;
-
-buster.testCase('Data.Queue Tests', {
-  'queue': function() {
+describe('Data.Queue Tests', function() {
+  it('queue', function() {
     var queue = new Prime.Data.Queue();
 
     assert.isTrue(queue.isEmpty());
@@ -27,28 +25,28 @@ buster.testCase('Data.Queue Tests', {
     queue.add(object);
 
     assert.isFalse(queue.isEmpty());
-    assert.equals(queue.size(), 1);
+    assert.equal(queue.size(), 1);
     var headObject = queue.peek();
 
-    assert.equals(object, headObject);
-    assert.equals(queue.size(), 1);
+    assert.equal(object, headObject);
+    assert.equal(queue.size(), 1);
 
     headObject = queue.poll();
-    assert.equals(object, headObject);
-    assert.equals(queue.size(), 0);
+    assert.equal(object, headObject);
+    assert.equal(queue.size(), 0);
     assert.isTrue(queue.isEmpty());
 
     queue.add("foo").add("bar").add("baz");
-    assert.equals(queue.size(), 3);
+    assert.equal(queue.size(), 3);
 
-    assert.equals(queue.peek(), "foo");
-    assert.equals(queue.poll(), "foo");
-    assert.equals(queue.peek(), "bar");
-    assert.equals(queue.poll(), "bar");
-    assert.equals(queue.poll(), "baz");
+    assert.equal(queue.peek(), "foo");
+    assert.equal(queue.poll(), "foo");
+    assert.equal(queue.peek(), "bar");
+    assert.equal(queue.poll(), "bar");
+    assert.equal(queue.poll(), "baz");
     assert.isTrue(queue.isEmpty());
 
     queue.add("foo").add("bar").add("baz");
-    assert.equals(queue.size(), 3);
-  }
+    assert.equal(queue.size(), 3);
+  });
 });

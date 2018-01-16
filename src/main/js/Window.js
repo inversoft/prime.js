@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,7 @@
  */
 'use strict';
 
-var Prime = Prime || {};
-
-Prime.Window = {
+class PrimeWindow {
   /**
    * Attaches an event listener to the window, returning the handler proxy.
    *
@@ -25,7 +23,7 @@ Prime.Window = {
    * @param {Function} listener The event handler.
    * @returns {Window} The window object.
    */
-  addEventListener: function(event, listener) {
+  static addEventListener(event, listener) {
     if (event.indexOf(':') === -1) {
       window.eventListeners = window.eventListeners || {};
       window.eventListeners[event] = window.eventListeners[event] || [];
@@ -45,7 +43,7 @@ Prime.Window = {
     }
 
     return window;
-  },
+  }
 
   /**
    * Returns the inner height of the window. This includes only the rendering area and not the window chrome (toolbars,
@@ -53,7 +51,7 @@ Prime.Window = {
    *
    * @returns {number} The inner height of the window.
    */
-  getInnerHeight: function() {
+  static getInnerHeight() {
     if (typeof(window.innerHeight) === 'number') {
       // Most browsers
       return window.innerHeight;
@@ -66,7 +64,7 @@ Prime.Window = {
     }
 
     throw new Error('Unable to determine inner height of the window');
-  },
+  }
 
   /**
    * Returns the inner width of the window. This includes only the rendering area and not the window chrome (toolbars,
@@ -74,7 +72,7 @@ Prime.Window = {
    *
    * @returns {number} The inner width of the window.
    */
-  getInnerWidth: function() {
+  static getInnerWidth() {
     if (typeof(window.innerWidth) === 'number') {
       // Most browsers
       return window.innerWidth;
@@ -87,14 +85,14 @@ Prime.Window = {
     }
 
     throw new Error('Unable to determine inner width of the window');
-  },
+  }
 
   /**
    * Returns the number of pixels the Window is scrolled by.
    *
    * @returns {number} The number of pixels.
    */
-  getScrollTop: function() {
+  static getScrollTop() {
     if (typeof(window.pageYOffset) === 'number') {
       return window.pageYOffset;
     } else if (document.body && document.body.scrollTop) {
@@ -105,4 +103,6 @@ Prime.Window = {
 
     throw new Error('Unable to determine scrollTop of the window');
   }
-};
+}
+
+export {PrimeWindow}

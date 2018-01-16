@@ -15,14 +15,8 @@
  */
 'use strict';
 
-/*
- * Helper functions
- */
-var assert = buster.assertions.assert;
-var refute = buster.assertions.refute;
-
-buster.testCase('SplitButton class tests', {
-  setUp: function() {
+describe('SplitButton class tests', function() {
+  beforeEach(function() {
     this.container1 = Prime.Document.queryById('split-button-test1');
     this.container2 = Prime.Document.queryById('split-button-test2');
 
@@ -34,56 +28,59 @@ buster.testCase('SplitButton class tests', {
 
     this.dropDown1 = Prime.Document.queryFirst('a.prime-drop-down', this.container1);
     this.dropDown2 = Prime.Document.queryFirst('a.prime-drop-down', this.container2);
-  },
+  });
 
-  tearDown: function() {
+  afterEach(function() {
     this.splitButtonWidget1.destroy();
     this.splitButtonWidget2.destroy();
     this.splitButtonWidget1 = null;
     this.splitButtonWidget2 = null;
-  },
+  });
 
-  'splitButton constructed ok': function() {
+  it('splitButton constructed ok', function() {
     assert.isTrue(this.splitButton1.hasClass('prime-split-button prime-initialized'));
     assert.isTrue(this.splitButton2.hasClass('prime-split-button prime-initialized'));
 
     assert.isFalse(this.splitButton1.isVisible());
     assert.isFalse(this.splitButton2.isVisible());
-  },
+  });
 
-  'click drop down expands button': function(done) {
+  it('click drop down expands button', function(done) {
     assert.isFalse(this.splitButton1.isVisible());
     assert.isFalse(this.splitButton2.isVisible());
 
     this.dropDown1.fireEvent('click', null, this.dropDown1, false, true);
-    setTimeout(done(function() {
+    setTimeout(function() {
       assert.isTrue(this.splitButton1.isVisible());
       assert.isFalse(this.splitButton2.isVisible());
-    }).bind(this), 5);
-  },
+      done();
+    }.bind(this), 5);
+  });
 
-  'click drop down div expands button': function(done) {
+  it('click drop down div expands button', function(done) {
     assert.isFalse(this.splitButton1.isVisible());
     assert.isFalse(this.splitButton2.isVisible());
 
     var div = Prime.Document.queryUp('div', this.dropDown1);
     div.fireEvent('click', null, div, false, true);
-    setTimeout(done(function() {
+    setTimeout(function() {
       assert.isTrue(this.splitButton1.isVisible());
       assert.isFalse(this.splitButton2.isVisible());
-    }).bind(this), 5);
-  },
+      done();
+    }.bind(this), 5);
+  });
 
-  'click select... expands button': function(done) {
+  it('click select... expands button', function(done) {
     assert.isFalse(this.splitButton1.isVisible());
     assert.isFalse(this.splitButton2.isVisible());
 
     var selectMe = Prime.Document.queryFirst('a.prime-split-button-default', this.container2);
     selectMe.fireEvent('click', null, selectMe, false, true);
-    setTimeout((done(function() {
+    setTimeout(function() {
       assert.isFalse(this.splitButton1.isVisible());
       assert.isTrue(this.splitButton2.isVisible());
-    }).bind(this)), 5);
-  }
+      done();
+    }.bind(this), 5);
+  });
 });
 

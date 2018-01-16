@@ -15,77 +15,40 @@
  */
 'use strict';
 
-var assert = buster.assertions.assert;
-var refute = buster.assertions.refute;
-
-buster.assertions.add('hasNextElementSiblings', {
-  assert: function(element, number) {
-    this.actualCount = 0;
-    var sibling = element.nextSibling;
-    while (sibling) {
-      if (sibling.nodeType === 1) {
-        this.actualCount++;
-      }
-      sibling = sibling.nextSibling;
-    }
-
-    return (this.actualCount === number);
-  },
-  assertMessage: 'Expected ${1} next sibling elements but there were ${actualCount}',
-  refuteMessage: 'Expected there not be ${1} next sibling elements but there were'
-});
-
-buster.assertions.add('hasPreviousElementSiblings', {
-  assert: function(element, number) {
-    this.actualCount = 0;
-    var sibling = element.previousSibling;
-    while (sibling) {
-      if (sibling.nodeType === 1) {
-        this.actualCount++;
-      }
-      sibling = sibling.previousSibling;
-    }
-
-    return (this.actualCount === number);
-  },
-  assertMessage: 'Expected ${1} previous sibling elements but there were ${actualCount}',
-  refuteMessage: 'Expected there not be ${1} previous sibling elements but there were'
-});
-
-buster.testCase('ElementList namespace tests', {
-  'query': function() {
+describe('ElementList namespace tests', function() {
+  it('query', function() {
     var list = Prime.Document.query('p.test');
-    assert.equals(list.length, 3);
-    assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].domElement.id, 'queryThree');
+    assert.equal(list.length, 3);
+    assert.equal(list[0].domElement.id, 'queryOne');
+    assert.equal(list[1].domElement.id, 'queryTwo');
+    assert.equal(list[2].domElement.id, 'queryThree');
 
     var parent = Prime.Document.queryById('query');
     list = Prime.Document.query('p.test', parent);
-    assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].domElement.id, 'queryThree');
+    assert.equal(list[0].domElement.id, 'queryOne');
+    assert.equal(list[1].domElement.id, 'queryTwo');
+    assert.equal(list[2].domElement.id, 'queryThree');
 
     list = Prime.Document.query('p.test', parent.domElement);
-    assert.equals(list[0].domElement.id, 'queryOne');
-    assert.equals(list[1].domElement.id, 'queryTwo');
-    assert.equals(list[2].domElement.id, 'queryThree');
-  }
+    assert.equal(list[0].domElement.id, 'queryOne');
+    assert.equal(list[1].domElement.id, 'queryTwo');
+    assert.equal(list[2].domElement.id, 'queryThree');
+  });
 });
 
-buster.testCase('ElementList class tests', {
-  'each': function() {
+describe('ElementList class tests', function() {
+  it('each', function() {
     var count = 0;
     Prime.Document.query('p.test').each(function(element, index) {
-      assert.equals(index, count++);
+      assert.equal(index, count++);
       assert.isTrue(element instanceof Prime.Document.Element);
-      assert.equals(element.domElement.tagName, 'P');
+      assert.equal(element.domElement.tagName, 'P');
     });
 
-    assert.equals(count, 3);
-  },
+    assert.equal(count, 3);
+  });
 
-  'indexOf Prime Element': function() {
+  it('indexOf Prime Element', function() {
     var container = Prime.Document.queryById("query");
     var list = Prime.Document.query("p", container);
 
@@ -93,15 +56,15 @@ buster.testCase('ElementList class tests', {
     var two = Prime.Document.queryById("queryTwo");
     var outside = Prime.Document.queryById("insertSingle");
 
-    assert.equals(list.indexOf(one), 0);
-    assert.equals(list.indexOf(one.domElement), 0);
-    assert.equals(list.indexOf(two), 1);
-    assert.equals(list.indexOf(two.domElement), 1);
-    assert.equals(list.indexOf(outside), -1);
-    assert.equals(list.indexOf(outside.domElement), -1);
-  },
+    assert.equal(list.indexOf(one), 0);
+    assert.equal(list.indexOf(one.domElement), 0);
+    assert.equal(list.indexOf(two), 1);
+    assert.equal(list.indexOf(two.domElement), 1);
+    assert.equal(list.indexOf(outside), -1);
+    assert.equal(list.indexOf(outside.domElement), -1);
+  });
 
-  'addClass and removeClass': function() {
+  it('addClass and removeClass', function() {
     var container = Prime.Document.queryById("query");
     var list = Prime.Document.query("p", container);
 
@@ -117,9 +80,9 @@ buster.testCase('ElementList class tests', {
 
     assert.isFalse(one.hasClass('foobar'));
     assert.isFalse(two.hasClass('foobar'));
-  },
+  });
 
-  'setChecked and setDisabled': function() {
+  it('setChecked and setDisabled', function() {
     var container = Prime.Document.queryById("element-list-test");
     var checkboxes =container.query('input[type="checkbox"]');
 
@@ -142,6 +105,5 @@ buster.testCase('ElementList class tests', {
     checkboxes.each(function(checkbox) {
       assert.isFalse(checkbox.isDisabled());
     });
-  }
-
+  });
 });

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2016-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,76 +15,67 @@
  */
 'use strict';
 
-var Prime = Prime || {};
+import {Utils} from "./Utils";
 
-/**
- * The Prime.Data namespace.
- *
- * @namespace Prime.Data
- */
-Prime.Data = Prime.Data || {};
-
-/**
- * First-In-First-Out Queue implementation modeled after java.util.Deque interface.
- *
- * @constructor
- */
-Prime.Data.Queue = function() {
-  Prime.Utils.bindAll(this);
-  this._elements = {};
-  this._head = 0;
-  this._tail = 0;
-};
-
-Prime.Data.Queue.constructor = Prime.Data.Queue;
-Prime.Data.Queue.prototype = {
+class DataQueue {
+  /**
+   * First-In-First-Out Queue implementation modeled after java.util.Deque interface.
+   *
+   * @constructor
+   */
+  constructor() {
+    Utils.bindAll(this);
+    this._elements = {};
+    this._head = 0;
+    this._tail = 0;
+  }
 
   /**
    * Add the element to the head of the queue.
    *
    * @param {Object} element An object to store in the queue.
-   * @returns {Prime.Data.Queue} This Element.
+   * @returns {DataQueue} This Element.
    */
-  add: function(element) {
+  add(element) {
     this._elements[this._head] = element;
     this._head++;
 
     return this;
-  },
+  }
 
   /**
    * Return true if the queue is empty.
    *
    * @returns {boolean} True if the queue is empty, false if not.
    */
-  isEmpty: function() {
+  isEmpty() {
     return this._head === this._tail;
-  },
+  }
 
   /**
    * Return but do not remove the tail of the queue. This is the oldest element in the queue.
    *
    * @returns {Object} The object at the tail of the queue, or null if empty.
    */
-  peek: function() {
+  peek() {
     if (this.isEmpty()) {
       return null;
     }
 
     return this._elements[this._tail];
-  },
+  }
 
   /**
    * Return and remove the tail of the queue. This is the oldest element in the queue.
    *
    * @returns {Object} the object at the tail of the queue, or null if the queue is empty.
    */
-  poll: function() {
+  poll() {
     if (this.isEmpty()) {
       return null;
     }
 
-    var object = this._elements[this._tail];
+    const object = this._elements[this._tail];
     delete this._elements[this._tail];
     this._tail++;
 
@@ -94,14 +85,17 @@ Prime.Data.Queue.prototype = {
     }
 
     return object;
-  },
+  }
 
   /**
    * Return the size of the queue.
    *
    * @returns {Number} The size of the queue.
    */
-  size: function() {
+  size() {
     return this._head - this._tail;
   }
-};
+
+}
+
+export {DataQueue};

@@ -15,74 +15,69 @@
  */
 'use strict';
 
-var Prime = Prime || {};
+const PrimeStorage = {
+  /**
+   * True if local storage is supported.
+   * @type {boolean} true if local storage is supported. Local in this case being used to indicate either type 'local' or 'session'.
+   */
+  supported: typeof(Storage) !== 'undefined',
 
-/**
- * The Prime.Storage namespace.
- *
- * @namespace Prime.Storage
- */
-Prime.Storage = {};
+  /**
+   * Set an object into session storage.
+   * @param key {string} the key to store the object.
+   * @param object {object} the object to store.
+   */
+  setSessionObject: function(key, object) {
+    PrimeStorage._setObject(sessionStorage, key, object);
+  },
 
-/**
- * True if local storage is supported.
- * @type {boolean} true if local storage is supported. Local in this case being used to indicate either type 'local' or 'session'.
- */
-Prime.Storage.supported = typeof(Storage) !== 'undefined';
+  /**
+   * Retrieve an object from session storage.
+   * @param key {string} the key that was used to store the object.
+   * @return {object} the stored object or null if it does not exist or local storage is not supported.
+   */
+  getSessionObject: function(key) {
+    return PrimeStorage._getObject(sessionStorage, key);
+  },
 
-/**
- * Set an object into session storage.
- * @param key {string} the key to store the object.
- * @param object {object} the object to store.
- */
-Prime.Storage.setSessionObject = function(key, object) {
-  Prime.Storage._setObject(sessionStorage, key, object);
-};
+  /**
+   * Set an object into local storage storage.
+   * @param key {string} the key to store the object.
+   * @param object {object} the object to store.
+   */
+  setLocalObject: function(key, object) {
+    PrimeStorage._setObject(localStorage, key, object);
+  },
 
-/**
- * Retrieve an object from session storage.
- * @param key {string} the key that was used to store the object.
- * @return {object} the stored object or null if it does not exist or local storage is not supported.
- */
-Prime.Storage.getSessionObject = function(key) {
-  return Prime.Storage._getObject(sessionStorage, key);
-};
+  /**
+   * Retrieve an object from local storage.
+   * @param key {string} the key that was used to store the object.
+   * @return {object} the stored object or null if it does not exist or local storage is not supported.
+   */
+  getLocalObject: function(key) {
+    return PrimeStorage._getObject(localStorage, key);
+  },
 
-/**
- * Set an object into local storage storage.
- * @param key {string} the key to store the object.
- * @param object {object} the object to store.
- */
-Prime.Storage.setLocalObject = function(key, object) {
-  Prime.Storage._setObject(localStorage, key, object);
-};
+  /* ===================================================================================================================
+   * Private methods
+   * ===================================================================================================================*/
 
-/**
- * Retrieve an object from local storage.
- * @param key {string} the key that was used to store the object.
- * @return {object} the stored object or null if it does not exist or local storage is not supported.
- */
-Prime.Storage.getLocalObject = function(key) {
-  return Prime.Storage._getObject(localStorage, key);
-};
+  _getObject: function(storage, key) {
+    if (PrimeStorage.supported) {
+      const item = storage.getItem(key);
+      if (item !== null) {
+        return JSON.parse(item);
+      }
+    }
 
-/* ===================================================================================================================
- * Private methods
- * ===================================================================================================================*/
+    return null;
+  },
 
-Prime.Storage._getObject = function(storage, key) {
-  if (Prime.Storage.supported) {
-    var item = storage.getItem(key);
-    if (item !== null) {
-      return JSON.parse(item);
+  _setObject: function(storage, key, object) {
+    if (PrimeStorage.supported) {
+      storage.setItem(key, JSON.stringify(object));
     }
   }
-
-  return null;
 };
 
-Prime.Storage._setObject = function(storage, key, object) {
-  if (Prime.Storage.supported) {
-    storage.setItem(key, JSON.stringify(object));
-  }
-};
+export {PrimeStorage};

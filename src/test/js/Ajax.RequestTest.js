@@ -15,15 +15,14 @@
  */
 'use strict';
 
-var assert = buster.assertions.assert;
 
-buster.testCase('AJAX tests', {
+describe('AJAX tests', function() {
   /**
    * Async test for testing that the context is used for the 'this' reference in event handler calls.
    *
    * @param done The done callback for async testing.
    */
-  'context': function(done) {
+  it('context', function(done) {
     var MyClass = function() {
       Prime.Utils.bindAll(this);
       this.called = false;
@@ -36,200 +35,200 @@ buster.testCase('AJAX tests', {
     };
 
     var handler = new MyClass();
-    new Prime.Ajax.Request('ajax-response.html').
+    new Prime.Ajax.Request('/ajax/ajax-response.html').
       withSuccessHandler(handler.handleFunction).
       go();
 
     setTimeout(function() {
-      assert(handler.called);
+      assert.isTrue(handler.called);
       done();
     }, 200);
-  },
+  });
 
-  'data array': function() {
-    var req = new Prime.Ajax.Request('invalid.html', 'POST').
+  it('data array', function() {
+    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST').
       withData({
-        'array': ['value1', 'value2'],
-        'name': 'value'
+      array: ['value1', 'value2'],
+      name: 'value'
       });
 
-    assert.equals(req.body, 'array=value1&array=value2&name=value');
+    assert.equal(req.body, 'array=value1&array=value2&name=value');
     assert.isNull(req.queryParams);
-    assert.equals(req.contentType, 'application/x-www-form-urlencoded');
-  },
+    assert.equal(req.contentType, 'application/x-www-form-urlencoded');
+  });
 
-  'data array empty': function() {
-    var req = new Prime.Ajax.Request('invalid.html', 'POST').
+  it('data array empty', function() {
+    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST').
       withData({
-        'name1': 'value1',
-        'array': [],
-        'name2': 'value2'
+      name1: 'value1',
+      array: [],
+      name2: 'value2'
       });
 
-    assert.equals(req.body, 'name1=value1&name2=value2');
+    assert.equal(req.body, 'name1=value1&name2=value2');
     assert.isNull(req.queryParams);
-    assert.equals(req.contentType, 'application/x-www-form-urlencoded');
-  },
+    assert.equal(req.contentType, 'application/x-www-form-urlencoded');
+  });
 
-  'data POST': function() {
-    var req = new Prime.Ajax.Request('invalid.html', 'POST').
+  it('data POST', function() {
+    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST').
       withData({
-        'name': 'value',
+      name: 'value',
         'nameWith=': 'value',
         'valueWith=': 'value='
       });
 
-    assert.equals(req.body, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.equal(req.body, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
     assert.isNull(req.queryParams);
-    assert.equals(req.contentType, 'application/x-www-form-urlencoded');
-  },
+    assert.equal(req.contentType, 'application/x-www-form-urlencoded');
+  });
 
-  'data GET':function () {
-    var req = new Prime.Ajax.Request('invalid.html').
+  it('data GET', function() {
+    var req = new Prime.Ajax.Request('/ajax/invalid.html').
         withContentType('application/json').
         withData({
-          'name':'value',
+      name: 'value',
           'nameWith=':'value',
           'valueWith=':'value='
         });
 
-    assert.equals(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.equal(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
     assert.isNull(req.body);
-    assert.equals(req.contentType, 'application/json');
+    assert.equal(req.contentType, 'application/json');
 
     req.xhr = new Mock.XHR();
     req.go();
 
-    assert.equals(req.xhr.url, 'invalid.html?name=value&nameWith%3D=value&valueWith%3D=value%3D');
-    assert.equals(req.xhr.method, 'GET');
-  },
+    assert.equal(req.xhr.url, '/ajax/invalid.html?name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.equal(req.xhr.method, 'GET');
+  });
 
-  'headers': function() {
-    var req = new Prime.Ajax.Request('invalid.html')
+  it('headers', function() {
+    var req = new Prime.Ajax.Request('/ajax/invalid.html')
         .withHeader('foo', 'bar')
         .withHeaders({
-          'bar': 'baz',
-          'jim': 'bob'
+          bar: 'baz',
+          jim: 'bob'
         })
         .withHeader('foo', 'bar')
         .go();
 
     // all I can really do is assert we stored them correctly to be set on the request
-    assert.equals(req.headers['foo'], 'bar');
-    assert.equals(req.headers['bar'], 'baz');
-    assert.equals(req.headers['jim'], 'bob');
-    assert.equals(req.headers['xyz'], undefined);
-  },
+    assert.equal(req.headers['foo'], 'bar');
+    assert.equal(req.headers['bar'], 'baz');
+    assert.equal(req.headers['jim'], 'bob');
+    assert.equal(req.headers['xyz'], undefined);
+  });
 
-  'reset':function () {
-    var req = new Prime.Ajax.Request('invalid.html').
+  it('reset', function() {
+    var req = new Prime.Ajax.Request('/ajax/invalid.html').
         withContentType('application/json').
         withData({
-          'name':'value',
+      name: 'value',
           'nameWith=':'value',
           'valueWith=':'value='
         });
 
-    assert.equals(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
-    assert.equals(req.contentType, 'application/json');
-    assert.equals(req.method, 'GET');
+    assert.equal(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
+    assert.equal(req.contentType, 'application/json');
+    assert.equal(req.method, 'GET');
 
     req.reset();
     assert.isNull(req.queryParams);
     assert.isNull(req.contentType);
-    assert.equals(req.method, 'GET');
-  },
+    assert.equal(req.method, 'GET');
+  });
 
   /**
    * Async test for error completion handling.
    *
    * @param done The done callback for async testing.
    */
-  'error': function(done) {
+  it('error', function(done) {
     var called = false;
     var handler = function() {
       called = true;
     };
 
-    new Prime.Ajax.Request('invalid.html').
+    new Prime.Ajax.Request('/ajax/invalid.html').
       withErrorHandler(handler).
       go();
 
     setTimeout(function() {
-      assert(called);
+      assert.isTrue(called);
       done();
     }, 200);
-  },
+  });
 
   /**
    * Async test for loading handling.
    *
    * @param done The done callback for async testing.
    */
-  'loading': function(done) {
+  it('loading', function(done) {
     var called = false;
     var handler = function() {
       called = true;
     };
 
-    new Prime.Ajax.Request('ajax-response.html').
+    new Prime.Ajax.Request('/ajax/ajax-response.html').
       withLoadingHandler(handler).
       go();
 
     setTimeout(function() {
-      assert(called);
+      assert.isTrue(called);
       done();
     }, 200);
-  },
+  });
 
   /**
    * Async test for open handling.
    *
    * @param done The done callback for async testing.
    */
-  'open': function(done) {
+  it('open', function(done) {
     var called = false;
     var handler = function() {
       called = true;
     };
 
-    new Prime.Ajax.Request('ajax-response.html').
+    new Prime.Ajax.Request('/ajax/ajax-response.html').
       withOpenHandler(handler).
       go();
 
     setTimeout(function() {
-      assert(called);
+      assert.isTrue(called);
       done();
     }, 200);
-  },
+  });
 
   /**
    * Async test for send handling.
    *
    * @param done The done callback for async testing.
    */
-  'send': function(done) {
+  it('send', function(done) {
     var called = false;
     var handler = function() {
       called = true;
     };
 
-    new Prime.Ajax.Request('ajax-response.html').
+    new Prime.Ajax.Request('/ajax/ajax-response.html').
       withSendHandler(handler).
       go();
 
     setTimeout(function() {
-      assert(called);
+      assert.isTrue(called);
       done();
     }, 200);
-  },
+  });
 
   /**
    * Async test for testing that the context is used for the 'this' reference in event handler calls.
    *
    * @param done The done callback for async testing.
    */
-  'subclass': function(done) {
+  it('subclass', function(done) {
     function MyAjaxRequest(url) {
       Prime.Ajax.Request.apply(this, arguments);
       this.called = false;
@@ -242,47 +241,47 @@ buster.testCase('AJAX tests', {
       this.called = true;
     };
 
-    var ajax = new MyAjaxRequest('ajax-response.html').go();
+    var ajax = new MyAjaxRequest('/ajax/ajax-response.html').go();
 
     setTimeout(function() {
-      assert(ajax.called);
+      assert.isTrue(ajax.called);
       done();
     }, 200);
-  },
+  });
 
   /**
    * Async test for successful completion handling.
    *
    * @param done The done callback for async testing.
    */
-  'success': function(done) {
+  it('success', function(done) {
     var called = false;
     var handler = function() {
       called = true;
     };
 
-    new Prime.Ajax.Request('ajax-response.html').
+    new Prime.Ajax.Request('/ajax/ajax-response.html').
       withSuccessHandler(handler).
       go();
 
     setTimeout(function() {
-      assert(called);
+      assert.isTrue(called);
       done();
     }, 200);
-  },
+  });
 
   /**
    * Async test for JSON response handling.
    *
    * @param done The done callback for async testing.
    */
-  'responseType': function(done) {
+  it('responseType', function(done) {
     var json = null;
     var handler = function(xhr) {
       json = JSON.parse(xhr.responseText);
     };
 
-    var request = new Prime.Ajax.Request('ajax-response.json').withSuccessHandler(handler);
+    var request = new Prime.Ajax.Request('/ajax/ajax-response.json').withSuccessHandler(handler);
     request.xhr.overrideMimeType("application/json");
     request.go();
 
@@ -290,5 +289,5 @@ buster.testCase('AJAX tests', {
       assert.isTrue(json.success);
       done();
     }, 200);
-  }
+  });
 });

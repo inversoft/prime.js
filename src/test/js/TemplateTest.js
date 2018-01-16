@@ -15,97 +15,98 @@
  */
 'use strict';
 
-buster.testCase('Prime.Template', {
-  'generate with no replaces': function() {
+describe('Prime.Template', function() {
+  it('generate with no replaces', function() {
     var template = new Prime.Template("<span>foo</span>");
     var string = template.generate();
-    assert.equals(string, '<span>foo</span>');
-  },
+    assert.equal(string, '<span>foo</span>');
+  });
 
-  'generate with simple key replacement': function() {
+  it('generate with simple key replacement', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var string = template.generate({'foo': 'bar'});
-    assert.equals(string, '<span>bar</span>');
-  },
+    var string = template.generate({foo: 'bar'});
+    assert.equal(string, '<span>bar</span>');
+  });
 
-  'generate with simple function replacement': function() {
+  it('generate with simple function replacement', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
-    var string = template.generate({'foo': function() {
+    var string = template.generate({
+      foo: function() {
       return 'baz'
     }});
-    assert.equals(string, '<span>baz</span>');
-  },
+    assert.equal(string, '<span>baz</span>');
+  });
 
-  'generate with multiple times replacement': function() {
+  it('generate with multiple times replacement', function() {
     var template = new Prime.Template("<span>#{foo}#{foo}</span>");
-    var string = template.generate({'foo': 'waldo'});
-    assert.equals(string, '<span>waldowaldo</span>');
-  },
+    var string = template.generate({foo: 'waldo'});
+    assert.equal(string, '<span>waldowaldo</span>');
+  });
 
-  'generate with multiple key replacement': function() {
+  it('generate with multiple key replacement', function() {
     var template = new Prime.Template("<span>#{foo} #{bar}</span>");
-    var string = template.generate({'foo': 'where\'s', 'bar': 'waldo?' });
-    assert.equals(string, '<span>where\'s waldo?</span>');
-  },
+    var string = template.generate({foo: 'where\'s', bar: 'waldo?'});
+    assert.equal(string, '<span>where\'s waldo?</span>');
+  });
 
-  'generate with regex key': function() {
+  it('generate with regex key', function() {
     var template = new Prime.Template("<span>69!</span>");
-    var string = template.generate({"/\\d+/": "number blocked"});
-    assert.equals(string, '<span>number blocked!</span>');
-  },
+    var string = template.generate({'/\\d+/': "number blocked"});
+    assert.equal(string, '<span>number blocked!</span>');
+  });
 
-  'append': function() {
+  it('append', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
     var container = Prime.Document.newElement("<div/>");
-    template.appendTo(container, {'foo': 'bar'});
-    assert.equals(container.getHTML(), '<span>bar</span>');
-  },
+    template.appendTo(container, {foo: 'bar'});
+    assert.equal(container.getHTML(), '<span>bar</span>');
+  });
 
-  'appendMultiple': function() {
+  it('appendMultiple', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
     var container = Prime.Document.newElement("<div/>");
-    template.appendTo(container, {'foo': 'bar'});
-    template.appendTo(container, {'foo': 'baz'});
-    assert.equals(container.getHTML(), '<span>bar</span><span>baz</span>');
-  },
+    template.appendTo(container, {foo: 'bar'});
+    template.appendTo(container, {foo: 'baz'});
+    assert.equal(container.getHTML(), '<span>bar</span><span>baz</span>');
+  });
 
-  'insertBefore': function() {
+  it('insertBefore', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
     var target = Prime.Document.queryById("templateInsertBefore");
 
-    template.insertBefore(target, {'foo': 'bar'});
-    assert.equals(target.domElement.parentNode.children[0].innerHTML, 'bar');
-    assert.equals(target.domElement.parentNode.children[1].innerHTML, '');
-  },
+    template.insertBefore(target, {foo: 'bar'});
+    assert.equal(target.domElement.parentNode.children[0].innerHTML, 'bar');
+    assert.equal(target.domElement.parentNode.children[1].innerHTML, '');
+  });
 
-  'insertBeforeMultiple': function() {
+  it('insertBeforeMultiple', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
     var target = Prime.Document.queryById("templateInsertBeforeMultiple");
 
-    template.insertBefore(target, {'foo': 'bar'});
-    template.insertBefore(target, {'foo': 'baz'});
-    assert.equals(target.domElement.parentNode.children[0].innerHTML, 'bar');
-    assert.equals(target.domElement.parentNode.children[1].innerHTML, 'baz');
-    assert.equals(target.domElement.parentNode.children[2].innerHTML, '');
-  },
+    template.insertBefore(target, {foo: 'bar'});
+    template.insertBefore(target, {foo: 'baz'});
+    assert.equal(target.domElement.parentNode.children[0].innerHTML, 'bar');
+    assert.equal(target.domElement.parentNode.children[1].innerHTML, 'baz');
+    assert.equal(target.domElement.parentNode.children[2].innerHTML, '');
+  });
 
-  'insertAfter': function() {
+  it('insertAfter', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
     var target = Prime.Document.queryById("templateInsertAfter");
 
-    template.insertAfter(target, {'foo': 'bar'});
-    assert.equals(target.domElement.parentNode.children[0].innerHTML, '');
-    assert.equals(target.domElement.parentNode.children[1].innerHTML, 'bar');
-  },
+    template.insertAfter(target, {foo: 'bar'});
+    assert.equal(target.domElement.parentNode.children[0].innerHTML, '');
+    assert.equal(target.domElement.parentNode.children[1].innerHTML, 'bar');
+  });
 
-  'insertAfterMultiple': function() {
+  it('insertAfterMultiple', function() {
     var template = new Prime.Template("<span>#{foo}</span>");
     var target = Prime.Document.queryById("templateInsertBeforeAfter");
 
-    template.insertAfter(target, {'foo': 'bar'});
-    template.insertAfter(target, {'foo': 'baz'});
-    assert.equals(target.domElement.parentNode.children[2].innerHTML, 'bar');
-    assert.equals(target.domElement.parentNode.children[1].innerHTML, 'baz');
-    assert.equals(target.domElement.parentNode.children[0].innerHTML, '');
-  }
+    template.insertAfter(target, {foo: 'bar'});
+    template.insertAfter(target, {foo: 'baz'});
+    assert.equal(target.domElement.parentNode.children[2].innerHTML, 'bar');
+    assert.equal(target.domElement.parentNode.children[1].innerHTML, 'baz');
+    assert.equal(target.domElement.parentNode.children[0].innerHTML, '');
+  });
 });

@@ -17,27 +17,46 @@
 
 <html>
   <head>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8">
     <title>Prime Tests</title>
-    <script type="text/javascript" src="../js/buster-test.js"></script>
-    <script type="text/javascript" src="../../main/js/Ajax.Request.js"></script>
-    <script type="text/javascript" src="../../main/js/Browser.js"></script>
-    <script type="text/javascript" src="../../main/js/Data.Queue.js"></script>
-    <script type="text/javascript" src="../../main/js/Date.js"></script>
-    <script type="text/javascript" src="../../main/js/Document.Element.js"></script>
-    <script type="text/javascript" src="../../main/js/Document.ElementList.js"></script>
-    <script type="text/javascript" src="../../main/js/Document.js"></script>
-    <script type="text/javascript" src="../../main/js/Effects.js"></script>
-    <script type="text/javascript" src="../../main/js/Events.js"></script>
-    <script type="text/javascript" src="../../main/js/Storage.js"></script>
-    <script type="text/javascript" src="../../main/js/Template.js"></script>
-    <script type="text/javascript" src="../../main/js/Utils.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.DateTimePicker.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.MultipleSelect.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.Searcher.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.SplitButton.js"></script>
-    <script type="text/javascript" src="../../main/js/Widgets.Tabs.js"></script>
-    <script type="text/javascript" src="../../main/js/Window.js"></script>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no"/>
+    <style>
+      #showCSSBlock, #showCSSInline, .hidden {
+        display: none;
+      }
+
+      .testHide {
+        display: none;
+      }
+
+      #hidden {
+        visibility: hidden;
+      }
+
+      #display-none {
+        display: none;
+      }
+    </style>
+    <!-- The scripts need to be in the body DOM element, as some test running frameworks need the body
+       to have already been created so they can insert their magic into it. For example, if loaded
+       before body, Angular Scenario test framework fails to find the body and crashes and burns in
+       an epic manner. -->
+    <script src="context.js"></script>
+    <script type="text/javascript">
+      // Configure our Karma and set up bindings
+      %
+      CLIENT_CONFIG %
+      window.__karma__.setupContext(window);
+
+      // All served files with the latest timestamps
+      %
+      MAPPINGS %
+    </script>
+    <!-- Dynamically replaced with <script> tags -->
+    %SCRIPTS%
+    <script type="text/javascript">
+      window.__karma__.loaded();
+    </script>
     <script type="text/javascript">
       var documentReadyCount = 0;
       Prime.Document.onReady(function() {
@@ -58,42 +77,12 @@
       var drc = new DocumentReadyClass();
       Prime.Document.onReady(drc.documentReady);
     </script>
-    <script type="text/javascript" src="../js/mock.js"></script>
-    <script type="text/javascript" src="../js/Ajax.RequestTest.js"></script>
-    <script type="text/javascript" src="../js/BrowserTest.js"></script>
-    <script type="text/javascript" src="../js/Data.QueueTest.js"></script>
-    <script type="text/javascript" src="../js/DateTest.js"></script>
-    <script type="text/javascript" src="../js/Document.ElementListTest.js"></script>
-    <script type="text/javascript" src="../js/Document.ElementTest.js"></script>
-    <script type="text/javascript" src="../js/DocumentTest.js"></script>
-    <script type="text/javascript" src="../js/EffectsTest.js"></script>
-    <script type="text/javascript" src="../js/TemplateTest.js"></script>
-    <script type="text/javascript" src="../js/UtilsTest.js"></script>
-    <script type="text/javascript" src="../js/Widgets.MultipleSelectTest.js"></script>
-    <script type="text/javascript" src="../js/Widgets.SearcherTest.js"></script>
-    <script type="text/javascript" src="../js/Widgets.SplitButtonTest.js"></script>
-    <script type="text/javascript" src="../js/Widgets.TabsTest.js"></script>
-    <script type="text/javascript" src="../js/Widgets.DateTimePickerTest.js"></script>
-    <style>
-      #showCSSBlock, #showCSSInline, .hidden {
-        display: none;
-      }
-
-      .testHide {
-        display: none;
-      }
-
-      #hidden {
-        visibility: hidden;
-      }
-
-      #display-none {
-        display: none;
-      }
-    </style>
   </head>
   <body>
     <div class="body-test"></div>
+
+    <h1>You don't need to open this anymore, it is used by command line tests. </h1>
+    <h2>To run this test, run $> sb test, or $> gulp test</h2>
 
     <!-- This is the only section that uses p tags so we can test selecting by tagname -->
     <div id="query">
@@ -315,6 +304,9 @@
       <label for="multiple-select-with-callback">Multiple Select Widget (uses callback)</label>
       <select id="multiple-select-with-callback" multiple="multiple">
       </select>
+
+      <label for="multiple-select-allow-duplicates">Multiple Select Widget (allows duplicate selections)</label>
+      <select id="multiple-select-allow-duplicates" multiple="multiple"></select>
 
       <label for="text">Text</label>
       <input type="text" id="text" name="text" value="Text value"/>

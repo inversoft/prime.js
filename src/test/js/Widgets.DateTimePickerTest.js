@@ -15,62 +15,56 @@
  */
 'use strict';
 
-/*
- * Helper functions
- */
-var assert = buster.assertions.assert;
-var refute = buster.assertions.refute;
-
-buster.testCase('DateTimePicker class tests', {
-  setUp: function() {
+describe('DateTimePicker class tests', function() {
+  before(function() {
     this.input = Prime.Document.queryById('datetimepicker-test1');
     this.dateWidget = new Prime.Widgets.DateTimePicker(this.input).initialize();
-  },
+  });
 
-  tearDown: function() {
+  after(function() {
     this.dateWidget.destroy();
     this.dateWidget = null;
-  },
+  });
 
-  'next month': function() {
+  it('next month', function() {
     // start at March 31st and clicking next month should be correct.
     var newDate = new Date();
     newDate.setMonth(2);
     newDate.setDate(31);
     this.dateWidget.setDate(newDate);
 
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 3); // April
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 4); // May
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 5); // June
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 6); // July
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 7); // August
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 8); // September
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 9); // October
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 10); // November
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 11); // December
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 0); // January
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 1); // February
-    assert.equals(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 2); // March
-  },
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 3); // April
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 4); // May
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 5); // June
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 6); // July
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 7); // August
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 8); // September
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 9); // October
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 10); // November
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 11); // December
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 0); // January
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 1); // February
+    assert.equal(this.dateWidget.nextMonth().monthDisplay.getDataAttribute('month'), 2); // March
+  });
 
-  'previous month': function() {
+  it('previous month', function() {
     // start at March 31st and clicking next month should be correct.
     var newDate = new Date();
     newDate.setMonth(2);
     newDate.setDate(31);
     this.dateWidget.setDate(newDate);
 
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 1); // February
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 0); // January
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 11); // December
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 10); // November
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 9); // October
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 8); // September
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 7); // August
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 6); // July
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 5); // June
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 4); // May
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 3); // April
-    assert.equals(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 2); // March
-  }
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 1); // February
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 0); // January
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 11); // December
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 10); // November
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 9); // October
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 8); // September
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 7); // August
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 6); // July
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 5); // June
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 4); // May
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 3); // April
+    assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 2); // March
+  });
 });

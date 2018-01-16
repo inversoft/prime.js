@@ -8,5 +8,8 @@
       <excludeFolder url="file://$MODULE_DIR$/node_modules" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
+    <orderEntry type="library" name="Prime.js" level="project" />
+    <orderEntry type="library" name="Mocha" level="project" />
+    <orderEntry type="library" name="Chai" level="project" />
   </component>
 </module>

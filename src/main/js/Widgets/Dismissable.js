@@ -16,91 +16,83 @@
 
 'use strict';
 
-var Prime = Prime || {};
+import {PrimeElement} from "../Document/PrimeElement";
+import {Utils} from "../Utils";
 
-/**
- * The Prime.Widgets namespace.
- *
- * @namespace Prime.Widgets
- */
-Prime.Widgets = Prime.Widgets || {};
+class Dismissable {
+  /**
+   * Constructs a new Dismissable object for the given element.
+   *
+   * @param {PrimeElement|Element|EventTarget} element The Element for the Dismissable widget.
+   * @param {PrimeElement|Element|EventTarget} dismissButton The Element for the Dismissable button.
+   * @constructor
+   */
+  constructor(element, dismissButton) {
+    Utils.bindAll(this);
 
-/**
- * Constructs a new Dismissable object for the given element.
- *
- * @param {Prime.Document.Element|Element|EventTarget} element The Element for the Dismissable widget.
- * @param {Prime.Document.Element|Element|EventTarget} dismissButton The Element for the Dismissable button.
- * @constructor
- */
-Prime.Widgets.Dismissable = function(element, dismissButton) {
-  Prime.Utils.bindAll(this);
+    this.element = PrimeElement.wrap(element);
+    this.dismissButton = dismissButton;
+    this._setInitialOptions();
+  }
 
-  this.element = Prime.Document.Element.wrap(element);
-  this.dismissButton = dismissButton;
-  this._setInitialOptions();
-};
-
-Prime.Widgets.Dismissable.constructor = Prime.Widgets.Dismissable;
-
-Prime.Widgets.Dismissable.prototype = {
   /**
    * Closes the Dismissable by removing the open class from the element and setting a timer to remove the element from
    * the DOM.
    */
-  close: function() {
+  close() {
     this.element.addClass('closed');
     setTimeout(function() {
       this.element.removeFromDOM();
-    }.bind(this), this.options['closeTimeout']);
-  },
+    }.bind(this), this.options.closeTimeout);
+  }
 
   /**
    * Destroys the widget.
    */
-  destroy: function() {
+  destroy() {
     this.dismissButton.removeEventListener('click', this._handleClick);
-  },
+  }
 
   /**
    * Initializes the Dismissable by binding the events to the dismiss button.
    *
-   * @returns {Prime.Widgets.Dismissable} This.
+   * @returns {Dismissable} This.
    */
-  initialize: function() {
+  initialize() {
     this.dismissButton.addEventListener('click', this._handleClick);
     return this;
-  },
+  }
 
   /**
    * Sets the timeout used in the close method to allow for transitions.
    *
    * @param timeout {int} The timeout.
-   * @returns {Prime.Widgets.Dismissable} This.
+   * @returns {Dismissable} This.
    */
-  withCloseTimeout: function(timeout) {
-    this.options['closeTimeout'] = timeout;
+  withCloseTimeout(timeout) {
+    this.options.closeTimeout = timeout;
     return this;
-  },
+  }
 
   /**
    * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
    * @param {Object} options Key value pair of configuration options.
-   * @returns {Prime.Widgets.Dismissable} This.
+   * @returns {Dismissable} This.
    */
-  withOptions: function(options) {
-    if (!Prime.Utils.isDefined(options)) {
+  withOptions(options) {
+    if (!Utils.isDefined(options)) {
       return this;
     }
 
-    for (var option in options) {
+    for (let option in options) {
       if (options.hasOwnProperty(option)) {
         this.options[option] = options[option];
       }
     }
     return this;
-  },
+  }
 
   /* ===================================================================================================================
    * Private methods
@@ -110,19 +102,21 @@ Prime.Widgets.Dismissable.prototype = {
    * Handles the click event.
    * @private
    */
-  _handleClick: function(event) {
+  _handleClick(event) {
+    Utils.stopEvent(event);
     this.close();
-    Prime.Utils.stopEvent(event);
-  },
+  }
 
   /**
    * Set the initial options for this widget.
    * @private
    */
-  _setInitialOptions: function() {
+  _setInitialOptions() {
     // Defaults
     this.options = {
-      'closeTimeout': 400
+      closeTimeout: 400
     };
   }
-};
+}
+
+export {Dismissable}

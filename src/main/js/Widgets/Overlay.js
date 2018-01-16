@@ -13,77 +13,87 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-var Prime = Prime || {};
-Prime.Widgets = Prime.Widgets || {};
 
-
-/**
- * Constructs a new Overlay instance once per DOM.
- *
- * @constructor
- */
-Prime.Widgets.Overlay = function() {
-  Prime.Utils.bindAll(this);
-
-  // Check if the overlay doesn't exist and add it
-  this.overlay = Prime.Document.queryById('prime-overlay');
-  if (this.overlay === null) {
-    this.overlay = Prime.Document.newElement('<div/>').setId('prime-overlay').appendTo(document.body).hide();
-  }
-};
+import {Utils} from "../Utils";
+import {PrimeDocument} from "../PrimeDocument";
 
 /**
  * The singleton instance.
  *
- * @type {Prime.Widgets.Overlay}
+ * @type {Overlay}
  */
-Prime.Widgets.Overlay.instance = null;
+let instance;
 
-Prime.Widgets.Overlay.prototype = {
+class Overlay {
+  /**
+   * Constructs a new Overlay instance once per DOM.
+   *
+   * @constructor
+   */
+  constructor() {
+    Utils.bindAll(this);
+
+    // Check if the overlay doesn't exist and add it
+    this.overlay = PrimeDocument.queryById('prime-overlay');
+    if (this.overlay === null) {
+      this.overlay = PrimeDocument.newElement('<div/>').setId('prime-overlay').appendTo(document.body).hide();
+    }
+  }
+
+  static get instance() {
+    return instance;
+  }
+
+  static set instance(value) {
+    instance = value;
+  }
+
   /**
    * Closes the overlay and the target element.
    */
-  close: function() {
-    Prime.Document.bodyElement.setStyle('overflow', 'scroll');
+  close() {
+    PrimeDocument.bodyElement.setStyle('overflow', 'scroll');
     this.overlay.setStyle('zIndex', '10');
     this.overlay.hide();
     return this;
-  },
+  }
 
   /**
    * Opens the overlay and positions the element over it.
    */
-  open: function(zindex) {
-    Prime.Document.bodyElement.setStyle('overflow', 'hidden');
+  open(zIndex) {
+    PrimeDocument.bodyElement.setStyle('overflow', 'hidden');
     this.overlay.show();
 
     // Set the z-index of this dialog and the overlay
-    this.overlay.setStyle('zIndex', zindex.toString());
+    this.overlay.setStyle('zIndex', zIndex.toString());
     return this;
-  },
+  }
 
   /**
    * Changes the id of the Overlay element.
    *
    * @param id {string} The new id.
-   * @returns {Prime.Widgets.Overlay}
+   * @returns {Overlay}
    */
-  setId: function(id) {
+  setId(id) {
     this.overlay.setId(id);
     return this;
-  },
+  }
 
   /**
    * Updates the zindex of the overlay.
    *
-   * @param zindex {string|number} The new zindex.
+   * @param zIndex {string|number} The new zIndex.
    */
-  setZIndex: function(zindex) {
-    this.overlay.setStyle('zIndex', zindex.toString());
+  setZIndex(zIndex) {
+    this.overlay.setStyle('zIndex', zIndex.toString());
     return this;
   }
-};
+}
 
-Prime.Document.onReady(function() {
-  Prime.Widgets.Overlay.instance = new Prime.Widgets.Overlay();
+PrimeDocument.onReady(function() {
+  Overlay.instance = new Overlay();
 });
+
+export {Overlay};

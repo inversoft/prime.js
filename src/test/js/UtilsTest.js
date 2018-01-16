@@ -16,14 +16,14 @@
 // Cannot set strict on this test because you can't modify the window object in strict mode
 // 'use strict';
 
-var assert = buster.assertions.assert;
+describe('Utils tests', function() {
 
-buster.testCase('Utils tests', {
-  setUp: function() {
-    this.timeout = 2000;
-  },
+  // Failure test to see if a proper line number is returned.
+  // it('fail', function() {
+  //   assert.fail();
+  // });
 
-  'bindAll': function() {
+  it('bindAll', function() {
     function MyClass() {
       this.calledOne = false;
       this.calledTwo = false;
@@ -56,9 +56,9 @@ buster.testCase('Utils tests', {
     funcTwo();
     assert.isTrue(myClass.calledOne);
     assert.isTrue(myClass.calledTwo);
-  },
+  });
 
-  'callIteratively': function(done) {
+  it('callIteratively', function(done) {
     var count = 0;
     function call() {
       count++;
@@ -67,12 +67,12 @@ buster.testCase('Utils tests', {
     Prime.Utils.callIteratively(1000, 10, call);
 
     setTimeout(function() {
-      assert.equals(count, 10);
+      assert.equal(count, 10);
       done();
     }, 1100);
-  },
+  });
 
-  'callIterativelyWithEndFunction': function(done) {
+  it('callIterativelyWithEndFunction', function(done) {
     var count = 0;
     function call() {
       count++;
@@ -86,13 +86,13 @@ buster.testCase('Utils tests', {
     Prime.Utils.callIteratively(1000, 10, call, end);
 
     setTimeout(function() {
-      assert.equals(count, 10);
+      assert.equal(count, 10);
       assert(ended);
       done();
     }, 1100);
-  },
+  });
 
-  'callIterativelyWithEndFunctionAndContext': function(done) {
+  it('callIterativelyWithEndFunctionAndContext', function(done) {
     var CallIterativelyClass = function() {
       Prime.Utils.bindAll(this);
       this.count = 0;
@@ -112,58 +112,58 @@ buster.testCase('Utils tests', {
     Prime.Utils.callIteratively(1000, 10, instance.call, instance.end);
 
     setTimeout(function() {
-      assert.equals(instance.count, 10);
-      assert(instance.ended);
+      assert.equal(instance.count, 10);
+      assert.isTrue(instance.ended);
       done();
     }, 1100);
-  },
+  });
 
-  'capitalize': function() {
-    assert.equals(Prime.Utils.capitalize('fred'), 'Fred');
-    assert.equals(Prime.Utils.capitalize('-fred'), '-fred');
-    assert.equals(Prime.Utils.capitalize(''), '');
-  },
+  it('capitalize', function() {
+    assert.equal(Prime.Utils.capitalize('fred'), 'Fred');
+    assert.equal(Prime.Utils.capitalize('-fred'), '-fred');
+    assert.equal(Prime.Utils.capitalize(''), '');
+  });
 
-  'convertStyleName': function() {
-    assert.equals(Prime.Utils.convertStyleName('-moz-box-shadow'), 'MozBoxShadow')
-    assert.equals(Prime.Utils.convertStyleName('text-align'), 'textAlign')
-    assert.equals(Prime.Utils.convertStyleName('top'), 'top')
-  },
+  it('convertStyleName', function() {
+    assert.equal(Prime.Utils.convertStyleName('-moz-box-shadow'), 'MozBoxShadow')
+    assert.equal(Prime.Utils.convertStyleName('text-align'), 'textAlign')
+    assert.equal(Prime.Utils.convertStyleName('top'), 'top')
+  });
 
-  'dataSetToOptions': function() {
+  it('dataSetToOptions', function() {
     var element = Prime.Document.queryFirst('#data-set-to-options input[name=one]');
-    assert.equals(Prime.Utils.dataSetToOptions(element), {'foo': 2, 'bar': '2 + 1'});
+    assert.deepEqual(Prime.Utils.dataSetToOptions(element), {foo: 2, bar: '2 + 1'});
     element = Prime.Document.queryFirst('#data-set-to-options input[name=two]');
-    assert.equals(Prime.Utils.dataSetToOptions(element), {'foo': true, 'bar': false});
+    assert.deepEqual(Prime.Utils.dataSetToOptions(element), {foo: true, bar: false});
     element = Prime.Document.queryFirst('#data-set-to-options input[name=three]');
-    assert.equals(Prime.Utils.dataSetToOptions(element), {'foo': 'bar'});
-  },
+    assert.deepEqual(Prime.Utils.dataSetToOptions(element), {foo: 'bar'});
+  });
 
-  'removeAllFromArray': function() {
+  it('removeAllFromArray', function() {
     var array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeAllFromArray(array, ['a', 'c']);
-    assert.equals(array, ['b', 'd', 'e']);
+    assert.deepEqual(array, ['b', 'd', 'e']);
 
     array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeAllFromArray(array, ['d', 'e']);
-    assert.equals(array, ['a', 'b', 'c']);
+    assert.deepEqual(array, ['a', 'b', 'c']);
 
     array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeAllFromArray(array, ['a', 'b', 'c', 'd', 'e']);
-    assert.equals(array, []);
-  },
+    assert.deepEqual(array, []);
+  });
 
-  'removeFromArray': function() {
+  it('removeFromArray', function() {
     var array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeFromArray(array, 'c');
-    assert.equals(array, ['a', 'b', 'd', 'e']);
+    assert.deepEqual(array, ['a', 'b', 'd', 'e']);
 
     array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeFromArray(array, 'a');
-    assert.equals(array, ['b', 'c', 'd', 'e']);
+    assert.deepEqual(array, ['b', 'c', 'd', 'e']);
 
     array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeFromArray(array, 'e');
-    assert.equals(array, ['a', 'b', 'c', 'd']);
-  }
+    assert.deepEqual(array, ['a', 'b', 'c', 'd']);
+  });
 });

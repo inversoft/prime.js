@@ -15,14 +15,8 @@
  */
 'use strict';
 
-/*
- * Helper functions
- */
-var assert = buster.assertions.assert;
-var refute = buster.assertions.refute;
-
-buster.testCase('Tabs class tests', {
-  setUp: function() {
+describe('Tabs class tests', function() {
+  before(function() {
     this.handlerCalled = false;
     var handler = function() {
       this.handlerCalled = true;
@@ -32,36 +26,37 @@ buster.testCase('Tabs class tests', {
     this.tabs = Prime.Document.queryFirst('ul', this.container);
     this.tabsWidget = new Prime.Widgets.Tabs(this.tabs).withSelectCallback(handler.bind(this)).initialize();
     this.tabContents = Prime.Document.query('div.prime-tab-content', this.container);
-  },
+  });
 
-  tearDown: function() {
+  after(function() {
     this.tabsWidget.destroy();
     this.tabsWidget = null;
-  },
+  });
 
-  'tabs constructed ok': function() {
+  it('tabs constructed ok', function() {
     // I changed tabs to use the class on the element rather than forcing a prime-class. This prevents the FOUC.
     // assert.isTrue(this.tabs.hasClass('prime-tabs'));
-    assert.equals(this.tabContents.length, 2);
+    assert.equal(this.tabContents.length, 2);
 
     // only one tab should ever be active
     var activeTabs = Prime.Document.query('li.selected', this.container);
-    assert.equals(activeTabs.length, 1);
+    assert.equal(activeTabs.length, 1);
 
     // assert data-tab-id attributes are set correctly
     Prime.Document.query('li', this.tabs).each(function(li) {
-      assert.equals(li.getAttribute('data-tab-id'), li.queryFirst('a').getAttribute('href').substring(1));
+      assert.equal(li.getAttribute('data-tab-id'), li.queryFirst('a').getAttribute('href').substring(1));
     });
-  },
+  });
 
-  'click switches active tab': function(done) {
+  it('click switches active tab', function(done) {
     var inactiveTab = Prime.Document.queryFirst('li:not(.selected)', this.container);
     assert.isFalse(inactiveTab.hasClass('selected'));
     Prime.Document.queryFirst('a', inactiveTab).fireEvent('click');
 
-    setTimeout(done(function() {
+    setTimeout(function() {
       assert.isTrue(inactiveTab.hasClass('selected'));
       assert.isTrue(this.handlerCalled);
-    }).bind(this), 10);
-  }
+      done();
+    }.bind(this), 10);
+  });
 });

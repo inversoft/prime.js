@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2013-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,24 +13,21 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-'use strict';
 
-/**
- * @const {{Keys: {BACKSPACE: number, ENTER: number, ESCAPE: number, SPACE: number, TAB: number, LEFT_ARROW: number, UP_ARROW: number, RIGHT_ARROW: number, DOWN_ARROW: number, DELETE: number}} Events}
- */
-const Events = {
-  Keys: {
-    BACKSPACE: 8,
-    ENTER: 13,
-    ESCAPE: 27,
-    SPACE: 32,
-    TAB: 9,
-    LEFT_ARROW: 37,
-    UP_ARROW: 38,
-    RIGHT_ARROW: 39,
-    DOWN_ARROW: 40,
-    DELETE: 46
-  }
-};
+import babel from 'rollup-plugin-babel';
 
-export {Events};
+export default {
+  entry: 'src/main/js/Prime.js',
+  dest: 'build/Prime.js',
+  format: 'umd',
+  name: 'Prime',
+  sourceMap: 'inline',
+  plugins: [
+    babel({
+      babelrc: false,
+      exclude: 'node_modules/**',
+      presets: [['env', {modules: false}]],
+      plugins: ["external-helpers"]
+    })
+  ]
+}

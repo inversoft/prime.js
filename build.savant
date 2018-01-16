@@ -3,7 +3,7 @@
  */
 savantVersion = "1.0.0"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "0.37.4-{integration}", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "1.0.0-RC1", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -14,13 +14,15 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "0.37.4-{integr
 
   publications {
     main {
-      publication(name: "prime", type: "js", file: "build/js/prime.js", source: "build/js/prime.js")
-      publication(name: "prime-min", type: "js", file: "build/js/prime-min.js", source: "build/js/prime.js")
-      publication(name: "prime", type: "css", file: "build/css/prime.css", source: "build/css/prime.css")
-      /* Publish each stylesheet */
-      new File("src/main/css").eachFile { file ->
-        publication(name: file.name, type: "css", file: file.absolutePath, source: file.absolutePath)
-      }
+      publication(name: "prime", type: "js", file: "build/Prime.js", source: "build/Prime.js")
+      publication(name: "prime", type: "css", file: "build/Prime.css", source: "build/Prime.css")
+      publication(name: "prime-min", type: "js", file: "build/Prime.min.js", source: "build/Prime.min.js")
+      publication(name: "prime-min", type: "js.map", file: "build/Prime.min.js.map", source: "build/Prime.min.js.map")
+      publication(name: "prime-min", type: "css", file: "build/Prime.min.css", source: "build/Prime.min.css")
+      publication(name: "prime-min", type: "css.map", file: "build/Prime.min.css.map", source: "build/Prime.min.css.map")
+      publication(name: "prime-es6", type: "js", file: "build/PrimeES6.js", source: "build/PrimeES6.js")
+      publication(name: "prime-es6-min", type: "js", file: "build/PrimeES6.min.js", source: "build/PrimeES6.min.js")
+      publication(name: "prime-es6-min", type: "js.map", file: "build/PrimeES6.min.js.map", source: "build/PrimeES6.min.js.map")
       publication(name: "prime-all", type: "zip", file: "build/prime-all.zip", source: "build/prime-all.zip")
     }
   }
@@ -36,52 +38,56 @@ target(name: "clean", description: "Does nothing. Exists for scripting") {
   file.prune(dir: "build")
 }
 
-target(name: "install-uglifyjs") {
-  "npm install uglify-js -g".execute()
+target(name: "setup", description: "installs gulp") {
+  def proc = "npm install -g gulp".execute()
+  proc.consumeProcessOutput(System.out, System.err)
+  proc.waitFor()
+  proc = "npm install".execute()
+  proc.consumeProcessOutput(System.out, System.err)
+  proc.waitFor()
 }
 
-target(name: "int", description: "Releases a local integration build of the project") {
-  def test = "which uglifyjs".execute().exitValue()
-  if (test == 1) {
-    println "Error. I can't run an int build until you install uglifyjs. Run > sb install-uglifyjs"
-    exit
-  }
+target(name: "int", description: "Releases a local integration build of the project", "dependsOn": ["test"]) {
+  if (switches.has("skipTests")) {
+    def success = "which gulp".execute().waitFor().exitValue()
+    if (success == 1) {
+      println "Error. Can't build without setup. Run > sb setup"
+      exit
+    }
 
-  file.prune(dir: "build/js")
-  file.append(to: "build/js/prime.js") {
-    fileSet(dir: "src/main/js", includePatterns: [~/.+\.js/], excludePatterns: [~/.+\/.+/])
-  }
-
-  def process = "uglifyjs build/js/prime.js".execute()
-  new File("build/js/prime-min.js") << process.text
-
-  /* Build a monolithic stylesheet */
-  file.prune(dir: "build/css")
-  file.append(to: "build/css/prime.css") {
-    fileSet(dir: "src/main/css", includePatterns: [~/.+\.css/], excludePatterns: [~/.+\/.+/])
-  }
-
-  /* Also copy each stylesheet individually */
-  file.copy(to: "build/css") {
-    fileSet(dir: "src/main/css")
-  }
-
-  /* Delete previous zip and build zip containing all artifacts */
-  file.delete {
-    fileSet(dir: "build", includePatterns: [~/prime-all.+\.zip/])
+    def gulp = "gulp".execute()
+    gulp.consumeProcessOutput(System.out, System.err)
+    gulp.waitFor()
   }
 
   file.zip(file: "build/prime-all.zip") {
-    fileSet(dir: "src/main", includePatterns: [~/css/, ~/images/])
-    fileSet(dir: "build", includePatterns: [/js\/.+\.js/])
+    fileSet(dir: "build", excludePatterns: [~/.+\.zip/])
   }
+
   dependency.integrate()
+}
+
+target(name: "test", description: "Runs tests for the project") {
+  if (switches.has("skipTests")) {
+    return
+  }
+
+  def success = "which gulp".execute().exitValue()
+  if (success == 1) {
+    println "Error. Can't test without setup. Run > sb setup"
+    exit
+  }
+
+  def karma = "gulp test".execute()
+  karma.consumeProcessOutput(System.out, System.err)
+  karma.waitFor()
+  assert karma.exitValue() != 1
 }
 
 target(name: "idea", description: "Updates the IntelliJ IDEA module file") {
   idea.iml()
 }
 
-target(name: "release", description: "Releases a full version of the project", dependsOn: ["int"]) {
+target(name: "release", description: "Releases a full version of the project", dependsOn: ["clean", "int"]) {
   release.release()
 }

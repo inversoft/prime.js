@@ -15,27 +15,23 @@
  */
 'use strict';
 
-var assert = buster.assertions.assert;
-var refute = buster.assertions.refute;
-
-
-buster.testCase('Window tests', {
-  'addEventListener': function() {
+describe('Window tests', function() {
+  it('addEventListener', function() {
     // Just tests that it doesn't fail
     Prime.Window.addEventListener('beforeunload', function() {
       console.log('Closed');
     });
-  },
+  });
 
-  'getInnerHeight': function() {
+  it('getInnerHeight', function() {
     assert.isTrue(Prime.Window.getInnerHeight() > 400);
-  },
+  });
 
-  'getInnerWidth': function() {
+  it('getInnerWidth', function() {
     assert.isTrue(Prime.Window.getInnerWidth() > 400);
-  },
+  });
 
-  'getScrollTop': function() {
+  it('getScrollTop', function() {
     assert.isTrue(Prime.Window.getScrollTop() >= 0);
-  }
+  });
 });

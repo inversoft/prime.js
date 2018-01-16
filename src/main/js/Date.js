@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,9 +15,7 @@
  */
 'use strict';
 
-var Prime = Prime || {};
-
-Prime.Date = {
+const PrimeDate = {
   DAYS_IN_MONTH: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
 
   /**
@@ -48,7 +46,7 @@ Prime.Date = {
     if (month === 1 && this.isLeapYear(year)) {
       return 29;
     } else {
-      return Prime.Date.DAYS_IN_MONTH[month];
+      return PrimeDate.DAYS_IN_MONTH[month];
     }
   },
 
@@ -63,21 +61,21 @@ Prime.Date = {
       return;
     }
 
-    var newDate = date.getDate() + number;
-    var numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
+    let newDate = date.getDate() + number;
+    let numberOfDaysInMonth = PrimeDate.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
 
     if (newDate > 0) {
       while (newDate > numberOfDaysInMonth) {
-        Prime.Date.plusMonths(date, 1);
+        PrimeDate.plusMonths(date, 1);
         newDate = newDate - numberOfDaysInMonth;
-        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
+        numberOfDaysInMonth = PrimeDate.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
       }
 
       date.setDate(newDate);
     } else {
       while (newDate <= 0) {
-        Prime.Date.plusMonths(date, -1);
-        numberOfDaysInMonth = Prime.Date.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
+        PrimeDate.plusMonths(date, -1);
+        numberOfDaysInMonth = PrimeDate.numberOfDaysInMonth(date.getFullYear(), date.getMonth());
         newDate = newDate + numberOfDaysInMonth;
       }
 
@@ -96,16 +94,16 @@ Prime.Date = {
       return;
     }
 
-    var deltaDays = parseInt(number / 24);
-    Prime.Date.plusDays(date, deltaDays);
+    const deltaDays = parseInt(number / 24);
+    PrimeDate.plusDays(date, deltaDays);
 
-    var deltaHours = number % 24;
-    var newHour = date.getHours() + deltaHours;
+    const deltaHours = number % 24;
+    const newHour = date.getHours() + deltaHours;
     if (newHour > 23) {
-      Prime.Date.plusDays(date, 1);
+      PrimeDate.plusDays(date, 1);
       date.setHours(newHour - 24);
     } else if (newHour < 0) {
-      Prime.Date.plusDays(date, -1);
+      PrimeDate.plusDays(date, -1);
       date.setHours(24 + newHour);
     } else {
       date.setHours(newHour);
@@ -123,16 +121,16 @@ Prime.Date = {
       return;
     }
 
-    var deltaHours = parseInt(number / 60);
-    Prime.Date.plusHours(date, deltaHours);
+    const deltaHours = parseInt(number / 60);
+    PrimeDate.plusHours(date, deltaHours);
 
-    var deltaMinutes = number % 60;
-    var newMinute = date.getMinutes() + deltaMinutes;
+    const deltaMinutes = number % 60;
+    const newMinute = date.getMinutes() + deltaMinutes;
     if (newMinute > 60) {
-      Prime.Date.plusHours(date, 1);
+      PrimeDate.plusHours(date, 1);
       date.setMinutes(newMinute - 60);
     } else if (newMinute < 0) {
-      Prime.Date.plusHours(date, -1);
+      PrimeDate.plusHours(date, -1);
       date.setMinutes(60 + newMinute);
     } else {
       date.setMinutes(newMinute);
@@ -150,10 +148,10 @@ Prime.Date = {
       return;
     }
 
-    var deltaYears = parseInt(number / 12);
-    var deltaMonths = number % 12;
-    var currentMonth = date.getMonth();
-    var newMonth = currentMonth + deltaMonths;
+    let deltaYears = parseInt(number / 12);
+    let deltaMonths = number % 12;
+    let currentMonth = date.getMonth();
+    const newMonth = currentMonth + deltaMonths;
     if (newMonth < 0) {
       deltaYears--;
       deltaMonths = newMonth;
@@ -166,7 +164,7 @@ Prime.Date = {
 
     date.setYear(date.getFullYear() + deltaYears);
     // If the day is 31 and you set month to 1 (February) it will adjust to March 3 (Feb 28 + 3)
-    var adjustedMonth = currentMonth + deltaMonths;
+    const adjustedMonth = currentMonth + deltaMonths;
     if (date.getDate() > this.DAYS_IN_MONTH[adjustedMonth]) {
       date.setDate(this.DAYS_IN_MONTH[adjustedMonth]);
     }
@@ -184,16 +182,16 @@ Prime.Date = {
       return;
     }
 
-    var deltaMinutes = parseInt(number / 60);
-    Prime.Date.plusMinutes(date, deltaMinutes);
+    const deltaMinutes = parseInt(number / 60);
+    PrimeDate.plusMinutes(date, deltaMinutes);
 
-    var deltaSeconds = number % 60;
-    var newSecond = date.getSeconds() + deltaSeconds;
+    const deltaSeconds = number % 60;
+    const newSecond = date.getSeconds() + deltaSeconds;
     if (newSecond > 60) {
-      Prime.Date.plusMinutes(date, 1);
+      PrimeDate.plusMinutes(date, 1);
       date.setSeconds(newSecond - 60);
     } else if (newSecond < 0) {
-      Prime.Date.plusMinutes(date, -1);
+      PrimeDate.plusMinutes(date, -1);
       date.setSeconds(60 + newSecond);
     } else {
       date.setSeconds(newSecond);
@@ -229,3 +227,5 @@ Prime.Date = {
     throw TypeError('date parameter must be a Date object.');
   }
 };
+
+export {PrimeDate}

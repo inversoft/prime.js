@@ -13,44 +13,47 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-var Prime = Prime || {};
-Prime.Widgets = Prime.Widgets || {};
+'use strict';
 
-/**
- * Constructs a In Progress widget that opens an overlay over an element while something is running and closes it when
- * it finishes.
- *
- * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element to overlay.
- * @constructor
- */
-Prime.Widgets.InProgress = function(element) {
-  Prime.Utils.bindAll(this);
+import {PrimeDocument} from "../PrimeDocument";
+import {PrimeElement} from "../Document/PrimeElement";
+import {Utils} from "../Utils";
 
-  this.element = Prime.Document.Element.wrap(element);
-  this._setInitialOptions();
-  this.draggable = null;
-};
+class InProgress {
+  /**
+   * Constructs a In Progress widget that opens an overlay over an element while something is running and closes it when
+   * it finishes.
+   *
+   * @param {PrimeElement|Element|EventTarget} element The Prime Element to overlay.
+   * @constructor
+   */
+  constructor(element) {
+    Utils.bindAll(this);
 
-Prime.Widgets.InProgress.prototype = {
+    this.element = PrimeElement.wrap(element);
+    this._setInitialOptions();
+    this.draggable = null;
+  }
+
   /**
    * Closes the InProgress process.
    *
    * @param {Function} callback (Optional) A callback function to invoke after the InProgress has been completely closed.
    */
-  close: function(callback) {
+  close(callback) {
     try {
-      this.options['endFunction'](this);
+      this.options.endFunction(this);
     } finally {
-      var now = new Date().getTime();
-      var duration = now - this.startInstant;
-      if (duration < this.options['minimumTime']) {
+      const now = new Date().getTime();
+      const duration = now - this.startInstant;
+      if (duration < this.options.minimumTime) {
         setTimeout(function() {
           this.overlay.removeFromDOM();
 
           if (callback) {
             callback();
           }
-        }.bind(this), this.options['minimumTime'] - duration);
+        }.bind(this), this.options.minimumTime - duration);
       } else {
         this.overlay.removeFromDOM();
 
@@ -61,72 +64,72 @@ Prime.Widgets.InProgress.prototype = {
     }
 
     return this;
-  },
+  }
 
   /**
    * Opens the InProgress process.
    */
-  open: function() {
+  open() {
     this.startInstant = new Date().getTime();
-    this.overlay = Prime.Document.newElement('<div/>').setId('prime-in-progress-overlay').appendTo(document.body);
-    Prime.Document.newElement('<i/>', {'class': 'fa fa-spin fa-' + this.options['iconName']}).appendTo(this.overlay);
+    this.overlay = PrimeDocument.newElement('<div/>').setId('prime-in-progress-overlay').appendTo(document.body);
+    PrimeDocument.newElement('<i/>', {class: 'fa fa-spin fa-' + this.options.iconName}).appendTo(this.overlay);
 
-    var coords = this.element.getCoordinates();
-    var bodyCoords = Prime.Document.bodyElement.getCoordinates();
+    const coords = this.element.getCoordinates();
+    const bodyCoords = PrimeDocument.bodyElement.getCoordinates();
     this.overlay.setTop(coords.top - bodyCoords.top);
     this.overlay.setLeft(coords.left - bodyCoords.left);
     this.overlay.setWidth(this.element.getBorderedWidth());
     this.overlay.setHeight(this.element.getBorderedHeight());
     this.overlay.setStyle('zIndex', (this.element.getRelativeZIndex() + 1000).toString());
 
-    this.options['startFunction'](this);
+    this.options.startFunction(this);
 
     return this;
-  },
+  }
 
   /**
    * Sets the end function that is called when the InProgress process is finished.
    *
    * @param f {function} The function.
-   * @returns {Prime.Widgets.InProgress} This.
+   * @returns {InProgress} This.
    */
-  withEndFunction: function(f) {
-    this.options['endFunction'] = f;
+  withEndFunction(f) {
+    this.options.endFunction = f;
     return this;
-  },
+  }
 
   /**
    * Sets the FontAwesome icon name to use for the overlay.
    *
    * @param iconName {string} The icon name.
-   * @returns {Prime.Widgets.InProgress} This.
+   * @returns {InProgress} This.
    */
-  withIconName: function(iconName) {
-    this.options['iconName'] = iconName;
+  withIconName(iconName) {
+    this.options.iconName = iconName;
     return this;
-  },
+  }
 
   /**
    * Sets the minimum time that the InProgress process must run.
    *
    * @param time {number} The time in milliseconds.
-   * @returns {Prime.Widgets.InProgress} This.
+   * @returns {InProgress} This.
    */
-  withMinimumTime: function(time) {
-    this.options['minimumTime'] = time;
+  withMinimumTime(time) {
+    this.options.minimumTime = time;
     return this;
-  },
+  }
 
   /**
    * Sets the start function that is called when the InProgress process is started.
    *
    * @param f {function} The function.
-   * @returns {Prime.Widgets.InProgress} This.
+   * @returns {InProgress} This.
    */
-  withStartFunction: function(f) {
-    this.options['startFunction'] = f;
+  withStartFunction(f) {
+    this.options.startFunction = f;
     return this;
-  },
+  }
 
   /* ===================================================================================================================
    * Private methods
@@ -136,20 +139,24 @@ Prime.Widgets.InProgress.prototype = {
    * Set the initial options for this widget.
    * @private
    */
-  _setInitialOptions: function() {
+  _setInitialOptions() {
     // Defaults
     this.options = {
-      'endFunction': function() {},
-      'iconName': 'refresh',
-      'minimumTime': 1000,
-      'startFunction': function() {}
+      endFunction: function() {
+      },
+      iconName: 'refresh',
+      minimumTime: 1000,
+      startFunction: function() {
+      }
     };
 
-    var userOptions = Prime.Utils.dataSetToOptions(this.element);
-    for (var option in userOptions) {
+    const userOptions = Utils.dataSetToOptions(this.element);
+    for (let option in userOptions) {
       if (userOptions.hasOwnProperty(option)) {
         this.options[option] = userOptions[option];
       }
     }
   }
-};
+}
+
+export {InProgress};

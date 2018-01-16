@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,58 +15,51 @@
  */
 'use strict';
 
-var Prime = Prime || {};
+import {Utils} from "./Utils";
+import {PrimeElement} from "./Document/PrimeElement";
 
-/**
- * The Prime.Effects namespace. This contains all of the effect abstract and implementation classes.
- *
- * @namespace Prime.Effects
- */
-Prime.Effects = Prime.Effects || {};
+class BaseTransition {
+  /**
+   * Constructs a BaseTransition for the given element.
+   *
+   * @param {PrimeElement|Element|EventTarget} element The Prime Element the effect will be applied to.
+   * @param {number} endValue The end value for the transition.
+   * @constructor
+   */
+  constructor(element, endValue) {
+    Utils.bindAll(this);
+    this.element = PrimeElement.wrap(element);
+    this.duration = 1000;
+    this.endFunction = null;
+    this.endValue = endValue;
+    this.iterations = 20;
+  }
 
-
-/**
- * Constructs a BaseTransition for the given element.
- *
- * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element the effect will be applied to.
- * @param {number} endValue The end value for the transition.
- * @constructor
- */
-Prime.Effects.BaseTransition = function(element, endValue) {
-  Prime.Utils.bindAll(this);
-  this.element = Prime.Document.Element.wrap(element);
-  this.duration = 1000;
-  this.endFunction = null;
-  this.endValue = endValue;
-  this.iterations = 20;
-};
-
-Prime.Effects.BaseTransition.prototype = {
   /**
    * Sets the function that is called when the effect has completed.
    *
    * @param {Function} endFunction The function that is called when the effect is completed.
-   * @returns {Prime.Effects.BaseTransition} This Effect.
+   * @returns {BaseTransition} This Effect.
    */
-  withEndFunction: function(endFunction) {
+  withEndFunction(endFunction) {
     this.endFunction = endFunction;
     return this;
-  },
+  }
 
   /**
    * Sets the duration of the fade-out effect.
    *
    * @param {number} duration The duration in milliseconds.
-   * @returns {Prime.Effects.BaseTransition} This Effect.
+   * @returns {BaseTransition} This Effect.
    */
-  withDuration: function(duration) {
+  withDuration(duration) {
     if (duration < 100) {
       throw new TypeError('Duration should be greater than 100 milliseconds or it won\'t really be noticeable');
     }
 
     this.duration = duration;
     return this;
-  },
+  }
 
   /*
    * Protected functions
@@ -80,13 +73,13 @@ Prime.Effects.BaseTransition.prototype = {
    * @param {Function} getFunction The function on the element to call to get the current value for the transition.
    * @param {Function} setFunction The function on the element to call to set the new value for the transition.
    */
-  _changeNumberStyleIteratively: function(getFunction, setFunction) {
-    var currentValue = getFunction.call(this.element);
-    var step = Math.abs(this.endValue - currentValue) / this.iterations;
+  _changeNumberStyleIteratively(getFunction, setFunction) {
+    let currentValue = getFunction.call(this.element);
+    const step = Math.abs(this.endValue - currentValue) / this.iterations;
 
     // Close around ourselves
-    var self = this;
-    var stepFunction = function(last) {
+    const self = this;
+    const stepFunction = function(last) {
       if (last) {
         currentValue = self.endValue;
       } else {
@@ -100,8 +93,8 @@ Prime.Effects.BaseTransition.prototype = {
       setFunction.call(self.element, currentValue);
     };
 
-    Prime.Utils.callIteratively(this.duration, this.iterations, stepFunction, this._internalEndFunction);
-  },
+    Utils.callIteratively(this.duration, this.iterations, stepFunction, this._internalEndFunction);
+  }
 
   /* ===================================================================================================================
    * Private Methods
@@ -112,133 +105,139 @@ Prime.Effects.BaseTransition.prototype = {
    *
    * @private
    */
-  _internalEndFunction: function() {
-    if (this._subclassEndFunction) {
-      this._subclassEndFunction(this);
-    }
+  _internalEndFunction() {
+    this._subclassEndFunction(this);
 
     if (this.endFunction) {
       this.endFunction(this);
     }
   }
-};
 
-/**
- * Constructs a new Fade for the given element. The fade effect uses the CSS opacity style and supports the IE alpha
- * style. The duration defaults to 1000 milliseconds (1 second). This changes the opacity over the duration from 1.0 to
- * 0.0. At the end, this hides the element so that it doesn't take up any space.
- *
- * @constructor
- * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element to fade out.
- */
-Prime.Effects.Fade = function(element) {
-  Prime.Effects.BaseTransition.call(this, element, 0.0);
-};
-Prime.Effects.Fade.prototype = Object.create(Prime.Effects.BaseTransition.prototype);
-Prime.Effects.Fade.constructor = Prime.Effects.Fade;
-
-/**
- * Internal call back at the end of the transition. This hides the element so it doesn't take up space.
- *
- * @private
- */
-Prime.Effects.Fade.prototype._subclassEndFunction = function() {
-  this.element.hide();
-};
-
-/**
- * Executes the fade effect on the element using the opacity style.
- */
-Prime.Effects.Fade.prototype.go = function() {
-  this._changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
-};
-
-
-/**
- * Constructs a new Appear for the given element. The appear effect uses the CSS opacity style and supports the IE
- * alpha style. The duration defaults to 1000 milliseconds (1 second). This first sets the opacity to 0, then it shows
- * the element and finally it raises the opacity.
- *
- * @constructor
- * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element to appear.
- * @param {number} [opacity=1.0] The final opacity to reach when the effect is complete. Defaults to 1.0.
- */
-Prime.Effects.Appear = function(element, opacity) {
-  if (!Prime.Utils.isDefined(opacity)) {
-    opacity = 1.0;
+  /**
+   * Virtual function stub
+   *
+   * @private
+   */
+  _subclassEndFunction() {
   }
-  Prime.Effects.BaseTransition.call(this, element, opacity);
-};
-Prime.Effects.Appear.prototype = Object.create(Prime.Effects.BaseTransition.prototype);
-Prime.Effects.Appear.constructor = Prime.Effects.Appear;
+}
 
-/**
- * Executes the appear effect on the element using the opacity style.
- */
-Prime.Effects.Appear.prototype.go = function() {
-  this.element.setOpacity(0.0);
-  this.element.show();
-  this._changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
-};
-
-/**
- * Constructs a new ScrollTo for the given element. The duration defaults to 1000 milliseconds (1 second).
- *
- * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element to scroll.
- * @param {number} position The position to scroll the element to.
- * @constructor
- */
-Prime.Effects.ScrollTo = function(element, position) {
-  this.axis = 'vertical';
-  Prime.Effects.BaseTransition.call(this, element, position);
-};
-
-Prime.Effects.ScrollTo.prototype = Object.create(Prime.Effects.BaseTransition.prototype);
-Prime.Effects.ScrollTo.constructor = Prime.Effects.ScrollTo;
-
-/**
- * Set the scroll axis, either 'horizontal' or 'vertical'. Default is 'vertical'.
- *
- * @param {string} axis The axis to scroll.
- * @returns {Prime.Effects.ScrollTo}
- */
-Prime.Effects.ScrollTo.prototype.withAxis = function(axis) {
-  this.axis = axis || 'vertical';
-  return this;
-};
-
-/**
- * Executes the scroll effect on the element.
- */
-Prime.Effects.ScrollTo.prototype.go = function() {
-  if (this.axis === 'vertical') {
-    this._changeNumberStyleIteratively(this.element.getScrollTop, this.element.scrollTo);
-  } else {
-    this._changeNumberStyleIteratively(this.element.getScrollLeft, this.element.scrollLeftTo);
+class Fade extends BaseTransition {
+  /**
+   * Constructs a new Fade for the given element. The fade effect uses the CSS opacity style and supports the IE alpha
+   * style. The duration defaults to 1000 milliseconds (1 second). This changes the opacity over the duration from 1.0 to
+   * 0.0. At the end, this hides the element so that it doesn't take up any space.
+   *
+   * @constructor
+   * @param {PrimeElement|Element|EventTarget} element The Prime Element to fade out.
+   */
+  constructor(element) {
+    super(element, 0.0);
   }
-};
 
-/**
- * Creates a SlideOpen effect on the given element.
- *
- * @param {Prime.Document.Element} element The element.
- * @constructor
- */
-Prime.Effects.SlideOpen = function(element) {
-  Prime.Utils.bindAll(this);
-
-  this.element = element;
-  if (this.isOpen()) {
-    element.domElement.primeVisibleHeight = element.getHeight();
-  } else {
-    element.setStyle('height', 'auto');
-    element.domElement.primeVisibleHeight = element.getHeight();
-    element.setStyle('height', '0');
+  /**
+   * Internal call back at the end of the transition. This hides the element so it doesn't take up space.
+   *
+   * @override
+   * @private
+   */
+  _subclassEndFunction() {
+    this.element.hide();
   }
-};
 
-Prime.Effects.SlideOpen.prototype = {
-  close: function() {
+  /**
+   * Executes the fade effect on the element using the opacity style.
+   */
+  go() {
+    this._changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
+  }
+}
+
+class Appear extends BaseTransition {
+  /**
+   * Constructs a new Appear for the given element. The appear effect uses the CSS opacity style and supports the IE
+   * alpha style. The duration defaults to 1000 milliseconds (1 second). This first sets the opacity to 0, then it shows
+   * the element and finally it raises the opacity.
+   *
+   * @constructor
+   * @param {PrimeElement|Element|EventTarget} element The Prime Element to appear.
+   * @param {number} [opacity=1.0] The final opacity to reach when the effect is complete. Defaults to 1.0.
+   */
+  constructor(element, opacity) {
+    if (!Utils.isDefined(opacity)) {
+      opacity = 1.0;
+    }
+    super(element, opacity);
+  }
+
+  /**
+   * Executes the appear effect on the element using the opacity style.
+   */
+  go() {
+    this.element.setOpacity(0.0);
+    this.element.show();
+    this._changeNumberStyleIteratively(this.element.getOpacity, this.element.setOpacity);
+  }
+}
+
+class ScrollTo extends BaseTransition {
+  /**
+   * Constructs a new ScrollTo for the given element. The duration defaults to 1000 milliseconds (1 second).
+   *
+   * @param {PrimeElement|Element|EventTarget} element The Prime Element to scroll.
+   * @param {number} position The position to scroll the element to.
+   * @constructor
+   */
+  constructor(element, position) {
+    super(element, position);
+
+    this.axis = 'vertical';
+  }
+
+  /**
+   * Set the scroll axis, either 'horizontal' or 'vertical'. Default is 'vertical'.
+   *
+   * @param {string} axis The axis to scroll.
+   * @returns {ScrollTo}
+   */
+  withAxis(axis) {
+    this.axis = axis || 'vertical';
+    return this;
+  }
+
+  /**
+   * Executes the scroll effect on the element.
+   */
+  go() {
+    if (this.axis === 'vertical') {
+      this._changeNumberStyleIteratively(this.element.getScrollTop, this.element.scrollTo);
+    } else {
+      this._changeNumberStyleIteratively(this.element.getScrollLeft, this.element.scrollLeftTo);
+    }
+  }
+}
+
+class SlideOpen {
+  /**
+   * Creates a SlideOpen effect on the given element.
+   *
+   * @param {PrimeElement} element The element.
+   * @constructor
+   */
+  constructor(element) {
+    Utils.bindAll(this);
+
+    this.element = element;
+    if (this.isOpen()) {
+      element.domElement.primeVisibleHeight = element.getHeight();
+    } else {
+      element.setStyle('height', 'auto');
+      element.domElement.primeVisibleHeight = element.getHeight();
+      element.setStyle('height', '0');
+    }
+  }
+
+  close() {
     if (!this.isOpen()) {
       return;
     }
@@ -251,25 +250,27 @@ Prime.Effects.SlideOpen.prototype = {
       this.element.setHeight(0);
       this.element.removeClass('open');
     }.bind(this), 50);
-  },
+  }
 
-  isOpen: function() {
+  isOpen() {
     return this.element.getHeight() !== 0 || this.element.hasClass('open');
-  },
+  }
 
-  open: function() {
+  open() {
     this.element.setHeight(this.element.domElement.primeVisibleHeight);
     setTimeout(function() {
       this.element.setHeight('auto');
       this.element.addClass('open');
     }.bind(this), 500);
-  },
+  }
 
-  toggle: function() {
+  toggle() {
     if (this.element.getHeight() !== 0 || this.element.hasClass('open')) {
       this.close();
     } else {
       this.open();
     }
   }
-};
+}
+
+export {BaseTransition, Fade, Appear, ScrollTo, SlideOpen}

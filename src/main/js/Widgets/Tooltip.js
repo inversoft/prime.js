@@ -13,128 +13,126 @@
  * either express or implied. See the License for the specific
  * language governing permissions and limitations under the License.
  */
-
 'use strict';
 
-var Prime = Prime || {};
+import {PrimeDocument} from "../PrimeDocument";
+import {PrimeElement} from "../Document/PrimeElement";
+import {PrimeWindow} from "../Window";
+import {Utils} from "../Utils";
 
-/**
- * The Prime.Widgets namespace.
- *
- * @namespace Prime.Widgets
- */
-Prime.Widgets = Prime.Widgets || {};
+const open = [];
 
-/**
- * Constructs a new Tooltip object for the given element.
- *
- * @param {Prime.Document.Element|Element|EventTarget} element The Prime Element for the Tooltip widget.
- * @constructor
- */
-Prime.Widgets.Tooltip = function(element) {
-  Prime.Utils.bindAll(this);
+class Tooltip {
+  /**
+   * Constructs a new Tooltip object for the given element.
+   *
+   * @param {PrimeElement|Element|EventTarget} element The Prime Element for the Tooltip widget.
+   * @constructor
+   */
+  constructor(element) {
+    Utils.bindAll(this);
 
-  this.element = Prime.Document.Element.wrap(element);
-  this._setInitialOptions();
-};
+    this.element = PrimeElement.wrap(element);
+    this._setInitialOptions();
+  }
 
-Prime.Widgets.Tooltip.constructor = Prime.Widgets.Tooltip;
-Prime.Widgets.Tooltip.open = [];
+  static get open() {
+    return open;
+  }
 
-Prime.Widgets.Tooltip.prototype = {
   /**
    * Hides the tooltip.
    *
-   * @returns {Prime.Widgets.Tooltip} This.
+   * @returns {Tooltip} This.
    */
-  hide: function() {
-    if (Prime.Widgets.Tooltip.open.length > 0) {
-      Prime.Widgets.Tooltip.open.forEach(function(t) {
+  hide() {
+    if (Tooltip.open.length > 0) {
+      Tooltip.open.forEach(function(t) {
         t.removeFromDOM();
       });
     }
     return this;
-  },
+  }
 
   /**
    * Initializes the widget by attaching event listeners to the element.
    *
-   * @returns {Prime.Widgets.Tooltip} This.
+   * @returns {Tooltip} This.
    */
-  initialize: function() {
+  initialize() {
     this.element.addEventListener('mouseenter', this._handleMouseEnter).addEventListener('mouseleave', this._handleMouseLeave);
-    Prime.Document.addEventListener('scroll', this._handleMouseLeave);
+    PrimeDocument.addEventListener('scroll', this._handleMouseLeave);
     return this;
-  },
+  }
 
   /**
    * Shows the tooltip.
    *
-   * @returns {Prime.Widgets.Tooltip} This.
+   * @returns {Tooltip} This.
    */
-  show: function() {
-    var text = this.element.getDataSet()[this.options.dataName];
-    var zIndex = this.element.getRelativeZIndex();
-    var tooltip = Prime.Document.newElement('<span>')
-        .appendTo(Prime.Document.bodyElement)
+  show() {
+    const text = this.element.getDataSet()[this.options.dataName];
+    const zIndex = this.element.getRelativeZIndex();
+    const tooltip = PrimeDocument.newElement('<span>')
+        .appendTo(PrimeDocument.bodyElement)
         .addClass(this.options.className + ' ' + this.element.getTagName().toLowerCase())
         .setHTML(text)
         .setStyle('zIndex', zIndex + 10);
 
-    var left = this.element.getLeft();
-    var top = this.element.getTop();
-    var width = this.element.getWidth();
-    var tooltipWidth = tooltip.getWidth();
-    var tooltipHeight = tooltip.getHeight();
+    const left = this.element.getLeft();
+    const top = this.element.getTop();
+    const width = this.element.getWidth();
+    const tooltipWidth = tooltip.getWidth();
+    const tooltipHeight = tooltip.getHeight();
 
     tooltip.setLeft(left - (tooltipWidth / 2) + (width / 2));
     tooltip.setTop(top - tooltipHeight - 8);
 
-    Prime.Widgets.Tooltip.open.push(tooltip);
+    Tooltip.open.push(tooltip);
     return this;
-  },
+  }
 
   /**
    * Sets the class name to use when creating the tooltip.
    *
    * @param className {String} The class name.
-   * @returns {Prime.Widgets.Tooltip} This.
+   * @returns {Tooltip} This.
    */
-  withClassName: function(className) {
+  withClassName(className) {
     this.options.className = className;
     return this;
-  },
+  }
 
   /**
    * Set data-set name to pull the tooltip text from.
    *
    * @param {string} name The data-set name.
-   * @returns {Prime.Widgets.Tooltip} This.
+   * @returns {Tooltip} This.
    */
-  withDataName: function(name) {
+  withDataName(name) {
     this.options.dataName = name;
     return this;
-  },
+  }
 
   /**
    * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
    * @param {Object} options Key value pair of configuration options.
-   * @returns {Prime.Widgets.Tooltip} This.
+   * @returns {Tooltip} This.
    */
-  withOptions: function(options) {
-    if (!Prime.Utils.isDefined(options)) {
+  withOptions(options) {
+    if (!Utils.isDefined(options)) {
       return this;
     }
 
-    for (var option in options) {
+    for (let option in options) {
       if (options.hasOwnProperty(option)) {
         this.options[option] = options[option];
       }
     }
     return this;
-  },
+  }
 
   /* ===================================================================================================================
    * Private methods
@@ -145,46 +143,48 @@ Prime.Widgets.Tooltip.prototype = {
    *
    * @private
    */
-  _handleMouseEnter: function() {
+  _handleMouseEnter() {
     this.show();
-  },
+  }
 
   /**
    * Handles the mouse exit event to hide the tooltip.
    *
    * @private
    */
-  _handleMouseLeave: function() {
+  _handleMouseLeave() {
     this.hide();
-  },
+  }
 
   /**
    * Set the initial options for this widget.
    * @private
    */
-  _setInitialOptions: function() {
+  _setInitialOptions() {
     // Defaults
     this.options = {
-      'className': 'prime-tooltip',
-      'dataName': 'tooltip'
+      className: 'prime-tooltip',
+      dataName: 'tooltip'
     };
 
-    var userOptions = Prime.Utils.dataSetToOptions(this.element);
-    for (var option in userOptions) {
+    const userOptions = Utils.dataSetToOptions(this.element);
+    for (let option in userOptions) {
       if (userOptions.hasOwnProperty(option)) {
         this.options[option] = userOptions[option];
       }
     }
   }
-};
+}
 
-Prime.Document.onReady(function() {
+PrimeDocument.onReady(function() {
   // Fix browser issues with tooltips sticking around on back-button navigation
-  Prime.Window.addEventListener('beforeunload', function() {
-    if (Prime.Widgets.Tooltip.open.length > 0) {
-      Prime.Widgets.Tooltip.open.forEach(function(t) {
+  PrimeWindow.addEventListener('beforeunload', function() {
+    if (Tooltip.open.length > 0) {
+      Tooltip.open.forEach(function(t) {
         t.removeFromDOM();
       });
     }
   });
 });
+
+export {Tooltip};

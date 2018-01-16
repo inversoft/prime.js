@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2017, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,14 +15,14 @@
  */
 'use strict';
 
-var Prime = Prime || {};
+import {PrimeDocument} from "./PrimeDocument";
 
 /**
- * The Prime.Utils namespace. This contains utility functions.
+ * The Utils namespace. This contains utility functions.
  *
- * @namespace Prime.Utils
+ * @namespace Utils
  */
-Prime.Utils = {
+const Utils = {
   spaceRegex: /\s+/,
   typeRegex: /^\[object\s(.*)\]$/,
 
@@ -36,10 +36,10 @@ Prime.Utils = {
    *
    * <pre>
    *   function Foo() {
-   *     Prime.Utils.bindAll(this);
+   *     Utils.bindAll(this);
    *
    *     // This function is bound to this (i.e. this.handleClick = this.handleClick.bind(this)).
-   *     Prime.Document.queryFirst('a').addEventListener('click', this.handleClick);
+   *     PrimeDocument.queryFirst('a').addEventListener('click', this.handleClick);
    *   }
    *
    *   Foo.prototype = {
@@ -52,11 +52,33 @@ Prime.Utils = {
    * @param {*} object The object to bind all the functions for.
    */
   bindAll: function(object) {
-    for (var property in object) {
-      if (object[property] instanceof Function) {
+    for (const property of Utils.getAllPropertyNames(object)) {
+      if (property !== 'constructor' && typeof object[property] === 'function' &&
+          !object[property].name.startsWith('bound ')) {
         object[property] = object[property].bind(object);
       }
     }
+  },
+
+  /**
+   * Returns all of the properties for this object and all of its
+   * inherited properties from parent objects.
+   *
+   * @param object
+   * @returns {Array<string>}
+   */
+  getAllPropertyNames: function(object) {
+    let props = new Set();
+
+    do {
+      Object.getOwnPropertyNames(object).forEach((prop) => {
+        if (!props.has(prop)) {
+          props.add(prop);
+        }
+      })
+    } while (object = Object.getPrototypeOf(object));
+
+    return Array.from(props);
   },
 
   /**
@@ -69,10 +91,10 @@ Prime.Utils = {
    *
    * <pre>
    *   function Foo() {
-   *     Prime.Utils.bindAll(this);
+   *     Utils.bindAll(this);
    *
    *     // This function is bound to this (i.e. this.handleClick = this.handleClick.bind(this)).
-   *     Prime.Document.queryFirst('a').addEventListener('click', this.handleClick);
+   *     PrimeDocument.queryFirst('a').addEventListener('click', this.handleClick);
    *   }
    *
    *   Foo.prototype = {
@@ -87,16 +109,16 @@ Prime.Utils = {
    */
   bindSome: function(object) {
     if (arguments.length > 1) {
-      for (var i = 1; i < arguments.length; i++) {
-        var func = object[arguments[i]];
-        if (!Prime.Utils.isDefined(func) || !(func instanceof Function)) {
+      for (let i = 1; i < arguments.length; i++) {
+        const func = object[arguments[i]];
+        if (!Utils.isDefined(func) || !(func instanceof Function)) {
           throw new TypeError('The object does not contain a function named [' + arguments[i] + ']');
         }
 
         object[arguments[i]] = func.bind(object);
       }
     }
-    for (var property in object) {
+    for (let property in object) {
       if (object[property] instanceof Function) {
         object[property] = object[property].bind(object);
       }
@@ -111,11 +133,11 @@ Prime.Utils = {
    * @returns {Function} Either <code>func</code> or the newly bound function.
    */
   bindSafe: function(func, context) {
-    if (!Prime.Utils.isDefined(func)) {
+    if (!Utils.isDefined(func)) {
       throw new Error('Invalid arguments');
     }
 
-    if (!Prime.Utils.isDefined(context)) {
+    if (!Utils.isDefined(context)) {
       return func;
     }
 
@@ -125,15 +147,15 @@ Prime.Utils = {
   /**
    * Calculates the length of the given text using the style of the given element.
    *
-   * @param {Prime.Document.Element} element The element to use the style of.
+   * @param {PrimeElement} element The element to use the style of.
    * @param {string} text The text to calculate the length of.
    * @returns {number} The length of the text.
    */
   calculateTextLength: function(element, text) {
-    var computedStyle = element.getComputedStyle();
-    var textCalculator = Prime.Document.queryById('prime-text-calculator');
+    const computedStyle = element.getComputedStyle();
+    let textCalculator = PrimeDocument.queryById('prime-text-calculator');
     if (textCalculator === null) {
-      textCalculator = Prime.Document.newElement('<span/>')
+      textCalculator = PrimeDocument.newElement('<span/>')
           .setStyles({
             position: 'absolute',
             width: 'auto',
@@ -164,16 +186,16 @@ Prime.Utils = {
    * @param {Function} [endFunction] The function to invoke at the end.
    */
   callIteratively: function(totalDuration, timesToCall, stepFunction, endFunction) {
-    var step = totalDuration / timesToCall;
-    var count = 0;
-    var id = setInterval(function() {
+    const step = totalDuration / timesToCall;
+    let count = 0;
+    const id = setInterval(function() {
       count++;
-      var last = (count >= timesToCall);
+      const last = (count >= timesToCall);
       stepFunction(last);
       if (last) {
         clearInterval(id);
 
-        if (Prime.Utils.isDefined(endFunction)) {
+        if (Utils.isDefined(endFunction)) {
           endFunction();
         }
       }
@@ -200,43 +222,43 @@ Prime.Utils = {
     if (name === 'float') {
       return 'cssFloat';
     }
-    
-    var dash = name.indexOf('-');
+
+    let dash = name.indexOf('-');
     if (dash === -1) {
       return name;
     }
 
-    var start = 0;
-    var result = '';
+    let start = 0;
+    let result = '';
     while (dash !== -1) {
-      var piece = name.substring(start, dash);
+      const piece = name.substring(start, dash);
       if (start === 0) {
         result = result.concat(piece);
       } else {
-        result = result.concat(Prime.Utils.capitalize(piece));
+        result = result.concat(Utils.capitalize(piece));
       }
 
       start = dash + 1;
       dash = name.indexOf('-', start);
     }
 
-    return result + Prime.Utils.capitalize(name.substring(start));
+    return result + Utils.capitalize(name.substring(start));
   },
 
   /**
    * Return an options map {Object} of the data set values coerced to a typed value of boolean, string or number.
    *
-   * @param {Prime.Document.Element} element The element.
+   * @param {PrimeElement} element The element.
    * @returns {Object} The options object.
    */
   dataSetToOptions: function(element) {
-    var options = {};
-    var data = element.getDataSet();
-    for (var prop in data) {
+    const options = {};
+    const data = element.getDataSet();
+    for (let prop in data) {
       if (!data.hasOwnProperty(prop)) {
         continue;
       }
-      var value = data[prop];
+      const value = data[prop];
       if (isNaN(value)) {
         if (value === 'true') {
           options[prop] = true;
@@ -280,7 +302,7 @@ Prime.Utils = {
    * @returns {number} The value as an integer.
    */
   parseCSSMeasure: function(measure) {
-    var index = measure.indexOf('px');
+    const index = measure.indexOf('px');
     if (index > 0) {
       return parseInt(measure.substring(0, measure.length - 2));
     }
@@ -305,8 +327,8 @@ Prime.Utils = {
    * @param {Array} toRemove The values to remove.
    */
   removeAllFromArray: function(fromArray, toRemove) {
-    for (var i = 0; i < toRemove.length; i++) {
-      Prime.Utils.removeFromArray(fromArray, toRemove[i]);
+    for (let i = 0; i < toRemove.length; i++) {
+      Utils.removeFromArray(fromArray, toRemove[i]);
     }
   },
 
@@ -317,9 +339,9 @@ Prime.Utils = {
    * @param {*} obj The object to remove.
    */
   removeFromArray: function(array, obj) {
-    var index = array.indexOf(obj);
+    const index = array.indexOf(obj);
     if (index !== -1) {
-      var shift = array.splice(index + 1, array.length);
+      const shift = array.splice(index + 1, array.length);
       array.length = index;
       array.push.apply(array, shift);
     }
@@ -343,6 +365,8 @@ Prime.Utils = {
   },
 
   type: function(object) {
-    return Object.prototype.toString(object).match(Prime.Utils.typeRegex)[1];
+    return Object.prototype.toString.call(object).match(Utils.typeRegex)[1];
   }
 };
+
+export {Utils};

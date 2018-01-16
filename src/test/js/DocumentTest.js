@@ -15,11 +15,8 @@
  */
 'use strict';
 
-var assert = buster.assertions.assert;
-var refute = buster.assertions.refute;
-
-buster.testCase('Prime.Document namespace tests', {
-  'addEventListener': function() {
+describe('Prime.Document namespace tests', function() {
+  it('addEventListener', function() {
     var MyEventListener = function() {
       Prime.Utils.bindAll(this);
       this.called = false;
@@ -38,164 +35,164 @@ buster.testCase('Prime.Document namespace tests', {
     Prime.Document.addEventListener('click', instance.handle);
 
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
-    assert(instance.called);
-    assert.equals(instance.event, 'click');
-    assert.equals(instance.memo, 'foo');
-  },
+    assert.isOk(instance.called);
+    assert.equal(instance.event, 'click');
+    assert.equal(instance.memo, 'foo');
+  });
 
-  'body': function() {
+  it('body', function() {
     assert.isTrue(Prime.Document.bodyElement !== null);
     assert.isTrue(Prime.Document.bodyElement.queryFirst('.body-test') !== null);
-  },
+  });
 
-  'onReady': function() {
-    assert.equals(documentReadyCount, 1);
-    assert.equals(drc.count, 1);
-  },
+  it('onReady', function() {
+    assert.equal(documentReadyCount, 1);
+    assert.equal(drc.count, 1);
+  });
 
-  'getHeight': function() {
+  it('getHeight', function() {
     var height = Prime.Document.getHeight();
     assert.isTrue(height > 400);
-  },
+  });
 
-  'getWidth': function() {
+  it('getWidth', function() {
     var width = Prime.Document.getWidth();
     assert.isTrue(width > 400);
-  },
+  });
 
   /**
    * Tests creating a new element.
    */
-  'newElement': function() {
+  it('newElement', function() {
     var element = Prime.Document.newElement('<a/>');
-    assert.equals(element.domElement.tagName, 'A');
+    assert.equal(element.domElement.tagName, 'A');
 
     element = Prime.Document.newElement('<div/>');
-    assert.equals(element.domElement.tagName, 'DIV');
+    assert.equal(element.domElement.tagName, 'DIV');
 
     element = Prime.Document.newElement('<span></span>');
-    assert.equals(element.domElement.tagName, 'SPAN');
+    assert.equal(element.domElement.tagName, 'SPAN');
 
     element = Prime.Document.newElement('<span>foo</span>');
-    assert.equals(element.domElement.tagName, 'SPAN');
+    assert.equal(element.domElement.tagName, 'SPAN');
 
-    element = Prime.Document.newElement('<div/>', {'id': '1'});
-    assert.equals(element.getId(), '1');
-    assert.equals(element.getId(), '1');
+    element = Prime.Document.newElement('<div/>', {id: '1'});
+    assert.equal(element.getId(), '1');
+    assert.equal(element.getId(), '1');
 
-    element = Prime.Document.newElement('<div/>', {'id': 'id', 'style': 'width:200px;float:left'});
-    assert.equals(element.getId(), 'id');
-    assert.equals(element.getId(), 'id');
-    assert.equals(element.domElement.style['width'], '200px');
-    assert.equals(element.domElement.style['cssFloat'], 'left');
-  },
+    element = Prime.Document.newElement('<div/>', {id: 'id', style: 'width:200px;float:left'});
+    assert.equal(element.getId(), 'id');
+    assert.equal(element.getId(), 'id');
+    assert.equal(element.domElement.style['width'], '200px');
+    assert.equal(element.domElement.style['cssFloat'], 'left');
+  });
 
   /**
    * This is duplicated test in Document.ElementListTest, but that's cool since it tests a Dom namespace level function
    */
-  'query': function() {
+  it('query', function() {
     var list = Prime.Document.query('p.test');
-    assert.equals(list.length, 3);
-    assert.equals(list[0].getId(), 'queryOne');
-    assert.equals(list[1].getId(), 'queryTwo');
-    assert.equals(list[2].getId(), 'queryThree');
+    assert.equal(list.length, 3);
+    assert.equal(list[0].getId(), 'queryOne');
+    assert.equal(list[1].getId(), 'queryTwo');
+    assert.equal(list[2].getId(), 'queryThree');
 
     var parent = Prime.Document.queryById('query');
     list = Prime.Document.query('p.test', parent);
-    assert.equals(list[0].getId(), 'queryOne');
-    assert.equals(list[1].getId(), 'queryTwo');
-    assert.equals(list[2].getId(), 'queryThree');
+    assert.equal(list[0].getId(), 'queryOne');
+    assert.equal(list[1].getId(), 'queryTwo');
+    assert.equal(list[2].getId(), 'queryThree');
 
     list = Prime.Document.query('p.test', parent.domElement);
-    assert.equals(list[0].getId(), 'queryOne');
-    assert.equals(list[1].getId(), 'queryTwo');
-    assert.equals(list[2].getId(), 'queryThree');
-  },
+    assert.equal(list[0].getId(), 'queryOne');
+    assert.equal(list[1].getId(), 'queryTwo');
+    assert.equal(list[2].getId(), 'queryThree');
+  });
 
-  'queryById': function() {
+  it('queryById', function() {
     var element = Prime.Document.queryById('queryOne');
-    refute.isNull(element);
-    assert.equals(element.getId(), 'queryOne');
+    assert.isNotNull(element);
+    assert.equal(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('invalid');
     assert.isNull(element);
-  },
+  });
 
-  'queryFirst': function() {
+  it('queryFirst', function() {
     var element = Prime.Document.queryFirst('p');
-    refute.isNull(element);
-    assert.equals(element.getId(), 'queryOne');
+    assert.isNotNull(element);
+    assert.equal(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('p#queryOne');
-    refute.isNull(element);
-    assert.equals(element.getId(), 'queryOne');
+    assert.isNotNull(element);
+    assert.equal(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('#queryOne');
-    refute.isNull(element);
-    assert.equals(element.getId(), 'queryOne');
+    assert.isNotNull(element);
+    assert.equal(element.getId(), 'queryOne');
 
     element = Prime.Document.queryFirst('#invalid');
     assert.isNull(element);
-  },
+  });
 
-  'queryFirst with Element': function() {
+  it('queryFirst with Element', function() {
     var child = Prime.Document.queryFirst('.test', Prime.Document.queryById('query'));
-    refute.isNull(child);
-    assert.equals(child.getId(), 'queryOne')
-  },
+    assert.isNotNull(child);
+    assert.equal(child.getId(), 'queryOne')
+  });
 
-  'queryLast': function() {
+  it('queryLast', function() {
     var element = Prime.Document.queryLast('p.test');
-    refute.isNull(element);
-    assert.equals(element.getId(), 'queryThree');
+    assert.isNotNull(element);
+    assert.equal(element.getId(), 'queryThree');
 
     element = Prime.Document.queryLast('#queryOne');
-    refute.isNull(element);
-    assert.equals(element.getId(), 'queryOne');
+    assert.isNotNull(element);
+    assert.equal(element.getId(), 'queryOne');
 
     element = Prime.Document.queryLast('#invalid');
     assert.isNull(element);
 
     element = Prime.Document.queryLast('.invalid');
     assert.isNull(element);
-  },
+  });
 
-  'queryLast with Element': function() {
+  it('queryLast with Element', function() {
     var child = Prime.Document.queryLast('.test', Prime.Document.queryById('query'));
-    refute.isNull(child);
-    assert.equals(child.getId(), 'queryThree')
-  },
+    assert.isNotNull(child);
+    assert.equal(child.getId(), 'queryThree')
+  });
 
-  'queryUp': {
-    setUp: function() {
+  it('queryUp', function() {
+    before(function() {
       this.child = Prime.Document.queryById('child');
       this.parent = Prime.Document.queryById('parent');
       this.ancestor = Prime.Document.queryFirst('div.ancestor');
-    },
+    });
 
-    'find parent by id': function() {
-      assert.equals(Prime.Document.queryUp('#parent', this.child).domElement, this.parent.domElement);
-    },
+    it('find parent by id', function() {
+      assert.equal(Prime.Document.queryUp('#parent', this.child).domElement, this.parent.domElement);
+    });
 
-    'find parent by type + id': function() {
-      assert.equals(Prime.Document.queryUp('div#parent', this.child).domElement, this.parent.domElement);
-    },
+    it('find parent by type + id', function() {
+      assert.equal(Prime.Document.queryUp('div#parent', this.child).domElement, this.parent.domElement);
+    });
 
-    'find parent by type only': function() {
-      assert.equals(Prime.Document.queryUp('div', this.child).domElement, this.parent.domElement);
-    },
+    it('find parent by type only', function() {
+      assert.equal(Prime.Document.queryUp('div', this.child).domElement, this.parent.domElement);
+    });
 
-    'find ancestor': function() {
-      assert.equals(Prime.Document.queryUp('.ancestor', this.child).domElement, this.ancestor.domElement);
-    },
+    it('find ancestor', function() {
+      assert.equal(Prime.Document.queryUp('.ancestor', this.child).domElement, this.ancestor.domElement);
+    });
 
-    'find parent with a space in the selector': function() {
-      assert.equals(Prime.Document.queryUp('div #parent', this.child).domElement, this.parent.domElement);
-      assert.equals(Prime.Document.queryUp('body .ancestor', this.child).domElement, this.ancestor.domElement);
-    }
-  },
+    it('find parent with a space in the selector', function() {
+      assert.equal(Prime.Document.queryUp('div #parent', this.child).domElement, this.parent.domElement);
+      assert.equal(Prime.Document.queryUp('body .ancestor', this.child).domElement, this.ancestor.domElement);
+    });
+  });
 
-  'removeEventListener': function() {
+  it('removeEventListener', function() {
     var MyEventListener = function() {
       Prime.Utils.bindAll(this);
       this.called = false;
@@ -215,8 +212,8 @@ buster.testCase('Prime.Document namespace tests', {
 
     Prime.Document.queryFirst('#html').fireEvent('click', 'foo');
     assert.isTrue(instance.called);
-    assert.equals(instance.event, 'click');
-    assert.equals(instance.memo, 'foo');
+    assert.equal(instance.event, 'click');
+    assert.equal(instance.memo, 'foo');
 
     instance.called = false;
     instance.memo = null;
@@ -227,14 +224,14 @@ buster.testCase('Prime.Document namespace tests', {
     assert.isFalse(instance.called);
     assert.isNull(instance.event);
     assert.isNull(instance.memo);
-  },
+  });
 
-  'newDocument': function() {
+  it('newDocument', function() {
     var newDocument = Prime.Document.newDocument('<html><head><title>foo</title></head><body>body</body></html>');
-    refute.isNull(newDocument);
-    assert.equals(newDocument.documentElement.outerHTML, '<html><head><title>foo</title></head><body>body</body></html>');
-    assert.equals(newDocument.documentElement.innerHTML, '<head><title>foo</title></head><body>body</body>');
-    assert.equals(Prime.Document.queryFirst('body', newDocument).getHTML(), 'body');
-    assert.equals(Prime.Document.queryFirst('body', newDocument).getOuterHTML(), '<body>body</body>');
-  }
+    assert.isNotNull(newDocument);
+    assert.equal(newDocument.documentElement.outerHTML, '<html><head><title>foo</title></head><body>body</body></html>');
+    assert.equal(newDocument.documentElement.innerHTML, '<head><title>foo</title></head><body>body</body>');
+    assert.equal(Prime.Document.queryFirst('body', newDocument).getHTML(), 'body');
+    assert.equal(Prime.Document.queryFirst('body', newDocument).getOuterHTML(), '<body>body</body>');
+  });
 });
