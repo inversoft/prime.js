@@ -24,7 +24,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser (hosted files)
     files: [
-      'build/Prime.js',
+      'build/PrimeES6.js',
       'build/Prime.min.css',
       'src/test/js/*.js',
       'src/test/css/normalize*.css',

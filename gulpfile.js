@@ -15,6 +15,7 @@
  */
 
 // const babel = require('rollup-plugin-babel');
+const async = require('async');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const css = require('gulp-clean-css');
@@ -23,6 +24,8 @@ const karma = require('karma').Server;
 const rename = require('gulp-rename');
 const rollup = require('rollup').rollup;
 const sourceMaps = require('gulp-sourcemaps');
+const uglify = require('gulp-uglify');
+const uglifyes = require('gulp-uglify-es').default;
 
 gulp.task('Prime.js', ['PrimeES6.js'], () =>
     gulp.src('build/PrimeES6.js')
@@ -35,13 +38,10 @@ gulp.task('Prime.js', ['PrimeES6.js'], () =>
         .pipe(sourceMaps.write())
         .pipe(gulp.dest('build')));
 
-gulp.task('Prime.min.js', ['PrimeES6.js'], () =>
-    gulp.src('build/PrimeES6.js')
+gulp.task('Prime.min.js', ['Prime.js'], () =>
+    gulp.src('build/Prime.js')
         .pipe(sourceMaps.init({loadMaps: true}))
-        .pipe(babel({
-          presets: ['env', 'minify'],
-          sourceType: "script"
-        }))
+        .pipe(uglify())
         .pipe(rename('Prime.min.js'))
         .pipe(sourceMaps.write('.'))
         .pipe(gulp.dest('build')));
@@ -49,10 +49,7 @@ gulp.task('Prime.min.js', ['PrimeES6.js'], () =>
 gulp.task('PrimeES6.min.js', ['PrimeES6.js'], () =>
     gulp.src('build/PrimeES6.js')
         .pipe(sourceMaps.init({loadMaps: true}))
-        .pipe(babel({
-          presets: ['minify'],
-          sourceType: "script"
-        }))
+        .pipe(uglifyes())
         .pipe(rename({extname: '.min.js'}))
         .pipe(sourceMaps.write('.'))
         .pipe(gulp.dest('build')));
@@ -99,9 +96,21 @@ gulp.task('watch', ['watch-js', 'watch-css'], () =>
     console.log("Watching directories. Any changes will trigger a rebuild. Use CTRL + C to stop."));
 
 gulp.task('test', ['default'], (done) =>
-    new karma({
-      configFile: __dirname + '/karma.conf.js',
-      singleRun: true
-    }, done).start());
+    async.eachSeries(['build/Prime.js', 'build/Prime.min.js', 'build/PrimeES6.js', 'build/PrimeES6.min.js'],
+        (file, callback) => {
+          console.log(`\n\n===================== Testing ${file} ====================`);
+          new karma({
+            configFile: __dirname + '/karma.conf.js',
+            singleRun: true,
+            files: [
+              file,
+              'build/Prime.min.css',
+              'src/test/js/*.js',
+              'src/test/css/normalize*.css',
+              'src/test/css/Widgets.*.css',
+              {pattern: 'src/test/html/*', watched: true, served: true, included: false}
+            ]
+          }, callback).start();
+        }, done));
 
 gulp.task('default', ['build-js', 'minify-js', 'build-css', 'minify-css']);

@@ -229,17 +229,18 @@ describe('AJAX tests', function() {
    * @param done The done callback for async testing.
    */
   it('subclass', function(done) {
-    function MyAjaxRequest(url) {
-      Prime.Ajax.Request.apply(this, arguments);
-      this.called = false;
+    class MyAjaxRequest extends Prime.Ajax.Request {
+      constructor(url) {
+        super(url);
+        this.called = false;
+      }
+
+      onSuccess() {
+        this.called = true;
+      }
     }
 
     // Extend and override the success handler
-    MyAjaxRequest.prototype = Object.create(Prime.Ajax.Request.prototype);
-    MyAjaxRequest.prototype.constructor = MyAjaxRequest;
-    MyAjaxRequest.prototype.onSuccess = function() {
-      this.called = true;
-    };
 
     var ajax = new MyAjaxRequest('/ajax/ajax-response.html').go();
 

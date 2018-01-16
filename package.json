@@ -4,6 +4,7 @@
   "description": "Internal javascript library used by Inversoft",
   "license": "Apache-2.0",
   "devDependencies": {
+    "async": "^2.6.0",
     "babel-core": "^6.26.0",
     "babel-preset-env": "^1.6.1",
     "babel-preset-minify": "^0.2.0",
@@ -14,6 +15,8 @@
     "gulp-concat": "^2.6.1",
     "gulp-rename": "^1.2.2",
     "gulp-sourcemaps": "^2.6.1",
+    "gulp-uglify": "^3.0.0",
+    "gulp-uglify-es": "^1.0.0",
     "karma": "^1.7.1",
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^2.2.0",
@@ -24,6 +27,5 @@
   },
   "scripts": {
     "test": "./node_modules/karma/bin/karma start --single-run"
-  },
-  "dependencies": {}
+  }
 }
