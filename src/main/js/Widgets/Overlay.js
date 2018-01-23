@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -40,10 +40,18 @@ class Overlay {
     }
   }
 
+  /**
+   * Return the instance of the Overlay widget
+   * @returns {Overlay}
+   */
   static get instance() {
     return instance;
   }
 
+  /**
+   * Set the instance value of the Overlay instance
+   * @param  value {Overlay}
+   */
   static set instance(value) {
     instance = value;
   }
@@ -52,7 +60,8 @@ class Overlay {
    * Closes the overlay and the target element.
    */
   close() {
-    PrimeDocument.bodyElement.setStyle('overflow', 'scroll');
+    let overflowStyle = this.bodyOverflow || 'initial';
+    PrimeDocument.bodyElement.setStyle('overflow', overflowStyle);
     this.overlay.setStyle('zIndex', '10');
     this.overlay.hide();
     return this;
@@ -60,8 +69,10 @@ class Overlay {
 
   /**
    * Opens the overlay and positions the element over it.
+   * @param zIndex {Number|string}
    */
   open(zIndex) {
+    this.bodyOverflow = PrimeDocument.bodyElement.getStyle('overflow');
     PrimeDocument.bodyElement.setStyle('overflow', 'hidden');
     this.overlay.show();
 
