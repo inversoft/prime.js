@@ -26,7 +26,7 @@ describe('Overlay class tests', function() {
     overlay.close();
     assert.equal(Prime.Document.bodyElement.getStyle('overflow'), bodyStyle);
 
-    document.body.style['overflow'] = 'scroll';
+    Prime.Document.bodyElement.setStyle('overflow', 'scroll');
     overlay.open(100);
     assert.equal(Prime.Document.bodyElement.getStyle('overflow'), 'hidden');
     overlay.close();
