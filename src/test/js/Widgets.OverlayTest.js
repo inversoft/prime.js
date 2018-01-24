@@ -18,7 +18,7 @@
 describe('Overlay class tests', function() {
   it('body overflow style preserved', function() {
 
-    let bodyStyle = Prime.Document.bodyElement.getStyle('overflow') || 'initial';
+    let bodyStyle = Prime.Document.bodyElement.getStyle('overflow');
     let overlay = new Prime.Widgets.Overlay();
     overlay.open(100);
 

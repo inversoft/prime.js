@@ -60,7 +60,8 @@ class Overlay {
    * Closes the overlay and the target element.
    */
   close() {
-    let overflowStyle = this.bodyOverflow || 'initial';
+    // using null ensures that if this style is not defined, we'll remove it when we're done
+    let overflowStyle = this.bodyOverflow || null;
     PrimeDocument.bodyElement.setStyle('overflow', overflowStyle);
     this.overlay.setStyle('zIndex', '10');
     this.overlay.hide();
