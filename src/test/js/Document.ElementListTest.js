@@ -106,4 +106,20 @@ describe('ElementList class tests', function() {
       assert.isFalse(checkbox.isDisabled());
     });
   });
+
+  it('some', function() {
+    const checkboxes = Prime.Document.queryById("element-list-test").query('input[type="checkbox"]');
+
+    checkboxes.setChecked(true);
+
+    // At least one element is checked
+    assert.isTrue(checkboxes.some(function(element) {
+      return element.isChecked();
+    }));
+
+    // None of the checkboxes are not inputs (all checkboxes are inputs, double negative)
+    assert.isFalse(checkboxes.some(function(element) {
+      return element.getTagName() !== "INPUT";
+    }));
+  });
 });

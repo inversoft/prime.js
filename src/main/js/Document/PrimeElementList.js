@@ -173,6 +173,29 @@ class PrimeElementList {
     return this._proxyToElement('show');
   }
 
+  /**
+   * @callback PrimeElementListPredicate
+   *
+   * A function that defines a condition on a PrimeElement
+   *
+   * @param {PrimeElement} element
+   * @returns {boolean} True if the element matches a condition
+   */
+
+  /**
+   * A function that tests for any element that matches a condition.
+   * @param {PrimeElementListPredicate} predicate A function that defines the condition to check
+   * @returns {boolean} True if any element matches the predicate
+   */
+  some(predicate) {
+    for (let i = 0; i < this.length; ++i) {
+      if (predicate(this[i])) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   /* ===================================================================================================================
    * Private methods
    * ===================================================================================================================*/
