@@ -40,6 +40,38 @@ describe('Prime.Document namespace tests', function() {
     assert.equal(instance.memo, 'foo');
   });
 
+  it('addDelegatedEventListener', function() {
+    var MyEventListener = function() {
+      Prime.Utils.bindAll(this);
+      this.called = false;
+      this.event = null;
+      this.memo = null;
+    };
+
+    MyEventListener.prototype = {
+      handle: function(evt) {
+        this.called = true;
+        this.memo = evt.memo;
+        this.event = evt.type;
+      }
+    };
+
+    var instance = new MyEventListener();
+    Prime.Document.addDelegatedEventListener('click', '.delegated-event-handler', instance.handle);
+
+    Prime.Document.queryById('test-delegated-selector1').fireEvent('click', 'foo');
+    assert.isTrue(instance.called);
+    assert.equal(instance.event, 'click');
+    assert.equal(instance.memo, 'foo');
+
+    // Second test, clicked, but selector does not match
+    instance = new MyEventListener();
+    Prime.Document.queryById('test-delegated-selector2').fireEvent('click', 'foo');
+    assert.isFalse(instance.called);
+    assert.equal(instance.event, null);
+    assert.equal(instance.memo, null);
+  });
+
   it('body', function() {
     assert.isTrue(Prime.Document.bodyElement !== null);
     assert.isTrue(Prime.Document.bodyElement.queryFirst('.body-test') !== null);

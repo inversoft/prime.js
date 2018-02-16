@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -47,12 +47,35 @@ class PrimeDocument {
     return tagRegexp;
   }
 
+  /**
+   * @returns {?PrimeElement} the Prime body element
+   */
   static get bodyElement() {
     return bodyElement;
   }
 
-  static set bodyElement(value) {
+  /**
+   * Set the body element
+   * @param {?PrimeElement} body the Prime body element
+   */
+  static set bodyElement(body) {
     bodyElement = value;
+  }
+
+  /**
+   * Attaches an event listener to the document and will only invoke the listener when the event target matches
+   * the provided selector.
+   *
+   * @param {string} event  event the name of the event
+   * @param  {string} selector selector to match against the Element
+   * @param {Function} listener The event listener function
+   */
+  static addDelegatedEventListener(event, selector, listener) {
+    addEventListener(event, function(event) {
+      if (event.target.matches(selector)) {
+        listener(event);
+      }
+    });
   }
 
   /**
