@@ -14,15 +14,15 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "1.1.0", licens
 
   publications {
     main {
-      publication(name: "prime", type: "js", file: "build/Prime.js", source: "build/Prime.js")
-      publication(name: "prime", type: "css", file: "build/Prime.css", source: "build/Prime.css")
-      publication(name: "prime-min", type: "js", file: "build/Prime.min.js", source: "build/Prime.min.js")
-      publication(name: "prime-min", type: "js.map", file: "build/Prime.min.js.map", source: "build/Prime.min.js.map")
-      publication(name: "prime-min", type: "css", file: "build/Prime.min.css", source: "build/Prime.min.css")
-      publication(name: "prime-min", type: "css.map", file: "build/Prime.min.css.map", source: "build/Prime.min.css.map")
-      publication(name: "prime-es6", type: "js", file: "build/PrimeES6.js", source: "build/PrimeES6.js")
-      publication(name: "prime-es6-min", type: "js", file: "build/PrimeES6.min.js", source: "build/PrimeES6.min.js")
-      publication(name: "prime-es6-min", type: "js.map", file: "build/PrimeES6.min.js.map", source: "build/PrimeES6.min.js.map")
+      publication(name: "prime", type: "js", file: "build/prime.js", source: "build/prime.js")
+      publication(name: "prime", type: "css", file: "build/prime.css", source: "build/prime.css")
+      publication(name: "prime-min", type: "js", file: "build/prime-min.js", source: "build/prime-min.js")
+      publication(name: "prime-min", type: "js.map", file: "build/prime-min.js.map", source: "build/prime-min.js.map")
+      publication(name: "prime-min", type: "css", file: "build/prime-min.css", source: "build/prime-min.css")
+      publication(name: "prime-min", type: "css.map", file: "build/prime-min.css.map", source: "build/prime-min.css.map")
+      publication(name: "prime-es6", type: "js", file: "build/prime-es6.js", source: "build/prime-es6.js")
+      publication(name: "prime-es6-min", type: "js", file: "build/prime-es6-min.js", source: "build/prime-es6-min.js")
+      publication(name: "prime-es6-min", type: "js.map", file: "build/prime-es6-min.js.map", source: "build/prime-es6-min.js.map")
       publication(name: "prime-all", type: "zip", file: "build/prime-all.zip", source: "build/prime-all.zip")
     }
   }

@@ -27,40 +27,40 @@ const sourceMaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const uglifyes = require('gulp-uglify-es').default;
 
-gulp.task('Prime.js', ['PrimeES6.js'], () =>
-    gulp.src('build/PrimeES6.js')
+gulp.task('prime.js', ['prime-es6.js'], () =>
+    gulp.src('build/prime-es6.js')
         .pipe(sourceMaps.init({loadMaps: true}))
         .pipe(babel({
           presets: ['env'],
           sourceType: "script"
         }))
-        .pipe(rename('Prime.js'))
+        .pipe(rename('prime.js'))
         .pipe(sourceMaps.write())
         .pipe(gulp.dest('build')));
 
-gulp.task('Prime.min.js', ['Prime.js'], () =>
-    gulp.src('build/Prime.js')
+gulp.task('prime-min.js', ['prime.js'], () =>
+    gulp.src('build/prime.js')
         .pipe(sourceMaps.init({loadMaps: true}))
         .pipe(uglify())
-        .pipe(rename('Prime.min.js'))
+        .pipe(rename('prime-min.js'))
         .pipe(sourceMaps.write('.'))
         .pipe(gulp.dest('build')));
 
-gulp.task('PrimeES6.min.js', ['PrimeES6.js'], () =>
-    gulp.src('build/PrimeES6.js')
+gulp.task('prime-es6-min.js', ['prime-es6.js'], () =>
+    gulp.src('build/prime-es6.js')
         .pipe(sourceMaps.init({loadMaps: true}))
         .pipe(uglifyes())
-        .pipe(rename({extname: '.min.js'}))
+        .pipe(rename({extname: '-min.js'}))
         .pipe(sourceMaps.write('.'))
         .pipe(gulp.dest('build')));
 
-gulp.task('PrimeES6.js', async () => {
+gulp.task('prime-es6.js', async () => {
   const bundle = await rollup({
     input: 'src/main/js/Prime.js'
   });
 
   await bundle.write({
-    file: 'build/PrimeES6.js',
+    file: 'build/prime-es6.js',
     format: 'iife',
     name: "Prime",
     indent: '\t',
@@ -68,21 +68,21 @@ gulp.task('PrimeES6.js', async () => {
   });
 });
 
-gulp.task('build-js', ['Prime.js', 'PrimeES6.js']);
-gulp.task('minify-js', ['Prime.min.js', 'PrimeES6.min.js']);
+gulp.task('build-js', ['prime.js', 'prime-es6.js']);
+gulp.task('minify-js', ['prime-min.js', 'prime-es6-min.js']);
 
 gulp.task('build-css', () =>
     gulp.src('./src/main/css/*.css')
         .pipe(sourceMaps.init())
-        .pipe(concat('Prime.css'))
+        .pipe(concat('prime.css'))
         .pipe(sourceMaps.write())
         .pipe(gulp.dest('./build')));
 
 gulp.task('minify-css', ['build-css'], () =>
-    gulp.src('./build/Prime.css')
+    gulp.src('./build/prime.css')
         .pipe(sourceMaps.init({loadMaps: true}))
         .pipe(css()) //also adds compatibility stuff.
-        .pipe(rename({extname: '.min.css'}))
+        .pipe(rename({extname: '-min.css'}))
         .pipe(sourceMaps.write('.'))
         .pipe(gulp.dest('build')));
 
@@ -96,7 +96,7 @@ gulp.task('watch', ['watch-js', 'watch-css'], () =>
     console.log("Watching directories. Any changes will trigger a rebuild. Use CTRL + C to stop."));
 
 gulp.task('test', ['default'], (done) =>
-    async.eachSeries(['build/Prime.js', 'build/Prime.min.js', 'build/PrimeES6.js', 'build/PrimeES6.min.js'],
+    async.eachSeries(['build/prime.js', 'build/prime-min.js', 'build/prime-es6.js', 'build/prime-es6-min.js'],
         (file, callback) => {
           console.log(`\n\n===================== Testing ${file} ====================`);
           new karma({
