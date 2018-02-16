@@ -59,7 +59,7 @@ class PrimeDocument {
    * @param {?PrimeElement} body the Prime body element
    */
   static set bodyElement(body) {
-    bodyElement = value;
+    bodyElement = body;
   }
 
   /**
