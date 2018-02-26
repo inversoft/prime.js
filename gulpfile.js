@@ -104,7 +104,7 @@ gulp.task('test', ['default'], (done) =>
             singleRun: true,
             files: [
               file,
-              'build/Prime.min.css',
+              'build/prime-min.css',
               'src/test/js/*.js',
               'src/test/css/normalize*.css',
               'src/test/css/Widgets.*.css',

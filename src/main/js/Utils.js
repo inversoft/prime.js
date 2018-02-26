@@ -55,7 +55,7 @@ const Utils = {
     for (const property of Utils.getAllPropertyNames(object)) {
       if (property !== 'constructor' && typeof object[property] === 'function' &&
           !object[property].name.startsWith('bound ')) {
-        object[property] = object[property].bind(object);
+        Object.defineProperty(object, property, {value: object[property].bind(object)});
       }
     }
   },
