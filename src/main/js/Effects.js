@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -235,6 +235,8 @@ class SlideOpen {
       element.domElement.primeVisibleHeight = element.getHeight();
       element.setStyle('height', '0');
     }
+
+    this._setInitialOptions();
   }
 
   close() {
@@ -249,6 +251,10 @@ class SlideOpen {
     setTimeout(function() {
       this.element.setHeight(0);
       this.element.removeClass('open');
+
+      if (this.options.closeCallback !== null) {
+        this.options.closeCallback();
+      }
     }.bind(this), 50);
   }
 
@@ -262,6 +268,10 @@ class SlideOpen {
       this.element.setHeight('auto');
       this.element.addClass('open');
     }.bind(this), 500);
+
+    if (this.options.openCallback !== null) {
+      this.options.openCallback();
+    }
   }
 
   toggle() {
@@ -269,6 +279,71 @@ class SlideOpen {
       this.close();
     } else {
       this.open();
+    }
+  }
+
+  /**
+   * Set the close callback function.
+   *
+   * @param {?Function} callback The close callback
+   * @returns {SlideOpen} This.
+   */
+  withCloseCallback(callback) {
+    this.options.closeCallback = callback;
+    return this;
+  }
+
+  /**
+   * Set the open callback function.
+   *
+   * @param {?Function} callback The open callback
+   * @returns {SlideOpen} This.
+   */
+  withOpenCallback(callback) {
+    this.options.openCallback = callback;
+    return this;
+  }
+
+  /**
+   * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
+   * method to set options on the widget. The caller needs to know what properties are valid in the options object.
+   *
+   * @param {Object} options Key value pair of configuration options.
+   * @returns {SlideOpen} This.
+   */
+  withOptions(options) {
+    if (!Utils.isDefined(options)) {
+      return this;
+    }
+
+    for (let option in options) {
+      if (options.hasOwnProperty(option)) {
+        this.options[option] = options[option];
+      }
+    }
+    return this;
+  }
+
+  /* ===================================================================================================================
+   * Private methods
+   * ===================================================================================================================*/
+
+  /**
+   * Set the initial options of the widget.
+   * @private
+   */
+  _setInitialOptions() {
+    // Defaults
+    this.options = {
+      openCallback: null,
+      closeCallback: null
+    };
+
+    const userOptions = Utils.dataSetToOptions(this.element);
+    for (let option in userOptions) {
+      if (userOptions.hasOwnProperty(option)) {
+        this.options[option] = userOptions[option];
+      }
     }
   }
 }

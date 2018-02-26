@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -239,6 +239,7 @@ class Tabs {
    * Adds a callback for AJAX calls. This is invoked after the AJAX load completes and the HTML is inserted into the
    * DOM. The function is passed the container for the tab that was selected.
    *
+   * @param {Function} callback The callback function.
    * @returns {Tabs} This Tabs.
    */
   withAJAXCallback(callback) {
@@ -262,7 +263,7 @@ class Tabs {
    * tab will be selected. This key is how the selected tab is stored in local storage and by setting a key you also
    * enable this feature.
    *
-   * @param {String} key The local storage key.
+   * @param {?String} key The local storage key.
    * @returns {Tabs} This Tabs.
    */
   withLocalStorageKey(key) {
@@ -293,11 +294,11 @@ class Tabs {
   /**
    * Specifies a callback function that is called whenever tabs are changed.
    *
-   * @param {Function} func The callback function.
+   * @param {?Function} callback The callback function.
    * @returns {Tabs} This Tabs.
    */
-  withSelectCallback(func) {
-    this.options.selectCallback = func;
+  withSelectCallback(callback) {
+    this.options.selectCallback = callback;
     return this;
   }
 
