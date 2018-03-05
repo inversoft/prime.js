@@ -158,9 +158,8 @@ class PrimeElement {
    */
   addDelegatedEventListener(event, selector, listener) {
     addEventListener(event, function(event) {
-      const element = PrimeDocument.Element.wrap(event.currentTarget);
-      if (element.is(selector)) {
-        listener.call(null, event);
+      if (event.target.matches(selector)) {
+        listener(event);
       }
     });
   }
