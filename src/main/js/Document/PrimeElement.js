@@ -149,6 +149,23 @@ class PrimeElement {
   }
 
   /**
+   * Adds a delayed check event listener. If the event can bubble to the current element and the source of the event
+   * matches the given selector then the listener will trigger.
+   *
+   * @param event The named event (click, change, etc)
+   * @param selector The selector to filter by
+   * @param listener The listener to call if the event target matches the selector
+   */
+  addDelegatedEventListener(event, selector, listener) {
+    addEventListener(event, function(event) {
+      const element = PrimeDocument.Element.wrap(event.currentTarget);
+      if (element.is(selector)) {
+        listener.call(null, event);
+      }
+    });
+  }
+
+  /**
    * Appends the given element to this element. If the given element already exists in the DOM, it is removed from its
    * current location and placed at the end of this element.
    *
