@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -121,6 +121,24 @@ class PrimeElement {
   }
 
   /**
+   * Attaches an event listener to the element and will only invoke the listener when the event target matches
+   * the provided selector.
+   *
+   * The intent of this function is to provide a delegated listener and handle events from nested elements.
+   *
+   * @param {string} event The name of the event
+   * @param  {string} selector The selector to match against the Element
+   * @param {Function} listener The event listener function
+   */
+  addDelegatedEventListener(event, selector, listener) {
+    addEventListener(event, function(event) {
+      if (event.target.matches(selector)) {
+        listener(event);
+      }
+    });
+  }
+
+  /**
    * Attaches an event listener to this Element.
    *
    * @param {string} event The name of the event.
@@ -146,22 +164,6 @@ class PrimeElement {
     }
 
     return this;
-  }
-
-  /**
-   * Adds a delayed check event listener. If the event can bubble to the current element and the source of the event
-   * matches the given selector then the listener will trigger.
-   *
-   * @param event The named event (click, change, etc)
-   * @param selector The selector to filter by
-   * @param listener The listener to call if the event target matches the selector
-   */
-  addDelegatedEventListener(event, selector, listener) {
-    addEventListener(event, function(event) {
-      if (event.target.matches(selector)) {
-        listener(event);
-      }
-    });
   }
 
   /**

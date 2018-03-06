@@ -63,19 +63,17 @@ class PrimeDocument {
   }
 
   /**
-   * Attaches an event listener to the document and will only invoke the listener when the event target matches
+   * Attaches an event listener to the document body and will only invoke the listener when the event target matches
    * the provided selector.
    *
-   * @param {string} event  event the name of the event
-   * @param  {string} selector selector to match against the Element
+   * The intent of this function is to provide a delegated listener and handle events from nested elements.
+   *
+   * @param {string} event The name of the event
+   * @param  {string} selector The selector to match against the Element
    * @param {Function} listener The event listener function
    */
   static addDelegatedEventListener(event, selector, listener) {
-    addEventListener(event, function(event) {
-      if (event.target.matches(selector)) {
-        listener(event);
-      }
-    });
+    bodyElement.addDelegatedEventListener(event, selector, listener);
   }
 
   /**
