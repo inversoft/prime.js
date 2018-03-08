@@ -38,6 +38,7 @@ class Overlay {
     if (this.overlay === null) {
       this.overlay = PrimeDocument.newElement('<div/>').setId('prime-overlay').appendTo(document.body).hide();
     }
+    this.bodyOverflow = null;
   }
 
   /**
@@ -73,7 +74,9 @@ class Overlay {
    * @param zIndex {Number|string}
    */
   open(zIndex) {
-    this.bodyOverflow = PrimeDocument.bodyElement.getStyle('overflow');
+    if (this.bodyOverflow === null) {
+      this.bodyOverflow = PrimeDocument.bodyElement.getStyle('overflow');
+    }
     PrimeDocument.bodyElement.setStyle('overflow', 'hidden');
     this.overlay.show();
 
