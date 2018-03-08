@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -308,7 +308,7 @@ class Searcher {
           .addClass('custom-add')
           .addEventListener('click', this._handleClickEvent)
           .addEventListener('mouseover', this._handleMouseOverEvent)
-          .setHTML(this.options.customAddLabel + searchText)
+          .setHTML(this.options.customAddLabel + Utils.escapeHTML(searchText))
           .appendTo(this.searchResults);
       count++;
     }
@@ -316,7 +316,7 @@ class Searcher {
     if (count === 0 && trimmedLength !== 0) {
       PrimeDocument.newElement('<li/>')
           .addClass('no-search-results')
-          .setHTML(this.options.noSearchResultsLabel + searchText)
+          .setHTML(this.options.noSearchResultsLabel + Utils.escapeHTML(searchText))
           .appendTo(this.searchResults);
       count++;
     }
@@ -325,7 +325,7 @@ class Searcher {
     if (searchResults.tooManyResults) {
       PrimeDocument.newElement('<li/>')
           .addClass('too-many-search-results')
-          .setHTML(this.options.tooManySearchResultsLabel + searchText)
+          .setHTML(this.options.tooManySearchResultsLabel + Utils.escapeHTML(searchText))
           .appendTo(this.searchResults);
       count++;
     }

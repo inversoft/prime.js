@@ -153,6 +153,10 @@ describe('Utils tests', function() {
     assert.deepEqual(array, []);
   });
 
+  it('escapeHTML', function() {
+    assert.equal(Prime.Utils.escapeHTML('<html>'), '&lt;html&gt;')
+  });
+
   it('removeFromArray', function() {
     var array = ['a', 'b', 'c', 'd', 'e'];
     Prime.Utils.removeFromArray(array, 'c');
