@@ -51,6 +51,9 @@ class PrimeDocument {
    * @returns {?PrimeElement} the Prime body element
    */
   static get bodyElement() {
+    if (bodyElement === null) {
+      bodyElement = new PrimeElement(document.body);
+    }
     return bodyElement;
   }
 
@@ -73,7 +76,7 @@ class PrimeDocument {
    * @param {Function} listener The event listener function
    */
   static addDelegatedEventListener(event, selector, listener) {
-    bodyElement.addDelegatedEventListener(event, selector, listener);
+    PrimeDocument.bodyElement.addDelegatedEventListener(event, selector, listener);
   }
 
   /**
@@ -372,24 +375,11 @@ class PrimeDocument {
 }
 
 /* ===================================================================================================================
- * Globals
- * ===================================================================================================================*/
-
-/**
- * Setup the body static.
- */
-PrimeDocument.onReady(function() {
-  PrimeDocument.bodyElement = new PrimeElement(document.body);
-});
-
-/* ===================================================================================================================
  * Polyfill
  * ===================================================================================================================*/
 
 /* https://developer.mozilla.org/en-US/docs/Web/API/DOMParser */
 (function(DOMParser) {
-  'use strict';
-
   const proto = DOMParser.prototype;
   const nativeParse = proto.parseFromString;
 
