@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -87,6 +87,11 @@ class Tooltip {
 
     tooltip.setLeft(left - (tooltipWidth / 2) + (width / 2));
     tooltip.setTop(top - tooltipHeight - 8);
+
+    // If the tooltip is too close to the top of the screen invert it and move it under the element
+    if ((top - tooltipHeight - 8) < 0) {
+      tooltip.setTop(top + this.element.getHeight() + 8).addClass('inverted');
+    }
 
     Tooltip.open.push(tooltip);
     return this;

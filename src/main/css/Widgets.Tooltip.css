@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -38,6 +38,24 @@
  position: absolute;
  top: 100%;
  width: 0;
+}
+
+.prime-tooltip.inverted:after {
+  border: 0;
+  content: '';
+}
+
+.prime-tooltip.inverted:before {
+  border: 6px solid rgba(0, 0, 0, 0);
+  border-bottom-color: #222;
+  content: ' ';
+  height: 0;
+  left: 50%;
+  margin-left: -6px;
+  pointer-events: none;
+  position: absolute;
+  bottom: 100%;
+  width: 0;
 }
 
 .prime-tooltip.label {
