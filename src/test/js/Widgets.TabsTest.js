@@ -60,3 +60,39 @@ describe('Tabs class tests', function() {
     }.bind(this), 10);
   });
 });
+
+describe('Tab initialization tests', function() {
+  beforeEach(function() {
+    this.tabs = new Prime.Widgets.Tabs(Prime.Document.queryById('tab-initialization-test'));
+    Prime.Document.query('#tab-initialization-test .selected').each(function(element){
+      element.removeClass('selected');
+    });
+    Prime.Storage.setSessionObject('tabs.initialization.test', {tabId: "tab-initialization-tab3"});
+  });
+
+  afterEach(function() {
+    this.tabs.destroy();
+    this.tabs = null;
+    window.location.hash = '#';
+  });
+
+  it('withHashNavigation', function() {
+    window.location.hash = "#tab-initialization-tab2";
+
+    this.tabs
+        .withHashNavigation(true)
+        .withLocalStorageKey('tabs.initialization.test')
+        .initialize();
+
+    assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab2"]').hasClass('selected'));
+  });
+
+  it('withLocalStorage and no hash', function() {
+    this.tabs
+        .withHashNavigation(true)
+        .withLocalStorageKey('tabs.initialization.test')
+        .initialize();
+
+    assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab3"]').hasClass('selected'));
+  })
+});

@@ -33,7 +33,7 @@
   <component name="DependencyValidationManager">
     <option name="SKIP_IMPORT_STATEMENTS" value="false" />
   </component>
-  <component name="Encoding" useUTFGuessing="true" native2AsciiForPropertiesFiles="false">
+  <component name="Encoding">
     <file url="PROJECT" charset="UTF-8" />
   </component>
   <component name="IdProvider" IDEtalkID="F3BFA6F7F97511391424BC4C5FE66463" />
@@ -48,7 +48,6 @@
   <component name="JavaScriptLibraryMappings">
     <file url="file://$PROJECT_DIR$/src/test" libraries="{HTML, Prime.js}" />
     <file url="PROJECT" libraries="{HTML}" />
-    <includedPredefinedLibrary name="Node.js Core" />
   </component>
   <component name="JavaScriptSettings">
     <option name="languageLevel" value="ES6" />
@@ -351,7 +350,7 @@
         </sourceFilesUrls>
       </properties>
       <CLASSES>
-        <root url="file://$PROJECT_DIR$/build/Prime.js" />
+        <root url="file://$PROJECT_DIR$/build/prime.js" />
       </CLASSES>
       <JAVADOC />
       <SOURCES />

@@ -109,6 +109,11 @@ class Tabs {
       this.tabContents[dataSet.tabId] = content;
     }.bind(this));
 
+    const hash = window.location.hash.replace(/^#/, '');
+    if (this.tabs[hash]) {
+      this.selectTab(hash);
+    }
+
     this.redraw();
     return this;
   }
@@ -259,6 +264,18 @@ class Tabs {
   }
 
   /**
+   * If true, on initialization, the initial tab will be overridden by anything in the hash portion of the url.
+   *
+   * This step is the last to decide which tab to open and will override any local storage memory.
+   * @param {boolean} value
+   * @returns {Tabs} This Tabs.
+   */
+  withHashNavigation(value) {
+    this.options.hashNavigation = value;
+    return this;
+  }
+
+  /**
    * Enables local storage of the currently selected tab. If the user navigates away from the page and back, the same
    * tab will be selected. This key is how the selected tab is stored in local storage and by setting a key you also
    * enable this feature.
@@ -362,6 +379,7 @@ class Tabs {
     this.options = {
       ajaxCallback: null,
       errorClass: null,
+      hashNavigation: false,
       localStorageKey: null,
       selectCallback: null,
       tabContentClass: 'prime-tab-content'
