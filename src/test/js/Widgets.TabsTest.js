@@ -76,11 +76,10 @@ describe('Tab initialization tests', function() {
     window.location.hash = '#';
   });
 
-  it('withHashNavigation', function() {
+  it('withDeepLinking', function() {
     window.location.hash = "#tab-initialization-tab2";
 
     this.tabs
-        .withHashNavigation(true)
         .withLocalStorageKey('tabs.initialization.test')
         .initialize();
 
@@ -89,7 +88,17 @@ describe('Tab initialization tests', function() {
 
   it('withLocalStorage and no hash', function() {
     this.tabs
-        .withHashNavigation(true)
+        .withLocalStorageKey('tabs.initialization.test')
+        .initialize();
+
+    assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab3"]').hasClass('selected'));
+  })
+
+  it('withDeepLinking Disabled', function() {
+    window.location.hash = "#tab-initialization-tab2";
+
+    this.tabs
+        .withDeepLinkingDisabled()
         .withLocalStorageKey('tabs.initialization.test')
         .initialize();
 

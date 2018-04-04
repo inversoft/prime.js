@@ -109,9 +109,11 @@ class Tabs {
       this.tabContents[dataSet.tabId] = content;
     }.bind(this));
 
-    const hash = window.location.hash.replace(/^#/, '');
-    if (this.tabs[hash]) {
-      this.selectTab(hash);
+    if (this.options.deepLinkingEnabled) {
+      const tabId = window.location.hash.replace(/^#/, '');
+      if (Utils.isDefined(tabId) && Utils.isDefined(this.tabs[tabId])) {
+        this.selectTab(tabId);
+      }
     }
 
     this.redraw();
@@ -253,6 +255,16 @@ class Tabs {
   }
 
   /**
+   * Disable the default behavior of allowing a deep link provided on the URL to set the default tab during render.
+   *
+   * @returns {Tabs} This Tabs.
+   */
+  withDeepLinkingDisabled() {
+    this.options.deepLinkingEnabled = false;
+    return this;
+  }
+
+  /**
    * Enable error class handling. When this option is used, if the specified error class is found on any element
    * in the tab content the same error class will be added to the tab to identify the tab contains errors.
    *
@@ -260,18 +272,6 @@ class Tabs {
    */
   withErrorClassHandling(errorClass) {
     this.options.errorClass = errorClass;
-    return this;
-  }
-
-  /**
-   * If true, on initialization, the initial tab will be overridden by anything in the hash portion of the url.
-   *
-   * This step is the last to decide which tab to open and will override any local storage memory.
-   * @param {boolean} value
-   * @returns {Tabs} This Tabs.
-   */
-  withHashNavigation(value) {
-    this.options.hashNavigation = value;
     return this;
   }
 
@@ -379,7 +379,7 @@ class Tabs {
     this.options = {
       ajaxCallback: null,
       errorClass: null,
-      hashNavigation: false,
+      deepLinkingEnabled: true,
       localStorageKey: null,
       selectCallback: null,
       tabContentClass: 'prime-tab-content'
