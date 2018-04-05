@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -83,7 +83,9 @@ describe('Tab initialization tests', function() {
         .withLocalStorageKey('tabs.initialization.test')
         .initialize();
 
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab1"]').hasClass('selected'));
     assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab2"]').hasClass('selected'));
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab3"]').hasClass('selected'));
   });
 
   it('withLocalStorage and no hash', function() {
@@ -91,6 +93,8 @@ describe('Tab initialization tests', function() {
         .withLocalStorageKey('tabs.initialization.test')
         .initialize();
 
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab1"]').hasClass('selected'));
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab2"]').hasClass('selected'));
     assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab3"]').hasClass('selected'));
   })
 
@@ -102,6 +106,8 @@ describe('Tab initialization tests', function() {
         .withLocalStorageKey('tabs.initialization.test')
         .initialize();
 
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab1"]').hasClass('selected'));
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab2"]').hasClass('selected'));
     assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab3"]').hasClass('selected'));
   })
 });
