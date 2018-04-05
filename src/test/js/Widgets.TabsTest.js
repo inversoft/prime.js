@@ -86,6 +86,17 @@ describe('Tab initialization tests', function() {
     assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab1"]').hasClass('selected'));
     assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab2"]').hasClass('selected'));
     assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab3"]').hasClass('selected'));
+
+    // Hash does not match a tab
+    window.location.hash = "#foo-bar";
+
+    this.tabs
+        .withLocalStorageKey('tabs.initialization.test')
+        .initialize();
+
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab1"]').hasClass('selected'));
+    assert.isTrue(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab2"]').hasClass('selected'));
+    assert.isFalse(Prime.Document.queryFirst('[data-tab-id="tab-initialization-tab3"]').hasClass('selected'));
   });
 
   it('withLocalStorage and no hash', function() {
