@@ -78,8 +78,14 @@ target(name: "test", description: "Runs tests for the project") {
     exit
   }
 
-  def karma = "gulp test".execute()
-  karma.consumeProcessOutput(System.out, System.err)
+  def karma
+  if (switches.has("debug")) {
+    karma = "gulp test".execute()
+    karma.consumeProcessOutput(System.out, System.err)
+  } else {
+    karma = "gulp fastTest".execute()
+  }
+
   karma.waitFor()
   assert karma.exitValue() != 1
 }

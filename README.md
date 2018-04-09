@@ -27,6 +27,10 @@ gulp
 gulp test
 ```
 
+If you just want to know if the tests complete successfully you can call `gulp fastTest` instead.
+This will run all 4 variations of prime.js in parallel and cuts time down to ~25% of of the slow test.
+The drawback is it won't be clear which file had the exception if something goes wrong.
+
 
 ## Build output
 

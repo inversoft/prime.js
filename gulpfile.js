@@ -95,22 +95,34 @@ gulp.task('watch-css', () =>
 gulp.task('watch', ['watch-js', 'watch-css'], () =>
     console.log("Watching directories. Any changes will trigger a rebuild. Use CTRL + C to stop."));
 
-gulp.task('test', ['default'], (done) =>
-    async.eachSeries(['build/prime.js', 'build/prime-min.js', 'build/prime-es6.js', 'build/prime-es6-min.js'],
-        (file, callback) => {
-          console.log(`\n\n===================== Testing ${file} ====================`);
-          new karma({
-            configFile: __dirname + '/karma.conf.js',
-            singleRun: true,
-            files: [
-              file,
-              'build/prime-min.css',
-              'src/test/js/*.js',
-              'src/test/css/normalize*.css',
-              'src/test/css/Widgets.*.css',
-              {pattern: 'src/test/html/*', watched: true, served: true, included: false}
-            ]
-          }, callback).start();
-        }, done));
+gulp.task('test', ['default'], (done) => test(done, true));
+
+gulp.task('fastTest', ['default'], test);
 
 gulp.task('default', ['build-js', 'minify-js', 'build-css', 'minify-css']);
+
+function test(callback, slow) {
+  let func = async.each;
+  if (slow === true) {
+    func = async.eachSeries;
+  }
+
+  func(['build/prime.js', 'build/prime-min.js', 'build/prime-es6.js', 'build/prime-es6-min.js'],
+      (file, callback) => {
+        if (slow === true) {
+          console.log(`\n\n===================== Testing ${file} ====================`);
+        }
+        new karma({
+          configFile: __dirname + '/karma.conf.js',
+          singleRun: true,
+          files: [
+            file,
+            'build/prime-min.css',
+            'src/test/js/*.js',
+            'src/test/css/normalize*.css',
+            'src/test/css/Widgets.*.css',
+            {pattern: 'src/test/html/*', watched: true, served: true, included: false}
+          ]
+        }, callback).start();
+      }, callback);
+}
