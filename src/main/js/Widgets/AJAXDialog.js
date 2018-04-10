@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -34,6 +34,7 @@ class AJAXDialog {
 
     this.draggable = null;
     this.element = null;
+    this.initialized = false;
     this._setInitialOptions();
   }
 
@@ -120,7 +121,7 @@ class AJAXDialog {
    */
   setHTML(html) {
     this.element.setHTML(html);
-    this._setupButtons();
+    this._initializeDialog();
     return this;
   }
 
@@ -296,32 +297,6 @@ class AJAXDialog {
   _handleAJAXDialogResponse(xhr) {
     this.element = PrimeDocument.newElement('<div/>', {class: this.options.className + ' ' + this.options.additionalClasses}).appendTo(document.body);
     this.setHTML(xhr.responseText);
-
-    const highestZIndex = this._determineZIndex();
-    Overlay.instance.open(highestZIndex + this.options.zIndexOffset);
-    this.element.setStyle('zIndex', (highestZIndex + this.options.zIndexOffset + 10).toString());
-    this.element.addClass('open');
-
-    // Call the callback before positioning to ensure all changes to the dialog have been made
-    if (this.options.callback !== null) {
-      this.options.callback(this);
-    }
-
-    // Setup forms if enabled
-    if (this.options.formHandling) {
-      this.form = this.element.queryFirst('form').addEventListener('submit', this._handleAJAXFormSubmit);
-    }
-
-    // Position the fixed dialog in the center of the screen
-    const windowHeight = PrimeWindow.getInnerHeight();
-    const dialogHeight = this.element.getHeight();
-    this.element.setTop(((windowHeight - dialogHeight) / 2) - 20);
-
-    if (this.draggable === null) {
-      if (this.options.draggableElementSelector !== null && this.element.queryFirst(this.options.draggableElementSelector) !== null) {
-        this.draggable = new Draggable(this.element, this.options.draggableElementSelector).initialize();
-      }
-    }
   }
 
   _handleAJAXFormError(xhr) {
@@ -368,10 +343,42 @@ class AJAXDialog {
         .go();
   }
 
-  _setupButtons() {
+  _initializeDialog() {
     this.element.query(this.options.closeButtonElementSelector).each(function(e) {
       e.addEventListener('click', this._handleCloseClickEvent);
     }.bind(this));
+
+    // Only set the z-index upon first open
+    if (!this.initialized) {
+      const highestZIndex = this._determineZIndex();
+      Overlay.instance.open(highestZIndex + this.options.zIndexOffset);
+      this.element.setStyle('zIndex', (highestZIndex + this.options.zIndexOffset + 10).toString());
+      this.element.addClass('open');
+    }
+
+    // Call the callback before positioning to ensure all changes to the dialog have been made
+    if (this.options.callback !== null) {
+      this.options.callback(this);
+    }
+
+    // Setup forms if enabled
+    if (this.options.formHandling) {
+      this.form = this.element.queryFirst('form').addEventListener('submit', this._handleAJAXFormSubmit);
+    }
+
+    // Only set the position of the dialog when we first open it, if someone calls setHTML on the dialog we are not resizing it.
+    if (!this.initialized) {
+      // Position the fixed dialog in the center of the screen
+      const windowHeight = PrimeWindow.getInnerHeight();
+      const dialogHeight = this.element.getHeight();
+      this.element.setTop(((windowHeight - dialogHeight) / 2) - 20);
+    }
+
+    if (this.options.draggableElementSelector !== null && this.element.queryFirst(this.options.draggableElementSelector) !== null) {
+      this.draggable = new Draggable(this.element, this.options.draggableElementSelector).initialize();
+    }
+
+    this.initialized = true;
   }
 
   /**
