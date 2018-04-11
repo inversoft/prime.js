@@ -31,18 +31,30 @@ let bodyElement = null;
 
 class PrimeDocument {
 
+  /**
+   * @returns {PrimeElement}
+   */
   static get Element() {
     return PrimeElement;
   }
 
+  /**
+   * @returns {PrimeElementList}
+   */
   static get ElementList() {
     return PrimeElementList;
   }
 
+  /**
+   * @returns {Array<Function>}
+   */
   static get readyFunctions() {
     return readyFunctions;
   }
 
+  /**
+   * @returns {RegExp}
+   */
   static get tagRegexp() {
     return tagRegexp;
   }
