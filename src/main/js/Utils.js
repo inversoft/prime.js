@@ -80,17 +80,17 @@ const Utils = {
    * @returns {Array<string>}
    */
   getAllPropertyNames: function(object) {
-    let props = new Set();
+    let props = {};
 
     do {
       Object.getOwnPropertyNames(object).forEach((prop) => {
-        if (!props.has(prop)) {
-          props.add(prop);
+        if (!props[prop]) {
+          props[prop]=prop;
         }
       })
     } while (object = Object.getPrototypeOf(object));
 
-    return Array.from(props);
+    return Object.keys(props);
   },
 
   /**
