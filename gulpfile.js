@@ -31,7 +31,13 @@ gulp.task('prime.js', ['prime-es6.js'], () =>
     gulp.src('build/prime-es6.js')
         .pipe(sourceMaps.init({loadMaps: true}))
         .pipe(babel({
-          presets: ['env'],
+          presets: [
+            ['env', {
+              targets: {
+                browsers: ["explorer >= 11"]
+              }
+            }]
+          ],
           sourceType: "script"
         }))
         .pipe(rename('prime.js'))
