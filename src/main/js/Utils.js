@@ -52,12 +52,12 @@ const Utils = {
    * @param {*} object The object to bind all the functions for.
    */
   bindAll: function(object) {
-    for (const property of Utils.getAllPropertyNames(object)) {
+    Utils.getAllPropertyNames(object).forEach((property) => {
       if (property !== 'constructor' && typeof object[property] === 'function' &&
           (object[property].name && !object[property].name.startsWith('bound '))) { // name isn't defined in ie
         Object.defineProperty(object, property, {value: object[property].bind(object)});
       }
-    }
+    });
   },
 
   /**
