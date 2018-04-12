@@ -54,7 +54,7 @@ const Utils = {
   bindAll: function(object) {
     for (const property of Utils.getAllPropertyNames(object)) {
       if (property !== 'constructor' && typeof object[property] === 'function' &&
-          !object[property].name.startsWith('bound ')) {
+          (object[property].name && !object[property].name.startsWith('bound '))) { // name isn't defined in ie
         Object.defineProperty(object, property, {value: object[property].bind(object)});
       }
     }
