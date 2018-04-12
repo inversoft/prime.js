@@ -14,25 +14,22 @@
  * language governing permissions and limitations under the License.
  */
 
-// Major polyfills go here (Missing features, etc)
-import 'babel-polyfill/dist/polyfill';
-
-import * as Widgets from "./Widgets/Widgets";
-import * as Effects from "./Effects";
-// Do any prime polyfill imports here for backwards compatibility
+import * as Widgets from "./Widgets/Widgets"
+import * as Effects from "./Effects"
+// Do any polyfill imports here for backwards compatibility
 import {DataQueue} from "./DataQueue";
 import {PrimeRequest} from "./PrimeRequest";
 
-export {Browser} from "./Browser";
-export {Effects};
-export {Events} from "./Events";
-export {PrimeDate as Date} from "./Date";
-export {PrimeDocument as Document} from "./PrimeDocument";
-export {PrimeStorage as Storage} from "./Storage";
-export {PrimeWindow as Window} from "./Window";
-export {Template} from "./Template";
-export {Utils} from "./Utils";
-export {Widgets};
+export {Browser} from "./Browser"
+export {Effects}
+export {Events} from "./Events"
+export {PrimeDate as Date} from "./Date"
+export {PrimeDocument as Document} from "./PrimeDocument"
+export {PrimeStorage as Storage} from "./Storage"
+export {PrimeWindow as Window} from "./Window"
+export {Template} from "./Template"
+export {Utils} from "./Utils"
+export {Widgets}
 
 const Ajax = {
   Request: PrimeRequest
@@ -42,5 +39,5 @@ const Data = {
   Queue: DataQueue
 };
 
-export {Ajax};
-export {Data};
+export {Ajax}
+export {Data}

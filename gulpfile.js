@@ -26,7 +26,6 @@ const rollup = require('rollup').rollup;
 const sourceMaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const uglifyes = require('gulp-uglify-es').default;
-const nodeResolve = require('rollup-plugin-node-resolve');
 
 gulp.task('prime.js', ['prime-es6.js'], () =>
     gulp.src('build/prime-es6.js')
@@ -57,10 +56,7 @@ gulp.task('prime-es6-min.js', ['prime-es6.js'], () =>
 
 gulp.task('prime-es6.js', async () => {
   const bundle = await rollup({
-    input: 'src/main/js/Prime.js',
-    plugins: [
-        nodeResolve()
-    ]
+    input: 'src/main/js/Prime.js'
   });
 
   await bundle.write({
