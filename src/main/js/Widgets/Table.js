@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -283,6 +283,7 @@ class Table {
    * @private
    */
   _handleSortableColumnClick(event) {
+    Utils.stopEvent(event);
     const target = new PrimeElement(event.currentTarget);
     this.column = target;
     this.columnIndex = this._getColumnIndex(target);
