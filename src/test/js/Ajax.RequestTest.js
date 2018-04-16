@@ -229,15 +229,31 @@ describe('AJAX tests', function() {
    * @param done The done callback for async testing.
    */
   it('subclass', function(done) {
-    class MyAjaxRequest extends Prime.Ajax.Request {
-      constructor(url) {
-        super(url);
-        this.called = false;
-      }
+    var MyAjaxRequest;
 
-      onSuccess() {
+    try {
+      // Some fineggling to get this working in both IE and chrome (ES5 and ES6).
+      eval("MyAjaxRequest = class extends Prime.Ajax.Request {\n" +
+          "        constructor(url) {\n" +
+          "          super(url);\n" +
+          "          this.called = false;\n" +
+          "        }\n" +
+          "        \n" +
+          "        onSuccess() {\n" +
+          "          this.called = true;\n" +
+          "        }\n" +
+          "      }");
+    } catch (e) {
+      MyAjaxRequest = function(url) {
+        Prime.Ajax.Request.call(this, url);
+        this.called = false;
+      };
+
+      MyAjaxRequest.prototype = Object.create(Prime.Ajax.Request.prototype);
+
+      MyAjaxRequest.prototype.onSuccess = function() {
         this.called = true;
-      }
+      };
     }
 
     // Extend and override the success handler

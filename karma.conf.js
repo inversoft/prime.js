@@ -29,6 +29,7 @@ module.exports = function(config) {
       'src/test/js/*.js',
       'src/test/css/normalize*.css',
       'src/test/css/Widgets.*.css',
+      {pattern: 'build/*.map', included: false},
       {pattern: 'src/test/html/*', watched: true, served: true, included: false}
     ],
 

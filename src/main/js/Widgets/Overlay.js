@@ -62,7 +62,7 @@ class Overlay {
    */
   close() {
     // using null ensures that if this style is not defined, we'll remove it when we're done
-    let overflowStyle = this.bodyOverflow || null;
+    let overflowStyle = this.bodyOverflow || '';
     PrimeDocument.bodyElement.setStyle('overflow', overflowStyle);
     this.overlay.setStyle('zIndex', '10');
     this.overlay.hide();
