@@ -73,9 +73,13 @@ class Tooltip {
   show() {
     const text = this.element.getDataSet()[this.options.dataName];
     const zIndex = this.element.getRelativeZIndex();
+    let classNames = this.options.className + ' ' + this.element.getTagName().toLocaleLowerCase();
+    if (this.options.additionalClasses !== null) {
+      classNames = classNames + ' ' + this.options.additionalClasses
+    }
     const tooltip = PrimeDocument.newElement('<span>')
         .appendTo(PrimeDocument.bodyElement)
-        .addClass(this.options.className + ' ' + this.element.getTagName().toLowerCase())
+        .addClass(classNames)
         .setHTML(text)
         .setStyle('zIndex', zIndex + 10);
 
@@ -94,6 +98,17 @@ class Tooltip {
     }
 
     Tooltip.open.push(tooltip);
+    return this;
+  }
+
+  /**
+   * Sets the class name to use when creating the tooltip.
+   *
+   * @param additionalClasses {?String} The class name or spaces separated names.
+   * @returns {Tooltip} This.
+   */
+  withAdditionalClassNames(additionalClasses) {
+    this.options.additionalClasses = additionalClasses;
     return this;
   }
 
@@ -168,6 +183,7 @@ class Tooltip {
   _setInitialOptions() {
     // Defaults
     this.options = {
+      additionalClasses: null,
       className: 'prime-tooltip',
       dataName: 'tooltip'
     };
