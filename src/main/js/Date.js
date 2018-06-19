@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,6 +14,7 @@
  * language governing permissions and limitations under the License.
  */
 'use strict';
+import {Utils} from "./Utils"
 
 const PrimeDate = {
   DAYS_IN_MONTH: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
@@ -222,7 +223,9 @@ const PrimeDate = {
    */
   toDateOnlyISOString: function(date) {
     if (date instanceof Date) {
-      return date.toISOString().substring(0, 10);
+      return date.getFullYear()
+          + '-' + Utils.leftPadNumber(date.getMonth() + 1, 2)
+          + '-' + Utils.leftPadNumber(date.getDate(), 2);
     }
     throw TypeError('date parameter must be a Date object.');
   }

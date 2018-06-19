@@ -3,7 +3,7 @@
  */
 savantVersion = "1.0.0"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "1.2.0", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "1.2.1", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -80,9 +80,11 @@ target(name: "test", description: "Runs tests for the project") {
 
   def karma
   if (switches.has("debug")) {
+    println "  > gulp test"
     karma = "gulp test".execute()
     karma.consumeProcessOutput(System.out, System.err)
   } else {
+    println "  > gulp fastTest"
     karma = "gulp fastTest".execute()
   }
 

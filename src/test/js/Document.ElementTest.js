@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2012-2015, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2012-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -1274,7 +1274,6 @@ describe('Element class tests', function() {
     };
     MyEventListener.prototype = {
       handle: function(evt) {
-        console.log('handle');
         this.called = true;
         this.count++;
         this.memo = evt.memo;
@@ -1282,7 +1281,6 @@ describe('Element class tests', function() {
       },
 
       handle2: function(evt) {
-        console.log('handle2');
         this.called2 = true;
         this.count2++;
       }

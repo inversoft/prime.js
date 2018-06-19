@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2016, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -283,5 +283,18 @@ describe('Prime.Date namespace tests', function() {
   it('toISODateString', function() {
     var date = new Date(2015, 6, 4); // July 4th 2015
     assert.equal(Prime.Date.toDateOnlyISOString(date), '2015-07-04');
+  });
+
+  it('toDateOnlyISOString', function() {
+    var date = new Date(2018, 6, 13); // July 13th 2018
+    assert.equal(Prime.Date.toDateOnlyISOString(date), '2018-07-13');
+
+    // Regardless of the time of day, we should find the same day
+    let hour = 0;
+    while (hour < 24) {
+      date = new Date(2018, 6, 13, hour); // July 13th 2018 @ [0-23] $hour
+      assert.equal(Prime.Date.toDateOnlyISOString(date), '2018-07-13');
+      hour++;
+    }
   });
 });

@@ -308,6 +308,17 @@ const Utils = {
   },
 
   /**
+   * Left pad a number.
+   * @param {number} number the number to pad
+   * @param {number} width the width of the final result
+   * @returns {string}
+   */
+  leftPadNumber: function(number, width) {
+    const sign = Math.sign(number) === -1 ? '-' : '';
+    return sign + new Array(width).concat([Math.abs(number)]).join('0').slice(-width);
+  },
+
+  /**
    * Parses a CSS measure value (12px) as an integer.
    *
    * @param {string} measure The CSS measure
