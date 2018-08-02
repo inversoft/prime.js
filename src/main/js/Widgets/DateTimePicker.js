@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2015-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2015-2018, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,6 +43,7 @@ class DateTimePicker {
     }
 
     this.callback = null;
+    this.customFormatHandler = null;
     this._setInitialOptions();
   };
 
@@ -232,8 +233,6 @@ class DateTimePicker {
     this.datepicker.queryFirst('header .next').addEventListener('click', this._handleNextMonth);
     this.datepicker.queryFirst('header .prev').addEventListener('click', this._handlePreviousMonth);
 
-    this.callback = null;
-
     PrimeDocument.addEventListener('click', this._handleGlobalClick);
     PrimeDocument.addEventListener('keydown', this._handleGlobalKey);
 
@@ -272,7 +271,19 @@ class DateTimePicker {
     }.bind(this));
 
     this._rebuild();
+
+    if (this.customFormatHandler !== null) {
+      this.element.setValue(this.customFormatHandler.call(null, this.date));
+    }
+
     return this;
+  }
+
+  /**
+   * @returns {Date} Return the current value of the time picker.
+   */
+  getDate() {
+    return new Date(this.date.getTime());
   }
 
   /**
@@ -367,10 +378,15 @@ class DateTimePicker {
    */
   setDate(newDate) {
     this.date = newDate;
-    if (this.options.dateOnly) {
-      this.element.setValue(PrimeDate.toDateOnlyISOString(newDate));
+
+    if (this.customFormatHandler !== null) {
+      this.element.setValue(this.customFormatHandler.call(null, this.date));
     } else {
-      this.element.setValue(newDate.toISOString());
+      if (this.options.dateOnly) {
+        this.element.setValue(PrimeDate.toDateOnlyISOString(newDate));
+      } else {
+        this.element.setValue(newDate.toISOString());
+      }
     }
 
     this._rebuild();
@@ -446,6 +462,18 @@ class DateTimePicker {
    */
   withCloseTimeout(timeout) {
     this.options.closeTimeout = timeout;
+    return this;
+  }
+
+  /**
+   * Sets a custom format handler responsible for formatting the date string that will be set into the input field.
+   * When not defined the default behavior will be used.
+   *
+   * @param formatHandler {Function} The handler function.
+   * @return {DateTimePicker} This.
+   */
+  withCustomFormatHandler(formatHandler) {
+    this.customFormatHandler = formatHandler;
     return this;
   }
 
