@@ -236,6 +236,8 @@ class SlideOpen {
       element.setStyle('height', '0');
     }
 
+    this.isTransitioning = false;
+
     this._setInitialOptions();
   }
 
@@ -246,16 +248,18 @@ class SlideOpen {
 
     // Set a fixed height instead of auto so that the transition runs, but only if the element is "open"
     this.element.setHeight(this.element.domElement.primeVisibleHeight);
+    this.isTransitioning = true;
 
     // This timeout is needed since the height change takes time to run
     setTimeout(function() {
       this.element.setHeight(0);
       this.element.removeClass('open');
+      this.isTransitioning = false;
 
       if (this.options.closeCallback !== null) {
         this.options.closeCallback();
       }
-    }.bind(this), 50);
+    }.bind(this), this.options.timeout);
   }
 
   isOpen() {
@@ -263,19 +267,26 @@ class SlideOpen {
   }
 
   open() {
+    if (this.isOpen()) {
+      return;
+    }
+
     this.element.setHeight(this.element.domElement.primeVisibleHeight);
+    this.isTransitioning = true;
+
     setTimeout(function() {
       this.element.setHeight('auto');
       this.element.addClass('open');
-    }.bind(this), 500);
+      this.isTransitioning = false;
 
-    if (this.options.openCallback !== null) {
-      this.options.openCallback();
-    }
+      if (this.options.openCallback !== null) {
+        this.options.openCallback();
+      }
+    }.bind(this), this.options.timeout);
   }
 
   toggle() {
-    if (this.element.getHeight() !== 0 || this.element.hasClass('open')) {
+    if (this.isOpen()) {
       this.close();
     } else {
       this.open();
@@ -336,7 +347,8 @@ class SlideOpen {
     // Defaults
     this.options = {
       openCallback: null,
-      closeCallback: null
+      closeCallback: null,
+      timeout: 310
     };
 
     const userOptions = Utils.dataSetToOptions(this.element);
