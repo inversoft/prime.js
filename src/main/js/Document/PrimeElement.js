@@ -132,7 +132,7 @@ class PrimeElement {
    */
   addDelegatedEventListener(event, selector, listener) {
     addEventListener(event, function(event) {
-      if (event.target.matches(selector)) {
+      if (event.target.matches(selector) || Prime.Document.queryUp(selector, event.target)) {
         listener(event);
       }
     });
