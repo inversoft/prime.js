@@ -328,7 +328,7 @@ class PrimeElement {
    * Returns the value of the given attribute.
    *
    * @param {string} name The attribute name.
-   * @returns {string} This attribute value or null.
+   * @returns {?string} This attribute value or null.
    */
   getAttribute(name) {
     const attr = this.domElement.attributes.getNamedItem(name);
