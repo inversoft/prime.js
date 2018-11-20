@@ -14,21 +14,21 @@
  * language governing permissions and limitations under the License.
  */
 
-import * as Widgets from "./Widgets/Widgets"
-import * as Effects from "./Effects"
+import * as Widgets from "./Widgets/Widgets.js"
+import * as Effects from "./Effects.js"
 // Do any polyfill imports here for backwards compatibility
-import {DataQueue} from "./DataQueue";
-import {PrimeRequest} from "./PrimeRequest";
+import {DataQueue} from "./DataQueue.js";
+import {PrimeRequest} from "./PrimeRequest.js";
 
-export {Browser} from "./Browser"
+export {Browser} from "./Browser.js"
 export {Effects}
-export {Events} from "./Events"
-export {PrimeDate as Date} from "./Date"
-export {PrimeDocument as Document} from "./PrimeDocument"
-export {PrimeStorage as Storage} from "./Storage"
-export {PrimeWindow as Window} from "./Window"
-export {Template} from "./Template"
-export {Utils} from "./Utils"
+export {Events} from "./Events.js"
+export {PrimeDate as Date} from "./Date.js"
+export {PrimeDocument as Document} from "./PrimeDocument.js"
+export {PrimeStorage as Storage} from "./Storage.js"
+export {PrimeWindow as Window} from "./Window.js"
+export {Template} from "./Template.js"
+export {Utils} from "./Utils.js"
 export {Widgets}
 
 const Ajax = {

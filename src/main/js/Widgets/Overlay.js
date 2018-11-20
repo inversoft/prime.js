@@ -14,8 +14,8 @@
  * language governing permissions and limitations under the License.
  */
 
-import {Utils} from "../Utils";
-import {PrimeDocument} from "../PrimeDocument";
+import {Utils} from "../Utils.js";
+import {PrimeDocument} from "../PrimeDocument.js";
 
 /**
  * The singleton instance.

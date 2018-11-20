@@ -14,19 +14,19 @@
  * language governing permissions and limitations under the License.
  */
 
-export {AJAXDialog} from "./AJAXDialog";
-export {DateTimePicker} from "./DateTimePicker";
-export {Dismissable} from "./Dismissable";
-export {Draggable} from "./Draggable";
-export {HTMLDialog} from "./HTMLDialog";
-export {InProgress} from "./InProgress";
-export {MultipleSelect} from "./MultipleSelect";
-export {Overlay} from "./Overlay";
-export {Searcher} from "./Searcher";
-export {SideMenu} from "./SideMenu";
-export {SplitButton} from "./SplitButton";
-export {Table} from "./Table";
-export {Tabs} from "./Tabs";
-export {Tooltip} from "./Tooltip";
-export {Touchable} from "./Touchable";
-export {TreeView} from "./TreeView";
+export {AJAXDialog} from "./AJAXDialog.js";
+export {DateTimePicker} from "./DateTimePicker.js";
+export {Dismissable} from "./Dismissable.js";
+export {Draggable} from "./Draggable.js";
+export {HTMLDialog} from "./HTMLDialog.js";
+export {InProgress} from "./InProgress.js";
+export {MultipleSelect} from "./MultipleSelect.js";
+export {Overlay} from "./Overlay.js";
+export {Searcher} from "./Searcher.js";
+export {SideMenu} from "./SideMenu.js";
+export {SplitButton} from "./SplitButton.js";
+export {Table} from "./Table.js";
+export {Tabs} from "./Tabs.js";
+export {Tooltip} from "./Tooltip.js";
+export {Touchable} from "./Touchable.js";
+export {TreeView} from "./TreeView.js";

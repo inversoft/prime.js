@@ -14,7 +14,8 @@
  * language governing permissions and limitations under the License.
  */
 'use strict';
-import {Utils} from "./Utils"
+
+import {Utils} from "./Utils.js"
 
 const PrimeDate = {
   DAYS_IN_MONTH: [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],

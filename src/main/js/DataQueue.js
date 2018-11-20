@@ -15,7 +15,7 @@
  */
 'use strict';
 
-import {Utils} from "./Utils";
+import {Utils} from "./Utils.js";
 
 class DataQueue {
   /**

@@ -15,10 +15,10 @@
  */
 'use strict';
 
-import {Browser} from "../Browser";
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeElementList} from "./PrimeElementList";
-import {Utils} from "../Utils";
+import {Browser} from "../Browser.js";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeElementList} from "./PrimeElementList.js";
+import {Utils} from "../Utils.js";
 
 const blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
 const mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup|mouseover|mousemove|mouseout|mouseenter|mouseleave)$/;

@@ -16,12 +16,12 @@
 
 'use strict';
 
-import {Overlay} from "./Overlay";
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeRequest} from "../PrimeRequest";
-import {Utils} from "../Utils";
-import {PrimeWindow} from "../Window";
-import {Draggable} from "./Draggable";
+import {Overlay} from "./Overlay.js";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeRequest} from "../PrimeRequest.js";
+import {Utils} from "../Utils.js";
+import {PrimeWindow} from "../Window.js";
+import {Draggable} from "./Draggable.js";
 
 class AJAXDialog {
   /**

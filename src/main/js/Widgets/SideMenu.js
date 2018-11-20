@@ -15,10 +15,10 @@
  */
 'use strict';
 
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeElement} from "../Document/PrimeElement";
-import {Touchable} from "./Touchable";
-import {Utils} from "../Utils";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {Touchable} from "./Touchable.js";
+import {Utils} from "../Utils.js";
 
 class SideMenu {
   /**

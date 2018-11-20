@@ -15,8 +15,8 @@
  */
 'use strict';
 
-import {PrimeElement} from "./PrimeElement";
-import {Utils} from "../Utils";
+import {PrimeElement} from "./PrimeElement.js";
+import {Utils} from "../Utils.js";
 
 class PrimeElementList {
   /**

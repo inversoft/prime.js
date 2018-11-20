@@ -16,8 +16,8 @@
 
 'use strict';
 
-import {PrimeElement} from "../Document/PrimeElement";
-import {Utils} from "../Utils";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {Utils} from "../Utils.js";
 
 class Dismissable {
   /**

@@ -15,9 +15,9 @@
  */
 'use strict';
 
-import {PrimeElementList} from "./Document/PrimeElementList";
-import {PrimeElement} from "./Document/PrimeElement";
-import {Utils} from "./Utils";
+import {PrimeElementList} from "./Document/PrimeElementList.js";
+import {PrimeElement} from "./Document/PrimeElement.js";
+import {Utils} from "./Utils.js";
 
 const readyFunctions = [];
 const tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;

@@ -21,10 +21,22 @@
   <title>Prime Functional Tests</title>
   <link rel="stylesheet" href="../css/normalize-3.0.2.css"/>
   <link rel="stylesheet" href="../css/test-functional.css"/>
-  <link rel="stylesheet" href="../../../build/prime.css"/>
+  <link rel="stylesheet" href="../../main/css/Effects.SlideOpen.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.DateTimePicker.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Dialog.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Dismissable.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.InProgress.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Overlay.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Tooltip.css"/>
   <script type="text/javascript" src="https://use.fontawesome.com/54deec06c9.js"></script>
-  <script type="text/javascript" src="../../../build/prime.js"></script>
-  <script type="text/javascript">
+  <script type="module">
+    import * as Prime from '../../main/js/Prime.js';
+
     var values = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten'];
     var searcherCallback = {
       search: function(searchText) {
@@ -100,7 +112,7 @@
       dragElement.setTop(50);
       var draggable = new Prime.Widgets.Draggable(dragElement).initialize();
 
-      var destroy = Prime.Document.queryById('destroy-draggable').addEventListener('click', function(event) {
+      Prime.Document.queryById('destroy-draggable').addEventListener('click', function(event) {
         draggable.destroy();
         Prime.Utils.stopEvent(event);
       });
@@ -131,7 +143,7 @@
       });
 
       var touchableElement = Prime.Document.queryById('touchable');
-      var touchable = new Prime.Widgets.Touchable(touchableElement)
+      new Prime.Widgets.Touchable(touchableElement)
           .withLongPressHandler(function() {
             touchableElement.setHTML('long press');
           })
@@ -201,13 +213,13 @@
             .close();
       });
 
-      Prime.Document.queryById('slide-tests-short-checkbox').addEventListener('change', function(event) {
+      Prime.Document.queryById('slide-tests-short-checkbox').addEventListener('change', function() {
         new Prime.Effects.SlideOpen(Prime.Document.queryById('slide-tests-short')).toggle();
       });
-      Prime.Document.queryById('slide-tests-long-checkbox').addEventListener('change', function(event) {
+      Prime.Document.queryById('slide-tests-long-checkbox').addEventListener('change', function() {
         new Prime.Effects.SlideOpen(Prime.Document.queryById('slide-tests-long')).toggle();
       });
-      Prime.Document.queryById('slide-tests-open-checkbox').addEventListener('change', function(event) {
+      Prime.Document.queryById('slide-tests-open-checkbox').addEventListener('change', function() {
         new Prime.Effects.SlideOpen(Prime.Document.queryById('slide-tests-open')).toggle();
       });
 
@@ -219,6 +231,17 @@
         element.query('[data-tooltip]').each(function(element) {
           new Prime.Widgets.Tooltip(element);
         })
+      });
+
+      Prime.Document.query('.prime-split-button').each(function(element) {
+        new Prime.Widgets.SplitButton(element)
+            .withLocalStorageKey('prime-split-button')
+            .initialize();
+      });
+
+      Prime.Document.queryById('sb-3').addEventListener('click', function(event) {
+        Prime.Utils.stopEvent(event);
+        alert('Worked');
       });
     });
   </script>
@@ -258,6 +281,22 @@
 <div style="position: absolute; top: 25px; right: 50px; width: 20px; height: 20px; background-color: gray;" data-tooltip="Tooltip!"></div>
 <div style="position: absolute; top: 35px; right: 10px; width: 20px; height: 20px; background-color: gray;" data-tooltip="Tooltip!"></div>
 
+<div style="text-align: right; padding-bottom: 20px;">
+  <div class="prime-split-button">
+    <a class="gray button square" href="#"><i class="fa fa-spinner fa-pulse"></i> Loading...</a>
+    <button type="button" class="gray button square" aria-haspopup="true" aria-expanded="false">
+      <span class="sr-only">Toggle Dropdown</span>
+    </button>
+    <div class="menu">
+      <a id="sb-1" class="item default" href=""><i class="fa fa-arrow-right"></i> Action</a>
+      <a id="sb-2" class="item" href=""><i class="fa fa-automobile"></i> Another action</a>
+      <a id="sb-3" class="item" href="#"><i class="fa fa-trash"></i> JavaScript action</a>
+      <div class="divider"></div>
+      <a id="sb-4" class="item" href=""><i class="fa fa-gear"></i> Separated link</a>
+    </div>
+  </div>
+</div>
+
 <div class="dismissable">
   Dismiss me! <a href="#">X</a>
 </div>
@@ -268,10 +307,6 @@
   <div class="fixed" style="position: fixed; background: rgba(0, 0, 0, 0.2)">
     This is a fixed positioned element
     <a href="#" data-tooltip="Tooltip text">This has a tooltip</a>
-  </div>
-
-  <div id="tooltip" data-tooltip="The tooltip text!">
-    This element has a tooltip.
   </div>
 
   <div id="ajax-dialog-container">

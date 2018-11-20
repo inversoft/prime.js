@@ -15,8 +15,8 @@
  */
 'use strict';
 
-import {Utils} from "../Utils";
-import {PrimeElement} from "../Document/PrimeElement";
+import {Utils} from "../Utils.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
 
 //Some externs to make intellij linter shutup. :p
 /**
