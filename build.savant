@@ -3,7 +3,7 @@
  */
 savantVersion = "1.0.0"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "1.4.0", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "1.4.1", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -14,15 +14,15 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "1.4.0", licens
 
   publications {
     main {
-      publication(name: "prime", type: "js", file: "build/prime.js", source: "build/prime.js")
-      publication(name: "prime", type: "css", file: "build/prime.css", source: "build/prime.css")
-      publication(name: "prime-min", type: "js", file: "build/prime-min.js", source: "build/prime-min.js")
-      publication(name: "prime-min", type: "js.map", file: "build/prime-min.js.map", source: "build/prime-min.js.map")
-      publication(name: "prime-min", type: "css", file: "build/prime-min.css", source: "build/prime-min.css")
-      publication(name: "prime-min", type: "css.map", file: "build/prime-min.css.map", source: "build/prime-min.css.map")
-      publication(name: "prime-es6", type: "js", file: "build/prime-es6.js", source: "build/prime-es6.js")
-      publication(name: "prime-es6-min", type: "js", file: "build/prime-es6-min.js", source: "build/prime-es6-min.js")
-      publication(name: "prime-es6-min", type: "js.map", file: "build/prime-es6-min.js.map", source: "build/prime-es6-min.js.map")
+      publication(name: "prime", type: "js", file: "build/prime-${project.version}.js", source: "build/prime-${project.version}.js")
+      publication(name: "prime", type: "css", file: "build/prime-${project.version}.css", source: "build/prime-${project.version}.css")
+      publication(name: "prime-min", type: "js", file: "build/prime-min-${project.version}.js", source: "build/prime-min-${project.version}.js")
+      publication(name: "prime-min", type: "js.map", file: "build/prime-min-${project.version}.js.map", source: "build/prime-min-${project.version}.js.map")
+      publication(name: "prime-min", type: "css", file: "build/prime-min-${project.version}.css", source: "build/prime-min-${project.version}.css")
+      publication(name: "prime-min", type: "css.map", file: "build/prime-min-${project.version}.css.map", source: "build/prime-min-${project.version}.css.map")
+      publication(name: "prime-es6", type: "js", file: "build/prime-es6-${project.version}.js", source: "build/prime-es6-${project.version}.js")
+      publication(name: "prime-es6-min", type: "js", file: "build/prime-es6-min-${project.version}.js", source: "build/prime-es6-min-${project.version}.js")
+      publication(name: "prime-es6-min", type: "js.map", file: "build/prime-es6-min-${project.version}.js.map", source: "build/prime-es6-min-${project.version}.js.map")
       publication(name: "prime-all", type: "zip", file: "build/prime-all.zip", source: "build/prime-all.zip")
     }
   }
@@ -55,7 +55,11 @@ target(name: "int", description: "Releases a local integration build of the proj
       exit
     }
 
-    def gulp = "gulp".execute()
+    // Add the project version to the gulp env
+    def envList = []
+    System.getenv().each() {k, v -> envList.push ("$k=$v")}
+    envList.push( "project.version=${project.version}")
+    def gulp = "gulp".execute(envList, null)
     gulp.consumeProcessOutput(System.out, System.err)
     gulp.waitFor()
   }
