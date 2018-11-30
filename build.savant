@@ -82,19 +82,14 @@ target(name: "test", description: "Runs tests for the project") {
     exit
   }
 
-  // Add the project version to the gulp env
-  def envList = []
-  System.getenv().each() {k, v -> envList.push ("$k=$v")}
-  envList.push( "project.version=${project.version}")
-
   def karma
   if (switches.has("debug")) {
     println "  > gulp test"
-    karma = "gulp test".execute(envList, null)
+    karma = "gulp test".execute()
     karma.consumeProcessOutput(System.out, System.err)
   } else {
     println "  > gulp fastTest"
-    karma = "gulp fastTest".execute(envList, null)
+    karma = "gulp fastTest".execute()
   }
 
   karma.waitFor()
