@@ -48,10 +48,9 @@ target(name: "setup", description: "installs gulp") {
 }
 
 target(name: "int", description: "Releases a local integration build of the project", "dependsOn": ["test"]) {
-  def success = "which gulp".execute().exitValue()
-  if (success == 1) {
-    println "Error. Can't build without setup. Run > sb setup"
-    exit
+  def success = "which gulp".execute().waitFor().exitValue()
+  if (success != 1) {
+    fail ("Error. Can't build without setup. Run > sb setup")
   }
 
   // Add the project version to the gulp env
