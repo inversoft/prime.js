@@ -48,21 +48,19 @@ target(name: "setup", description: "installs gulp") {
 }
 
 target(name: "int", description: "Releases a local integration build of the project", "dependsOn": ["test"]) {
-  if (switches.has("skipTests")) {
-    def success = "which gulp".execute().exitValue()
-    if (success == 1) {
-      println "Error. Can't build without setup. Run > sb setup"
-      exit
-    }
-
-    // Add the project version to the gulp env
-    def envList = []
-    System.getenv().each() {k, v -> envList.push ("$k=$v")}
-    envList.push( "project.version=${project.version}")
-    def gulp = "gulp".execute(envList, null)
-    gulp.consumeProcessOutput(System.out, System.err)
-    gulp.waitFor()
+  def success = "which gulp".execute().exitValue()
+  if (success == 1) {
+    println "Error. Can't build without setup. Run > sb setup"
+    exit
   }
+
+  // Add the project version to the gulp env
+  def envList = []
+  System.getenv().each() {k, v -> envList.push ("$k=$v")}
+  envList.push( "project.version=${project.version}")
+  def gulp = "gulp".execute(envList, null)
+  gulp.consumeProcessOutput(System.out, System.err)
+  gulp.waitFor()
 
   file.zip(file: "build/prime-all.zip") {
     fileSet(dir: "build", excludePatterns: [~/.+\.zip/])
