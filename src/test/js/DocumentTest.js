@@ -45,14 +45,13 @@ describe('Prime.Document namespace tests', function() {
       Prime.Utils.bindAll(this);
       this.called = false;
       this.event = null;
-      this.memo = null;
     };
 
     MyEventListener.prototype = {
-      handle: function(evt) {
+      handle: function(event, target) {
+        console.info(arguments);
         this.called = true;
-        this.memo = evt.memo;
-        this.event = evt.type;
+        this.event = event;
       }
     };
 
@@ -61,15 +60,47 @@ describe('Prime.Document namespace tests', function() {
 
     Prime.Document.queryById('test-delegated-selector1').fireEvent('click', 'foo');
     assert.isTrue(instance.called);
-    assert.equal(instance.event, 'click');
-    assert.equal(instance.memo, 'foo');
+    assert.equal(instance.event.type, 'click');
+    assert.equal(instance.event.memo, 'foo');
 
     // Second test, clicked, but selector does not match
-    instance = new MyEventListener();
+    // - reset the handler
+    instance.called = false;
+    instance.event = null;
+
     Prime.Document.queryById('test-delegated-selector2').fireEvent('click', 'foo');
     assert.isFalse(instance.called);
     assert.equal(instance.event, null);
-    assert.equal(instance.memo, null);
+
+    // Third test, click on a nested <span> element
+    // - reset the handler
+    instance.called = false;
+    instance.event = null;
+
+    Prime.Document.queryById('test-delegated-selector3').queryFirst('span').fireEvent('click', 'foo');
+    assert.isTrue(instance.called);
+    assert.equal(instance.event.type, 'click');
+    assert.equal(instance.event.memo, 'foo');
+
+    // Fourth test, click on a nested <div> element
+    // - reset the handler
+    instance.called = false;
+    instance.event = null;
+
+    Prime.Document.queryById('test-delegated-selector3').queryFirst('div').fireEvent('click', 'foo');
+    assert.isTrue(instance.called);
+    assert.equal(instance.event.type, 'click');
+    assert.equal(instance.event.memo, 'foo');
+
+    // Fifth test, click on a nested <a> element
+    // - reset the handler
+    instance.called = false;
+    instance.event = null;
+
+    Prime.Document.queryById('test-delegated-selector3').queryFirst('a').fireEvent('click', 'foo');
+    assert.isTrue(instance.called);
+    assert.equal(instance.event.type, 'click');
+    assert.equal(instance.event.memo, 'foo');
   });
 
   it('body', function() {
