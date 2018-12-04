@@ -1762,8 +1762,6 @@ class PrimeElement {
       }
 
       domElement = domElement.parentNode;
-      console.info('call : ');
-      console.info(domElement);
       this._callMatchedListeners(event, domElement);
     }
   }
