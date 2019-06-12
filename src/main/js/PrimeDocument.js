@@ -15,9 +15,9 @@
  */
 'use strict';
 
-import {PrimeElementList} from "./Document/PrimeElementList";
-import {PrimeElement} from "./Document/PrimeElement";
-import {Utils} from "./Utils";
+import {PrimeElementList} from "./Document/PrimeElementList.js";
+import {PrimeElement} from "./Document/PrimeElement.js";
+import {Utils} from "./Utils.js";
 
 const readyFunctions = [];
 const tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
@@ -85,7 +85,7 @@ class PrimeDocument {
    *
    * @param {string} event The name of the event
    * @param  {string} selector The selector to match against the Element
-   * @param {Function} listener The event listener function
+   * @param {PrimeDelegationEventListener} listener The event listener function
    */
   static addDelegatedEventListener(event, selector, listener) {
     PrimeDocument.bodyElement.addDelegatedEventListener(event, selector, listener);

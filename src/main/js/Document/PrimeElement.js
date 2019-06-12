@@ -15,10 +15,10 @@
  */
 'use strict';
 
-import {Browser} from "../Browser";
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeElementList} from "./PrimeElementList";
-import {Utils} from "../Utils";
+import {Browser} from "../Browser.js";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeElementList} from "./PrimeElementList.js";
+import {Utils} from "../Utils.js";
 
 const blockElementRegexp = /^(?:ARTICLE|ASIDE|BLOCKQUOTE|BODY|BR|BUTTON|CANVAS|CAPTION|COL|COLGROUP|DD|DIV|DL|DT|EMBED|FIELDSET|FIGCAPTION|FIGURE|FOOTER|FORM|H1|H2|H3|H4|H5|H6|HEADER|HGROUP|HR|LI|MAP|OBJECT|OL|OUTPUT|P|PRE|PROGRESS|SECTION|TABLE|TBODY|TEXTAREA|TFOOT|TH|THEAD|TR|UL|VIDEO)$/;
 const mouseEventsRegexp = /^(?:click|dblclick|mousedown|mouseup|mouseover|mousemove|mouseout|mouseenter|mouseleave)$/;
@@ -121,6 +121,13 @@ class PrimeElement {
   }
 
   /**
+   * @callback PrimeDelegationEventListener
+   *
+   * @param {Event} event the original event
+   * @param {PrimeElement} target the target domElement that matched the registered selector
+   */
+
+  /**
    * Attaches an event listener to the element and will only invoke the listener when the event target matches
    * the provided selector.
    *
@@ -128,14 +135,32 @@ class PrimeElement {
    *
    * @param {string} event The name of the event
    * @param  {string} selector The selector to match against the Element
-   * @param {Function} listener The event listener function
+   * @param {PrimeDelegationEventListener} listener The event listener function
    */
   addDelegatedEventListener(event, selector, listener) {
-    addEventListener(event, function(event) {
-      if (event.target.matches(selector) || Prime.Document.queryUp(selector, event.target)) {
-        listener(event);
-      }
-    });
+    this.domElement.delegatedListeners =  this.domElement.delegatedListeners || [];
+    let allDelegatedListeners = this.domElement.delegatedListeners;
+
+    // Store the event listeners in the following format:
+    //   [ event_type -> [ selector -> [ listeners ] ] ]
+    //
+    // Example:
+    //   [ 'click' -> [ 'a.foo' -> [ funcA, funcB ] ] ]
+
+    if (!(event in allDelegatedListeners)) {
+      allDelegatedListeners[event] = [];
+    }
+
+    if (!(selector in allDelegatedListeners[event])) {
+      allDelegatedListeners[event][selector] = [];
+    }
+
+    let delegatedListeners = allDelegatedListeners[event][selector] || [];
+    if (!(listener in delegatedListeners)) {
+      delegatedListeners.push(listener);
+    }
+
+    this.addEventListener(event, this._handleDelegatedEvent);
   }
 
   /**
@@ -244,10 +269,10 @@ class PrimeElement {
         this.domElement.fireEvent('on' + event, evt);
       } else if (document.createEvent) {
         // Dispatch for others
-        if (PrimeElement.mouseEventsRegexp.exec(event)) {
+        if (PrimeElement.mouseEventsRegexp.test(event)) {
           evt = document.createEvent("MouseEvents");
           evt.initMouseEvent(event, bubbling, cancelable, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null);
-        } else if (PrimeElement.htmlEventsRegexp.exec(event)) {
+        } else if (PrimeElement.htmlEventsRegexp.test(event)) {
           evt = document.createEvent("HTMLEvents");
           evt.initEvent(event, bubbling, cancelable);
         } else {
@@ -328,7 +353,7 @@ class PrimeElement {
    * Returns the value of the given attribute.
    *
    * @param {string} name The attribute name.
-   * @returns {string} This attribute value or null.
+   * @returns {?string} This attribute value or null.
    */
   getAttribute(name) {
     const attr = this.domElement.attributes.getNamedItem(name);
@@ -1716,6 +1741,54 @@ class PrimeElement {
    * ===================================================================================================================*/
 
   /**
+   * Handle delegated events.
+   *
+   * @param {Event} event
+   * @private
+   */
+  _handleDelegatedEvent(event) {
+    this._callMatchedListeners(event, event.target);
+
+    // If the event cannot bubble, we are done.
+    if (!event.bubbles) {
+      return;
+    }
+
+    // While propagation has not been stopped, walk up the tree to simulate the bubble
+    let domElement = event.target;
+    while (true) {
+      if (domElement === this.domElement || domElement === document || event.isPropagationStopped) {
+        break;
+      }
+
+      domElement = domElement.parentNode;
+      this._callMatchedListeners(event, domElement);
+    }
+  }
+
+  _callMatchedListeners(event, target) {
+    // Test each selector we have against this target
+    let delegatedListeners = this.domElement.delegatedListeners[event.type] || [];
+    for (let selector in delegatedListeners) {
+      if (delegatedListeners.hasOwnProperty(selector)) {
+        if (target.matches(selector)) {
+
+          let scopedListeners = delegatedListeners[selector];
+          // Call each listener unless immediate propagation has been stopped
+          for (let i = 0; i < scopedListeners.length; i++) {
+
+            if (event.isImmediatePropagationStopped) {
+              return;
+            }
+
+            scopedListeners[i](event, target);
+          }
+        }
+      }
+    }
+  }
+
+  /**
    * Removes the event listener proxy from this element.
    *
    * @param {string} event The event name.
@@ -1758,6 +1831,28 @@ class PrimeElement {
 
       return !!matches[i];
     };
+  }
+
+  // Add isPropagationStopped, this is part of the DOM Level 3 spec for CustomEvents
+  // - adding it here for all types so it can be used by the delegation event listener
+  // https://www.w3.org/TR/2003/NOTE-DOM-Level-3-Events-20031107/events.html#Events-Event-isPropagationStopped
+  if (!Event.prototype.isPropagationStopped) {
+    let _stopPropagation = Event.prototype.stopPropagation;
+    Event.prototype.stopPropagation = function() {
+      this.isPropagationStopped = true;
+      _stopPropagation.apply(this, arguments);
+    }
+  }
+
+  // Add isImmediatePropagationStopped, this is part of the DOM Level 3 spec for CustomEvents
+  // - adding it here for all types so it can be used by the delegation event listener
+  // https://www.w3.org/TR/2003/NOTE-DOM-Level-3-Events-20031107/events.html#Events-Event-isImmediatePropagationStopped
+  if (!Event.prototype.isImmediatePropagationStopped) {
+    let _stopImmediatePropagation = Event.prototype.stopImmediatePropagation;
+    Event.prototype.stopImmediatePropagation = function() {
+      this.isImmediatePropagationStopped = true;
+      _stopImmediatePropagation.apply(this, arguments);
+    }
   }
 })();
 

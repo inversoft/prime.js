@@ -15,10 +15,10 @@
  */
 'use strict';
 
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeElement} from "../Document/PrimeElement";
-import {PrimeWindow} from "../Window";
-import {Utils} from "../Utils";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {PrimeWindow} from "../Window.js";
+import {Utils} from "../Utils.js";
 
 const open = [];
 

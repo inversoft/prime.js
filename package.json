@@ -9,6 +9,7 @@
     "babel-preset-env": "^1.7.0",
     "babel-preset-minify": "^0.2.0",
     "chai": "^4.2.0",
+    "eslint": "^5.9.0",
     "gulp": "^3.9.1",
     "gulp-babel": "^7.0.0",
     "gulp-clean-css": "^3.9.0",

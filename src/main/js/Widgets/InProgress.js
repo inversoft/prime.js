@@ -15,9 +15,9 @@
  */
 'use strict';
 
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeElement} from "../Document/PrimeElement";
-import {Utils} from "../Utils";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {Utils} from "../Utils.js";
 
 class InProgress {
   /**

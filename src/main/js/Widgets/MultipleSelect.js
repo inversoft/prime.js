@@ -15,11 +15,11 @@
  */
 'use strict';
 
-import {Events} from "../Events";
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeElement} from "../Document/PrimeElement";
-import {Utils} from "../Utils";
-import {Searcher} from "./Searcher";
+import {Events} from "../Events.js";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {Utils} from "../Utils.js";
+import {Searcher} from "./Searcher.js";
 
 let count = 1;
 let AddOptionEvent = 'MultipleSelect:addOption';

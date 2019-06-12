@@ -15,11 +15,11 @@
  */
 'use strict';
 
-import {Events} from "../Events";
-import {PrimeDate} from "../Date";
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeElement} from "../Document/PrimeElement";
-import {Utils} from "../Utils";
+import {Events} from "../Events.js";
+import {PrimeDate} from "../Date.js";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {Utils} from "../Utils.js";
 
 const SHORT_DAY_NAMES = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];

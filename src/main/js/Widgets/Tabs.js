@@ -15,11 +15,11 @@
  */
 'use strict';
 
-import {Utils} from "../Utils";
-import {PrimeElement} from "../Document/PrimeElement";
-import {PrimeDocument} from "../PrimeDocument";
-import {PrimeStorage} from "../Storage";
-import {PrimeRequest} from "../PrimeRequest";
+import {Utils} from "../Utils.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {PrimeDocument} from "../PrimeDocument.js";
+import {PrimeStorage} from "../Storage.js";
+import {PrimeRequest} from "../PrimeRequest.js";
 
 class Tabs {
   /**

@@ -15,12 +15,12 @@
  */
 'use strict';
 
-import {PrimeElement} from "../Document/PrimeElement";
-import {Utils} from "../Utils";
-import {PrimeWindow} from "../Window";
-import {Overlay} from "./Overlay";
-import {Draggable} from "./Draggable";
-import {PrimeDocument} from "../PrimeDocument";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {Utils} from "../Utils.js";
+import {PrimeWindow} from "../Window.js";
+import {Overlay} from "./Overlay.js";
+import {Draggable} from "./Draggable.js";
+import {PrimeDocument} from "../PrimeDocument.js";
 
 class HTMLDialog {
   /**

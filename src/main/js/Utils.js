@@ -15,7 +15,7 @@
  */
 'use strict';
 
-import {PrimeDocument} from "./PrimeDocument";
+import {PrimeDocument} from "./PrimeDocument.js";
 
 /**
  * The Utils namespace. This contains utility functions.

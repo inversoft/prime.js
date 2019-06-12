@@ -15,9 +15,9 @@
  */
 'use strict';
 
-import {Utils} from "../Utils";
-import {PrimeElement} from "../Document/PrimeElement";
-import {PrimeStorage} from "../Storage";
+import {Utils} from "../Utils.js";
+import {PrimeElement} from "../Document/PrimeElement.js";
+import {PrimeStorage} from "../Storage.js";
 
 class Table {
   /**
