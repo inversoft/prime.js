@@ -72,7 +72,7 @@ class AJAXDialog {
             this.draggable = null;
         }
 
-        setTimeout(function () {
+        setTimeout(() => {
             this.element.removeFromDOM();
             this.element = null;
 
@@ -82,7 +82,7 @@ class AJAXDialog {
             } else {
                 Overlay.instance.close();
             }
-        }.bind(this), this.options.closeTimeout);
+        }, this.options.closeTimeout);
 
         return this;
     }
