@@ -38,6 +38,6 @@ Builds for EcmaScript5 for wide browser support and EcmaScript6 are provided
 
 ```bash
 ./build/Prime.css
-./build/Prime.js
+./build/Prime.ts
 ./build/PrimeES6.js
 ```

@@ -6,3 +6,6 @@ out
 node_modules
 package-lock.json
 testReport.html
+
+# Typescript
+src/main/ts/**/*.js
