@@ -22,6 +22,13 @@ import {Utils} from "./Utils";
 const readyFunctions = [];
 const tagRegexp = /^<(\w+)\s*\/?>.*(?:<\/\1>)?$/;
 
+declare global {
+  interface Document {
+    eventListeners: { [eventName: string]: Array<EventListener> }
+    customEventListeners: { [eventName: string]: Array<EventListener> }
+  }
+}
+
 /**
  * The Body element as a PrimeElement object.
  *
@@ -240,7 +247,7 @@ class PrimeDocument {
    * @param {Element|Document|PrimeElement} [element=document] The starting point for the search (defaults to document if not provided).
    * @returns {PrimeElementList} An element list.
    */
-  static query(selector, element) {
+  static query(selector: string, element?: Element) {
     let domElement = null;
     if (!Utils.isDefined(element)) {
       domElement = document;
@@ -391,7 +398,7 @@ class PrimeDocument {
  * ===================================================================================================================*/
 
 /* https://developer.mozilla.org/en-US/docs/Web/API/DOMParser */
-(function(DOMParser) {
+(function (DOMParser) {
   const proto = DOMParser.prototype;
   const nativeParse = proto.parseFromString;
 
@@ -405,7 +412,7 @@ class PrimeDocument {
   } catch (ex) {
   }
 
-  proto.parseFromString = function(markup, type) {
+  proto.parseFromString = function (markup, type) {
     if (/^\s*text\/html\s*(?:;|$)/i.test(type)) {
       const doc = document.implementation.createHTMLDocument('');
       if (markup.toLowerCase().indexOf('<!doctype') > -1) {

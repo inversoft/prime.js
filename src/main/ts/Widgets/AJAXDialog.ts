@@ -345,7 +345,7 @@ class AJAXDialog {
         } else {
             const successURI = this.form.getDataSet()['ajaxSuccessUri'];
             if (successURI !== undefined) {
-                window.location = successURI;
+                window.location.assign(successURI);
             } else {
                 window.location.reload();
             }
@@ -367,9 +367,9 @@ class AJAXDialog {
     }
 
     private initializeDialog() {
-        this.element.query(this.options.closeButtonElementSelector).each(function (e) {
+        this.element.query(this.options.closeButtonElementSelector).each((e) => {
             e.addEventListener('click', this.handleCloseClickEvent);
-        }.bind(this));
+        });
 
         // Only set the z-index upon first open
         if (!this.initialized) {

@@ -23,7 +23,7 @@ declare global {
   }
 }
 
-export namespace Window {
+export namespace PrimeWindow {
   /**
    * Attaches an event listener to the window, returning the handler proxy.
    *

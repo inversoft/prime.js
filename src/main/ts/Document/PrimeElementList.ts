@@ -15,10 +15,13 @@
  */
 'use strict';
 
-import {PrimeElement} from "./PrimeElement.js";
-import {Utils} from "../../ts/Utils.js";
+import {PrimeElement} from "./PrimeElement";
+import {Utils} from "../Utils";
 
-class PrimeElementList {
+export class PrimeElementList {
+
+  public length: number = 0;
+
   /**
    * Constructs an PrimeElementList object using the given array containing DOMElements or PrimeElement objects, or the NodeList containing Node objects.
    *
@@ -209,13 +212,12 @@ class PrimeElementList {
    * @returns {PrimeElementList}
    * @private
    */
-  _proxyToElement() {
-    const args = Array.prototype.slice.apply(arguments);
+  private _proxyToElement(func: string, ...classNames: string[]) {
     for (let i = 0; i < this.length; i++) {
-      this[i][args[0]].apply(this[i], args.slice(1));
+      this[i][func].apply(this[i], classNames);
     }
     return this;
   }
 }
 
-export {PrimeElementList}
+export default PrimeElementList;

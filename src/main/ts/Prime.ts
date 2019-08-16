@@ -25,7 +25,7 @@ import {Browser as browser} from "./Browser"
 import {Events as events} from "./Events"
 import {PrimeDate} from "./Date"
 import {PrimeStorage as storage} from "./Storage"
-import {Window as window} from "./Window"
+import {PrimeWindow as window} from "./Window"
 import {Template as template} from "./Template"
 
 export namespace Prime {
@@ -39,7 +39,7 @@ export namespace Prime {
 
   export const Browser = browser;
   export const Events = events;
-  export type Date = PrimeDate;
+  export const Date = PrimeDate;
   export const PrimeDocument = document;
   export const PrimeStorage = storage;
   export const Window = window;

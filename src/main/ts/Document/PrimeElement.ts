@@ -27,25 +27,33 @@ let anonymousId = 1;
 const ieAlphaRegexp = /alpha\(opacity=(.+)\)/;
 
 declare global {
+  interface Document {
+    createEventObject: () => any; // IE
+  }
+
   interface Element {
     eventListeners: { [s: string]: Array<EventListener> };
     attachEvent: Function;
     customEventListeners: { [s: string]: Array<EventListener> };
     delegatedListeners: { [s: string]: { [s: string]: Array<EventListener> } };
+    fireEvent: (eventName: String, event: any) => void; // IE
+    currentStyle: Function; // Very old IE function (even IE deprecated it)
+    createTextRange: Function;
+    detachEvent: (event: string, listener: Function) => void;
   }
 }
 
 export class PrimeElement {
 
-  domElement: Element;
+  domElement: HTMLElement;
 
   /**
    * Creates an Element class for the given DOM element.
    *
    * @constructor
-   * @param {Element|EventTarget} element The element
+   * @param {HTMLElement} element The element
    */
-  constructor(element) {
+  constructor(element: HTMLElement) {
     if (!Utils.isDefined(element.nodeType) || element.nodeType !== 1) {
       throw new TypeError('You can only pass in DOM element Node objects to the PrimeDocument.Element constructor');
     }
@@ -341,7 +349,7 @@ export class PrimeElement {
    * @returns {PrimeElement} This Element.
    */
   focus() {
-    this.domElement.focus();
+    (this.domElement as HTMLElement).focus();
     return this;
   }
 
@@ -352,10 +360,10 @@ export class PrimeElement {
    */
   getAbsoluteTop() {
     let top = 0;
-    let e = this.domElement;
+    let e = this.domElement as HTMLElement;
     while (e) {
       top += e.offsetTop;
-      e = e.offsetParent;
+      e = e.parentElement;
     }
 
     return top;
@@ -398,7 +406,7 @@ export class PrimeElement {
    * @returns {number} The height as pixels (number) or a string.
    */
   getBorderedHeight() {
-    return this.domElement.offsetHeight;
+    return (this.domElement as HTMLElement).offsetHeight;
   }
 
   /**
@@ -407,7 +415,7 @@ export class PrimeElement {
    * @returns {number} The height in pixels.
    */
   getBorderedWidth() {
-    return this.domElement.offsetWidth;
+    return (this.domElement as HTMLElement).offsetWidth;
   }
 
   /**
@@ -491,6 +499,7 @@ export class PrimeElement {
       return this.domElement.dataset;
     }
 
+    // @ts-ignore We will overwrite this property if the browser is not fully compliant.
     this.domElement.dataset = {};
     const attrs = this.getAttributes();
     for (let prop in attrs) {
@@ -594,7 +603,7 @@ export class PrimeElement {
       return null;
     }
 
-    return new PrimeElement(sibling);
+    return new PrimeElement(sibling as HTMLElement);
   }
 
   /**
@@ -626,7 +635,7 @@ export class PrimeElement {
     if (Browser.name === 'Explorer' && Browser.version < 9) {
       const filter = computedStyle['filter'];
       if (filter !== undefined && filter !== '') {
-        const matches = PrimeElement.ieAlphaRegexp.match(filter);
+        const matches = filter.match(PrimeElement.ieAlphaRegexp);
         if (matches.length > 0) {
           opacity = parseFloat(matches[0]);
         }
@@ -647,7 +656,7 @@ export class PrimeElement {
       throw new TypeError('You can only get the options for select elements');
     }
 
-    return new PrimeElementList(this.domElement.options);
+    return new PrimeElementList((this.domElement as HTMLSelectElement).options);
   }
 
   /**
@@ -711,14 +720,14 @@ export class PrimeElement {
       return null;
     }
 
-    return new PrimeElement(sibling);
+    return new PrimeElement(sibling as HTMLElement);
   }
 
   /**
    * @returns {number} The zIndex style of this element based on the element or the first positioned parent.
    */
   getRelativeZIndex() {
-    let e = this;
+    let e: PrimeElement = this;
     while (e !== null && e.getComputedStyle()['zIndex'] === 'auto') {
       e = e.getParent();
     }
@@ -770,9 +779,10 @@ export class PrimeElement {
     let texts;
     if (this.domElement.tagName === 'SELECT') {
       texts = [];
-      for (let i = 0; i < this.domElement.options.length; i++) {
-        if (this.domElement.options[i].selected) {
-          texts.push(this.domElement.options[i].text);
+      let element = this.domElement as HTMLSelectElement;
+      for (let i = 0; i < element.options.length; i++) {
+        if (element.options[i].selected) {
+          texts.push(element.options[i].text);
         }
       }
     } else {
@@ -790,9 +800,9 @@ export class PrimeElement {
    */
   getSelectedValues() {
     let values;
-    if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
+    if (this.domElement.tagName === 'INPUT' && ((this.domElement as HTMLInputElement).type === 'checkbox' || (this.domElement as HTMLInputElement).type === 'radio')) {
       values = [];
-      const name = this.domElement.name;
+      const name = (this.domElement as HTMLInputElement).name;
       const form = PrimeDocument.queryUp('form', this.domElement);
       PrimeDocument.query('input[name="' + name + '"]', form).each(function (element) {
         if (element.isChecked()) {
@@ -801,9 +811,9 @@ export class PrimeElement {
       });
     } else if (this.domElement.tagName === 'SELECT') {
       values = [];
-      for (let i = 0; i < this.domElement.length; i++) {
-        if (this.domElement.options[i].selected) {
-          values.push(this.domElement.options[i].value);
+      for (let i = 0; i < (this.domElement as HTMLSelectElement).length; i++) {
+        if ((this.domElement as HTMLSelectElement).options[i].selected) {
+          values.push((this.domElement as HTMLSelectElement).options[i].value);
         }
       }
     } else {
@@ -867,8 +877,8 @@ export class PrimeElement {
    *
    * @returns {string} The value of this Element.
    */
-  getValue() {
-    return this.domElement.value;
+  getValue(): string {
+    return (this.domElement as HTMLInputElement).value;
   }
 
   /**
@@ -1020,7 +1030,9 @@ export class PrimeElement {
    * @returns {boolean} True if the element is selected, false if it isn't or is not a checkbox or a radio.
    */
   isChecked() {
-    return this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio') && this.domElement.checked;
+    return this.domElement.tagName === 'INPUT'
+      && ((this.domElement as HTMLInputElement).type === 'checkbox' || (this.domElement as HTMLInputElement).type === 'radio')
+      && (this.domElement as HTMLInputElement).checked;
   }
 
   /**
@@ -1043,7 +1055,7 @@ export class PrimeElement {
    * @returns {boolean} Whether or not this element is disabled according to the disabled property.
    */
   isDisabled() {
-    return this.domElement.disabled;
+    return (this.domElement as HTMLInputElement | HTMLTextAreaElement | HTMLButtonElement).disabled;
   }
 
   /**
@@ -1068,7 +1080,7 @@ export class PrimeElement {
    * @returns {boolean} True if this element is inside the given element.
    */
   isInside(target) {
-    if (this.domElement === document.body || this.domElement === document.documentElement || this.domElement === document) {
+    if (this.domElement === document.body || this.domElement === document.documentElement || (this.domElement as any) === document) {
       return false;
     }
 
@@ -1089,7 +1101,7 @@ export class PrimeElement {
    * @returns {boolean} True if the element is selected, false if it isn't or is not an option.
    */
   isSelected() {
-    return this.domElement.tagName === 'OPTION' && this.domElement.selected;
+    return this.domElement.tagName === 'OPTION' && (this.domElement as HTMLOptionElement).selected;
   }
 
   /**
@@ -1445,7 +1457,7 @@ export class PrimeElement {
    * @returns {PrimeElement} This Element.
    */
   setChecked(value) {
-    this.domElement.checked = value;
+    (this.domElement as HTMLInputElement).checked = value;
     return this;
   }
 
@@ -1456,7 +1468,7 @@ export class PrimeElement {
    * @returns {PrimeElement} This Element.
    */
   setDisabled(value) {
-    this.domElement.disabled = value;
+    (this.domElement as HTMLInputElement).disabled = value;
     return this;
   }
 
@@ -1541,7 +1553,7 @@ export class PrimeElement {
    * @param {boolean} selected Selected value.
    */
   setSelected(selected) {
-    this.domElement.selected = selected;
+    (this.domElement as HTMLOptionElement).selected = selected;
   }
 
   /**
@@ -1559,15 +1571,15 @@ export class PrimeElement {
       values = Array.prototype.slice.call(arguments, 0);
     }
 
-    if (this.domElement.tagName === 'INPUT' && (this.domElement.type === 'checkbox' || this.domElement.type === 'radio')) {
-      const name = this.domElement.name;
+    if (this.domElement.tagName === 'INPUT' && ((this.domElement as HTMLInputElement).type === 'checkbox' || (this.domElement as HTMLInputElement).type === 'radio')) {
+      const name = (this.domElement as HTMLInputElement).name;
       const form = PrimeDocument.queryUp('form', this.domElement);
       PrimeDocument.query('input[name="' + name + '"]', form).each(function (element) {
         element.setChecked(values.indexOf(element.getValue()) !== -1);
       });
     } else if (this.domElement.tagName === 'SELECT') {
-      for (let i = 0; i < this.domElement.length; i++) {
-        this.domElement.options[i].selected = values.indexOf(this.domElement.options[i].value) !== -1;
+      for (let i = 0; i < (this.domElement as HTMLSelectElement).length; i++) {
+        (this.domElement as HTMLSelectElement).options[i].selected = values.indexOf((this.domElement as HTMLSelectElement).options[i].value) !== -1;
       }
     }
 
@@ -1652,7 +1664,7 @@ export class PrimeElement {
     if (typeof value === 'number') {
       value = value.toString();
     }
-    this.domElement.value = value;
+    (this.domElement as HTMLInputElement | HTMLTextAreaElement).value = value;
     return this;
   }
 
@@ -1848,6 +1860,7 @@ export class PrimeElement {
   // Add isPropagationStopped, this is part of the DOM Level 3 spec for CustomEvents
   // - adding it here for all types so it can be used by the delegation event listener
   // https://www.w3.org/TR/2003/NOTE-DOM-Level-3-Events-20031107/events.html#Events-Event-isPropagationStopped
+  // @ts-ignore
   if (!Event.prototype.isPropagationStopped) {
     let _stopPropagation = Event.prototype.stopPropagation;
     Event.prototype.stopPropagation = function () {
@@ -1859,6 +1872,7 @@ export class PrimeElement {
   // Add isImmediatePropagationStopped, this is part of the DOM Level 3 spec for CustomEvents
   // - adding it here for all types so it can be used by the delegation event listener
   // https://www.w3.org/TR/2003/NOTE-DOM-Level-3-Events-20031107/events.html#Events-Event-isImmediatePropagationStopped
+  // @ts-ignore
   if (!Event.prototype.isImmediatePropagationStopped) {
     let _stopImmediatePropagation = Event.prototype.stopImmediatePropagation;
     Event.prototype.stopImmediatePropagation = function () {

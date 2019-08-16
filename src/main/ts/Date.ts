@@ -23,10 +23,10 @@ const PrimeDate = {
   /**
    * Return the hour in a 12-hour format. AM and PM are not communicated by the returned hour.
    *
-   * @param date {Date.ts} The date object to retrieve the hour from.
-   * @returns {Number} The hour of the day between 1 and 12.
+   * @param date {Date} The date object to retrieve the hour from.
+   * @returns {number} The hour of the day between 1 and 12.
    */
-  getHourOfDay: function(date) {
+  getHourOfDay: function (date: Date) {
     return (date.getHours() + 24) % 12 || 12;
   },
 
@@ -34,7 +34,7 @@ const PrimeDate = {
    * @param year The year.
    * @returns {boolean} True if this is a leap year, otherwise false.
    */
-  isLeapYear: function(year) {
+  isLeapYear: function (year: number) {
     return !((year % 4) || (!(year % 100) && (year % 400)));
   },
 
@@ -42,9 +42,9 @@ const PrimeDate = {
    * Return the number of days in the month.
    * @param year The year, the days in the month may change during a leap year.
    * @param month The month.
-   * @returns {Number} The number of days in the month.
+   * @returns {number} The number of days in the month.
    */
-  numberOfDaysInMonth: function(year, month) {
+  numberOfDaysInMonth: function (year: number, month: number) {
     if (month === 1 && this.isLeapYear(year)) {
       return 29;
     } else {
@@ -55,10 +55,10 @@ const PrimeDate = {
   /**
    * Adds the given number of days to the given Date.
    *
-   * @param date {Date.ts} The date to add the days to.
-   * @param number {Number} The number of days to add.
+   * @param date {Date} The date to add the days to.
+   * @param number {number} The number of days to add.
    */
-  plusDays: function(date, number) {
+  plusDays: function (date: Date, number: number) {
     if (number === 0) {
       return;
     }
@@ -89,14 +89,14 @@ const PrimeDate = {
    * Adds the given number of hours to the given Date. The number can be negative.
    *
    * @param date {Date} The date.
-   * @param number {Number} The number of hours to add.
+   * @param number {number} The number of hours to add.
    */
-  plusHours: function(date, number) {
+  plusHours: function (date: Date, number: number) {
     if (number === 0) {
       return;
     }
 
-    const deltaDays = parseInt(number / 24);
+    const deltaDays = number / 24;
     PrimeDate.plusDays(date, deltaDays);
 
     const deltaHours = number % 24;
@@ -115,15 +115,15 @@ const PrimeDate = {
   /**
    * Adds the given number of minutes to the given Date. The number can be negative.
    *
-   * @param date {Date.ts} The date.
-   * @param number {Number} The number of minutes to add.
+   * @param date {Date} The date.
+   * @param number {number} The number of minutes to add.
    */
-  plusMinutes: function(date, number) {
+  plusMinutes: function (date: Date, number: number) {
     if (number === 0) {
       return;
     }
 
-    const deltaHours = parseInt(number / 60);
+    const deltaHours = number / 60;
     PrimeDate.plusHours(date, deltaHours);
 
     const deltaMinutes = number % 60;
@@ -142,15 +142,15 @@ const PrimeDate = {
   /**
    * Adds the given number of months to the given Date. The number can be negative.
    *
-   * @param date {Date.ts} The date.
-   * @param number {Number} The number of months to add.
+   * @param date {Date} The date.
+   * @param number {number} The number of months to add.
    */
-  plusMonths: function(date, number) {
+  plusMonths: function (date: Date, number: number) {
     if (number === 0) {
       return;
     }
 
-    let deltaYears = parseInt(number / 12);
+    let deltaYears = number / 12;
     let deltaMonths = number % 12;
     let currentMonth = date.getMonth();
     const newMonth = currentMonth + deltaMonths;
@@ -164,7 +164,7 @@ const PrimeDate = {
       currentMonth = 0;
     }
 
-    date.setYear(date.getFullYear() + deltaYears);
+    date.setFullYear(date.getFullYear() + deltaYears);
     // If the day is 31 and you set month to 1 (February) it will adjust to March 3 (Feb 28 + 3)
     const adjustedMonth = currentMonth + deltaMonths;
     if (date.getDate() > this.DAYS_IN_MONTH[adjustedMonth]) {
@@ -176,15 +176,15 @@ const PrimeDate = {
   /**
    * Adds the given number of seconds to the given Date. The number can be negative.
    *
-   * @param date {Date.ts} The date.
-   * @param number {Number} The number of seconds to add.
+   * @param date {Date} The date.
+   * @param number {number} The number of seconds to add.
    */
-  plusSeconds: function(date, number) {
+  plusSeconds: function (date: Date, number: number) {
     if (number === 0) {
       return;
     }
 
-    const deltaMinutes = parseInt(number / 60);
+    const deltaMinutes = number / 60;
     PrimeDate.plusMinutes(date, deltaMinutes);
 
     const deltaSeconds = number % 60;
@@ -203,10 +203,10 @@ const PrimeDate = {
   /**
    * Adds the given number of years to the given Date. The number can be negative.
    *
-   * @param date {Date.ts} The date.
-   * @param number {Number} The number of years to add.
+   * @param date {Date} The date.
+   * @param number {number} The number of years to add.
    */
-  plusYears: function(date, number) {
+  plusYears: function (date: Date, number: number) {
     if (number === 0) {
       return;
     }
@@ -219,10 +219,10 @@ const PrimeDate = {
    *
    * For example: new Date(2015, 6, 4) --> 2015-07-04
    *
-   * @param date {Date.ts} The date.
+   * @param date {Date} The date.
    * @returns {String} A date string in the format YYYY-MM-DD.
    */
-  toDateOnlyISOString: function(date) {
+  toDateOnlyISOString: function (date: Date) {
     if (date instanceof Date) {
       return date.getFullYear()
           + '-' + Utils.leftPadNumber(date.getMonth() + 1, 2)
