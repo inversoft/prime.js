@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2014-2018, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2019, Inversoft Inc., All Rights Reserved
  */
 savantVersion = "1.0.0"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "1.4.1", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "1.4.2", licenses: ["ApacheV2_0"]) {
   workflow {
     standard()
   }
@@ -47,7 +47,7 @@ target(name: "setup", description: "installs gulp") {
   proc.waitFor()
 }
 
-target(name: "int", description: "Releases a local integration build of the project", "dependsOn": ["test"]) {
+target(name: "int", description: "Releases a local integration build of the project", dependsOn: ["test"]) {
   def which = "which gulp".execute()
   which.waitFor()
   if (which.exitValue() != 0) {
