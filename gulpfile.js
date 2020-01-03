@@ -84,22 +84,18 @@ function es6min() {
       .pipe(gulp.dest('build'));
 }
 
-function es6(cb) {
-  (async () => {
-    const bundle = await rollup({
-      input: 'src/main/js/Prime.js'
-    });
+async function es6() {
+  const bundle = await rollup({
+    input: 'src/main/js/Prime.js'
+  });
 
-    await bundle.write({
-      file: `build/prime-es6${versionSuffix}.js`,
-      format: 'iife',
-      name: "Prime",
-      indent: '\t',
-      sourcemap: 'inline'
-    });
-
-    cb();
-  })();
+  await bundle.write({
+    file: `build/prime-es6${versionSuffix}.js`,
+    format: 'iife',
+    name: "Prime",
+    indent: '\t',
+    sourcemap: 'inline'
+  });
 }
 
 function css() {
