@@ -18,7 +18,7 @@
 const async = require('async');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
-const css = require('gulp-clean-css');
+const gulpCleanCSS = require('gulp-clean-css');
 const gulp = require('gulp');
 const karma = require('karma').Server;
 const rename = require('gulp-rename');
@@ -27,87 +27,97 @@ const sourceMaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
 const uglifyes = require('gulp-uglify-es').default;
 const process = require('process');
-const versionSuffix = typeof(process.env['project.version']) !== 'undefined' ? '-' + process.env['project.version'] : '';
+const versionSuffix = typeof (process.env['project.version']) !== 'undefined' ? '-' + process.env['project.version'] : '';
 
-gulp.task('prime.js', ['prime-es6.js'], () =>
-    gulp.src(`build/prime-es6${versionSuffix}.js`)
-        .pipe(sourceMaps.init({loadMaps: true}))
-        .pipe(babel({
-          presets: [
-            ['env', {
-              targets: {
-                browsers: ["explorer >= 11"]
-              }
-            }]
-          ],
-          sourceType: "script"
-        }))
-        .pipe(rename(`prime${versionSuffix}.js`))
-        .pipe(sourceMaps.write())
-        .pipe(gulp.dest('build')));
+gulp.task('es5', gulp.series(es6, es5));
+gulp.task('es6', es6);
+gulp.task('es5min', gulp.series(es6, es5, es5min));
+gulp.task('es6min', gulp.series(es6, es6min));
+gulp.task('build-js', gulp.series(es6, es5));
+gulp.task('minify-js', gulp.series(es6, es5, gulp.parallel(es5min, es6min)));
 
-gulp.task('prime-min.js', ['prime.js'], () =>
-    gulp.src(`build/prime${versionSuffix}.js`)
-        .pipe(sourceMaps.init({loadMaps: true}))
-        .pipe(uglify())
-        .pipe(rename(`prime-min${versionSuffix}.js`))
-        .pipe(sourceMaps.write('.'))
-        .pipe(gulp.dest('build')));
+gulp.task('build-css', css);
+gulp.task('minify-css', gulp.series(css, cssMin));
 
-gulp.task('prime-es6-min.js', ['prime-es6.js'], () =>
-    gulp.src(`build/prime-es6${versionSuffix}.js`)
-        .pipe(sourceMaps.init({loadMaps: true}))
-        .pipe(uglifyes())
-        .pipe(rename(`prime-es6-min${versionSuffix}.js`))
-        .pipe(sourceMaps.write('.'))
-        .pipe(gulp.dest('build')));
+gulp.task('watch-js', () => gulp.watch('src/main/js/**/*.js', 'build-js'));
+gulp.task('watch-css', () => gulp.watch('src/main/css/*.css', 'build-css'));
+gulp.task('watch', gulp.parallel('watch-js', 'watch-css'));
 
-gulp.task('prime-es6.js', async () => {
-  const bundle = await rollup({
-    input: 'src/main/js/Prime.js'
-  });
+gulp.task('default', gulp.parallel('minify-js', 'minify-css'));
 
-  await bundle.write({
-    file: `build/prime-es6${versionSuffix}.js`,
-    format: 'iife',
-    name: "Prime",
-    indent: '\t',
-    sourcemap: 'inline'
-  });
-});
+gulp.task('test', gulp.series('default', (done) => test(done, true)));
+gulp.task('fastTest', gulp.series('default', test));
 
-gulp.task('build-js', ['prime.js', 'prime-es6.js']);
-gulp.task('minify-js', ['prime-min.js', 'prime-es6-min.js']);
+function es5() {
+  return gulp.src(`build/prime-es6${versionSuffix}.js`)
+      .pipe(sourceMaps.init({loadMaps: true}))
+      .pipe(babel({
+        presets: [
+          ['@babel/env', {
+            targets: {
+              browsers: ["explorer >= 11"]
+            }
+          }]
+        ],
+        sourceType: "script"
+      }))
+      .pipe(rename(`prime${versionSuffix}.js`))
+      .pipe(sourceMaps.write())
+      .pipe(gulp.dest('build'));
+}
 
-gulp.task('build-css', () =>
-    gulp.src('./src/main/css/*.css')
-        .pipe(sourceMaps.init())
-        .pipe(concat(`prime${versionSuffix}.css`))
-        .pipe(sourceMaps.write())
-        .pipe(gulp.dest('./build')));
+function es5min() {
+  return gulp.src(`build/prime${versionSuffix}.js`)
+      .pipe(sourceMaps.init({loadMaps: true}))
+      .pipe(uglify())
+      .pipe(rename(`prime-min${versionSuffix}.js`))
+      .pipe(sourceMaps.write('.'))
+      .pipe(gulp.dest('build'));
+}
 
-gulp.task('minify-css', ['build-css'], () =>
-    gulp.src(`./build/prime${versionSuffix}.css`)
-        .pipe(sourceMaps.init({loadMaps: true}))
-        .pipe(css()) //also adds compatibility stuff.
-        .pipe(rename(`prime-min${versionSuffix}.css`))
-        .pipe(sourceMaps.write('.'))
-        .pipe(gulp.dest('build')));
+function es6min() {
+  return gulp.src(`build/prime-es6${versionSuffix}.js`)
+      .pipe(sourceMaps.init({loadMaps: true}))
+      .pipe(uglifyes())
+      .pipe(rename(`prime-es6-min${versionSuffix}.js`))
+      .pipe(sourceMaps.write('.'))
+      .pipe(gulp.dest('build'));
+}
 
-gulp.task('watch-js', () =>
-    gulp.watch('src/main/js/**/*.js', ['build-js']));
+function es6(cb) {
+  (async () => {
+    const bundle = await rollup({
+      input: 'src/main/js/Prime.js'
+    });
 
-gulp.task('watch-css', () =>
-    gulp.watch('src/main/css/*.css', ['build-css']));
+    await bundle.write({
+      file: `build/prime-es6${versionSuffix}.js`,
+      format: 'iife',
+      name: "Prime",
+      indent: '\t',
+      sourcemap: 'inline'
+    });
 
-gulp.task('watch', ['watch-js', 'watch-css'], () =>
-    console.log("Watching directories. Any changes will trigger a rebuild. Use CTRL + C to stop."));
+    cb();
+  })();
+}
 
-gulp.task('test', ['default'], (done) => test(done, true));
+function css() {
+  return gulp.src('./src/main/css/*.css')
+      .pipe(sourceMaps.init())
+      .pipe(concat(`prime${versionSuffix}.css`))
+      .pipe(sourceMaps.write())
+      .pipe(gulp.dest('./build'));
+}
 
-gulp.task('fastTest', ['default'], test);
-
-gulp.task('default', ['build-js', 'minify-js', 'build-css', 'minify-css']);
+function cssMin() {
+  return gulp.src(`./build/prime${versionSuffix}.css`)
+      .pipe(sourceMaps.init({loadMaps: true}))
+      .pipe(gulpCleanCSS()) //also adds compatibility stuff.
+      .pipe(rename(`prime-min${versionSuffix}.css`))
+      .pipe(sourceMaps.write('.'))
+      .pipe(gulp.dest('build'));
+}
 
 function test(callback, slow) {
   let func = async.each;
