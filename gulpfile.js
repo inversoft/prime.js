@@ -39,8 +39,8 @@ gulp.task('minify-js', gulp.series(es6, es5, gulp.parallel(es5min, es6min)));
 gulp.task('build-css', css);
 gulp.task('minify-css', gulp.series(css, cssMin));
 
-gulp.task('watch-js', () => gulp.watch('src/main/js/**/*.js', 'build-js'));
-gulp.task('watch-css', () => gulp.watch('src/main/css/*.css', 'build-css'));
+gulp.task('watch-js', () => gulp.watch(['src/main/js/**/*.js'], gulp.series(es6, es6)));
+gulp.task('watch-css', () => gulp.watch(['src/main/css/*.css'], gulp.series(css, cssMin)));
 gulp.task('watch', gulp.parallel('watch-js', 'watch-css'));
 
 gulp.task('default', gulp.parallel('minify-js', 'minify-css'));

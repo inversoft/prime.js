@@ -497,7 +497,7 @@ class MultipleSelect {
       If we allow dupes, always duplicate the option and append it to the end or the order will be a problem. The default multiselect doesn't support order)
        */
       if (this.options.allowDuplicates) {
-        this.addOption(option.getTextContent(), option.getTextContent(), id);
+        this.addOption(option.getValue(), option.getHTML(), id);
         option = MultipleSelect.findOptionWithId(id);
       }
       option.setSelected(true);
