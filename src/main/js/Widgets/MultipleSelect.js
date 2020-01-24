@@ -724,11 +724,14 @@ class MultipleSelect {
    * Called when the Searcher gets an event that causes a search result to be selected. This adds the word.
    */
   selectSearchResult(value) {
+
+    value = Utils.unescapeHTML(value); // In case the string has html escapes in it.
+
     // Add the custom option if there is one
     let option = this.findOptionWithText(value);
     if (option === null) {
-      this.addOption(value, value);
-      option = this.findOptionWithText(value);
+      this.addOption(value, Utils.escapeHTML(value));
+      option = this.findOptionWithValue(value); // The value will still be unescaped
     }
 
     this.selectOption(option);

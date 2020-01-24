@@ -73,6 +73,18 @@ const Utils = {
   },
 
   /**
+   * Reverses HTML escaping.
+   * @param string
+   * @returns {string}
+   */
+  unescapeHTML: function(string) {
+    // Neat trick using a textarea
+    let txt = document.createElement('textarea');
+    txt.innerHTML = string;
+    return txt.value;
+  },
+
+  /**
    * Returns all of the properties for this object and all of its
    * inherited properties from parent objects.
    *
