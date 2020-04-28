@@ -1,5 +1,9 @@
 prime.js Changes
 
+Changes in 1.4.3
+
+ * Fall back to title value if value is not specified for data-tooltip
+
 Changes in 1.3.1
  * Fix. Issues with Effects.SlideOpen
  * Fix. Add missing mouse events mouseenter|mouseleave to mouseEventsRegexp

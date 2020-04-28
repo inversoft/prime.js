@@ -71,7 +71,7 @@ class Tooltip {
    * @returns {Tooltip} This.
    */
   show() {
-    const text = this.element.getDataSet()[this.options.dataName];
+    const text = this.element.getDataSet()[this.options.dataName] || this.element.getAttribute('title');
     const zIndex = this.element.getRelativeZIndex();
     let classNames = this.options.className + ' ' + this.element.getTagName().toLocaleLowerCase();
     if (this.options.additionalClasses !== null) {
