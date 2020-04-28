@@ -47,7 +47,7 @@ target(name: "setup", description: "installs gulp") {
   proc.waitFor()
 }
 
-target(name: "int", description: "Releases a local integration build of the project", dependsOn: ["test"]) {
+target(name: "int", description: "Releases a local integration build of the project") {
   def which = "which gulp".execute()
   which.waitFor()
   if (which.exitValue() != 0) {
