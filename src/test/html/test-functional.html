@@ -29,6 +29,7 @@
   <link rel="stylesheet" href="../../main/css/Widgets.InProgress.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.MultipleSelect.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Overlay.css"/>
+  <link rel="stylesheet" href="../../main/css/Widgets.Reorder.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.SideMenu.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.SplitButton.css"/>
   <link rel="stylesheet" href="../../main/css/Widgets.Tabs.css"/>
@@ -243,6 +244,12 @@
         Prime.Utils.stopEvent(event);
         alert('Worked');
       });
+
+      // Re-orderable table
+      var reOrderableTableElement = Prime.Document.queryFirst('.re-orderable-table');
+      new Prime.Widgets.Reorder(reOrderableTableElement)
+          .withItemSelector('tbody tr')
+          .initialize();
     });
   </script>
   <style>
@@ -608,6 +615,53 @@ resultant pleasure?"
         <td data-sort-value="1250.05">$1,250.05</td>
         <td>View</td>
       </tr>
+      </tbody>
+    </table>
+
+    <h3>Re-orderable Table</h3>
+    <table data-sortable="false" class="re-orderable-table">
+      <thead>
+        <tr>
+          <th></th>
+          <th>Company</th>
+          <th>Revenue</th>
+          <th class="action">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div class="prime-reorder">
+              <a  href="#" class="button up" data-tooltip="Move up"></a>
+              <a  href="#" class="button down" data-tooltip="Move down"></a>
+            </div>
+          </td>
+          <td>Acme Corp</td>
+          <td>$42 Million</td>
+          <td>Edit</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="prime-reorder">
+              <a  href="#" class="button up" data-tooltip="Move up"></a>
+              <a  href="#" class="button down" data-tooltip="Move down"></a>
+            </div>
+          </td>
+          <td>Umbrella Corp</td>
+          <td>$1 Million</td>
+          <td>Delete</td>
+        </tr>
+        <tr>
+          <td>
+            <div class="prime-reorder">
+              <a  href="#" class="button up" data-tooltip="Move up"></a>
+              <a  href="#" class="button down" data-tooltip="Move down"></a>
+            </div>
+          </td>
+          <td>Wayne Industries</td>
+          <td>$42 Billion</td>
+          <td>View</td>
+        </tr>
       </tbody>
     </table>
   </div>

@@ -22,6 +22,7 @@ export {HTMLDialog} from "./HTMLDialog.js";
 export {InProgress} from "./InProgress.js";
 export {MultipleSelect} from "./MultipleSelect.js";
 export {Overlay} from "./Overlay.js";
+export {Reorder} from "./Reorder.js";
 export {Searcher} from "./Searcher.js";
 export {SideMenu} from "./SideMenu.js";
 export {SplitButton} from "./SplitButton.js";

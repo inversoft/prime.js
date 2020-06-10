@@ -1,0 +1,39 @@
+
+.prime-reorder {
+  border-radius: 2px;
+  box-shadow: 0 0 2px 0 rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+.prime-reorder a {
+  border-radius: 0;
+  color: #3998DB;
+  display: inline-block;
+  padding: 7px;
+  font-size: 14px;
+}
+
+.prime-reorder a.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.prime-reorder a.up {
+  border-right: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.prime-reorder a.up:before {
+  content: '>';
+  display: inline-block;
+  transform: rotate(-90deg);
+}
+
+.prime-reorder a.down {
+  padding-left: 4px !important;
+}
+
+.prime-reorder a.down:before {
+  content: '>';
+  display: inline-block;
+  transform: rotate(90deg);
+}
