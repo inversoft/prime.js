@@ -1,5 +1,9 @@
 prime.js Changes
 
+Changes in 1.5.0
+
+ * Add Reorder widget
+
 Changes in 1.4.3
 
  * Fall back to title value if value is not specified for data-tooltip
