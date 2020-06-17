@@ -46,6 +46,36 @@ class Reorder {
   }
 
   /**
+   * Move the item down.
+   *
+   * @param item {PrimeElement|Element} the item to move.
+   * @returns {Reorder} This.
+   */
+  moveDown(item) {
+    if (item !== null) {
+      item.getNextSibling().insertBefore(item);
+    }
+
+    this._refreshButtonStates();
+    return this;
+  }
+
+  /**
+   * Move the item up.
+   *
+   * @param item {PrimeElement|Element} the item to move.
+   * @returns {Reorder} This.
+   */
+  moveUp(item) {
+    if (item !== null) {
+      item.getPreviousSibling().insertAfter(item);
+    }
+
+    this._refreshButtonStates();
+    return this;
+  }
+
+  /**
    * Sets the selector which is used to identify the re-orderable items in the container.
    *
    * @param itemSelector {String} The item selector.
@@ -75,6 +105,17 @@ class Reorder {
    */
   withMoveUpSelector(moveUpSelector) {
     this.options.moveUpSelector = moveUpSelector;
+    return this;
+  }
+
+  /**
+   * Sets a callback function to be used after an elelment changes order.
+   *
+   * @param reorderCallback {function} The optional callback function to call after an element changes order.
+   * @returns {Reorder} This.
+   */
+  withReorderCallback(reorderCallback) {
+    this.options.reorderCallback = reorderCallback;
     return this;
   }
 
@@ -113,11 +154,7 @@ class Reorder {
 
     const target = new PrimeElement(event.target);
     const item = target.queryUp(this.options.itemSelector);
-    if (item !== null) {
-      item.getNextSibling().insertBefore(item);
-    }
-
-    this._refreshButtonStates();
+    this.moveDown(item);
   }
 
   /**
@@ -131,11 +168,7 @@ class Reorder {
 
     const target = new PrimeElement(event.target);
     const item = target.queryUp(this.options.itemSelector);
-    if (item !== null) {
-      item.getPreviousSibling().insertAfter(item);
-    }
-
-    this._refreshButtonStates();
+    this.moveUp(item);
   }
 
   /**
@@ -145,8 +178,9 @@ class Reorder {
   _refreshButtonStates() {
     const items = this.element.query(this.options.itemSelector);
     if (items.length > 0) {
-      items.each(function(element) {
+      items.each(function(element, index) {
         element.query(this.options.moveDownSelector + ',' + this.options.moveUpSelector).removeClass('disabled');
+        element.setDataAttribute('index', index);
       }.bind(this));
 
       items[0].queryFirst(this.options.moveUpSelector).addClass('disabled');
@@ -163,7 +197,8 @@ class Reorder {
     this.options = {
       itemSelector: 'data-item',
       moveDownSelector: 'a.down',
-      moveUpSelector: 'a.up'
+      moveUpSelector: 'a.up',
+      reorderCallback: null
     };
 
     const userOptions = Utils.dataSetToOptions(this.element);
