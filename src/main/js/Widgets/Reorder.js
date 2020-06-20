@@ -33,6 +33,17 @@ class Reorder {
   }
 
   /**
+   * Destroy this widget.
+   *
+   * @returns {Reorder} This.
+   */
+  destroy() {
+    this.element.removeEventListener('click', this._handleMoveDownClick);
+    this.element.removeEventListener('click', this._handleMoveUpClick);
+    return this;
+  }
+
+  /**
    * Initializes the widget by attaching event listeners to the element.
    *
    * @returns {Reorder} This.
@@ -136,6 +147,16 @@ class Reorder {
         this.options[option] = options[option];
       }
     }
+    return this;
+  }
+
+  /**
+   * Redraw the state of this widget. This may be called if you have added additional items to be re-ordered.
+   *
+   * @returns {Reorder} This.
+   */
+  redraw() {
+    this._refreshButtonStates();
     return this;
   }
 
