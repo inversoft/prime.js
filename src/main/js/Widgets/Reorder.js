@@ -68,6 +68,11 @@ class Reorder {
     }
 
     this._refreshButtonStates();
+
+    if (this.options.reorderCallback) {
+      this.options.reorderCallback(this, item);
+    }
+
     return this;
   }
 
@@ -83,6 +88,11 @@ class Reorder {
     }
 
     this._refreshButtonStates();
+
+    if (this.options.reorderCallback) {
+      this.options.reorderCallback(this, item);
+    }
+
     return this;
   }
 
@@ -120,9 +130,10 @@ class Reorder {
   }
 
   /**
-   * Sets a callback function to be used after an elelment changes order.
+   * Sets a callback function to be used after an element changes order.
    *
-   * @param reorderCallback {function} The optional callback function to call after an element changes order.
+   * @param reorderCallback {function} The optional callback function to call after an element changes order. This
+   *        function will be provided with the item that just moved.
    * @returns {Reorder} This.
    */
   withReorderCallback(reorderCallback) {

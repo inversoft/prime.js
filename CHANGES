@@ -1,5 +1,9 @@
 prime.js Changes
 
+Changes in 1.5.2
+
+ * Bug fix in Reorder widget. Callback was not being called.
+
 Changes in 1.5.1
 
  * Improvements to the Reorder widget
