@@ -496,7 +496,7 @@ class PrimeElement {
    * Returns the data value if it exists, otherwise returns null.
    *
    * @param {string} name The attribute name.
-   * @returns {string} This attribute value or null.
+   * @returns {?string} This attribute value or null.
    */
   getDataAttribute(name) {
     return this.getDataSet()[name] || null;
@@ -506,13 +506,14 @@ class PrimeElement {
    * Get the first child element of this Element, optionally filtered using the optional selector.
    *
    * @param {string} [selector] The selector. Optional.
-   * @returns {PrimeElement} The first child element or null if the element has no children or a selector was provided and nothing matched the selector..
+   * @returns {?PrimeElement} The first child element or null if the element has no children or a selector was provided and nothing matched the selector..
    */
   getFirstChild(selector) {
     const lastChild = this.getChildren(selector)[0];
     if (!Utils.isDefined(lastChild)) {
       return null;
     }
+
     return lastChild;
   }
 
@@ -552,13 +553,14 @@ class PrimeElement {
    * Get the last child element of this Element, optionally filtered using the optional selector.
    *
    * @param {string} [selector] The selector. Optional.
-   * @returns {PrimeElement} The last child element or null if the element has no children or a selector was provided and nothing matched the selector..
+   * @returns {?PrimeElement} The last child element or null if the element has no children or a selector was provided and nothing matched the selector..
    */
   getLastChild(selector) {
     const elementList = this.getChildren(selector);
     if (elementList.length > 0) {
       return elementList[elementList.length - 1];
     }
+
     return null;
   }
 
@@ -570,7 +572,7 @@ class PrimeElement {
   }
 
   /**
-   * @returns {PrimeElement} This elements next sibling or null.
+   * @returns {?PrimeElement} This elements next sibling or null.
    */
   getNextSibling() {
     let sibling = this.domElement.nextSibling;
@@ -676,7 +678,7 @@ class PrimeElement {
   /**
    * Returns this element's parent as a PrimeElement.
    *
-   * @returns {PrimeElement} This element's parent or null if there is no parent
+   * @returns {?PrimeElement} This element's parent or null if there is no parent
    */
   getParent() {
     if (Utils.isDefined(this.domElement.parentElement)) {
@@ -687,7 +689,7 @@ class PrimeElement {
   }
 
   /**
-   * @returns {PrimeElement} This elements previous sibling or null.
+   * @returns {?PrimeElement} This elements previous sibling or null.
    */
   getPreviousSibling() {
     let sibling = this.domElement.previousSibling;
