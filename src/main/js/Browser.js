@@ -147,7 +147,7 @@ const Browser = {
     {
       string: navigator.platform,
       subString: "Mac",
-      identity: "Mac"
+      identity: "macOS"
     },
     {
       string: navigator.userAgent,
