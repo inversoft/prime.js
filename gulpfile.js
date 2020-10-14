@@ -53,7 +53,7 @@ function es5() {
       .pipe(sourceMaps.init({loadMaps: true}))
       .pipe(babel({
         presets: [
-          ['@babel/env', {
+            ['@babel/env', {
             targets: {
               browsers: ["explorer >= 11"]
             }

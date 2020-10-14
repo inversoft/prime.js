@@ -209,15 +209,37 @@ class Reorder {
    */
   _refreshButtonStates() {
     const items = this.element.query(this.options.itemSelector);
-    if (items.length > 0) {
-      items.each(function(element, index) {
-        element.query(this.options.moveDownSelector + ',' + this.options.moveUpSelector).removeClass('disabled');
-        element.setDataAttribute('index', index);
-      }.bind(this));
-
-      items[0].queryFirst(this.options.moveUpSelector).addClass('disabled');
-      items[items.length - 1].queryFirst(this.options.moveDownSelector).addClass('disabled');
+    if (items.length === 0) {
+      return;
     }
+
+    if (items.length === 1) {
+      // Only one item, all buttons are disabled
+      items[0].queryFirst(this.options.moveDownSelector).addClass('disabled');
+      items[0].queryFirst(this.options.moveUpSelector).addClass('disabled');
+      items[0].setDataAttribute('index', 0);
+      return;
+    }
+
+    // More than one item
+    items.each(function(element, index) {
+      if (index === 0) {
+        // First element
+        element.queryFirst(this.options.moveUpSelector).addClass('disabled');
+        element.queryFirst(this.options.moveDownSelector).removeClass('disabled');
+      } else if (index === (items.length - 1)) {
+        // Last element
+        element.queryFirst(this.options.moveUpSelector).removeClass('disabled');
+        element.queryFirst(this.options.moveDownSelector).addClass('disabled');
+      } else {
+        // Enable these up and down buttons
+        element.queryFirst(this.options.moveDownSelector).removeClass('disabled');
+        element.queryFirst(this.options.moveUpSelector).removeClass('disabled');
+      }
+
+      // Set the index data attribute
+      element.setDataAttribute('index', index);
+    }.bind(this));
   }
 
   /**
