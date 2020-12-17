@@ -254,9 +254,9 @@ class DateTimePicker {
 
     // Setup year dropdown
     html = '<div class="years">';
-    const startYear = this.date.getFullYear() - 10;
-    const endYear = this.date.getFullYear() + 10;
-    for (let i = startYear; i < endYear; i++) {
+    const startYear = this.date.getFullYear() - 100;
+    const endYear = this.date.getFullYear();
+    for (let i = startYear; i <= endYear; i++) {
       html += `<div data-year="${i}">${i}</div>`;
     }
     html += '</div>';
