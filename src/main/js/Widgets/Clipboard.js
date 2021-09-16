@@ -22,6 +22,20 @@ import {Utils} from "../Utils.js";
 
 class Clipboard {
   /**
+   * Description, todo's, ramblings - BGUY
+   *
+   * 1. Currently, this widget binds to any element that has a 'data-copy' attribute.
+   *    If the element is a BUTTON, data-copy must have a value that is used as a target. The target indicates the Id
+   *    of the element to copy.
+   *    Else, when you 'mouseenter' over the element containing data-copy, innerHTML is selected.
+   *    The idea here is that we can leverage keyboard-driven copy, ie. you hover over text and all you have to do is press
+   *    command+C
+   *    I'm sure there are holes to fill, but this is what I was playing with.
+   * 2. I'm referencing document directly: is there a more Prime'y way to do that?
+   * 3. What are some other glaring "bad-practice" things am I doing?
+   */
+
+  /**
    * Constructs a new Clipboard object for the given element.
    *
    *
@@ -89,7 +103,7 @@ class Clipboard {
    */
   _handleMouseEnter() {
     if(this.element.domElement.innerHTML === "") {
-      throw new TypeError('You can only use [data-copy] attribute in tags that have innerHTML');
+      throw new TypeError('You can only use [data-copy] attribute in input tags or tags that have innerHTML');
     }
     this._selectTextToCopy(this.element)
   }
@@ -123,6 +137,10 @@ class Clipboard {
   _handleButtonClick() {
     // retrieve the target element with text to copy
     let copyId = this.button.getAttribute('data-copy');
+
+    if(copyId == null) {
+      throw new Error('A button with [data-copy] attribute must have a value');
+    }
     let target = PrimeDocument.queryById(copyId);
 
     // get the text that we want to copy to the clipboard
