@@ -207,8 +207,12 @@
 
       Prime.Document.queryById('in-progress').addEventListener('click', function() {
         new Prime.Widgets.InProgress(Prime.Document.queryById('scroll-me'))
-            .withStartFunction(function() {console.log("In Progress!")})
-            .withEndFunction(function() {console.log("In Progress!")})
+            .withStartFunction(function() {
+              console.log("In Progress!")
+            })
+            .withEndFunction(function() {
+              console.log("In Progress!")
+            })
             .withMinimumTime(3000)
             .open()
             .close();
@@ -237,6 +241,11 @@
       Prime.Document.query('.prime-split-button').each(function(element) {
         new Prime.Widgets.SplitButton(element)
             .withLocalStorageKey('prime-split-button')
+            .initialize();
+      });
+
+      Prime.Document.query('[data-copy]').each(function(element) {
+        new Prime.Widgets.Clipboard(element)
             .initialize();
       });
 
@@ -285,9 +294,12 @@
     </li>
   </ul>
 </nav>
-<div style="position: absolute; top: 25px; right: 50px; width: 20px; height: 20px; background-color: gray;" data-tooltip="Tooltip!"></div>
-<div style="position: absolute; top: 35px; right: 10px; width: 20px; height: 20px; background-color: gray;" data-tooltip="Tooltip!"></div>
+<div style="position: absolute; top: 25px; right: 50px; width: 20px; height: 20px; background-color: gray;"
+     data-tooltip="Tooltip!"></div>
+<div style="position: absolute; top: 35px; right: 10px; width: 20px; height: 20px; background-color: gray;"
+     data-tooltip="Tooltip!"></div>
 
+Prime Split Button
 <div style="text-align: right; padding-bottom: 20px;">
   <div class="prime-split-button">
     <a class="gray button square" href="#"><i class="fa fa-spinner fa-pulse"></i> Loading...</a>
@@ -303,6 +315,7 @@
     </div>
   </div>
 </div>
+
 
 <div class="dismissable">
   Dismiss me! <a href="#">X</a>
@@ -339,7 +352,53 @@
       <h2>HTML dialog header <a href="#" data-dialog-role="close-button">X</a></h2>
     </header>
     <main>
-      This is an HTML dialog.<p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p><p>more text</p>
+      This is an HTML dialog.<p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
+      <p>more text</p>
     </main>
     <footer>
       <a href="#" data-dialog-role="close-button">Close</a>
@@ -463,7 +522,9 @@
     </form>
   </div>
   <div>
-    <div id="draggable" style="position: fixed; background: #ffffff; right: 50px; width: 200px; height: 200px; border: 1px solid black; box-shadow: 3px 3px 3px #000">Drag me please.<br>
+    <div id="draggable"
+         style="position: fixed; background: #ffffff; right: 50px; width: 200px; height: 200px; border: 1px solid black; box-shadow: 3px 3px 3px #000">
+      Drag me please.<br>
       <button id="destroy-draggable">Destroy</button>
     </div>
   </div>
@@ -471,7 +532,8 @@
     <button id="scroll-up">Scroll Up</button>
     <button id="scroll-down">Scroll Down</button>
     <button id="in-progress">In Progress</button>
-    <div id="scroll-me" style="margin-bottom: 100px; padding: 5px; overflow: scroll; height: 300px; border: 1px solid black;">
+    <div id="scroll-me"
+         style="margin-bottom: 100px; padding: 5px; overflow: scroll; height: 300px; border: 1px solid black;">
 <pre>
   "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
 incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
@@ -541,14 +603,14 @@ resultant pleasure?"
     <h3>Sortable Table</h3>
     <table>
       <thead>
-        <tr>
-          <th><input type="checkbox"></th>
-          <th>Foo</th>
-          <th>Bar</th>
-          <th data-sort-type="number">Number</th>
-          <th data-sort-type="number">Currency</th>
-          <th data-sortable="false" class="action">Action</th>
-        </tr>
+      <tr>
+        <th><input type="checkbox"></th>
+        <th>Foo</th>
+        <th>Bar</th>
+        <th data-sort-type="number">Number</th>
+        <th data-sort-type="number">Currency</th>
+        <th data-sortable="false" class="action">Action</th>
+      </tr>
       </thead>
       <tbody>
       <tr>
@@ -621,47 +683,47 @@ resultant pleasure?"
     <h3>Re-orderable Table</h3>
     <table data-sortable="false" class="re-orderable-table">
       <thead>
-        <tr>
-          <th></th>
-          <th>Company</th>
-          <th>Revenue</th>
-          <th class="action">Action</th>
-        </tr>
+      <tr>
+        <th></th>
+        <th>Company</th>
+        <th>Revenue</th>
+        <th class="action">Action</th>
+      </tr>
       </thead>
       <tbody>
-        <tr>
-          <td>
-            <div class="prime-reorder">
-              <a  href="#" class="button up" data-tooltip="Move up"></a>
-              <a  href="#" class="button down" data-tooltip="Move down"></a>
-            </div>
-          </td>
-          <td>Acme Corp</td>
-          <td>$42 Million</td>
-          <td>Edit</td>
-        </tr>
-        <tr>
-          <td>
-            <div class="prime-reorder">
-              <a  href="#" class="button up" data-tooltip="Move up"></a>
-              <a  href="#" class="button down" data-tooltip="Move down"></a>
-            </div>
-          </td>
-          <td>Umbrella Corp</td>
-          <td>$1 Million</td>
-          <td>Delete</td>
-        </tr>
-        <tr>
-          <td>
-            <div class="prime-reorder">
-              <a  href="#" class="button up" data-tooltip="Move up"></a>
-              <a  href="#" class="button down" data-tooltip="Move down"></a>
-            </div>
-          </td>
-          <td>Wayne Industries</td>
-          <td>$42 Billion</td>
-          <td>View</td>
-        </tr>
+      <tr>
+        <td>
+          <div class="prime-reorder">
+            <a href="#" class="button up" data-tooltip="Move up"></a>
+            <a href="#" class="button down" data-tooltip="Move down"></a>
+          </div>
+        </td>
+        <td>Acme Corp</td>
+        <td>$42 Million</td>
+        <td>Edit</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="prime-reorder">
+            <a href="#" class="button up" data-tooltip="Move up"></a>
+            <a href="#" class="button down" data-tooltip="Move down"></a>
+          </div>
+        </td>
+        <td>Umbrella Corp</td>
+        <td>$1 Million</td>
+        <td>Delete</td>
+      </tr>
+      <tr>
+        <td>
+          <div class="prime-reorder">
+            <a href="#" class="button up" data-tooltip="Move up"></a>
+            <a href="#" class="button down" data-tooltip="Move down"></a>
+          </div>
+        </td>
+        <td>Wayne Industries</td>
+        <td>$42 Billion</td>
+        <td>View</td>
+      </tr>
       </tbody>
     </table>
   </div>
@@ -669,7 +731,7 @@ resultant pleasure?"
   <div id="slide-tests">
     <label><input type="checkbox" id="slide-tests-short-checkbox"> Toggle</label>
     <div id="slide-tests-short" class="prime-slide-open">
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
       incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
       exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
       irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
@@ -679,7 +741,7 @@ resultant pleasure?"
 
     <label><input type="checkbox" id="slide-tests-long-checkbox"> Toggle</label>
     <div id="slide-tests-long" class="prime-slide-open">
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
       incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
       exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
       irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
@@ -743,7 +805,7 @@ resultant pleasure?"
 
     <label><input type="checkbox" id="slide-tests-open-checkbox"> Toggle</label>
     <div id="slide-tests-open" class="prime-slide-open open">
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor
       incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
       exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
       irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
@@ -805,6 +867,39 @@ resultant pleasure?"
       resultant pleasure?"
     </div>
   </div>
+
+  <div>
+    Copy an input element
+    <form>
+      <input id="txt-field" type="text" name="txt-field" size="40" value="4dsdr-e2sers-23jjfjsk-slaa">
+      <button type="button" data-copy="txt-field">Copy UUID</button>
+    </form>
+
+    <span id="span-field" data-copy>My preexisting span</span>
+    <span data-copy>My preexisting span 2</span>
+    <span data-copy data-copy-value="My pre-existing span 3">My preexisting...</span>
+
+    <table>
+      <tbody>
+        <tr>
+          <td id="table-field">This is a table cell</td>
+          <td><button type="button" data-copy="table-field">Copy TD</button></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <dl>
+      <dt>Beast of Bodmin</dt>
+      <dd data-copy>A large feline inhabiting Bodmin Moor.</dd>
+
+      <dt>Morgawr</dt>
+      <dd data-copy>A sea serpent.</dd>
+
+      <dt>Owlman</dt>
+      <dd data-copy>A giant owl-like creature.</dd>
+    </dl>
+  </div>
+
 </div>
 </body>
 </html>

@@ -15,6 +15,7 @@
  */
 
 export {AJAXDialog} from "./AJAXDialog.js";
+export {Clipboard} from "./Clipboard.js";
 export {DateTimePicker} from "./DateTimePicker.js";
 export {Dismissable} from "./Dismissable.js";
 export {Draggable} from "./Draggable.js";
