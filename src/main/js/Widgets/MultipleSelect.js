@@ -502,6 +502,11 @@ class MultipleSelect {
       }
       option.setSelected(true);
 
+      // Preserve the order of selected options.
+      const parent = option.domElement.parentNode;
+      option.removeFromDOM();
+      parent.appendChild(option.domElement);
+
       const li = PrimeDocument.newElement('<li/>')
           .setAttribute('value', option.getValue())
           .setId(id)
