@@ -502,10 +502,12 @@ class MultipleSelect {
       }
       option.setSelected(true);
 
-      // Preserve the order of selected options.
-      const parent = option.domElement.parentNode;
-      option.removeFromDOM();
-      parent.appendChild(option.domElement);
+      // Preserve the order of selected options
+      if (this.options.selectedOptions) {
+        const parent = option.domElement.parentNode;
+        option.removeFromDOM();
+        parent.appendChild(option.domElement);
+      }
 
       const li = PrimeDocument.newElement('<li/>')
           .setAttribute('value', option.getValue())
@@ -618,6 +620,17 @@ class MultipleSelect {
    */
   withCustomAddEnabled(enabled) {
     this.options.customAddEnabled = enabled;
+    return this;
+  }
+
+  /**
+   * Sets selected options in the order that they were set to selected
+   *
+   * @param {string[]} selections The selected options.
+   * @returns {MultipleSelect} This.
+   */
+  withPreserveSelectionOrder(selections) {
+    this.options.selectedOptions = selections;
     return this;
   }
 
@@ -865,13 +878,33 @@ class MultipleSelect {
         .initialize();
 
     // Add the selected options
+    const orderedOptions = [];
     let hasSelectedOptions = false;
     const options = this.element.getOptions();
     for (let i = 0; i < options.length; i++) {
       const option = options[i];
       if (option.isSelected()) {
-        this.selectOption(option);
+        if (this.options.selectedOptions) {
+          orderedOptions.push({
+            opt: option,
+            order: this.options.selectedOptions.indexOf(option.getValue())
+          });
+        } else {
+          this.selectOption(option);
+        }
         hasSelectedOptions = true;
+      }
+    }
+
+    // Sort the selected options in the order that they were received
+    if (this.options.selectedOptions) {
+      orderedOptions.sort(function(opt1, opt2) {
+        return opt1.order > opt2.order ? 1 : -1;
+      });
+
+      // Add ordered selected options to the display container
+      for (let i = 0; i < orderedOptions.length; i++) {
+        this.selectOption(orderedOptions[i].opt);
       }
     }
 
@@ -902,6 +935,7 @@ class MultipleSelect {
       customAddLabel: 'Add Custom Value: ',
       errorClass: null,
       noSearchResultsLabel: 'No Matches For: ',
+      selectedOptions: null,
       placeholder: 'Choose',
       removeIcon: 'X',
       searchFunction: Searcher.selectSearchFunction

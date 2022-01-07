@@ -30,6 +30,14 @@ describe('MultipleSelect class tests', function() {
     this.multipleSelect.selectOptionWithValue('three');
     this.multipleSelect.searcher.closeSearchResults();
 
+    // Preserve order of existing options multi-select
+    this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered'))
+        .withPlaceholder('')
+        .withCustomAddEnabled(false)
+        .withPreserveSelectionOrder(['four', 'two'])
+        .initialize();
+    this.multipleSelectOrdered.searcher.closeSearchResults();
+
     this.multipleSelectCustomAddDisabled = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-custom-add-disabled'))
         .withPlaceholder('Choose:')
         .withCustomAddEnabled(false)
@@ -198,6 +206,39 @@ describe('MultipleSelect class tests', function() {
     chai.assert.isFalse(displayOptions[0].hasClass('selected'));
     chai.assert.equal(displayOptions[1].getId(), 'multiple-select-option-three');
     chai.assert.isTrue(displayOptions[1].hasClass('selected'));
+  });
+
+  it('preservesOrderOfSelectedOptions', function() {
+    let select = this.multipleSelectOrdered.element.domElement;
+    chai.assert.equal(select.length, 4);
+    chai.assert.equal(select.options[0].value, 'one');
+    chai.assert.isFalse(select.options[0].selected);
+    chai.assert.equal(select.options[1].value, 'three');
+    chai.assert.isFalse(select.options[1].selected);
+    chai.assert.equal(select.options[2].value, 'four');
+    chai.assert.isTrue(select.options[2].selected);
+    chai.assert.equal(select.options[3].value, 'two');
+    chai.assert.isTrue(select.options[3].selected);
+
+    let displayOptions = Prime.Document.query('#multiple-select-ordered-display ul.option-list li');
+    chai.assert.equal(displayOptions.length, 3);
+    chai.assert.equal(displayOptions[0].getId(), 'multiple-select-ordered-option-four');
+    chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
+    chai.assert.equal(displayOptions[1].getId(), 'multiple-select-ordered-option-two');
+    chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
+
+    // Add an additional selected option to be appended to the end
+    this.multipleSelectOrdered.addOption('five', 'Five');
+    this.multipleSelectOrdered.selectOptionWithValue('five');
+
+    displayOptions = Prime.Document.query('#multiple-select-ordered-display ul.option-list li');
+    chai.assert.equal(displayOptions.length, 4);
+    chai.assert.equal(displayOptions[0].getId(), 'multiple-select-ordered-option-four');
+    chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
+    chai.assert.equal(displayOptions[1].getId(), 'multiple-select-ordered-option-two');
+    chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
+    chai.assert.equal(displayOptions[2].getId(), 'multiple-select-ordered-option-five');
+    chai.assert.equal(displayOptions[2].getAttribute('value'), 'five');
   });
 
   it('removeHighlightedOption', function() {
