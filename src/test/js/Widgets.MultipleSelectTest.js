@@ -241,6 +241,28 @@ describe('MultipleSelect class tests', function() {
     chai.assert.equal(displayOptions[2].getAttribute('value'), 'five');
   });
 
+  it('preservesOrderOfSelectedOptions-empty-array', function() {
+    // An empty array indicates to preserve order but with no initial parameter order
+    this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered'))
+        .withPlaceholder('')
+        .withCustomAddEnabled(false)
+        .withPreserveSelectionOrder([])
+        .initialize();
+    this.multipleSelectOrdered.searcher.closeSearchResults();
+
+    let select = this.multipleSelectOrdered.element.domElement;
+    chai.assert.equal(select.length, 5);
+    chai.assert.equal(select.options[0].value, 'one');
+    chai.assert.isFalse(select.options[0].selected);
+    chai.assert.equal(select.options[1].value, 'three');
+    chai.assert.isFalse(select.options[1].selected);
+    // Two is now the first selected item since we did not pass in the order
+    chai.assert.equal(select.options[2].value, 'two');
+    chai.assert.isTrue(select.options[2].selected);
+    chai.assert.equal(select.options[3].value, 'four');
+    chai.assert.isTrue(select.options[3].selected);
+  });
+
   it('removeHighlightedOption', function() {
     this.multipleSelect.highlightOptionForUnselect(); // Highlight Three
     chai.assert.isTrue(this.multipleSelect.isLastOptionHighlightedForUnselect());
