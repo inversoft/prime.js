@@ -899,7 +899,8 @@ class MultipleSelect {
     // Sort the selected options in the order that they were received
     if (this.options.selectedOptions) {
       orderedOptions.sort(function(opt1, opt2) {
-        return opt1.order > opt2.order ? 1 : -1;
+        return opt1.order === opt2.order ? 0 :
+            opt1.order > opt2.order ? 1 : -1;
       });
 
       // Add ordered selected options to the display container

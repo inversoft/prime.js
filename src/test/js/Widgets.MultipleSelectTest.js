@@ -30,14 +30,6 @@ describe('MultipleSelect class tests', function() {
     this.multipleSelect.selectOptionWithValue('three');
     this.multipleSelect.searcher.closeSearchResults();
 
-    // Preserve order of existing options multi-select
-    this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered'))
-        .withPlaceholder('')
-        .withCustomAddEnabled(false)
-        .withPreserveSelectionOrder(['four', 'two'])
-        .initialize();
-    this.multipleSelectOrdered.searcher.closeSearchResults();
-
     this.multipleSelectCustomAddDisabled = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-custom-add-disabled'))
         .withPlaceholder('Choose:')
         .withCustomAddEnabled(false)
@@ -208,59 +200,86 @@ describe('MultipleSelect class tests', function() {
     chai.assert.isTrue(displayOptions[1].hasClass('selected'));
   });
 
-  it('preservesOrderOfSelectedOptions', function() {
-    let select = this.multipleSelectOrdered.element.domElement;
-    chai.assert.equal(select.length, 4);
-    chai.assert.equal(select.options[0].value, 'one');
-    chai.assert.isFalse(select.options[0].selected);
-    chai.assert.equal(select.options[1].value, 'three');
-    chai.assert.isFalse(select.options[1].selected);
-    chai.assert.equal(select.options[2].value, 'four');
-    chai.assert.isTrue(select.options[2].selected);
-    chai.assert.equal(select.options[3].value, 'two');
-    chai.assert.isTrue(select.options[3].selected);
+  context('withPreserveSelectionOrder', function() {
+    beforeEach(function() {
+      this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered'))
+          .withPlaceholder('')
+          .withCustomAddEnabled(false)
+          .withPreserveSelectionOrder(['four', 'two', 'three'])
+          .initialize();
+      this.multipleSelectOrdered.searcher.closeSearchResults();
+    });
 
-    let displayOptions = Prime.Document.query('#multiple-select-ordered-display ul.option-list li');
-    chai.assert.equal(displayOptions.length, 3);
-    chai.assert.equal(displayOptions[0].getId(), 'multiple-select-ordered-option-four');
-    chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
-    chai.assert.equal(displayOptions[1].getId(), 'multiple-select-ordered-option-two');
-    chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
+    it('appends selected options in order to the end of the option list', function() {
+      let select = this.multipleSelectOrdered.element.domElement;
+      chai.assert.equal(select.length, 5);
+      chai.assert.equal(select.options[0].value, 'one');
+      chai.assert.isFalse(select.options[0].selected);
+      chai.assert.equal(select.options[1].value, 'five');
+      chai.assert.isFalse(select.options[1].selected);
+      chai.assert.equal(select.options[2].value, 'four');
+      chai.assert.isTrue(select.options[2].selected);
+      chai.assert.equal(select.options[3].value, 'two');
+      chai.assert.isTrue(select.options[3].selected);
+      chai.assert.equal(select.options[4].value, 'three');
+      chai.assert.isTrue(select.options[4].selected);
+    });
 
-    // Add an additional selected option to be appended to the end
-    this.multipleSelectOrdered.addOption('five', 'Five');
-    this.multipleSelectOrdered.selectOptionWithValue('five');
+    it('includes selected options, in order, in multiselect display', function() {
+      let displayOptions = Prime.Document.query('#multiple-select-ordered-display ul.option-list li');
+      chai.assert.equal(displayOptions.length, 4);
+      chai.assert.equal(displayOptions[0].getId(), 'multiple-select-ordered-option-four');
+      chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
+      chai.assert.equal(displayOptions[1].getId(), 'multiple-select-ordered-option-two');
+      chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
+      chai.assert.equal(displayOptions[2].getId(), 'multiple-select-ordered-option-three');
+      chai.assert.equal(displayOptions[2].getAttribute('value'), 'three');
+    });
 
-    displayOptions = Prime.Document.query('#multiple-select-ordered-display ul.option-list li');
-    chai.assert.equal(displayOptions.length, 4);
-    chai.assert.equal(displayOptions[0].getId(), 'multiple-select-ordered-option-four');
-    chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
-    chai.assert.equal(displayOptions[1].getId(), 'multiple-select-ordered-option-two');
-    chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
-    chai.assert.equal(displayOptions[2].getId(), 'multiple-select-ordered-option-five');
-    chai.assert.equal(displayOptions[2].getAttribute('value'), 'five');
+    it('appends newly selected options to the end of the option list and display list', function() {
+      // Add an additional selected option to be appended to the end
+      this.multipleSelectOrdered.addOption('six', 'Six');
+      this.multipleSelectOrdered.selectOptionWithValue('six');
+
+      let displayOptions = Prime.Document.query('#multiple-select-ordered-display ul.option-list li');
+      chai.assert.equal(displayOptions.length, 5);
+      chai.assert.equal(displayOptions[0].getId(), 'multiple-select-ordered-option-four');
+      chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
+      chai.assert.equal(displayOptions[1].getId(), 'multiple-select-ordered-option-two');
+      chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
+      chai.assert.equal(displayOptions[2].getId(), 'multiple-select-ordered-option-three');
+      chai.assert.equal(displayOptions[2].getAttribute('value'), 'three');
+      chai.assert.equal(displayOptions[3].getId(), 'multiple-select-ordered-option-six');
+      chai.assert.equal(displayOptions[3].getAttribute('value'), 'six');
+    });
   });
 
-  it('preservesOrderOfSelectedOptions-empty-array', function() {
-    // An empty array indicates to preserve order but with no initial parameter order
-    this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered'))
-        .withPlaceholder('')
-        .withCustomAddEnabled(false)
-        .withPreserveSelectionOrder([])
-        .initialize();
-    this.multipleSelectOrdered.searcher.closeSearchResults();
+  context('withPreserveSelectionOrder empty array', function() {
+    beforeEach(function() {
+      // An empty array indicates to preserve order but with no initial parameter order
+      this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered-empty-array'))
+          .withPlaceholder('')
+          .withCustomAddEnabled(false)
+          .withPreserveSelectionOrder([])
+          .initialize();
+      this.multipleSelectOrdered.searcher.closeSearchResults();
+    });
 
-    let select = this.multipleSelectOrdered.element.domElement;
-    chai.assert.equal(select.length, 5);
-    chai.assert.equal(select.options[0].value, 'one');
-    chai.assert.isFalse(select.options[0].selected);
-    chai.assert.equal(select.options[1].value, 'three');
-    chai.assert.isFalse(select.options[1].selected);
-    // Two is now the first selected item since we did not pass in the order
-    chai.assert.equal(select.options[2].value, 'two');
-    chai.assert.isTrue(select.options[2].selected);
-    chai.assert.equal(select.options[3].value, 'four');
-    chai.assert.isTrue(select.options[3].selected);
+    it('selected options are appended to end of the list in the order they are evaluated', function() {
+      let select = this.multipleSelectOrdered.element.domElement;
+      chai.assert.equal(select.length, 5);
+      chai.assert.equal(select.options[0].value, 'one');
+      chai.assert.isFalse(select.options[0].selected);
+      chai.assert.equal(select.options[1].value, 'five');
+      chai.assert.isFalse(select.options[1].selected);
+      // Two is now the first selected item since we did not pass in the order
+      chai.assert.equal(select.options[2].value, 'two');
+      chai.assert.isTrue(select.options[2].selected);
+      chai.assert.equal(select.options[3].value, 'three');
+      chai.assert.isTrue(select.options[3].selected);
+      chai.assert.equal(select.options[4].value, 'four');
+      chai.assert.isTrue(select.options[4].selected);
+    });
   });
 
   it('removeHighlightedOption', function() {
