@@ -47,9 +47,9 @@ class Clipboard {
 
     this.element = PrimeElement.wrap(element);
     this.button = this.element.getTagName() === 'BUTTON' ? this.element.domElement : null;
-    this.element.domElement.setAttribute("data-tooltip", "Copied!");
-    this.tooltip = new Tooltip(this.element);
+    this.showTooltip = false
     this.options = {};
+    this.selectedText = "";
   }
 
   /**
@@ -64,13 +64,21 @@ class Clipboard {
     }
   }
 
+  withTooltip(tooltip) {
+    this.showTooltip = true;
+    // this.element.domElement.setAttribute("data-tooltip", "Copied!");
+    this.tooltip = new Tooltip(this.element);
+    return this;
+  }
+
   /**
    * Initializes the widget by attaching event listeners to the element.
    *
    * @returns {Clipboard} This.
    */
   initialize() {
-    if(this.button != null) {
+    if (this.button != null) {
+      console.log("registering click event listener");
       this.button.addEventListener('click', this._handleButtonClick);
     } else {
       this.element.domElement.addEventListener('mouseenter', this._handleMouseEnter);
@@ -84,16 +92,25 @@ class Clipboard {
    * ===================================================================================================================*/
 
   _selectTextToCopy(target) {
-    if(target.getTagName() === 'INPUT') {
+    if (target.nodeName === 'INPUT') {
       target.domElement.focus();
       target.domElement.select();
       target.domElement.setSelectionRange(0, 99999); /* For mobile devices */
+      this.selectedText = target.domElement.value;
     } else {
       let range = new Range();
+      let selection = document.getSelection();
+
       range.setStart(target.domElement.firstChild, 0);
       range.setEnd(target.domElement.firstChild, target.domElement.firstChild.length);
       document.getSelection().addRange(range);
+      // range.selectNodeContents(target.domElement);
+      // selection.removeAllRanges();
+      selection.addRange(range);
+
+      this.selectedText = selection.toString();
     }
+    console.log(this.selectedText);
   }
 
   /**
@@ -102,7 +119,7 @@ class Clipboard {
    * @private
    */
   _handleMouseEnter() {
-    if(this.element.domElement.innerHTML === "") {
+    if (this.element.domElement.innerHTML === "") {
       throw new TypeError('You can only use [data-copy] attribute in input tags or tags that have innerHTML');
     }
     this._selectTextToCopy(this.element)
@@ -123,10 +140,12 @@ class Clipboard {
    * @private
    */
   _handleSuccess() {
-    this.tooltip.show();
-    setTimeout(function() {
-      this.tooltip.hide();
-    }.bind(this), 1000);
+    if (this.showTooltip) {
+      this.tooltip.show();
+      setTimeout(function() {
+        this.tooltip.hide();
+      }.bind(this), 1000);
+    }
   }
 
   /**
@@ -138,27 +157,17 @@ class Clipboard {
     // retrieve the target element with text to copy
     let copyId = this.button.getAttribute('data-copy');
 
-    if(copyId == null) {
+    if (copyId == null) {
       throw new Error('A button with [data-copy] attribute must have a value');
     }
     let target = PrimeDocument.queryById(copyId);
 
-    // get the text that we want to copy to the clipboard
-    let copyText = target.getTagName() === 'INPUT' ? target.domElement.value : target.domElement.innerHTML;
-
-    // highlight/select the text
+    // highlight/select the text to copy
     this._selectTextToCopy(target);
 
     // copy the text to the clipboard
-    navigator.clipboard.writeText(copyText).then(this._handleSuccess()
-    //     function() {
-    //   this.tooltip.show();
-    //   // TODO : fire an event? we will want to display a tooltip or something?
-    //   // alert('Async: Copying to clipboard was successful!');
-    // }
-    , function(err) {
-      alert('Could not copy text: '+ err);
-    });
+    document.execCommand('copy');
+    this._handleSuccess();
   }
 }
 

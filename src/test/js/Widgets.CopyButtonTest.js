@@ -17,22 +17,40 @@
 
 describe('CopyButton class tests', function() {
   beforeEach(function() {
-    this.copyButton1 = Prime.Document.queryById('copy-button-test1');
-    this.copyButtonWidget1 = new Prime.Widgets.CopyButton(this.copyButton1).initialize();
+
+    this.copyButton = Prime.Document.queryById("clipboard-button");
+    this.copySpan1 = Prime.Document.queryById("clipboard-span-field");
+    this.copyButton2 = Prime.Document.queryById("clipboard-button2")
+
+    this.clipboard = new Prime.Widgets.Clipboard(this.copyButton).initialize();
+    this.clipboardSpan1 = new Prime.Widgets.Clipboard(this.copySpan1).initialize();
+    this.clipboardButton2 = new Prime.Widgets.Clipboard(this.copyButton2).initialize();
   });
 
   afterEach(function() {
-    this.copyButtonWidget1.destroy();
-    this.copyButtonWidget1 = null;
   });
 
-  it('clicking button copies to the clipboard', async function(done) {
-    console.log("starting brett's test");
-    let button1 = this.copyButton1.queryFirst('button');
+  it('clicking button copies to the clipboard', function() {
+    // Enter value into textfield
+    Prime.Document.queryById("clipboard-text").setValue("cfd65a5c-af8d-46b4-aff2-31b0a33578d6");
+
+    // Click the copy button
+    let button1 = this.copyButton;
     button1.fireEvent('click', null, button1, false, true);
-    console.log("Reading the clipboard");
-    let resp = await navigator.clipboard.readText();
-    assert.equal(resp, 'My copy text value');
+
+    assert.equal(this.clipboard.selectedText, 'cfd65a5c-af8d-46b4-aff2-31b0a33578d6');
+  });
+
+  it("mouseenter selects text", function() {
+    this.copySpan1.fireEvent('mouseenter', null, this.copySpan1, false, true);
+
+    assert.equal(this.clipboardSpan1.selectedText, 'Clipboard span 1 text');
+  });
+
+  it("selects text within a table data element", function() {
+    this.copyButton2.fireEvent('click', null, this.copyButton2, false, true);
+
+    assert.equal(this.clipboardButton2.selectedText, 'Clipboard table data1');
   });
 });
 

@@ -246,6 +246,7 @@
 
       Prime.Document.query('[data-copy]').each(function(element) {
         new Prime.Widgets.Clipboard(element)
+            .withTooltip("blah")
             .initialize();
       });
 
