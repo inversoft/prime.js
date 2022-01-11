@@ -246,7 +246,7 @@
 
       Prime.Document.query('[data-copy]').each(function(element) {
         new Prime.Widgets.Clipboard(element)
-            .withTooltip("blah")
+            .withTooltip("Copied!")
             .initialize();
       });
 
@@ -858,7 +858,7 @@ resultant pleasure?"
       praising pain was born and I will give you a complete account of the system, and
       expound the actual teachings of the great explorer of the truth, the master-builder
       of human happiness. No one rejects, dislikes, or avoids pleasure itself, because it
-      is pleasure, but because those who do not know how to pursue pleasure rationally encounter
+      is pleasure, but because those who do not <b data-copy>know how to pursue</b> pleasure rationally encounter
       consequences that are extremely painful. Nor again is there anyone who loves or
       pursues or desires to obtain pain of itself, because it is pain, but because occasionally
       circumstances occur in which toil and pain can procure him some great pleasure. To take a
@@ -879,6 +879,8 @@ resultant pleasure?"
     <span id="span-field" data-copy>My preexisting span</span>
     <span data-copy>My preexisting span 2</span>
     <span data-copy data-copy-value="My pre-existing span 3">My preexisting...</span>
+    <span id="span-test" data-copy>&nbsp; admin@fusionauth.io </span>
+  </span>
 
     <table>
       <tbody>
@@ -888,6 +890,23 @@ resultant pleasure?"
         </tr>
       </tbody>
     </table>
+
+    <dl class="horizontal">
+      <dt>
+        User Id  </dt>
+      <dd data-copy>
+        00000000-0000-0000-0000-000000000001
+      </dd>
+    </dl>
+
+    <dl class="horizontal">
+      <dt>
+        Email  </dt>
+      <dd data-copy>
+        <i data-tooltip="Email has been verified" class="green-text md-text fa fa-check"></i>&nbsp;
+        admin@fusionauth.io
+      </dd>
+    </dl>
 
     <dl>
       <dt>Beast of Bodmin</dt>

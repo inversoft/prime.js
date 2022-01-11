@@ -66,9 +66,14 @@ class Clipboard {
 
   withTooltip(tooltip) {
     this.showTooltip = true;
-    // this.element.domElement.setAttribute("data-tooltip", "Copied!");
-    this.tooltip = new Tooltip(this.element);
+    this.element.domElement.setAttribute("data-tooltip", tooltip);
+
+    this.tooltip = new Tooltip(this.element).hide();
     return this;
+  }
+
+  withCallback(callback) {
+    this.callback = callback;
   }
 
   /**
@@ -78,7 +83,6 @@ class Clipboard {
    */
   initialize() {
     if (this.button != null) {
-      console.log("registering click event listener");
       this.button.addEventListener('click', this._handleButtonClick);
     } else {
       this.element.domElement.addEventListener('mouseenter', this._handleMouseEnter);
@@ -91,8 +95,14 @@ class Clipboard {
    * Private methods
    * ===================================================================================================================*/
 
-  _selectTextToCopy(target) {
-    if (target.nodeName === 'INPUT') {
+  /**
+   * Sets focus and selects text.
+   *
+   * @param target The target element.
+   * @private
+   */
+  _select(target) {
+    if (target.domElement.nodeName === 'INPUT') {
       target.domElement.focus();
       target.domElement.select();
       target.domElement.setSelectionRange(0, 99999); /* For mobile devices */
@@ -100,17 +110,29 @@ class Clipboard {
     } else {
       let range = new Range();
       let selection = document.getSelection();
+      let node = Array.from(target.domElement.childNodes).find(node => this._sanitize(node.textContent) !== '');
+      let text = this._sanitize(node.textContent);
 
-      range.setStart(target.domElement.firstChild, 0);
-      range.setEnd(target.domElement.firstChild, target.domElement.firstChild.length);
-      document.getSelection().addRange(range);
-      // range.selectNodeContents(target.domElement);
-      // selection.removeAllRanges();
+      range.setStart(node, node.textContent.indexOf(text));
+      range.setEnd(node, node.textContent.indexOf(text) + text.length);
+      selection.removeAllRanges();
       selection.addRange(range);
 
       this.selectedText = selection.toString();
     }
-    console.log(this.selectedText);
+  }
+
+  /**
+   * Removes special characters \n and &nbsp; and then trims a string of text.
+   *
+   * @param text The text to remove special characters and trim
+   * @returns {string}
+   * @private
+   */
+  _sanitize(text) {
+    return text.replace("\n", "")
+        .replace("&nbsp;", "")
+        .trim();
   }
 
   /**
@@ -122,7 +144,7 @@ class Clipboard {
     if (this.element.domElement.innerHTML === "") {
       throw new TypeError('You can only use [data-copy] attribute in input tags or tags that have innerHTML');
     }
-    this._selectTextToCopy(this.element)
+    this._select(this.element)
   }
 
   /**
@@ -135,7 +157,7 @@ class Clipboard {
   }
 
   /**
-   * Handles a successful copy to the clipboard for a button click.
+   * Called when a click event has completed successfully.
    *
    * @private
    */
@@ -145,6 +167,10 @@ class Clipboard {
       setTimeout(function() {
         this.tooltip.hide();
       }.bind(this), 1000);
+    }
+
+    if (this.callback) {
+      this.callback.call();
     }
   }
 
@@ -163,7 +189,7 @@ class Clipboard {
     let target = PrimeDocument.queryById(copyId);
 
     // highlight/select the text to copy
-    this._selectTextToCopy(target);
+    this._select(target);
 
     // copy the text to the clipboard
     document.execCommand('copy');
