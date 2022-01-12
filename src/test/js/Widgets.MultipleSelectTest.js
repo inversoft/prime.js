@@ -206,6 +206,7 @@ describe('MultipleSelect class tests', function() {
           .withPlaceholder('')
           .withCustomAddEnabled(false)
           .withInitialSelectedOrder(['four', 'two', 'three'])
+          .withPreserveDisplayedSelectionOrder(true)
           .initialize();
       this.multipleSelectOrdered.searcher.closeSearchResults();
     });
@@ -257,6 +258,7 @@ describe('MultipleSelect class tests', function() {
       const element = Prime.Document.queryFirst('#multiple-select-ordered-testing-select')
       const multipleSelectOrderedSelecting = new Prime.Widgets.MultipleSelect(element)
           .withInitialSelectedOrder(['four', 'two'])
+          .withPreserveDisplayedSelectionOrder(true)
           .initialize();
 
       // Test the display ul/li
@@ -303,6 +305,7 @@ describe('MultipleSelect class tests', function() {
           .withPlaceholder('')
           .withCustomAddEnabled(false)
           .withInitialSelectedOrder([])
+          .withPreserveDisplayedSelectionOrder(true)
           .initialize();
       this.multipleSelectOrdered.searcher.closeSearchResults();
     });
