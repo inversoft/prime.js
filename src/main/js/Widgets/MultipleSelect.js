@@ -503,10 +503,10 @@ class MultipleSelect {
       option.setSelected(true);
 
       // Preserve the order of selected options
-      if (this.options.selectedOptions) {
-        const parent = option.domElement.parentNode;
+      if (this.options.selectedOrder) {
+        const parent =  option.getParent();
         option.removeFromDOM();
-        parent.appendChild(option.domElement);
+        option.appendTo(parent);
       }
 
       const li = PrimeDocument.newElement('<li/>')
@@ -624,13 +624,16 @@ class MultipleSelect {
   }
 
   /**
-   * Sets selected options in the order that they were set to selected
+   * Sets selected options in the order that they were set to selected.
+   * Example:
+   *   A user who selected preferred languages in the order German, English, French would initialize the selected
+   *   options as: ['du', 'en', 'fr']
    *
    * @param {string[]} selections The selected options.
    * @returns {MultipleSelect} This.
    */
-  withPreserveSelectionOrder(selections) {
-    this.options.selectedOptions = selections;
+  withSelectedOrder(selections) {
+    this.options.selectedOrder = selections;
     return this;
   }
 
@@ -884,10 +887,10 @@ class MultipleSelect {
     for (let i = 0; i < options.length; i++) {
       const option = options[i];
       if (option.isSelected()) {
-        if (this.options.selectedOptions) {
+        if (this.options.selectedOrder) {
           orderedOptions.push({
             opt: option,
-            order: this.options.selectedOptions.indexOf(option.getValue())
+            order: this.options.selectedOrder.indexOf(option.getValue())
           });
         } else {
           this.selectOption(option);
@@ -897,7 +900,7 @@ class MultipleSelect {
     }
 
     // Sort the selected options in the order that they were received
-    if (this.options.selectedOptions) {
+    if (this.options.selectedOrder) {
       orderedOptions.sort(function(opt1, opt2) {
         return opt1.order === opt2.order ? 0 :
             opt1.order > opt2.order ? 1 : -1;
@@ -936,7 +939,7 @@ class MultipleSelect {
       customAddLabel: 'Add Custom Value: ',
       errorClass: null,
       noSearchResultsLabel: 'No Matches For: ',
-      selectedOptions: null,
+      selectedOrder: null,
       placeholder: 'Choose',
       removeIcon: 'X',
       searchFunction: Searcher.selectSearchFunction

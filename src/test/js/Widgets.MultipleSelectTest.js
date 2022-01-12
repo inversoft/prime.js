@@ -205,7 +205,7 @@ describe('MultipleSelect class tests', function() {
       this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered'))
           .withPlaceholder('')
           .withCustomAddEnabled(false)
-          .withPreserveSelectionOrder(['four', 'two', 'three'])
+          .withSelectedOrder(['four', 'two', 'three'])
           .initialize();
       this.multipleSelectOrdered.searcher.closeSearchResults();
     });
@@ -256,7 +256,7 @@ describe('MultipleSelect class tests', function() {
     it('ensure sorted options do not mess up on redraw', function() {
       const element = Prime.Document.queryFirst('#multiple-select-ordered-testing-select')
       const multipleSelectOrderedSelecting = new Prime.Widgets.MultipleSelect(element)
-          .withPreserveSelectionOrder(['four', 'two'])
+          .withSelectedOrder(['four', 'two'])
           .initialize();
 
       // Test the display ul/li
@@ -270,10 +270,10 @@ describe('MultipleSelect class tests', function() {
       let selectOptions = element.query('option');
       chai.assert.equal(selectOptions.length, 5);
       chai.assert.equal(selectOptions[0].getAttribute('value'), 'one');
-      chai.assert.equal(selectOptions[1].getAttribute('value'), 'five');
-      chai.assert.equal(selectOptions[2].getAttribute('value'), 'four');
-      chai.assert.equal(selectOptions[3].getAttribute('value'), 'two');
-      chai.assert.equal(selectOptions[4].getAttribute('value'), 'three');
+      chai.assert.equal(selectOptions[1].getAttribute('value'), 'three');
+      chai.assert.equal(selectOptions[2].getAttribute('value'), 'five');
+      chai.assert.equal(selectOptions[3].getAttribute('value'), 'four');
+      chai.assert.equal(selectOptions[4].getAttribute('value'), 'two');
 
       // Now add an option
       multipleSelectOrderedSelecting.selectOptionWithValue('three');
@@ -302,7 +302,7 @@ describe('MultipleSelect class tests', function() {
       this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered-empty-array'))
           .withPlaceholder('')
           .withCustomAddEnabled(false)
-          .withPreserveSelectionOrder([])
+          .withSelectedOrder([])
           .initialize();
       this.multipleSelectOrdered.searcher.closeSearchResults();
     });
