@@ -298,20 +298,16 @@ describe('MultipleSelect class tests', function() {
     });
   });
 
-  context('withPreserveSelectionOrder empty array', function() {
-    beforeEach(function() {
-      // An empty array indicates to preserve order but with no initial parameter order
-      this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered-empty-array'))
+  context('without withPreserveDisplayedSelectionOrder or initialSelectOrder (legacy behavior)', function() {
+    it('selected options are appended to end of the list in the order they are evaluated', function() {
+      let multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered-legacy'))
           .withPlaceholder('')
           .withCustomAddEnabled(false)
-          .withInitialSelectedOrder([])
-          .withPreserveDisplayedSelectionOrder(true)
           .initialize();
-      this.multipleSelectOrdered.searcher.closeSearchResults();
-    });
 
-    it('selected options are appended to end of the list in the order they are evaluated', function() {
-      let select = this.multipleSelectOrdered.element.domElement;
+      multipleSelectOrdered.selectOptionWithValue('three');
+
+      let select = multipleSelectOrdered.element.domElement;
       chai.assert.equal(select.length, 5);
       chai.assert.equal(select.options[0].value, 'one');
       chai.assert.isFalse(select.options[0].selected);
@@ -324,6 +320,13 @@ describe('MultipleSelect class tests', function() {
       chai.assert.isTrue(select.options[3].selected);
       chai.assert.equal(select.options[4].value, 'five');
       chai.assert.isFalse(select.options[4].selected);
+
+      const displayElement = Prime.Document.queryFirst('#multiple-select-ordered-legacy-display')
+      let displayOptions = displayElement.query('ul.option-list li[value]');
+      chai.assert.equal(displayOptions.length, 3);
+      chai.assert.equal(displayOptions[0].getAttribute('value'), 'two');
+      chai.assert.equal(displayOptions[1].getAttribute('value'), 'four');
+      chai.assert.equal(displayOptions[2].getAttribute('value'), 'three');
     });
   });
 

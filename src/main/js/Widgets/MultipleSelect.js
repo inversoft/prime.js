@@ -506,7 +506,7 @@ class MultipleSelect {
     let displayOption = PrimeDocument.queryById(id);
 
     // Move the option if configured, and if already displayed remove it and add it again to get the correct order.
-    if (this.options.preserveDisplayedSelectionOrder || !this.initialized) {
+    if (this.options.preserveDisplayedSelectionOrder || (this.options.initialSelectedOrder.length > 0 && !this.initialized)) {
       const parent =  option.getParent();
       const lastOption = parent.getLastChild('option');
       if (option.getValue() !== lastOption.getValue()) {
