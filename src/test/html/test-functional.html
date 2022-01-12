@@ -95,7 +95,10 @@
 
       new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-test')).initialize();
       new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-custom-add-disabled-test')).withPlaceholder('Choose').withCustomAddEnabled(false).initialize();
-      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options')).initialize();
+      new Prime.Widgets.MultipleSelect(Prime.Document.queryById('multiple-select-lots-of-options'))
+          .withInitialSelectedOrder(['four', 'one'])
+          .withPreserveDisplayedSelectionOrder(true)
+          .initialize();
       new Prime.Widgets.MultipleSelect(Prime.Document.queryById('phrase-builder')).withCustomAddEnabled(false).withSearchFunction(searcherCallback.search).initialize();
       new Prime.Widgets.Searcher(Prime.Document.queryById('searcher'), Prime.Document.queryById('searcher-results'), searcherCallback).initialize();
 
@@ -422,10 +425,10 @@
       </select>
       <label for="multiple-select-lots-of-options">Multiple Select Test (lots of options)</label><br/>
       <select id="multiple-select-lots-of-options" multiple="multiple" name="msloo">
-        <option value="one">One</option>
+        <option value="one" selected>One</option>
         <option value="two">Two</option>
         <option value="three">Three</option>
-        <option value="four">Four</option>
+        <option value="four" selected>Four</option>
         <option value="five">Five</option>
         <option value="six">Six</option>
         <option value="seven">Seven</option>

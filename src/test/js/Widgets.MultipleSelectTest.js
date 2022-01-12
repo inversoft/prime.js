@@ -205,7 +205,7 @@ describe('MultipleSelect class tests', function() {
       this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered'))
           .withPlaceholder('')
           .withCustomAddEnabled(false)
-          .withSelectedOrder(['four', 'two', 'three'])
+          .withInitialSelectedOrder(['four', 'two', 'three'])
           .initialize();
       this.multipleSelectOrdered.searcher.closeSearchResults();
     });
@@ -256,7 +256,7 @@ describe('MultipleSelect class tests', function() {
     it('ensure sorted options do not mess up on redraw', function() {
       const element = Prime.Document.queryFirst('#multiple-select-ordered-testing-select')
       const multipleSelectOrderedSelecting = new Prime.Widgets.MultipleSelect(element)
-          .withSelectedOrder(['four', 'two'])
+          .withInitialSelectedOrder(['four', 'two'])
           .initialize();
 
       // Test the display ul/li
@@ -302,7 +302,7 @@ describe('MultipleSelect class tests', function() {
       this.multipleSelectOrdered = new Prime.Widgets.MultipleSelect(Prime.Document.queryFirst('#multiple-select-ordered-empty-array'))
           .withPlaceholder('')
           .withCustomAddEnabled(false)
-          .withSelectedOrder([])
+          .withInitialSelectedOrder([])
           .initialize();
       this.multipleSelectOrdered.searcher.closeSearchResults();
     });
@@ -312,15 +312,15 @@ describe('MultipleSelect class tests', function() {
       chai.assert.equal(select.length, 5);
       chai.assert.equal(select.options[0].value, 'one');
       chai.assert.isFalse(select.options[0].selected);
-      chai.assert.equal(select.options[1].value, 'five');
-      chai.assert.isFalse(select.options[1].selected);
+      chai.assert.equal(select.options[1].value, 'two');
+      chai.assert.isTrue(select.options[1].selected);
       // Two is now the first selected item since we did not pass in the order
-      chai.assert.equal(select.options[2].value, 'two');
+      chai.assert.equal(select.options[2].value, 'three');
       chai.assert.isTrue(select.options[2].selected);
-      chai.assert.equal(select.options[3].value, 'three');
+      chai.assert.equal(select.options[3].value, 'four');
       chai.assert.isTrue(select.options[3].selected);
-      chai.assert.equal(select.options[4].value, 'four');
-      chai.assert.isTrue(select.options[4].selected);
+      chai.assert.equal(select.options[4].value, 'five');
+      chai.assert.isFalse(select.options[4].selected);
     });
   });
 
