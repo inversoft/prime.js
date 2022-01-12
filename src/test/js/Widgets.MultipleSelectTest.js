@@ -252,6 +252,48 @@ describe('MultipleSelect class tests', function() {
       chai.assert.equal(displayOptions[3].getId(), 'multiple-select-ordered-option-six');
       chai.assert.equal(displayOptions[3].getAttribute('value'), 'six');
     });
+
+    it('ensure sorted options do not mess up on redraw', function() {
+      const element = Prime.Document.queryFirst('#multiple-select-ordered-testing-select')
+      const multipleSelectOrderedSelecting = new Prime.Widgets.MultipleSelect(element)
+          .withPreserveSelectionOrder(['four', 'two'])
+          .initialize();
+
+      // Test the display ul/li
+      const displayElement = Prime.Document.queryFirst('#multiple-select-ordered-testing-select-display')
+      let displayOptions = displayElement.query('ul.option-list li[value]');
+      chai.assert.equal(displayOptions.length, 2);
+      chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
+      chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
+
+      // Test the DOM order
+      let selectOptions = element.query('option');
+      chai.assert.equal(selectOptions.length, 5);
+      chai.assert.equal(selectOptions[0].getAttribute('value'), 'one');
+      chai.assert.equal(selectOptions[1].getAttribute('value'), 'five');
+      chai.assert.equal(selectOptions[2].getAttribute('value'), 'four');
+      chai.assert.equal(selectOptions[3].getAttribute('value'), 'two');
+      chai.assert.equal(selectOptions[4].getAttribute('value'), 'three');
+
+      // Now add an option
+      multipleSelectOrderedSelecting.selectOptionWithValue('three');
+
+      // Test the display ul/li
+      displayOptions = displayElement.query('ul.option-list li[value]');
+      chai.assert.equal(displayOptions.length, 3);
+      chai.assert.equal(displayOptions[0].getAttribute('value'), 'four');
+      chai.assert.equal(displayOptions[1].getAttribute('value'), 'two');
+      chai.assert.equal(displayOptions[2].getAttribute('value'), 'three');
+
+      // Test the DOM order
+      selectOptions = element.query('option');
+      chai.assert.equal(selectOptions.length, 5);
+      chai.assert.equal(selectOptions[0].getAttribute('value'), 'one');
+      chai.assert.equal(selectOptions[1].getAttribute('value'), 'five');
+      chai.assert.equal(selectOptions[2].getAttribute('value'), 'four');
+      chai.assert.equal(selectOptions[3].getAttribute('value'), 'two');
+      chai.assert.equal(selectOptions[4].getAttribute('value'), 'three');
+    });
   });
 
   context('withPreserveSelectionOrder empty array', function() {
