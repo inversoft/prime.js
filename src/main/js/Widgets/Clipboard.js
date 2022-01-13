@@ -46,7 +46,7 @@ class Clipboard {
     Utils.bindAll(this);
 
     this.element = PrimeElement.wrap(element);
-    this.button = this.element.getTagName() === 'BUTTON' ? this.element.domElement : null;
+    this.button = this.element.getTagName() === 'BUTTON' ? this.element : null;
     this.showTooltip = false
     this.options = {};
     this.selectedText = "";
@@ -141,7 +141,7 @@ class Clipboard {
    * @private
    */
   _handleMouseEnter() {
-    if (this.element.domElement.innerHTML === "") {
+    if (this.element.getHTML() === "") {
       throw new TypeError('You can only use [data-copy] attribute in input tags or tags that have innerHTML');
     }
     this._select(this.element)

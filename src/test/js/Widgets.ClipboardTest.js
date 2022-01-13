@@ -21,24 +21,27 @@ describe('CopyButton class tests', function() {
     this.copyButton = Prime.Document.queryById("clipboard-button");
     this.copySpan1 = Prime.Document.queryById("clipboard-span-field");
     this.copyButton2 = Prime.Document.queryById("clipboard-button2")
+    this.ddField = Prime.Document.queryById("dd-field")
 
     this.clipboard = new Prime.Widgets.Clipboard(this.copyButton).initialize();
-    this.clipboardSpan1 = new Prime.Widgets.Clipboard(this.copySpan1).initialize();
     this.clipboardButton2 = new Prime.Widgets.Clipboard(this.copyButton2).initialize();
+    this.clipboardSpan1 = new Prime.Widgets.Clipboard(this.copySpan1).initialize();
+    this.clipboardDDField = new Prime.Widgets.Clipboard(this.ddField).initialize();
   });
 
   afterEach(function() {
+
   });
 
-  it('clicking button copies to the clipboard', function() {
-    // Enter value into textfield
-    Prime.Document.queryById("clipboard-text").setValue("cfd65a5c-af8d-46b4-aff2-31b0a33578d6");
+  context('[data-copy] assigned to a button', function() {
+    it('clicking button selects target text', function() {
+      Prime.Document.queryById("clipboard-text").setValue("cfd65a5c-af8d-46b4-aff2-31b0a33578d6");
 
-    // Click the copy button
-    let button1 = this.copyButton;
-    button1.fireEvent('click', null, button1, false, true);
+      let button1 = this.copyButton;
+      button1.fireEvent('click', null, button1, false, true);
 
-    assert.equal(this.clipboard.selectedText, 'cfd65a5c-af8d-46b4-aff2-31b0a33578d6');
+      assert.equal(this.clipboard.selectedText, 'cfd65a5c-af8d-46b4-aff2-31b0a33578d6');
+    });
   });
 
   it("mouseenter selects text", function() {
@@ -52,5 +55,10 @@ describe('CopyButton class tests', function() {
 
     assert.equal(this.clipboardButton2.selectedText, 'Clipboard table data1');
   });
+
+  it("removes \\n, \&nbsp; characters and trims selected text", function() {
+    this.ddField.fireEvent('mouseenter', null, this.ddField, false, true);
+    assert.equal(this.clipboardDDField.selectedText, 'admin@fusionauth.io');
+  })
 });
 
