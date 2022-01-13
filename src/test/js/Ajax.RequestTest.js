@@ -35,9 +35,9 @@ describe('AJAX tests', function() {
     };
 
     var handler = new MyClass();
-    new Prime.Ajax.Request('/ajax/ajax-response.html').
-      withSuccessHandler(handler.handleFunction).
-      go();
+    new Prime.Ajax.Request('/ajax/ajax-response.html')
+        .withSuccessHandler(handler.handleFunction)
+        .go();
 
     setTimeout(function() {
       assert.isTrue(handler.called);
@@ -46,11 +46,11 @@ describe('AJAX tests', function() {
   });
 
   it('data array', function() {
-    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST').
-      withData({
-      array: ['value1', 'value2'],
-      name: 'value'
-      });
+    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST')
+        .withData({
+          array: ['value1', 'value2'],
+          name: 'value'
+        });
 
     assert.equal(req.body, 'array=value1&array=value2&name=value');
     assert.isNull(req.queryParams);
@@ -58,12 +58,12 @@ describe('AJAX tests', function() {
   });
 
   it('data array empty', function() {
-    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST').
-      withData({
-      name1: 'value1',
-      array: [],
-      name2: 'value2'
-      });
+    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST')
+        .withData({
+          name1: 'value1',
+          array: [],
+          name2: 'value2'
+        });
 
     assert.equal(req.body, 'name1=value1&name2=value2');
     assert.isNull(req.queryParams);
@@ -71,12 +71,12 @@ describe('AJAX tests', function() {
   });
 
   it('data POST', function() {
-    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST').
-      withData({
-      name: 'value',
-        'nameWith=': 'value',
-        'valueWith=': 'value='
-      });
+    var req = new Prime.Ajax.Request('/ajax/invalid.html', 'POST')
+        .withData({
+          name: 'value',
+          'nameWith=': 'value',
+          'valueWith=': 'value='
+        });
 
     assert.equal(req.body, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
     assert.isNull(req.queryParams);
@@ -84,12 +84,12 @@ describe('AJAX tests', function() {
   });
 
   it('data GET', function() {
-    var req = new Prime.Ajax.Request('/ajax/invalid.html').
-        withContentType('application/json').
-        withData({
-      name: 'value',
-          'nameWith=':'value',
-          'valueWith=':'value='
+    var req = new Prime.Ajax.Request('/ajax/invalid.html')
+        .withContentType('application/json')
+        .withData({
+          name: 'value',
+          'nameWith=': 'value',
+          'valueWith=': 'value='
         });
 
     assert.equal(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');
@@ -121,12 +121,12 @@ describe('AJAX tests', function() {
   });
 
   it('reset', function() {
-    var req = new Prime.Ajax.Request('/ajax/invalid.html').
-        withContentType('application/json').
-        withData({
-      name: 'value',
-          'nameWith=':'value',
-          'valueWith=':'value='
+    var req = new Prime.Ajax.Request('/ajax/invalid.html')
+        .withContentType('application/json')
+        .withData({
+          name: 'value',
+          'nameWith=': 'value',
+          'valueWith=': 'value='
         });
 
     assert.equal(req.queryParams, 'name=value&nameWith%3D=value&valueWith%3D=value%3D');

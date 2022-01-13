@@ -69,6 +69,7 @@ class MultipleSelect {
    */
   constructor(element) {
     Utils.bindAll(this);
+    this.initialized = false;
 
     this.element = PrimeElement.wrap(element);
     if (this.element.domElement.tagName !== 'SELECT') {
@@ -382,9 +383,21 @@ class MultipleSelect {
 
     // Close the search
     this.searchResults.hide();
-
     this._redraw();
 
+    // When the caller specified a selected order, process all selected options to honor the requested order.
+    // - Do this after redraw to ensure that we don't modify the order of the display container.
+    // - Currently we only honor the requested order if the option is already selected.
+    if (this.options.initialSelectedOrder.length > 0) {
+      for (let i = 0; i < this.options.initialSelectedOrder.length; i++) {
+        const actual = this.element.queryFirst('option[value=' + this.options.initialSelectedOrder[i] + ']');
+        if (actual !== null && actual.isSelected()) {
+          this.selectOption(actual);
+        }
+      }
+    }
+
+    this.initialized = true;
     return this;
   }
 
@@ -490,9 +503,26 @@ class MultipleSelect {
     }
 
     const id = this._makeOptionID(option);
+    let displayOption = PrimeDocument.queryById(id);
+
+    // Move the option if configured, and if already displayed remove it and add it again to get the correct order.
+    const moveDuringInitialization = !this.initialized && this.options.initialSelectedOrder.length > 0;
+    if (this.options.preserveDisplayedSelectionOrder || moveDuringInitialization) {
+      const parent =  option.getParent();
+      const lastOption = parent.getLastChild('option');
+      if (option.getValue() !== lastOption.getValue()) {
+        option.removeFromDOM();
+        option.appendTo(parent);
+        // If we moved the option, and we already have a display option, delete it so that we can rebuild it.
+        if (displayOption !== null) {
+          displayOption.removeFromDOM();
+          displayOption = null;
+        }
+      }
+    }
 
     // Check if the option has already been selected
-    if (PrimeDocument.queryById(id) === null) {
+    if (displayOption === null) {
       /*
       If we allow dupes, always duplicate the option and append it to the end or the order will be a problem. The default multiselect doesn't support order)
        */
@@ -661,6 +691,19 @@ class MultipleSelect {
   }
 
   /**
+   * When set equal to true, the displayed selection in the widget will be reflected in the serialized form data.
+   *
+   * Default is 'false', and is the legacy behavior.
+   *
+   * @param value {boolean} The boolean value, true or false.
+   * @returns {MultipleSelect} This.
+   */
+  withPreserveDisplayedSelectionOrder(value) {
+    this.options.preserveDisplayedSelectionOrder = value;
+    return this;
+  }
+
+  /**
    * Sets the remove icon value. This overrides the default value.
    *
    * @param {string} removeIcon The remove icon text.
@@ -679,6 +722,28 @@ class MultipleSelect {
    */
   withSearchFunction(searchFunction) {
     this.options.searchFunction = searchFunction;
+    return this;
+  }
+
+  /**
+   * Used during initialization to modify the order of selected options in the DOM.
+   *
+   * This does not affect the selected attribute, only the order in the DOM. It is not necessary to
+   * provide a complete list of selected option values.
+   *
+   * If options 'en', 'fr' and 'du' are selected, and you only provide 'du' as input here, 'du'
+   * will be moved to ensure it is first in the submitted form data, and the order of 'en' and 'fr'
+   * will not be modified, but will come after 'du'.
+   *
+   * Example:
+   *   A user who selected preferred languages in the order German, English, French would initialize the selected
+   *   options as: ['du', 'en', 'fr']
+   *
+   * @param {string[]} selections The selected options values.
+   * @returns {MultipleSelect} This.
+   */
+  withInitialSelectedOrder(selections) {
+    this.options.initialSelectedOrder = selections;
     return this;
   }
 
@@ -896,10 +961,12 @@ class MultipleSelect {
       customAddEnabled: true,
       customAddLabel: 'Add Custom Value: ',
       errorClass: null,
+      initialSelectedOrder: [],
       noSearchResultsLabel: 'No Matches For: ',
       placeholder: 'Choose',
-      removeIcon: 'X',
-      searchFunction: Searcher.selectSearchFunction
+      preserveDisplayedSelectionOrder: false,
+      searchFunction: Searcher.selectSearchFunction,
+      removeIcon: 'X'
     };
 
     const userOptions = Utils.dataSetToOptions(this.element);
