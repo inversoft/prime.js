@@ -4,7 +4,7 @@ Changes in 1.6.0
 
  * Add new configuration options for MultiSelect to set initial order of selected options, and
    to ensure form serialization order matches the selected widget order.
-   
+
 Changes in 1.5.2
 
  * Bug fix in Reorder widget. Callback was not being called.
