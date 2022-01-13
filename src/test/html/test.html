@@ -504,6 +504,39 @@
       </div>
 
       <input id="datetimepicker-test1" name="dateTimePicker">
+
+      <div id="clipboard-test">
+        <input type="text" id="clipboard-text" name="clipboard-text">
+        <button type="button" id="clipboard-button" data-copy="clipboard-text">Copy UUID</button>
+
+        <div id="clipboard-spans">
+          <span id="clipboard-span-field" data-copy>Clipboard span 1 text</span>
+          <span data-copy>Clipboard span 2 text</span>
+          <span data-copy data-copy-value="Clipboard span 3 text">Span 3 inner html</span>
+        </div>
+
+        <table>
+          <tbody>
+            <tr>
+              <td id="clipboard-table-field">Clipboard table data1</td>
+              <td><button id="clipboard-button2" type="button" data-copy="clipboard-table-field"></button>copy td</td>
+            </tr>
+            <tr>
+              <td data-copy>table data text</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <dl class="horizontal">
+          <dt>
+            Email  </dt>
+          <dd id="dd-field" data-copy>
+            <i data-tooltip="Email has been verified" class="green-text md-text fa fa-check"></i>&nbsp;
+            admin@fusionauth.io
+          </dd>
+        </dl>
+      </div>
+      </div>
     </form>
 
     <table data-sortable="false" id="reorder-test">
