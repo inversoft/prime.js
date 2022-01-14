@@ -47,8 +47,11 @@ class Clipboard {
 
     this.element = PrimeElement.wrap(element);
     this.button = this.element.getTagName() === 'BUTTON' ? this.element : null;
+    // TODO : Is this an option? Do we need this? Can we just check this.tooltip for null?
     this.showTooltip = false
+    // TODO : Are there any default options? Can I set them using data- attributes?
     this.options = {};
+    // TODO : Is this used?
     this.selectedText = "";
   }
 
@@ -56,12 +59,14 @@ class Clipboard {
    * Removes the event listeners.
    */
   destroy() {
+    // TODO : What if you have not initialized the widget when this is called?
     if (this.button != null) {
       this.button.removeEventListener('click', this._handleButtonClick);
     } else {
       this.element.domElement.removeEventListener('mouseenter', this._handleMouseEnter);
       this.element.domElement.removeEventListener('mouseleave', this._handleMouseExit);
     }
+    // TODO : Should we also destroy the tooltip if used?
   }
 
   withTooltip(tooltip) {
@@ -82,6 +87,7 @@ class Clipboard {
    * @returns {Clipboard} This.
    */
   initialize() {
+    // TODO : Can I call initialize more than once?
     if (this.button != null) {
       this.button.addEventListener('click', this._handleButtonClick);
     } else {
@@ -130,6 +136,7 @@ class Clipboard {
    * @private
    */
   _sanitize(text) {
+    // TODO : Is this a security thing? What if I want to copy some text with a line return and a space?
     return text.replace("\n", "")
         .replace("&nbsp;", "")
         .trim();
@@ -142,6 +149,7 @@ class Clipboard {
    */
   _handleMouseEnter() {
     if (this.element.getHTML() === "") {
+      // TODO : What does this mean?
       throw new TypeError('You can only use [data-copy] attribute in input tags or tags that have innerHTML');
     }
     this._select(this.element)
@@ -164,6 +172,7 @@ class Clipboard {
   _handleSuccess() {
     if (this.showTooltip) {
       this.tooltip.show();
+      // Doesn't the tooltip do this?
       setTimeout(function() {
         this.tooltip.hide();
       }.bind(this), 1000);
