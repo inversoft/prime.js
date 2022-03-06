@@ -81,7 +81,7 @@ class Tooltip {
         .appendTo(PrimeDocument.bodyElement)
         .addClass(classNames)
         .setHTML(text)
-        .setStyle('zIndex', zIndex + 10);
+        .setStyle('zIndex', zIndex + 100);
 
     const left = this.element.getLeft();
     const top = this.element.getTop();
