@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2017, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2022, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -245,6 +245,11 @@ class PrimeRequest {
         continue;
       }
 
+      const name = primeElement.domElement.name;
+      if (!Utils.isDefined(name)) {
+        continue;
+      }
+
       let type = primeElement.getAttribute('type');
       if (type !== null) {
         type = type.toLowerCase();
@@ -259,7 +264,6 @@ class PrimeRequest {
         values = primeElement.getValue();
       }
 
-      const name = primeElement.domElement.name;
       if (this.method === 'PUT' || this.method === 'POST') {
         this.body = this._addDataValue(this.body, name, values)
       } else {
