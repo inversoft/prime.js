@@ -3,7 +3,7 @@
  */
 savantVersion = "1.0.0"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "1.6.2", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "1.6.3", licenses: ["ApacheV2_0"]) {
   workflow {
     fetch {
       cache()

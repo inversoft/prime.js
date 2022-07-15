@@ -245,8 +245,8 @@ class PrimeRequest {
         continue;
       }
 
-      const name = primeElement.domElement.name;
-      if (!Utils.isDefined(name)) {
+      const name = primeElement.getAttribute('name');
+      if (name === null || name.length === 0) {
         continue;
       }
 
