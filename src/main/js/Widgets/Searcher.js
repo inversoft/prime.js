@@ -224,6 +224,7 @@ class Searcher {
     this.inputElement
         .addEventListener('blur', this._handleBlurEvent)
         .addEventListener('click', this._handleClickEvent)
+        .addEventListener('input', this._handleInputEvent)
         .addEventListener('keyup', this._handleKeyUpEvent)
         .addEventListener('keydown', this._handleKeyDownEvent)
         .addEventListener('focus', this._handleFocusEvent);
@@ -506,6 +507,15 @@ class Searcher {
   }
 
   /**
+   * Handle when we get new input in the field
+   *
+   * @private
+   */
+  _handleInputEvent() {
+    this.search();
+  }
+
+  /**
    * Handles the key down events that should not be propagated.
    *
    * @param {KeyboardEvent} event The keyboard event object.
@@ -527,6 +537,8 @@ class Searcher {
       }
     } else if (key === Events.Keys.ENTER) {
       Utils.stopEvent(event); // Don't bubble enter otherwise the form submits
+    } else if (key === Events.Keys.TAB && this.isSearchResultsVisible()) {
+      Utils.stopEvent(event); // Don't bubble tab otherwise value lost on tab focus
     }
   }
 
@@ -554,9 +566,10 @@ class Searcher {
       }
     } else if (key === Events.Keys.ESCAPE) {
       this.closeSearchResults();
-    } else if (key === Events.Keys.SPACE || key === Events.Keys.DELETE ||
-        (key >= 48 && key <= 90) || (key >= 96 && key <= 111) || (key >= 186 && key <= 192) || (key >= 219 && key <= 222)) {
-      this.search();
+    } else if (key === Events.Keys.TAB && this.getHighlightedSearchResult() !== null) {
+      // don't advance form field focus and add search result
+      Utils.stopEvent(event);
+      this.selectHighlightedSearchResult();
     }
   }
 

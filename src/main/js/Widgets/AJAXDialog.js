@@ -43,11 +43,18 @@ class AJAXDialog {
    * @returns {AJAXDialog} This.
    */
   close() {
+    if (this.element === null) {
+      return;
+    }
+
     this.element.removeClass('open');
     if (this.draggable !== null) {
       this.draggable.destroy();
       this.draggable = null;
     }
+
+    document.removeEventListener('keydown', this._handleKeyDown);
+    document.removeEventListener('click', this._handleClick);
 
     setTimeout(function() {
       this.element.removeFromDOM();
@@ -343,10 +350,27 @@ class AJAXDialog {
         .go();
   }
 
+  _handleClick(event) {
+    if (event.target === Overlay.instance.overlay.domElement) {
+      Utils.stopEvent(event);
+      this.close();
+    }
+  }
+
+  _handleKeyDown(event) {
+    if (event.key === 'Escape') {
+      Utils.stopEvent(event);
+      this.close();
+    }
+  }
+
   _initializeDialog() {
     this.element.query(this.options.closeButtonElementSelector).each(function(e) {
       e.addEventListener('click', this._handleCloseClickEvent);
     }.bind(this));
+
+    document.addEventListener('keydown', this._handleKeyDown);
+    document.addEventListener('click', this._handleClick);
 
     // Only set the z-index upon first open
     if (!this.initialized) {
