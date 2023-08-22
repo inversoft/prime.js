@@ -185,8 +185,8 @@
       var openFunction = function(e) {
         new Prime.Widgets.AJAXDialog()
             .withCallback(function(dialog) {
-              dialog.queryFirst('a.dialog-button').addEventListener('click', openFunction);
-              new Prime.Widgets.Tooltip(dialog.queryFirst('p'));
+              dialog.element.queryFirst('a.dialog-button').addEventListener('click', openFunction);
+              new Prime.Widgets.Tooltip(dialog.element.queryFirst('p'));
             })
             .initialize()
             .open('ajax-dialog-response.html');
