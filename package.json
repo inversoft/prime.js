@@ -1,6 +1,6 @@
 {
   "name": "prime.js",
-  "version": "1.6.5",
+  "version": "1.7.0",
   "description": "Internal javascript library used by Inversoft",
   "license": "Apache-2.0",
   "devDependencies": {

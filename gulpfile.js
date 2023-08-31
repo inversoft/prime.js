@@ -137,6 +137,6 @@ function test(callback, slow) {
             'src/test/css/Widgets.*.css',
             {pattern: 'src/test/html/*', watched: true, served: true, included: false}
           ]
-        }, callback()).start();
+        }, callback).start();
       }, callback);
 }

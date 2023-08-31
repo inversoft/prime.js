@@ -352,15 +352,19 @@ class AJAXDialog {
 
   _handleClick(event) {
     if (event.target === Overlay.instance.overlay.domElement) {
-      Utils.stopEvent(event);
-      this.close();
+      if (this._isTopDialog()) {
+        Utils.stopEvent(event);
+        this.close();
+      }
     }
   }
 
   _handleKeyDown(event) {
-    if (event.key === 'Escape') {
-      Utils.stopEvent(event);
-      this.close();
+    if (this._isTopDialog()) {
+      if (event.key === 'Escape') {
+        Utils.stopEvent(event);
+        this.close();
+      }
     }
   }
 
@@ -403,6 +407,12 @@ class AJAXDialog {
     }
 
     this.initialized = true;
+  }
+
+  _isTopDialog() {
+    const highestZIndex = this._determineZIndex();
+    const zIndex = parseInt(this.element.getComputedStyle()['zIndex']);
+    return (zIndex === highestZIndex);
   }
 
   /**
