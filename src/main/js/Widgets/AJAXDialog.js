@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2017-2018, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2017-2023, Inversoft Inc., All Rights Reserved
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,11 +43,18 @@ class AJAXDialog {
    * @returns {AJAXDialog} This.
    */
   close() {
+    if (this.element === null) {
+      return;
+    }
+
     this.element.removeClass('open');
     if (this.draggable !== null) {
       this.draggable.destroy();
       this.draggable = null;
     }
+
+    document.removeEventListener('keydown', this._handleKeyDown);
+    document.removeEventListener('click', this._handleClick);
 
     setTimeout(function() {
       this.element.removeFromDOM();
@@ -198,6 +205,17 @@ class AJAXDialog {
   }
 
   /**
+   * Sets whether this dialog is dismissible by clicking off it or hitting Escape
+   *
+   * @param dismissible {boolean} Whether dialog is dismissible.  Default option is true.
+   * @returns {AJAXDialog} This.
+   */
+  withDismissible(dismissible) {
+    this.options.dismissible = dismissible;
+    return this;
+  }
+
+  /**
    * Sets the draggable element selector that is used for the DraggableWidget.
    *
    * @param selector {string} The element selector.
@@ -343,10 +361,33 @@ class AJAXDialog {
         .go();
   }
 
+  _handleClick(event) {
+    if (event.target === Overlay.instance.overlay.domElement &&
+        this._isTopDialog() &&
+        this.options.dismissible) {
+      Utils.stopEvent(event);
+      this.close();
+    }
+  }
+
+  _handleKeyDown(event) {
+    if (this._isTopDialog() &&
+        event.key === 'Escape' &&
+        this.options.dismissible) {
+      Utils.stopEvent(event);
+      this.close();
+    }
+  }
+
   _initializeDialog() {
     this.element.query(this.options.closeButtonElementSelector).each(function(e) {
       e.addEventListener('click', this._handleCloseClickEvent);
     }.bind(this));
+
+    if (this.options.dismissible) {
+      document.addEventListener('keydown', this._handleKeyDown);
+      document.addEventListener('click', this._handleClick);
+    }
 
     // Only set the z-index upon first open
     if (!this.initialized) {
@@ -381,6 +422,12 @@ class AJAXDialog {
     this.initialized = true;
   }
 
+  _isTopDialog() {
+    const highestZIndex = this._determineZIndex();
+    const zIndex = parseInt(this.element.getComputedStyle()['zIndex']);
+    return (zIndex === highestZIndex);
+  }
+
   /**
    * Set the initial options for this widget.
    * @private
@@ -394,6 +441,7 @@ class AJAXDialog {
       className: 'prime-dialog',
       closeButtonElementSelector: '[data-dialog-role="close-button"]',
       closeTimeout: 200,
+      dismissible: true,
       draggableElementSelector: '[data-dialog-role="draggable"]',
       formErrorCallback: null,
       formHandling: false,

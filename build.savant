@@ -1,9 +1,9 @@
 /*
- * Copyright (c) 2014-2022, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2023, Inversoft Inc., All Rights Reserved
  */
-savantVersion = "1.0.0"
+savantVersion = "2.0.0-RC.7"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "1.6.4", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "1.7.0", licenses: ["ApacheV2_0"]) {
   workflow {
     fetch {
       cache()
