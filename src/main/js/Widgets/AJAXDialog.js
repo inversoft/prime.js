@@ -210,7 +210,7 @@ class AJAXDialog {
    * @param dismissible {boolean} Whether dialog is dismissible.  Default option is true.
    * @returns {AJAXDialog} This.
    */
-  withDismissible(dismissible){
+  withDismissible(dismissible) {
     this.options.dismissible = dismissible;
     return this;
   }
@@ -362,20 +362,20 @@ class AJAXDialog {
   }
 
   _handleClick(event) {
-    if (event.target === Overlay.instance.overlay.domElement) {
-      if (this._isTopDialog() && this.options.dismissible) {
-        Utils.stopEvent(event);
-        this.close();
-      }
+    if (event.target === Overlay.instance.overlay.domElement &&
+        this._isTopDialog() &&
+        this.options.dismissible) {
+      Utils.stopEvent(event);
+      this.close();
     }
   }
 
   _handleKeyDown(event) {
-    if (this._isTopDialog()) {
-      if (event.key === 'Escape' && this.options.dismissible) {
-        Utils.stopEvent(event);
-        this.close();
-      }
+    if (this._isTopDialog() &&
+        event.key === 'Escape' &&
+        this.options.dismissible) {
+      Utils.stopEvent(event);
+      this.close();
     }
   }
 
@@ -384,8 +384,10 @@ class AJAXDialog {
       e.addEventListener('click', this._handleCloseClickEvent);
     }.bind(this));
 
-    document.addEventListener('keydown', this._handleKeyDown);
-    document.addEventListener('click', this._handleClick);
+    if (this.options.dismissible) {
+      document.addEventListener('keydown', this._handleKeyDown);
+      document.addEventListener('click', this._handleClick);
+    }
 
     // Only set the z-index upon first open
     if (!this.initialized) {
