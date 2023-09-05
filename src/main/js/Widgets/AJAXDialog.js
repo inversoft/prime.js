@@ -27,11 +27,13 @@ class AJAXDialog {
   /**
    * Constructs a new dialog box, which is dynamically built and then populated with the HTML returned from an AJAX call.
    *
+   * @param {boolean} dismissible Whether dialog is easily dismissible by clicking outside dialog or pressing escape. Defaults to true.
    * @constructor
    */
-  constructor() {
+  constructor(dismissible = true) {
     Utils.bindAll(this);
 
+    this.dismissible = dismissible;
     this.draggable = null;
     this.element = null;
     this.initialized = false;
@@ -352,7 +354,7 @@ class AJAXDialog {
 
   _handleClick(event) {
     if (event.target === Overlay.instance.overlay.domElement) {
-      if (this._isTopDialog()) {
+      if (this._isTopDialog() && this.dismissible) {
         Utils.stopEvent(event);
         this.close();
       }
@@ -361,7 +363,7 @@ class AJAXDialog {
 
   _handleKeyDown(event) {
     if (this._isTopDialog()) {
-      if (event.key === 'Escape') {
+      if (event.key === 'Escape' && this.dismissible) {
         Utils.stopEvent(event);
         this.close();
       }

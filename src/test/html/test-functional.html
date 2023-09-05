@@ -194,6 +194,20 @@
       };
 
       Prime.Document.queryById('ajax-dialog-button').addEventListener('click', openFunction);
+
+      var openNonDismissibleFunction = function(e) {
+        new Prime.Widgets.AJAXDialog(false)
+            .withCallback(function(dialog) {
+              dialog.element.queryFirst('a.dialog-button').addEventListener('click', openNonDismissibleFunction);
+              new Prime.Widgets.Tooltip(dialog.element.queryFirst('p'));
+            })
+            .initialize()
+            .open('ajax-dialog-response.html');
+        Prime.Utils.stopEvent(e);
+      };
+
+      Prime.Document.queryById('ajax-dialog-non-dismissible-button').addEventListener('click', openNonDismissibleFunction);
+
       var htmlDialog = new Prime.Widgets.HTMLDialog(Prime.Document.queryById('html-dialog'));
       Prime.Document.queryById('html-dialog-button').addEventListener('click', function() {
         htmlDialog.open();
@@ -321,6 +335,7 @@
 
   <div id="ajax-dialog-container">
     <a href="#" id="ajax-dialog-button">Open AJAX dialog</a>
+    <a href="#" id="ajax-dialog-non-dismissible-button">Open Non-Dismissible AJAX dialog</a>
   </div>
 
   <a href="#" id="html-dialog-button">Open HTML dialog</a>
