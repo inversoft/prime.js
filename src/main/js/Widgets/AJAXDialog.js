@@ -27,13 +27,11 @@ class AJAXDialog {
   /**
    * Constructs a new dialog box, which is dynamically built and then populated with the HTML returned from an AJAX call.
    *
-   * @param {boolean} dismissible Whether dialog is easily dismissible by clicking outside dialog or pressing escape. Defaults to true.
    * @constructor
    */
-  constructor(dismissible = true) {
+  constructor() {
     Utils.bindAll(this);
 
-    this.dismissible = dismissible;
     this.draggable = null;
     this.element = null;
     this.initialized = false;
@@ -207,6 +205,17 @@ class AJAXDialog {
   }
 
   /**
+   * Sets whether this dialog is dismissible by clicking off it or hitting Escape
+   *
+   * @param dismissible {boolean} Whether dialog is dismissible.  Default option is true.
+   * @returns {AJAXDialog} This.
+   */
+  withDismissible(dismissible){
+    this.options.dismissible = dismissible;
+    return this;
+  }
+
+  /**
    * Sets the draggable element selector that is used for the DraggableWidget.
    *
    * @param selector {string} The element selector.
@@ -354,7 +363,7 @@ class AJAXDialog {
 
   _handleClick(event) {
     if (event.target === Overlay.instance.overlay.domElement) {
-      if (this._isTopDialog() && this.dismissible) {
+      if (this._isTopDialog() && this.options.dismissible) {
         Utils.stopEvent(event);
         this.close();
       }
@@ -363,7 +372,7 @@ class AJAXDialog {
 
   _handleKeyDown(event) {
     if (this._isTopDialog()) {
-      if (event.key === 'Escape' && this.dismissible) {
+      if (event.key === 'Escape' && this.options.dismissible) {
         Utils.stopEvent(event);
         this.close();
       }
@@ -430,6 +439,7 @@ class AJAXDialog {
       className: 'prime-dialog',
       closeButtonElementSelector: '[data-dialog-role="close-button"]',
       closeTimeout: 200,
+      dismissible: true,
       draggableElementSelector: '[data-dialog-role="draggable"]',
       formErrorCallback: null,
       formHandling: false,
