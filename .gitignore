@@ -1,6 +1,7 @@
 *.iws
 .DS_Store
 .gradle
+.savant/cache
 build
 out
 node_modules
