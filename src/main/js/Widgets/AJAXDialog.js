@@ -273,6 +273,17 @@ class AJAXDialog {
   }
 
   /**
+   * Allows the first element with the 'autofocus' attribute to gain focus on dialog open.
+   *
+   * @param setElementFocusOnOpen {boolean} When true, the first element with the 'autofocus' attribute will gain focus on dialog open. Defaults to true.
+   * @returns {AJAXDialog} This.
+   */
+  withSetElementFocusOnOpen(setElementFocusOnOpen) {
+    this.options.setElementFocusOnOpen = setElementFocusOnOpen;
+    return this;
+  }
+
+  /**
    * Set more than one option at a time by providing a map of key value pairs. This is considered an advanced
    * method to set options on the widget. The caller needs to know what properties are valid in the options object.
    *
@@ -402,6 +413,14 @@ class AJAXDialog {
       this.options.callback(this);
     }
 
+    // When configured set focus on the first element with the autofocus attribute
+    if (this.options.setElementFocusOnOpen) {
+      const firstElement = this.element.queryFirst('input[autofocus],select[autofocus],textarea[autofocus]');
+      if (firstElement !== null ){
+        firstElement.focus();
+      }
+    }
+
     // Setup forms if enabled
     if (this.options.formHandling) {
       this.form = this.element.queryFirst('form').addEventListener('submit', this._handleAJAXFormSubmit);
@@ -447,6 +466,7 @@ class AJAXDialog {
       formHandling: false,
       formPreSubmitCallback: null,
       formSuccessCallback: null,
+      setElementFocusOnOpen: true,
       zIndexOffset: 1000
     };
   }
