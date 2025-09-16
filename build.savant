@@ -1,10 +1,8 @@
 /*
- * Copyright (c) 2014-2023, Inversoft Inc., All Rights Reserved
+ * Copyright (c) 2014-2025, Inversoft Inc., All Rights Reserved
  */
-savantVersion = "2.0.0-RC.6"
-savantIdeaVersion = "2.0.0-RC.7"
 
-project(group: "org.inversoft.prime", name: "prime.js", version: "1.7.0", licenses: ["ApacheV2_0"]) {
+project(group: "org.inversoft.prime", name: "prime.js", version: "1.8.0", licenses: ["ApacheV2_0"]) {
   workflow {
     fetch {
       cache()
@@ -36,10 +34,10 @@ project(group: "org.inversoft.prime", name: "prime.js", version: "1.7.0", licens
 }
 
 // Plugins
-dependency = loadPlugin(id: "org.savantbuild.plugin:dependency:${savantVersion}")
-file = loadPlugin(id: "org.savantbuild.plugin:file:${savantVersion}")
-idea = loadPlugin(id: "org.savantbuild.plugin:idea:${savantIdeaVersion}")
-release = loadPlugin(id: "org.savantbuild.plugin:release-git:${savantVersion}")
+dependency = loadPlugin(id: "org.savantbuild.plugin:dependency:2.0.0")
+file = loadPlugin(id: "org.savantbuild.plugin:file:2.0.0")
+idea = loadPlugin(id: "org.savantbuild.plugin:idea:2.0.0")
+release = loadPlugin(id: "org.savantbuild.plugin:release-git:2.0.0")
 
 target(name: "clean", description: "Does nothing. Exists for scripting") {
   file.prune(dir: "build")
