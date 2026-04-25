@@ -67,4 +67,17 @@ describe('DateTimePicker class tests', function() {
     assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 3); // April
     assert.equal(this.dateWidget.previousMonth().monthDisplay.getDataAttribute('month'), 2); // March
   });
+
+  it('year-range', function() {
+    // check that the list starts from a 100 years before the current year and make
+    // sure it contains each year after that. Total 100 entries should be present.
+    var newDate = new Date();
+    newDate.setYear(2000);
+    this.dateWidget.setDate(newDate);
+    var startYear = new Date().getFullYear() - 100;
+    this.dateWidget.years.getChildren().each(function (year) {
+      assert.equal(year.getDataAttribute('year'), startYear++)
+    });
+    assert(this.dateWidget.years.getChildren().length, 100);
+  });
 });
